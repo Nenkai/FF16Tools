@@ -21,6 +21,8 @@ public class FF16Pack : IDisposable
     public const uint MAGIC = 0x4B434150;
     public const int MAX_DECOMPRESSED_CHUNK_SIZE = 0x80000;
 
+    public const ulong XOR_KEY = 0x49D18FC870F3824E;
+
     public bool HeaderEncrypted { get; set; }
     public bool UseChunks { get; set; }
 
@@ -296,34 +298,27 @@ public class FF16Pack : IDisposable
 
     private static void DecryptHeaderPart(Span<byte> data)
     {
-        // TODO maybe: just use an array with the key
         Span<byte> cur = data;
-
         while (cur.Length >= 8)
         {
-            Span<ulong> u64s = MemoryMarshal.Cast<byte, ulong>(cur);
-            u64s[0] = u64s[0] ^ (u64s[0] ^ ~u64s[0]) & 0x49D18FC870F3824EUL;
+            MemoryMarshal.Cast<byte, ulong>(cur)[0] ^= XOR_KEY;
             cur = cur[8..];
         }
 
         if (cur.Length >= 4)
         {
-            Span<uint> u32s = MemoryMarshal.Cast<byte, uint>(cur);
-            u32s[0] = u32s[0] ^ (u32s[0] ^ ~u32s[0]) & 0x70F3824E;
+            MemoryMarshal.Cast<byte, uint>(cur)[0] ^= (uint)(XOR_KEY & 0xFFFFFFFF);
             cur = cur[4..];
         }
 
         if (cur.Length >= 2)
         {
-            Span<ushort> u16s = MemoryMarshal.Cast<byte, ushort>(cur);
-            u16s[0] = (ushort)(~u16s[0] ^ (u16s[0] ^ ~u16s[0]) & 0x7DB1); // NOTE: ~ on the first variable - maybe to intentionally throw people off? ~0x7DB1 = 0x824E
+            MemoryMarshal.Cast<byte, ushort>(cur)[0] ^= (ushort)(XOR_KEY & 0xFFFF);
             cur = cur[2..];
         }
 
         if (cur.Length >= 1)
-        {
-            cur[0] = (byte)(cur[0] ^ (cur[0] ^ ~cur[0]) & 0x4E);
-        }
+            cur[0] ^= (byte)(XOR_KEY & 0xFF);
     }
 
     public void Dispose()
