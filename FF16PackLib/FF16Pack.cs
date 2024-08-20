@@ -219,6 +219,9 @@ public class FF16Pack : IDisposable
             remSize -= chunkDecompSize;
         }
 
+        ArrayPool<byte>.Shared.Return(compBuffer);
+        ArrayPool<byte>.Shared.Return(decompBuffer);
+
         if (remSize != 0)
             throw new IOException($"File '{outputPath}' was not extracted completely (numChunks: {numChunks}, rem: {remSize})");
 
