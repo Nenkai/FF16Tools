@@ -20,6 +20,10 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 * [010 Editor Templates](https://github.com/Nenkai/010GameTemplates/tree/main/Square%20Enix/Final%20Fantasy%2016)
 * [C# Classes](https://github.com/Nenkai/FF16Pack/tree/master/FF16PackLib)
 
+## Roadmap
+
+* Re-packing support (in progress)
+
 ## Acknowledgements
 
 [Vortice.Windows](https://github.com/amerkoleci/Vortice.Windows) for having a usable DirectStorage wrapper/API.
