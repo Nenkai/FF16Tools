@@ -1,0 +1,6 @@
+[submodule "GDeflateNet"]
+	path = GDeflateNet
+	url = https://github.com/yretenai/GDeflateNet.git
+[submodule "GisDeflate"]
+	path = GisDeflate
+	url = https://github.com/sk-zk/GisDeflate.git

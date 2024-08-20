@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FF16Pack.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "unpack-all -i \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\FINAL FANTASY XVI DEMO\\data\\0002.en.pac\""
+    }
+  }
+}
