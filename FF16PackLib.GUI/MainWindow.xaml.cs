@@ -110,33 +110,6 @@ namespace FF16Pack.GUI
             return true;
         }
 
-        public bool CanGetInfo()
-        {
-            if (inputPathIsFolder)
-            {
-                if (!Directory.Exists(inputPath))
-                {
-                    ErrorBox("Extraction Error!", "Error! The input folder path you set does not exist! (or is not a valid folder path)");
-                    return false;
-                }
-            }
-            else
-            {
-                if (!File.Exists(inputPath))
-                {
-                    ErrorBox("Extraction Error!", "Error! The input file path you set does not exist! (or is not a valid file path)");
-                    return false;
-                }
-                else if (System.IO.Path.GetExtension(inputPath) != ".pac") //NOTE: This shouldn't happen, but users can input file paths manually if they want to... gotta be safe
-                {
-                    ErrorBox("Extraction Error!", "Error! The input file path you set is not a .pac file!");
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public void Extract()
         {
             if (!CanExtract())
@@ -199,9 +172,26 @@ namespace FF16Pack.GUI
             }
         }
 
+        public void ListFile(string path)
+        {
+            using var pack = FF16PackLib.FF16Pack.Open(path);
+
+            Console.WriteLine("{0}", path);
+            Console.WriteLine($"Pack Info:");
+            Console.WriteLine($"- Num Files: {pack.GetNumFiles()}");
+            Console.WriteLine($"- Chunks: {pack.GetNumChunks()}");
+            Console.WriteLine($"- Header Encryption: {pack.HeaderEncrypted}");
+            Console.WriteLine($"- Uses Chunks: {pack.UseChunks}");
+
+            string inputFileName = System.IO.Path.GetFileNameWithoutExtension(path);
+            string outputPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(path)), $"{inputFileName}_files.txt");
+            pack.ListFiles(outputPath);
+            Console.WriteLine($"Done. ({outputPath})");
+        }
+
         public void ListFiles()
         {
-            if (!CanGetInfo())
+            if (!CanExtract())
                 return;
 
             consoleTextRedirect.Clear();
@@ -225,28 +215,10 @@ namespace FF16Pack.GUI
                     }
 
                     foreach (string pacFilePath in pacFilePaths)
-                    {
-                        using var pack = FF16PackLib.FF16Pack.Open(pacFilePath);
-
-                        Console.WriteLine("{0}", pacFilePath);
-                        Console.WriteLine($"Pack Info:");
-                        Console.WriteLine($"- Num Files: {pack.GetNumFiles()}");
-                        Console.WriteLine($"- Chunks: {pack.GetNumChunks()}");
-                        Console.WriteLine($"- Header Encryption: {pack.HeaderEncrypted}");
-                        Console.WriteLine($"- Uses Chunks: {pack.UseChunks}");
-                    }
+                        ListFile(pacFilePath);
                 }
                 else
-                {
-                    using var pack = FF16PackLib.FF16Pack.Open(inputPath);
-
-                    Console.WriteLine("{0}", inputPath);
-                    Console.WriteLine($"Pack Info:");
-                    Console.WriteLine($"- Num Files: {pack.GetNumFiles()}");
-                    Console.WriteLine($"- Chunks: {pack.GetNumChunks()}");
-                    Console.WriteLine($"- Header Encryption: {pack.HeaderEncrypted}");
-                    Console.WriteLine($"- Uses Chunks: {pack.UseChunks}");
-                }
+                    ListFile(inputPath);
             }
             catch (Exception ex)
             {
