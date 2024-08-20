@@ -6,6 +6,7 @@ This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
 
 ## Usage
 
+Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/releases).
 * Unpacking all files: `FF16Pack.CLI unpack-all -i <path_to_pac> [-o output_directory]`
 * Unpacking a specific file: `FF16Pack.CLI unpack -i <path_to_pac> -f <game_file> [-o output_directory]`
 * Listing files: `FF16Pack.CLI list-files -i <path_to_pac>`
