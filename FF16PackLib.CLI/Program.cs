@@ -1,4 +1,6 @@
-﻿namespace FF16Unpacker;
+﻿using FF16PackLib;
+
+namespace FF16PackLib.CLI;
 
 using CommandLine;
 

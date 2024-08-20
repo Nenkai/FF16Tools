@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Vortice.DirectStorage;
 using Syroot.BinaryData;
 
-namespace FF16Unpacker;
+namespace FF16PackLib;
 
 /// <summary>
 /// FF16 Pack file. (Disposable object)

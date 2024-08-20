@@ -1,12 +1,12 @@
-﻿using Syroot.BinaryData;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FF16Unpacker;
+using Syroot.BinaryData;
+
+namespace FF16PackLib;
 
 public class FF16PackDStorageChunk
 {

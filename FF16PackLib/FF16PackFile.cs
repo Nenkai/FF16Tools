@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Syroot.BinaryData;
 
-namespace FF16Unpacker;
+namespace FF16PackLib;
 
 public class FF16PackFile
 {
