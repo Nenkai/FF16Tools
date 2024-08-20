@@ -185,7 +185,7 @@ public class FF16Pack : IDisposable
         }
     }
 
-    private FileStream ExtractFileFromMultipleChunks(FF16PackFile packFile, string outputPath)
+    private void ExtractFileFromMultipleChunks(FF16PackFile packFile, string outputPath)
     {
         _stream.Position = (long)packFile.ChunkDefOffset;
         uint numChunks = _stream.ReadUInt32();
@@ -224,8 +224,6 @@ public class FF16Pack : IDisposable
 
         if (remSize != 0)
             throw new IOException($"File '{outputPath}' was not extracted completely (numChunks: {numChunks}, rem: {remSize})");
-
-        return outputStream;
     }
 
     private void ExtractFileFromSpecificChunk(FF16PackFile packFile, string outputPath)
