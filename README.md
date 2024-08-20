@@ -21,3 +21,7 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 * [GisDeflate](https://github.com/sk-zk/GisDeflate) would break on a certain file (also doesn't have span interfaces),
 * [GDeflateNet](https://github.com/yretenai/GDeflateNet) was missing dll files that were needed by the native dll,
 * [Silk.NET](https://github.com/dotnet/Silk.NET) has 0 documentation, and would return obtuse windows errors such as `0x8004001` (not implemented). Very useful!
+
+## License
+
+MIT License. Make sure to credit if you reuse this!
