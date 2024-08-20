@@ -1,4 +1,5 @@
 ﻿using FF16PackLib;
+using FF16PackLib.Packing;
 
 namespace FF16PackLib.CLI;
 
@@ -18,10 +19,11 @@ public class Program
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("");
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs>(args)
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs>(args)
             .WithParsed<UnpackFileVerbs>(UnpackFile)
             .WithParsed<UnpackAllVerbs>(UnpackAll)
-            .WithParsed<ListFilesVerbs>(ListFiles);
+            .WithParsed<ListFilesVerbs>(ListFiles)
+            .WithParsed<PackVerbs>(PackFiles);
     }
 
     static void UnpackFile(UnpackFileVerbs verbs)
@@ -109,6 +111,31 @@ public class Program
         }
     }
 
+    static void PackFiles(PackVerbs verbs)
+    {
+        if (!Directory.Exists(verbs.InputFile))
+        {
+            Console.WriteLine($"ERROR: Directory '{verbs.InputFile}' does not exist.");
+            return;
+        }
+
+        var builder = new FF16PackBuilder(new PackBuildOptions()
+        {
+            Encrypt = verbs.Encrypt,
+            Name = verbs.Name,
+        });
+
+        if (string.IsNullOrEmpty(verbs.OutputFile))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+            verbs.OutputFile = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{fileName}.pac");
+        }
+
+        builder.InitFromDirectory(verbs.InputFile);
+        builder.WriteTo(verbs.OutputFile);
+
+        Console.WriteLine("Done.");
+    }
 
     public static void DumpPack(FF16Pack pack)
     {
@@ -141,6 +168,22 @@ public class UnpackAllVerbs
 
     [Option('o', "output", HelpText = "Output file. Optional, defaults to a folder named the same as the .pac file.")]
     public string OutputPath { get; set; }
+}
+
+[Verb("pack", HelpText = "Pack files from a directory.")]
+public class PackVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input directory")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output '.pac' file.")]
+    public string OutputFile { get; set; }
+
+    [Option('n', "name", HelpText = "Name of the pack file.")]
+    public string Name { get; set; }
+
+    [Option('e', "encrypt", HelpText = "Whether to encrypt the header.")]
+    public bool Encrypt { get; set; }
 }
 
 [Verb("list-files", HelpText = "List files in a .pac file.")]

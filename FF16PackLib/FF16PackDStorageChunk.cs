@@ -47,7 +47,17 @@ public class FF16PackDStorageChunk
         NumFilesInChunk = bs.ReadUInt16();
     }
 
-    public static int GetSize()
+    public void Write(BinaryStream bs)
+    {
+        bs.WriteUInt64(DataOffset);
+        bs.WriteUInt32(CompressedChunkSize);
+        bs.WriteUInt32(DecompressedSize);
+        bs.WriteUInt32(0);
+        bs.WriteUInt16(ChunkIndex);
+        bs.WriteUInt16(NumFilesInChunk);
+    }
+
+    public static uint GetSize()
     {
         return 0x18;
     }
