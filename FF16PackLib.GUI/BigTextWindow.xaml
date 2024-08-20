@@ -1,0 +1,14 @@
+﻿<Window x:Class="FF16PackLib.GUI.BigTextWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FF16PackLib.GUI"
+        mc:Ignorable="d"
+        Title="BigTextWindow" Height="450" Width="800">
+    <Grid>
+        <ScrollViewer>
+            <TextBox Name="ui_textbox" TextWrapping="Wrap" Text="" IsReadOnly="True"/>
+        </ScrollViewer>
+    </Grid>
+</Window>
