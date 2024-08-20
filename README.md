@@ -15,12 +15,24 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 
 Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
+## Format Documentation
+
+* [010 Editor Templates](https://github.com/Nenkai/010GameTemplates/tree/main/Square%20Enix/Final%20Fantasy%2016)
+* [C# Classes](https://github.com/Nenkai/FF16Pack/tree/master/FF16PackLib)
+
+## Roadmap
+
+* Re-packing support (in progress)
+
 ## Acknowledgements
 
 [Vortice.Windows](https://github.com/amerkoleci/Vortice.Windows) for having a usable DirectStorage wrapper/API.
 * [GisDeflate](https://github.com/sk-zk/GisDeflate) would break on a certain file (also doesn't have span interfaces),
-* [GDeflateNet](https://github.com/yretenai/GDeflateNet) was missing dll files that were needed by the native dll,
 * [Silk.NET](https://github.com/dotnet/Silk.NET) has 0 documentation, and would return obtuse windows errors such as `0x8004001` (not implemented). Very useful!
+
+---
+
+[yretenai](https://github.com/yretenai) - Information on the file structure
 
 ## License
 

@@ -10,10 +10,29 @@ namespace FF16PackLib;
 
 public class FF16PackDStorageChunk
 {
+    /// <summary>
+    /// Offset of the compressed data.
+    /// </summary>
     public ulong DataOffset { get; set; }
+
+    /// <summary>
+    /// Size of the compressed chunk.
+    /// </summary>
     public uint CompressedChunkSize { get; set; }
+
+    /// <summary>
+    /// Decompressed size of the chunk.
+    /// </summary>
     public uint DecompressedSize { get; set; }
+
+    /// <summary>
+    /// Chunk index.
+    /// </summary>
     public ushort ChunkIndex { get; set; }
+
+    /// <summary>
+    /// Number of files present within the chunk.
+    /// </summary>
     public ushort NumFilesInChunk { get; set; }
 
     public byte[] CachedBuffer { get; set; }
