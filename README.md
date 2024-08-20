@@ -1,6 +1,6 @@
 # FF16Pack
 
-Unpacker for Final Fantasy XIV / 16 .pac files.
+Unpacker for Final Fantasy XVI / 16 .pac files.
 
 This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
 
