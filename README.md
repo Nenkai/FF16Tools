@@ -7,7 +7,7 @@ This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
 ## Usage
 
 * Unpacking all files: `FF16Pack.CLI unpack-all -i <path_to_pac> [-o output_directory]`
-* Unpacking a specific file: `FF16Pack.CLI unpack-all -i <path_to_pac> -f <game_file> [-o output_directory]`
+* Unpacking a specific file: `FF16Pack.CLI unpack -i <path_to_pac> -f <game_file> [-o output_directory]`
 * Listing files: `FF16Pack.CLI list-files -i <path_to_pac>`
 
 ## Building
