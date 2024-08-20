@@ -196,8 +196,8 @@ public class FF16Pack : IDisposable
         using var sw = new StreamWriter(outputPath);
         foreach (var file in _files)
         {
-            sw.WriteLine($"{file.Key} - crc:{file.Value.CRC32Checksum:X4}, compressed: {file.Value.IsCompressed} ({file.Value.ChunkedCompressionFlags}), " +
-                $"dataOffset: 0x{file.Value.DataOffset:X16}, fileSize: 0x{file.Value.DecompressedFileSize:X8}, compressedFileSize: 0x{file.Value.CompressedFileSize:X8}");
+            sw.WriteLine($"{file.Key} - crc:{file.Value.CRC32Checksum:X8}, nameHash:{file.Value.FileNameHash:X8} compressed: {file.Value.IsCompressed} ({file.Value.ChunkedCompressionFlags}), " +
+                $"dataOffset: 0x{file.Value.DataOffset:X16}, fileSize: 0x{file.Value.DecompressedFileSize:X8}, compressedFileSize: 0x{file.Value.CompressedFileSize:X8}, chunkHeaderSize:0x{file.Value.ChunkHeaderSize:X8}");
         }
     }
 
