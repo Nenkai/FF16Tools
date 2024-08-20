@@ -5,29 +5,66 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FF16Pack.GUI"
         mc:Ignorable="d"
-        Title="FF16 Unpacker by Nenkai (GUI)" Height="235" Width="412" MinHeight="235" MinWidth="300">
+        Title="FF16 Unpacker by Nenkai (GUI)" 
+        Height="354" 
+        Width="412" 
+        MinHeight="345" 
+        MaxHeight="345"
+        MinWidth="300"
+        
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"        
+        >
     <Grid>
-        <Label Name="ui_extractiomode_label" Content="Extraction Mode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="99"/>
+        <TabControl >
+            <!-- UNPACK TAB -->
+            <TabItem Header="Unpack">
+                <Grid Background="White">
+                    <Separator Name="ui_seperatorTop" Margin="10,10,10,0" VerticalAlignment="Top" Height="12"/>
 
-        <ComboBox Name="ui_extractiomode_combobox" Margin="114,7,10,0" VerticalAlignment="Top" Height="26" SelectionChanged="ui_extractiomode_combobox_SelectionChanged">
-            <ComboBoxItem Content="Single Archive (Input File)"></ComboBoxItem>
-            <ComboBoxItem Content="Multiple Archives (Input Folder)"></ComboBoxItem>
-            <ComboBoxItem Content="Single Archive with Specific File Name (Input File)"></ComboBoxItem>
-        </ComboBox>
+                    <!-- EXTRACTION MODE SECTION -->
+                    <Label Name="ui_extractiomode_label" Content="Extraction Mode:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,27,0,0" VerticalAlignment="Top" Width="109" Height="32"/>
 
-        <Label Name="ui_input_label" Content="Input" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="64"/>
-        <TextBox Name="ui_input_textbox" Margin="79,38,77,0" TextWrapping="Wrap" Text="Input Path" VerticalAlignment="Top" Height="26" TextChanged="ui_input_textbox_TextChanged" MouseDoubleClick="ui_input_textbox_MouseDoubleClick"/>
-        <Button Name="ui_input_button" Content="Open" HorizontalAlignment="Right" Margin="0,38,10,0" VerticalAlignment="Top" Height="26" Width="60" Click="ui_input_button_Click"/>
+                    <ComboBox Name="ui_extractiomode_combobox" Margin="124,27,10,0" Height="32" SelectionChanged="ui_extractiomode_combobox_SelectionChanged" HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Single Archive (Input File)"></ComboBoxItem>
+                        <ComboBoxItem Content="Multiple Archives (Input Folder)"></ComboBoxItem>
+                        <ComboBoxItem Content="Single Archive with Specific File Name (Input File)"></ComboBoxItem>
+                    </ComboBox>
 
-        <Label Name="ui_gamefile_label" Content="Game File" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Width="64"/>
-        <TextBox Name="ui_gamefile_textbox" Margin="79,69,10,0" TextWrapping="Wrap" Text="Game File Name" VerticalAlignment="Top" Height="26" TextChanged="ui_gamefile_textbox_TextChanged"/>
+                    <!-- INPUT SECTION -->
+                    <Label Name="ui_input_label" Content="Input:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
+                    <TextBox Name="ui_input_textbox" Margin="79,64,77,0" TextWrapping="Wrap" Text="Input Path" VerticalAlignment="Top" Height="26" TextChanged="ui_input_textbox_TextChanged" MouseDoubleClick="ui_input_textbox_MouseDoubleClick"/>
+                    <Button Name="ui_input_button" Content="Open" HorizontalAlignment="Right" Margin="0,64,10,0" VerticalAlignment="Top" Height="32" Width="62" Click="ui_input_button_Click"/>
 
-        <Label Name="ui_output_label" Content="Output" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="64"/>
-        <TextBox Name="ui_output_textbox" Margin="79,100,77,0" TextWrapping="Wrap" Text="Output Folder" VerticalAlignment="Top" Height="26" TextChanged="ui_output_textbox_TextChanged" MouseDoubleClick="ui_output_textbox_MouseDoubleClick"/>
-        <Button Name="ui_output_button" Content="Open" HorizontalAlignment="Right" Margin="0,100,10,0" VerticalAlignment="Top" Height="26" Width="60" Click="ui_output_button_Click"/>
+                    <!-- GAME FILE SECTION -->
+                    <Label Name="ui_gamefile_label" Content="Game File:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" Width="64" Height="32"/>
+                    <TextBox Name="ui_gamefile_textbox" Margin="79,101,10,0" TextWrapping="Wrap" Text="Game File Name" VerticalAlignment="Top" Height="26" TextChanged="ui_gamefile_textbox_TextChanged"/>
 
-        <Button Name="ui_extract_button" Content="Extract" Margin="10,162,8,0" VerticalAlignment="Top" Height="26" Click="ui_extract_button_Click"/>
-        <Button Name="ui_listfiles_button" Content="List Files" Margin="10,131,10,0" VerticalAlignment="Top" Height="26" Click="ui_listfiles_button_Click"/>
-        <Label Name="ui_working_label" Content="application is working... please be patient..." Margin="10,38,0,0" Visibility="Hidden"/>
+                    <!-- OUTPUT SECTION -->
+                    <Label Name="ui_output_label" Content="Output:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
+                    <TextBox Name="ui_output_textbox" Margin="79,138,77,0" TextWrapping="Wrap" Text="Output Folder" VerticalAlignment="Top" Height="26" TextChanged="ui_output_textbox_TextChanged" MouseDoubleClick="ui_output_textbox_MouseDoubleClick"/>
+                    <Button Name="ui_output_button" Content="Open" Margin="0,138,10,0" Height="32" Width="62" Click="ui_output_button_Click" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+
+                    <Separator Name="ui_seperatorBottom" Margin="10,175,10,0" VerticalAlignment="Top" Height="12"/>
+
+                    <!-- ACTIONS SECTION -->
+                    <Button Name="ui_extract_button" Content="Extract" Margin="10,229,10,0" VerticalAlignment="Top" Height="32" Click="ui_extract_button_Click" HorizontalAlignment="Stretch"/>
+                    <Button Name="ui_listfiles_button" Content="List Files" Margin="10,192,10,0" VerticalAlignment="Top" Height="32" Click="ui_listfiles_button_Click" HorizontalAlignment="Stretch"/>
+
+                    <!-- janky "working..." text -->
+                    <Label Name="ui_working_label" Content="Application working... please wait while it finishes..." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,38,10,0" Visibility="Hidden" FontStyle="Italic"/>
+                </Grid>
+            </TabItem>
+            
+            <!-- REPACK TAB -->
+            <TabItem Header="Repack">
+                <Grid Background="White">
+                    <Label Name="ui_notimplemented_label" Content="Not Implemented..." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,10,10,10" FontStyle="Italic"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- progress bar -->
+        <!-- <ProgressBar Name="ui_progress_progressbar" Height="24" Margin="10,210,10,0" VerticalAlignment="Top"/> -->
     </Grid>
 </Window>

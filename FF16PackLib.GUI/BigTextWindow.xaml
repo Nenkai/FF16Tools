@@ -5,7 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FF16PackLib.GUI"
         mc:Ignorable="d"
-        Title="BigTextWindow" Height="450" Width="800">
+        Title="BigTextWindow" 
+        Height="450" 
+        Width="800"
+        
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"      
+        >
     <Grid>
         <ScrollViewer>
             <TextBox Name="ui_textbox" TextWrapping="Wrap" Text="" IsReadOnly="True"/>

@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace FF16PackLib.GUI
 {
     /// <summary>
-    /// Interaction logic for BigTextWindow.xaml
+    /// Utility GUI window, that displays redirected outputs from the console.
     /// </summary>
     public partial class BigTextWindow : Window
     {
