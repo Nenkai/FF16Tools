@@ -41,7 +41,7 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 * [Silk.NET](https://github.com/dotnet/Silk.NET) has 0 documentation, and would return obtuse windows errors such as `0x8004001` (not implemented). Very useful!
 
 ---
-
+[Nenkai](https://github.com/Nenkai) - Reverse-Engineering, Unpack/Packing
 [yretenai](https://github.com/yretenai) - Information on the file structure
 
 ## License
