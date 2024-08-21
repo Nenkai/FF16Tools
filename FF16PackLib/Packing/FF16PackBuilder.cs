@@ -46,12 +46,14 @@ public class FF16PackBuilder
         var files = Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Order().ToList();
         foreach (var file in files)
         {
-            Console.WriteLine($"PACK: Adding '{file}'...");
+            string gamePath = file[(dir.Length + 1)..].ToLower().Replace('\\', '/');
+            Console.WriteLine($"PACK: Adding '{gamePath}'...");
+
             var fileInfo = new FileInfo(file);
             var task = new FileTask()
             {
                 LocalPath = file,
-                GamePath = file[(dir.Length + 1)..].ToLower().Replace('\\', '/'),
+                GamePath = gamePath,
             };
             task.PackFile.DecompressedFileSize = (ulong)fileInfo.Length;
 
