@@ -12,6 +12,19 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 * Pack a directory into a `.pac`: `FF16Pack.CLI pack -i <path_to_directory> [-o output_directory]`
 * Listing files: `FF16Pack.CLI list-files -i <path_to_pac>`
 
+### Modding
+
+> [!NOTE]  
+> You may choose to rebuild a `.pac` entirely, or **preferably** you can use `.diff.pac` files.
+> 
+> If you wish to edit files already present in pac files, copy their file structure into a new directory, then pack it. Rename the result `.pac` file `<name>.diff.pac`.
+> 
+> So if your files came from `0000.pac`, the new pac file should be `0000.diff.pac`. 
+
+> [!TIP]
+> **You only have to include files you want to edit, not ALL the files from the original `.pac`**.
+> You might also have to set the internal archive name/directory using `--name`, if the original had it.
+
 ## Building
 
 Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
@@ -20,10 +33,6 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
 * [010 Editor Templates](https://github.com/Nenkai/010GameTemplates/tree/main/Square%20Enix/Final%20Fantasy%2016)
 * [C# Classes](https://github.com/Nenkai/FF16Pack/tree/master/FF16PackLib)
-
-## Roadmap
-
-* Re-packing support (in progress)
 
 ## Acknowledgements
 
