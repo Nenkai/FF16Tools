@@ -31,6 +31,7 @@ public class FF16Pack : IDisposable
     public const int MAX_DECOMPRESSED_SHARED_CHUNK_SIZE = 0x400000;
     public const int MAX_DECOMPRESSED_MULTI_CHUNK_SIZE = 0x80000;
 
+    public string ArchiveDir { get; private set; }
     public bool HeaderEncrypted { get; set; }
     public bool UseChunks { get; set; }
 
@@ -78,6 +79,8 @@ public class FF16Pack : IDisposable
 
             if (pack.HeaderEncrypted)
                 XorEncrypt.CryptHeaderPart(header.AsSpan(0x18, 0x100));
+
+            pack.ArchiveDir = Encoding.UTF8.GetString(header.AsSpan(0x18, 0x100)).TrimEnd('\0');
 
             bs.Position = 0x118;
             ulong chunksTableOffset = bs.ReadUInt64();

@@ -140,6 +140,7 @@ public class Program
     public static void DumpPack(FF16Pack pack)
     {
         Console.WriteLine($"Pack Info:");
+        Console.WriteLine($"- Internal Archive Name/Dir: {(string.IsNullOrEmpty(pack.ArchiveDir) ? "(none)" : pack.ArchiveDir)}");
         Console.WriteLine($"- Num Files: {pack.GetNumFiles()}");
         Console.WriteLine($"- Chunks: {pack.GetNumChunks()}");
         Console.WriteLine($"- Header Encryption: {pack.HeaderEncrypted}");
