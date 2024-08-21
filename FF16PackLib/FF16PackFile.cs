@@ -72,12 +72,31 @@ public class FF16PackFile
         DataOffset = bs.ReadUInt64();
         ChunkDefOffset = bs.ReadUInt64();
         FileNameOffset = bs.ReadUInt64();
-
         FileNameHash = bs.ReadUInt32();
         CRC32Checksum = bs.ReadUInt32();
         bs.ReadUInt32(); // Empty
         ChunkHeaderSize = bs.ReadUInt32();
+    }
 
+    public void Write(BinaryStream bs)
+    {
+        bs.WriteUInt32(CompressedFileSize);
+        bs.WriteBoolean(IsCompressed);
+        bs.WriteByte((byte)ChunkedCompressionFlags);
+        bs.WriteInt16(0);
+        bs.WriteUInt64(DecompressedFileSize);
+        bs.WriteUInt64(DataOffset);
+        bs.WriteUInt64(ChunkDefOffset);
+        bs.WriteUInt64(FileNameOffset);
+        bs.WriteUInt32(FileNameHash);
+        bs.WriteUInt32(CRC32Checksum);
+        bs.WriteUInt32(0);
+        bs.WriteUInt32(ChunkHeaderSize);
+    }
+
+    public static uint GetSize()
+    {
+        return 0x38;
     }
 }
 

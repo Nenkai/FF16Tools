@@ -14,6 +14,7 @@ using Vortice.DirectStorage;
 using Syroot.BinaryData;
 
 using FF16PackLib.Hashing;
+using FF16PackLib.Crypto;
 
 namespace FF16PackLib;
 
@@ -23,10 +24,14 @@ namespace FF16PackLib;
 public class FF16Pack : IDisposable
 {
     public const uint MAGIC = 0x4B434150;
-    public const int MAX_DECOMPRESSED_CHUNK_SIZE = 0x80000;
+    public const uint HEADER_SIZE = 0x400;
 
-    public const ulong XOR_KEY = 0x49D18FC870F3824E;
+    public const int MIN_FILE_SIZE_FOR_MULTIPLE_CHUNKS = 0x2000000;
+    public const int MAX_FILE_SIZE_FOR_SHARED_CHUNK = 0x100000;
+    public const int MAX_DECOMPRESSED_SHARED_CHUNK_SIZE = 0x400000;
+    public const int MAX_DECOMPRESSED_MULTI_CHUNK_SIZE = 0x80000;
 
+    public string ArchiveDir { get; private set; }
     public bool HeaderEncrypted { get; set; }
     public bool UseChunks { get; set; }
 
@@ -73,7 +78,9 @@ public class FF16Pack : IDisposable
             bs.Position = 0x18;
 
             if (pack.HeaderEncrypted)
-                DecryptHeaderPart(header.AsSpan(0x18, 0x100));
+                XorEncrypt.CryptHeaderPart(header.AsSpan(0x18, 0x100));
+
+            pack.ArchiveDir = Encoding.UTF8.GetString(header.AsSpan(0x18, 0x100)).TrimEnd('\0');
 
             bs.Position = 0x118;
             ulong chunksTableOffset = bs.ReadUInt64();
@@ -81,7 +88,7 @@ public class FF16Pack : IDisposable
             ulong stringTableSize = bs.ReadUInt64();
 
             if (pack.HeaderEncrypted)
-                DecryptHeaderPart(header.AsSpan((int)stringsOffset, (int)stringTableSize));
+                XorEncrypt.CryptHeaderPart(header.AsSpan((int)stringsOffset, (int)stringTableSize));
 
             for (int i = 0; i < numFiles; i++)
             {
@@ -193,6 +200,10 @@ public class FF16Pack : IDisposable
 
     public void ListFiles(string outputPath)
     {
+        var exts = _files.Where(e => !e.Value.IsCompressed).Select(e => Path.GetExtension(e.Key)).Distinct();
+        foreach (var ext in exts)
+            Console.WriteLine(ext);
+
         using var sw = new StreamWriter(outputPath);
         foreach (var file in _files)
         {
@@ -208,8 +219,8 @@ public class FF16Pack : IDisposable
         uint size = _stream.ReadUInt32();
         uint[] chunkOffsets = _stream.ReadUInt32s((int)numChunks);
 
-        byte[] compBuffer = ArrayPool<byte>.Shared.Rent(MAX_DECOMPRESSED_CHUNK_SIZE);
-        byte[] decompBuffer = ArrayPool<byte>.Shared.Rent(MAX_DECOMPRESSED_CHUNK_SIZE);
+        byte[] compBuffer = ArrayPool<byte>.Shared.Rent(0x100000);
+        byte[] decompBuffer = ArrayPool<byte>.Shared.Rent(MAX_DECOMPRESSED_MULTI_CHUNK_SIZE);
 
         var crc = new Crc32();
         long remSize = (long)packFile.DecompressedFileSize;
@@ -219,7 +230,7 @@ public class FF16Pack : IDisposable
             int chunkCompSize = i < numChunks - 1 ?
                   (int)(chunkOffsets[i + 1] - chunkOffsets[i])
                 : (int)packFile.CompressedFileSize - (int)chunkOffsets[i];
-            int chunkDecompSize = (int)Math.Min(remSize, MAX_DECOMPRESSED_CHUNK_SIZE);
+            int chunkDecompSize = (int)Math.Min(remSize, MAX_DECOMPRESSED_MULTI_CHUNK_SIZE);
 
             _stream.Position = (long)(packFile.DataOffset + chunkOffsets[i]);
             _stream.Read(compBuffer, 0, chunkCompSize);
@@ -258,7 +269,7 @@ public class FF16Pack : IDisposable
             fixed (byte* buffer = compBuffer)
             fixed (byte* buffer2 = decompBuffer)
             {
-                _codec.DecompressBuffer((nint)buffer, (int)packFile.CompressedFileSize, (nint)buffer2, (int)MAX_DECOMPRESSED_CHUNK_SIZE, (int)packFile.DecompressedFileSize);
+                _codec.DecompressBuffer((nint)buffer, (int)packFile.CompressedFileSize, (nint)buffer2, (int)MAX_DECOMPRESSED_MULTI_CHUNK_SIZE, (int)packFile.DecompressedFileSize);
             }
         }
 
@@ -318,31 +329,6 @@ public class FF16Pack : IDisposable
             ThrowHashException(outputPath);
 
         _cachedChunks.Add(chunk);
-    }
-
-    private static void DecryptHeaderPart(Span<byte> data)
-    {
-        Span<byte> cur = data;
-        while (cur.Length >= 8)
-        {
-            MemoryMarshal.Cast<byte, ulong>(cur)[0] ^= XOR_KEY;
-            cur = cur[8..];
-        }
-
-        if (cur.Length >= 4)
-        {
-            MemoryMarshal.Cast<byte, uint>(cur)[0] ^= (uint)(XOR_KEY & 0xFFFFFFFF);
-            cur = cur[4..];
-        }
-
-        if (cur.Length >= 2)
-        {
-            MemoryMarshal.Cast<byte, ushort>(cur)[0] ^= (ushort)(XOR_KEY & 0xFFFF);
-            cur = cur[2..];
-        }
-
-        if (cur.Length >= 1)
-            cur[0] ^= (byte)(XOR_KEY & 0xFF);
     }
 
     public static void ThrowHashException(string path)
