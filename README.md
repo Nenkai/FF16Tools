@@ -21,7 +21,7 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 > 
 > So if your files came from `0000.pac`, the new pac file should be `0000.diff.pac`. 
 
-> [!TIP]
+> [!IMPORTANT]
 > **You only have to include files you want to edit, not ALL the files from the original `.pac`**.
 > You might also have to set the internal archive name/directory using `--name`, if the original had it.
 
