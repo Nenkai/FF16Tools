@@ -55,11 +55,34 @@
                     <Label Name="ui_working_label" Content="Application working... please wait while it finishes..." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,38,10,0" Visibility="Hidden" FontStyle="Italic"/>
                 </Grid>
             </TabItem>
-            
+
             <!-- REPACK TAB -->
             <TabItem Header="Repack">
                 <Grid Background="White">
-                    <Label Name="ui_notimplemented_label" Content="Not Implemented..." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,10,10,10" FontStyle="Italic"/>
+                    <Separator Name="ui_repack_seperatorTop" Margin="10,10,10,0" VerticalAlignment="Top" Height="12"/>
+
+                    <!-- INPUT SECTION -->
+                    <Label Name="ui_repack_input_label" Content="Input:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,28,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
+                    <TextBox Name="ui_repack_input_textbox" Margin="79,27,77,0" TextWrapping="Wrap" Text="Input Folder" VerticalAlignment="Top" Height="26" MouseDoubleClick="ui_repack_input_textbox_MouseDoubleClick" TextChanged="ui_repack_input_textbox_TextChanged"/>
+                    <Button Name="ui_repack_input_button" Content="Open" HorizontalAlignment="Right" Margin="0,27,10,0" VerticalAlignment="Top" Height="32" Width="62" Click="ui_repack_input_button_Click"/>
+
+                    <!-- OUTPUT SECTION -->
+                    <Label Name="ui_repack_output_label" Content="Output:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
+                    <TextBox Name="ui_repack_output_textbox" Margin="79,64,77,0" TextWrapping="Wrap" Text="Output Folder" VerticalAlignment="Top" Height="26" MouseDoubleClick="ui_repack_output_textbox_MouseDoubleClick" TextChanged="ui_repack_output_textbox_TextChanged"/>
+                    <Button Name="ui_repack_output_button" Content="Open" Margin="0,64,10,0" Height="32" Width="62" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ui_repack_output_button_Click"/>
+
+                    <!-- PACK FILE NAME SECTION -->
+                    <Label Name="ui_repack_packName_label" Content="Name:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" Width="64" Height="32"/>
+                    <TextBox Name="ui_repack_packName_textbox" Margin="79,101,10,0" TextWrapping="Wrap" Text="Pack Name" VerticalAlignment="Top" Height="26" TextChanged="ui_repack_packName_textbox_TextChanged"/>
+                    <CheckBox Name="ui_repack_encrypt_checkbox" Content="Encrypt" Margin="10,138,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="29" Click="ui_repack_encrypt_checkbox_Click"/>
+
+                    <Separator Name="ui_repack_seperatorBottom" Margin="11,175,9,0" VerticalAlignment="Top" Height="12"/>
+
+                    <!-- ACTIONS SECTION -->
+                    <Button Name="ui_repack_pack_button" Content="Pack" Margin="10,192,10,0" VerticalAlignment="Top" Height="32" HorizontalAlignment="Stretch" Click="ui_repack_pack_button_Click"/>
+
+                    <!-- janky "working..." text -->
+                    <Label Name="ui_repack_working_label" Content="Application working... please wait while it finishes..." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,38,10,0" Visibility="Hidden" FontStyle="Italic"/>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -33,9 +33,14 @@ namespace FF16Pack.GUI
         //|||||||||||||||||||||||||||||||||| PRIVATE VARIABLES ||||||||||||||||||||||||||||||||||
         //|||||||||||||||||||||||||||||||||| PRIVATE VARIABLES ||||||||||||||||||||||||||||||||||
 
-        private string inputPath = ""; //This is the source file that we read from (or folder path if its configured)
-        private string outputPath = ""; //This is the folder path where we output our data to
-        private string gameFile = ""; //This is where the user can specify what file they want to pull from an archive
+        private string unpackInputPath = ""; //This is the source file that we read from (or folder path if its configured)
+        private string unpackOutputPath = ""; //This is the folder path where we output our data to
+        private string unpackGameFile = ""; //This is where the user can specify what file they want to pull from an archive
+
+        private string repackInputPath = ""; 
+        private string repackOutputPath = "";
+        private string repackPackName = "";
+        private bool repackEncrypt = false;
 
         //int enums that represent each "value" defined in the ExtractionMode combobox.
         //NOTE: these indexes are in the same order as the items in the XAML document.
@@ -48,7 +53,7 @@ namespace FF16Pack.GUI
 
         private ExtractionMode extractionMode;
 
-        private bool inputPathIsFolder
+        private bool unpackInputPathIsFolder
         {
             get
             {
@@ -91,10 +96,10 @@ namespace FF16Pack.GUI
         public bool CanExtract()
         {
             //If the user set their input path use a folder (i.e. they want to bulk convert .pac files)
-            if (inputPathIsFolder)
+            if (unpackInputPathIsFolder)
             {
                 //Make sure the input folder that the user set does exist...
-                if (!Directory.Exists(inputPath))
+                if (!Directory.Exists(unpackInputPath))
                 {
                     ErrorBox("Extraction Error!", "Error! The input folder path you set does not exist! (or is not a valid folder path)");
                     return false;
@@ -104,14 +109,14 @@ namespace FF16Pack.GUI
             else
             {
                 //If the file path the user set no longer exists...
-                if (!File.Exists(inputPath))
+                if (!File.Exists(unpackInputPath))
                 {
                     ErrorBox("Extraction Error!", "Error! The input file path you set does not exist! (or is not a valid file path)");
                     return false;
                 }
                 //If the file path is referencing a file that is not actually a .pac file...
                 //NOTE: This only will happen if the user inputs a file manually in the input textbox.
-                else if (System.IO.Path.GetExtension(inputPath) != ".pac")
+                else if (System.IO.Path.GetExtension(unpackInputPath) != ".pac")
                 {
                     ErrorBox("Extraction Error!", "Error! The input file path you set is not a .pac file!");
                     return false;
@@ -119,7 +124,7 @@ namespace FF16Pack.GUI
             }
 
             //Make sure the output folder that the user set does exist...
-            if (!Directory.Exists(outputPath))
+            if (!Directory.Exists(unpackOutputPath))
             {
                 ErrorBox("Extraction Error!", "Error! The output folder path you set does not exist! (or is not a valid folder path)");
                 return false;
@@ -139,13 +144,13 @@ namespace FF16Pack.GUI
             //|||||||||||||||||||||||||||||||||| INPUT FOLDER (MULTIPLE .PAC) ||||||||||||||||||||||||||||||||||
             //|||||||||||||||||||||||||||||||||| INPUT FOLDER (MULTIPLE .PAC) ||||||||||||||||||||||||||||||||||
             //Here the user input a folder path that contains multiple .pac files, so they want to bulk unpack whatever is in them.
-            if (inputPathIsFolder)
+            if (unpackInputPathIsFolder)
             {
                 //declare an array that will store the pac files that we find
                 List<string> pacFilePaths = new List<string>();
 
                 //iterate through all of the files in the input folder path to find the .pac files
-                foreach (string filePath in Directory.GetFiles(inputPath))
+                foreach (string filePath in Directory.GetFiles(unpackInputPath))
                 {
                     if (System.IO.Path.GetExtension(filePath) == ".pac")
                         pacFilePaths.Add(filePath);
@@ -164,7 +169,7 @@ namespace FF16Pack.GUI
                     foreach(string pacFilePath in pacFilePaths)
                     {
                         using var pack = FF16PackLib.FF16Pack.Open(pacFilePath);
-                        pack.ExtractAll(outputPath);
+                        pack.ExtractAll(unpackOutputPath);
                     }
 
                     InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
@@ -183,13 +188,13 @@ namespace FF16Pack.GUI
                 //perform extraction on the single pac file that the user wants to use...
                 try
                 {
-                    using var pack = FF16PackLib.FF16Pack.Open(inputPath);
+                    using var pack = FF16PackLib.FF16Pack.Open(unpackInputPath);
 
                     //if its configured to where the user wants to extract a specific game file from an archive, then let them
                     if(extractionMode == ExtractionMode.SingleArchiveWithGameFile)
-                        pack.ExtractFile(gameFile, outputPath);
+                        pack.ExtractFile(unpackGameFile, unpackOutputPath);
                     else //otherwise extract all of the files from the archive...
-                        pack.ExtractAll(outputPath);
+                        pack.ExtractAll(unpackOutputPath);
 
                     InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
                 }
@@ -233,11 +238,11 @@ namespace FF16Pack.GUI
 
             try
             {
-                if(inputPathIsFolder)
+                if(unpackInputPathIsFolder)
                 {
                     List<string> pacFilePaths = new List<string>();
 
-                    foreach (string filePath in Directory.GetFiles(inputPath))
+                    foreach (string filePath in Directory.GetFiles(unpackInputPath))
                     {
                         if (System.IO.Path.GetExtension(filePath) == ".pac")
                             pacFilePaths.Add(filePath);
@@ -253,7 +258,7 @@ namespace FF16Pack.GUI
                         ListFile(pacFilePaths[i]);
                 }
                 else
-                    ListFile(inputPath);
+                    ListFile(unpackInputPath);
             }
             catch (Exception ex)
             {
@@ -396,7 +401,7 @@ namespace FF16Pack.GUI
         //|||||||||||||||||||||||||||||||||| XAML EVENTS ||||||||||||||||||||||||||||||||||
         //Here we hook up our app logic to the UI element events.
 
-        //================= EXTRACTION MODE SECTION =================
+        //================= (UNPACK) EXTRACTION MODE SECTION =================
 
         private void ui_extractiomode_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -404,42 +409,42 @@ namespace FF16Pack.GUI
             UpdateUI();
         }
 
-        //================= INPUT SECTION =================
-        private void ui_input_textbox_TextChanged(object sender, TextChangedEventArgs e) => inputPath = ui_input_textbox.Text;
+        //================= (UNPACK) INPUT SECTION =================
+        private void ui_input_textbox_TextChanged(object sender, TextChangedEventArgs e) => unpackInputPath = ui_input_textbox.Text;
 
         private void ui_input_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            GetPath(ref inputPath, inputPathIsFolder);
-            ui_input_textbox.Text = inputPath;
+            GetPath(ref unpackInputPath, unpackInputPathIsFolder);
+            ui_input_textbox.Text = unpackInputPath;
         }
 
         private void ui_input_button_Click(object sender, RoutedEventArgs e)
         {
-            GetPath(ref inputPath, inputPathIsFolder);
-            ui_input_textbox.Text = inputPath;
+            GetPath(ref unpackInputPath, unpackInputPathIsFolder);
+            ui_input_textbox.Text = unpackInputPath;
         }
 
-        //================= GAME FILE SECTION =================
+        //================= (UNPACK) GAME FILE SECTION =================
 
-        private void ui_gamefile_textbox_TextChanged(object sender, TextChangedEventArgs e) => gameFile = ui_gamefile_textbox.Text;
+        private void ui_gamefile_textbox_TextChanged(object sender, TextChangedEventArgs e) => unpackGameFile = ui_gamefile_textbox.Text;
 
-        //================= OUTPUT SECTION =================
+        //================= (UNPACK) OUTPUT SECTION =================
 
-        private void ui_output_textbox_TextChanged(object sender, TextChangedEventArgs e) => outputPath = ui_output_textbox.Text;
+        private void ui_output_textbox_TextChanged(object sender, TextChangedEventArgs e) => unpackOutputPath = ui_output_textbox.Text;
 
         private void ui_output_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            GetPath(ref outputPath, true);
-            ui_output_textbox.Text = outputPath;
+            GetPath(ref unpackOutputPath, true);
+            ui_output_textbox.Text = unpackOutputPath;
         }
 
         private void ui_output_button_Click(object sender, RoutedEventArgs e)
         {
-            GetPath(ref outputPath, true);
-            ui_output_textbox.Text = outputPath;
+            GetPath(ref unpackOutputPath, true);
+            ui_output_textbox.Text = unpackOutputPath;
         }
 
-        //================= ACTIONS SECTION =================
+        //================= (UNPACK) ACTIONS SECTION =================
 
         private void ui_listfiles_button_Click(object sender, RoutedEventArgs e)
         {
@@ -457,6 +462,69 @@ namespace FF16Pack.GUI
             UpdateUI();
 
             extractionBackgroundWorker.RunWorkerAsync();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //================= (REPACK) INPUT SECTION =================
+
+        private void ui_repack_input_textbox_TextChanged(object sender, TextChangedEventArgs e) => repackInputPath = ui_repack_input_textbox.Text;
+
+        private void ui_repack_input_button_Click(object sender, RoutedEventArgs e)
+        {
+            GetPath(ref repackInputPath, true);
+            ui_repack_input_textbox.Text = repackInputPath;
+        }
+
+        private void ui_repack_input_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            GetPath(ref repackInputPath, true);
+            ui_repack_input_textbox.Text = repackInputPath;
+        }
+
+        //================= (REPACK) OUTPUT SECTION =================
+
+        private void ui_repack_output_textbox_TextChanged(object sender, TextChangedEventArgs e) => repackOutputPath = ui_repack_output_textbox.Text;
+
+        private void ui_repack_output_button_Click(object sender, RoutedEventArgs e)
+        {
+            GetPath(ref repackOutputPath, true);
+            ui_repack_output_textbox.Text = repackOutputPath;
+        }
+
+        private void ui_repack_output_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            GetPath(ref repackOutputPath, true);
+            ui_repack_output_textbox.Text = repackOutputPath;
+        }
+
+        //================= (REPACK) PACK NAME SECTION =================
+
+        private void ui_repack_packName_textbox_TextChanged(object sender, TextChangedEventArgs e) => repackPackName = ui_repack_packName_textbox.Text;
+
+        //================= (REPACK) ENCRYPT SECTION =================
+
+        private void ui_repack_encrypt_checkbox_Click(object sender, RoutedEventArgs e) => repackEncrypt = (bool)ui_repack_encrypt_checkbox.IsChecked;
+
+        //================= (REPACK) ACTIONS SECTION =================
+
+        private void ui_repack_pack_button_Click(object sender, RoutedEventArgs e)
+        {
+            //NOTE: replace in future with progress bar
+            //isWorking = true;
+            //UpdateUI();
         }
     }
 }
