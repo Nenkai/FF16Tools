@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FF16PackLib.CLI", "FF16Pack
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FF16PackLib", "FF16PackLib\FF16PackLib.csproj", "{A4B77394-4F7D-4AC9-B475-6FCDAED32521}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FF16PackLib.GUI", "FF16PackLib.GUI\FF16PackLib.GUI.csproj", "{FB4118B2-5777-4720-9CD4-E1E64417A6F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{A4B77394-4F7D-4AC9-B475-6FCDAED32521}.Release|x64.Build.0 = Release|Any CPU
 		{A4B77394-4F7D-4AC9-B475-6FCDAED32521}.Release|x86.ActiveCfg = Release|Any CPU
 		{A4B77394-4F7D-4AC9-B475-6FCDAED32521}.Release|x86.Build.0 = Release|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Debug|x64.Build.0 = Debug|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Release|x64.ActiveCfg = Release|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Release|x64.Build.0 = Release|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB4118B2-5777-4720-9CD4-E1E64417A6F5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
