@@ -13,23 +13,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace FF16PackLib.GUI
+namespace FF16PackLib.GUI;
+
+/// <summary>
+/// Utility GUI window, that displays redirected outputs from the console.
+/// </summary>
+public partial class BigTextWindow : Window
 {
-    /// <summary>
-    /// Utility GUI window, that displays redirected outputs from the console.
-    /// </summary>
-    public partial class BigTextWindow : Window
+    private TextRedirector consoleTextRedirect;
+
+    public BigTextWindow(TextRedirector consoleTextRedirect)
     {
-        private ConsoleTextRedirect consoleTextRedirect;
+        InitializeComponent();
 
-        public BigTextWindow(ConsoleTextRedirect consoleTextRedirect)
-        {
-            InitializeComponent();
+        this.Title = MainWindow.WindowTitle + " (DEBUG OUTPUT)";
+        this.consoleTextRedirect = consoleTextRedirect;
 
-            this.Title = MainWindow.WindowTitle + " (DEBUG OUTPUT)";
-            this.consoleTextRedirect = consoleTextRedirect;
-
-            ui_textbox.Text = consoleTextRedirect.text;
-        }
+        ui_textbox.Text = consoleTextRedirect.text;
     }
 }

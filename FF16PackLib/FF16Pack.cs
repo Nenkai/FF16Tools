@@ -15,6 +15,7 @@ using Syroot.BinaryData;
 
 using FF16PackLib.Hashing;
 using FF16PackLib.Crypto;
+using Microsoft.Extensions.Logging;
 
 namespace FF16PackLib;
 
@@ -23,6 +24,9 @@ namespace FF16PackLib;
 /// </summary>
 public class FF16Pack : IDisposable
 {
+    private ILoggerFactory _loggerFactory;
+    private ILogger _logger;
+
     public const uint MAGIC = 0x4B434150;
     public const uint HEADER_SIZE = 0x400;
 
@@ -42,12 +46,16 @@ public class FF16Pack : IDisposable
     private FileStream _stream;
     private HashSet<FF16PackDStorageChunk> _cachedChunks = [];
 
-    private FF16Pack(FileStream stream)
+    private FF16Pack(FileStream stream, ILoggerFactory loggerFactory = null)
     {
         _stream = stream;
+        _loggerFactory = loggerFactory;
+
+        if (_loggerFactory is not null)
+            _logger = _loggerFactory.CreateLogger(GetType().ToString());
     }
 
-    public static FF16Pack Open(string path)
+    public static FF16Pack Open(string path, ILoggerFactory loggerFactory = null)
     {
         var fs = File.OpenRead(path);
         var fileBinStream = new BinaryStream(fs);
@@ -55,7 +63,7 @@ public class FF16Pack : IDisposable
         if (fileBinStream.ReadUInt32() != MAGIC)
             throw new InvalidDataException("Not a FF16 Pack file");
 
-        FF16Pack pack = new FF16Pack(fs);
+        FF16Pack pack = new FF16Pack(fs, loggerFactory);
         uint headerSize = fileBinStream.ReadUInt32();
         fileBinStream.Position = 0;
         byte[] header = fileBinStream.ReadBytes((int)headerSize);
@@ -127,14 +135,14 @@ public class FF16Pack : IDisposable
         return _files.ContainsKey(path);
     }
 
+    private int? _fileCounter;
     public void ExtractAll(string outputDir)
     {
-        int i = 0;
+        _fileCounter = 0;
         foreach (KeyValuePair<string, FF16PackFile> file in _files)
         {
-            Console.Write($"[{i + 1}/{_files.Count}] ");
             ExtractFile(file.Key, outputDir);
-            i++;
+            _fileCounter++;
         }
     }
 
@@ -143,7 +151,10 @@ public class FF16Pack : IDisposable
         if (!_files.TryGetValue(path, out FF16PackFile packFile))
             throw new FileNotFoundException("File not found in pack.");
 
-        Console.Write($"Extracting '{path}' (0x{packFile.DecompressedFileSize:X} bytes)...\n");
+        if (_fileCounter is not null)
+            _logger?.LogInformation("[{fileNumber}/{fileCount}] Extracting '{path}' (0x{packSize:X} bytes)...", _fileCounter + 1, _files.Count, path, packFile.DecompressedFileSize);
+        else
+            _logger?.LogInformation("Extracting '{path}' (0x{packSize:X} bytes)...", path, packFile.DecompressedFileSize);
 
         string outputPath = Path.Combine(Path.GetFullPath(outputDir), path);
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
@@ -201,8 +212,17 @@ public class FF16Pack : IDisposable
         using var sw = new StreamWriter(outputPath);
         foreach (var file in _files)
         {
-            sw.WriteLine($"{file.Key} - crc:{file.Value.CRC32Checksum:X8}, nameHash:{file.Value.FileNameHash:X8} compressed: {file.Value.IsCompressed} ({file.Value.ChunkedCompressionFlags}), " +
-                $"dataOffset: 0x{file.Value.DataOffset:X16}, fileSize: 0x{file.Value.DecompressedFileSize:X8}, compressedFileSize: 0x{file.Value.CompressedFileSize:X8}, chunkHeaderSize:0x{file.Value.ChunkHeaderSize:X8}");
+            _logger?.LogInformation("{path} - crc:{crc:X8}, nameHash:{nameHash:X8} compressed: {isCompressed} ({compressionFlags}), " +
+                "dataOffset: 0x{dataOffset:X16}, fileSize: 0x{decompressedFileSize:X8}, compressedFileSize: 0x{compressedSize:X8}, chunkHeaderSize:0x{chunkHeaderSize:X8}",
+                file.Key,
+                file.Value.CRC32Checksum,
+                file.Value.FileNameHash,
+                file.Value.IsCompressed,
+                file.Value.ChunkedCompressionFlags,
+                file.Value.DataOffset,
+                file.Value.DecompressedFileSize,
+                file.Value.CompressedFileSize,
+                file.Value.ChunkHeaderSize);
         }
     }
 
@@ -306,7 +326,17 @@ public class FF16Pack : IDisposable
         _cachedChunks.Add(chunk);
     }
 
-    public static void ThrowHashException(string path)
+    public void DumpInfo()
+    {
+        _logger?.LogInformation($"Pack Info:");
+        _logger?.LogInformation("- Internal Archive Name/Dir: {name}", (string.IsNullOrEmpty(ArchiveDir) ? "(none)" : ArchiveDir));
+        _logger?.LogInformation("- Num Files: {numFiles}", GetNumFiles());
+        _logger?.LogInformation("- Chunks: {numChunks}", GetNumChunks());
+        _logger?.LogInformation("- Header Encryption: {headerEncrypted}", HeaderEncrypted);
+        _logger?.LogInformation("- Uses Chunks: {useChunks}", UseChunks);
+    }
+
+    private static void ThrowHashException(string path)
     {
         throw new InvalidDataException($"Hash for file '{path}' did not match.");
     }

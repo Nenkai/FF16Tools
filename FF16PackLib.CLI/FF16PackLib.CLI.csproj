@@ -11,10 +11,20 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.12" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FF16PackLib.Files\FF16PackLib.Files.csproj" />
     <ProjectReference Include="..\FF16PackLib\FF16PackLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

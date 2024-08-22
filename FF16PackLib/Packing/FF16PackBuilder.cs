@@ -7,19 +7,25 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Buffers;
 
+using Microsoft.Extensions.Logging;
+
 using Vortice.DirectStorage;
 
 using SharpGen.Runtime;
-using FF16PackLib.Hashing;
-using FF16PackLib.Crypto;
 
 using Syroot.BinaryData.Memory;
 using Syroot.BinaryData;
+
+using FF16PackLib.Hashing;
+using FF16PackLib.Crypto;
 
 namespace FF16PackLib.Packing;
 
 public class FF16PackBuilder
 {
+    private ILoggerFactory _loggerFactory;
+    private ILogger _logger;
+
     public List<FileTask> _packFileTasks { get; set; } = [];
     public List<ChunkTask> _sharedChunksTasks { get; set; } = [];
     private ChunkTask _lastSharedChunk;
@@ -36,9 +42,13 @@ public class FF16PackBuilder
         _codec = DirectStorage.DStorageCreateCompressionCodec(CompressionFormat.GDeflate, (uint)Environment.ProcessorCount);
     }
 
-    public FF16PackBuilder(PackBuildOptions options = null)
+    public FF16PackBuilder(PackBuildOptions options = null, ILoggerFactory loggerFactory = null)
     {
         _options = options ?? new();
+        _loggerFactory = loggerFactory;
+
+        if (_loggerFactory is not null)
+            _logger = _loggerFactory.CreateLogger(GetType().ToString());
     }
 
     public void InitFromDirectory(string dir)
@@ -47,7 +57,7 @@ public class FF16PackBuilder
         foreach (var file in files)
         {
             string gamePath = file[(dir.Length + 1)..].ToLower().Replace('\\', '/');
-            Console.WriteLine($"PACK: Adding '{gamePath}'...");
+            _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
 
             var fileInfo = new FileInfo(file);
             var task = new FileTask()
@@ -82,7 +92,7 @@ public class FF16PackBuilder
             }
             else if (file.PackFile.DecompressedFileSize < FF16Pack.MAX_FILE_SIZE_FOR_SHARED_CHUNK)
             {
-                Console.WriteLine($"PACK: Compressing '{file.GamePath}' into shared chunk..");
+                _logger?.LogInformation("PACK: Compressing '{path}' into shared chunk..", file.GamePath);
                 _lastSharedChunk ??= new ChunkTask();
 
                 if (_lastSharedChunk.PackChunk.DecompressedSize + (long)file.PackFile.DecompressedFileSize > FF16Pack.MAX_DECOMPRESSED_SHARED_CHUNK_SIZE)
@@ -143,7 +153,7 @@ public class FF16PackBuilder
 
     public void WriteTo(string file)
     {
-        Console.WriteLine("PACK: Starting write.");
+        _logger?.LogInformation("PACK: Starting write.");
 
         using var fs = new FileStream(file, FileMode.Create);
         uint headerLength = CalculateHeaderSize();
@@ -155,7 +165,7 @@ public class FF16PackBuilder
 
         for (int i = 0; i < _sharedChunksTasks.Count; i++)
         {
-            Console.WriteLine($"PACK: Writing shared chunk {i+1}/{_sharedChunksTasks.Count}..");
+            _logger?.LogInformation("PACK: Writing shared chunk {chunkNumber}/{totalChunks}..", i+1, _sharedChunksTasks.Count);
             ChunkTask? chunk = _sharedChunksTasks[i];
             WriteSharedChunk(fs, chunk);
         }
@@ -174,12 +184,12 @@ public class FF16PackBuilder
 
     private void WriteHeader(FileStream packStream, byte[] headerBuffer)
     {
-        Console.WriteLine("PACK: Writing header.");
+        _logger?.LogInformation("PACK: Writing header.");
 
         if (_options.Encrypt)
-            Console.WriteLine("PACK: Header encryption is enabled.");
+            _logger?.LogInformation("PACK: Header encryption is enabled.");
         if (!string.IsNullOrEmpty(_options.Name))
-            Console.WriteLine($"PACK: Setting internal pack name to '{_options.Name}'.");
+            _logger?.LogInformation("PACK: Setting internal pack name to '{name}'.", _options.Name);
 
         var ms = new MemoryStream(headerBuffer);
         var bs = new BinaryStream(ms);
@@ -270,7 +280,7 @@ public class FF16PackBuilder
     {
         if (!IsCompressionForFileSuggested(task.GamePath))
         {
-            Console.WriteLine($"PACK: Writing raw '{task.GamePath}'..");
+            _logger?.LogInformation("PACK: Writing raw '{path}'..", task.GamePath);
 
             task.PackFile.DataOffset = (ulong)packStream.Position;
 
@@ -281,7 +291,7 @@ public class FF16PackBuilder
         }
         else if ((long)task.PackFile.DecompressedFileSize < FF16Pack.MIN_FILE_SIZE_FOR_MULTIPLE_CHUNKS)
         {
-            Console.WriteLine($"PACK: Compressing '{task.GamePath}' into unique chunk..");
+            _logger?.LogInformation("PACK: Compressing '{path}' into unique chunk..", task.GamePath);
 
             byte[] fileBytes = File.ReadAllBytes(task.LocalPath);
 
@@ -304,7 +314,7 @@ public class FF16PackBuilder
         else
         {
             // File will only fit using multiple chunks
-            Console.WriteLine($"PACK: Compressing '{task.GamePath}' into multiple chunks..");
+            _logger?.LogInformation("PACK: Compressing '{path}' into multiple chunks..", task.GamePath);
 
             using var fileStream = File.Open(task.LocalPath, FileMode.Open);
             long remBytes = fileStream.Length;
@@ -392,7 +402,7 @@ public class FF16PackBuilder
     private static uint CopyToWithChecksum(Stream input, Stream output)
     {
         var crc = new Crc32();
-        byte[] buffer = new byte[0x20000];
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(0x20000);
 
         long len = input.Length;
         while (len > 0)

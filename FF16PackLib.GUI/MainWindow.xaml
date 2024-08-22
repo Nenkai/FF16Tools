@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="FF16 Unpacker by Nenkai (GUI)" 
         Height="354" 
-        Width="412" 
+        Width="700" 
         MinHeight="345" 
         MaxHeight="345"
-        MinWidth="300"
+        MinWidth="700"
         
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"        
