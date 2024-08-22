@@ -13,11 +13,11 @@ using SysDebug = System.Diagnostics.Debug;
 using Vortice.DirectStorage;
 using Syroot.BinaryData;
 
-using FF16PackLib.Hashing;
-using FF16PackLib.Crypto;
+using FF16Tools.Hashing;
+using FF16Tools.Crypto;
 using Microsoft.Extensions.Logging;
 
-namespace FF16PackLib;
+namespace FF16Tools.Pack;
 
 /// <summary>
 /// FF16 Pack file. (Disposable object)

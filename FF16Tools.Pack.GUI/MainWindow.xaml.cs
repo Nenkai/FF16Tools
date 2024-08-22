@@ -13,10 +13,9 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using Microsoft.Win32;
 
-using FF16PackLib.GUI;
 using Microsoft.Extensions.Logging;
 
-namespace FF16Pack.GUI;
+namespace FF16Tools.Pack.GUI;
 
 /// <summary>
 /// The main GUI application logic.
@@ -159,7 +158,7 @@ public partial class MainWindow : Window
             {
                 foreach (string pacFilePath in pacFilePaths)
                 {
-                    using var pack = FF16PackLib.FF16Pack.Open(pacFilePath);
+                    using var pack = FF16Pack.Open(pacFilePath);
                     string packName = System.IO.Path.GetFileNameWithoutExtension(pacFilePath);
                     string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}_extracted");
                     Directory.CreateDirectory(outputDir);
@@ -182,7 +181,7 @@ public partial class MainWindow : Window
             //perform extraction on the single pac file that the user wants to use...
             try
             {
-                using var pack = FF16PackLib.FF16Pack.Open(unpackInputPath);
+                using var pack = FF16Pack.Open(unpackInputPath);
 
                 string packName = System.IO.Path.GetFileNameWithoutExtension(unpackInputPath);
                 string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}_extracted");
@@ -210,7 +209,7 @@ public partial class MainWindow : Window
 
     public void ListFile(string path)
     {
-        using var pack = FF16PackLib.FF16Pack.Open(path, _loggerFactory);
+        using var pack = FF16Pack.Open(path, _loggerFactory);
         pack.DumpInfo();
 
         string inputFileName = System.IO.Path.GetFileNameWithoutExtension(path);

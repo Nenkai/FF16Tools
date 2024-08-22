@@ -2,14 +2,14 @@
 
 using Syroot.BinaryData;
 
-using FF16PackLib;
-using FF16PackLib.Packing;
+using FF16Tools.Pack;
+using FF16Tools.Pack.Packing;
 
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog;
 
-namespace FF16PackLib.CLI;
+namespace FF16Tools.CLI;
 
 public class Program
 {
@@ -21,7 +21,7 @@ public class Program
     static void Main(string[] args)
     {
         Console.WriteLine("-----------------------------------------");
-        Console.WriteLine($"- FF16Pack.CLI {Version} by Nenkai");
+        Console.WriteLine($"- FF16Tools.CLI {Version} by Nenkai");
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("- https://github.com/Nenkai");
         Console.WriteLine("- https://twitter.com/Nenkaai");

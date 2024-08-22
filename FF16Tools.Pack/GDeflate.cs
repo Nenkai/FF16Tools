@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Vortice.DirectStorage;
 
-namespace FF16PackLib;
+namespace FF16Tools;
 
 public class GDeflate
 {

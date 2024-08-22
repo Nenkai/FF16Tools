@@ -16,10 +16,10 @@ using SharpGen.Runtime;
 using Syroot.BinaryData.Memory;
 using Syroot.BinaryData;
 
-using FF16PackLib.Hashing;
-using FF16PackLib.Crypto;
+using FF16Tools.Hashing;
+using FF16Tools.Crypto;
 
-namespace FF16PackLib.Packing;
+namespace FF16Tools.Pack.Packing;
 
 public class FF16PackBuilder
 {

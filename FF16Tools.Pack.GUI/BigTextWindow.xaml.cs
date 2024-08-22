@@ -1,5 +1,4 @@
-﻿using FF16Pack.GUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace FF16PackLib.GUI;
+namespace FF16Tools.Pack.GUI;
 
 /// <summary>
 /// Utility GUI window, that displays redirected outputs from the console.

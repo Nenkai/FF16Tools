@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <StartupObject>FF16Pack.GUI.App</StartupObject>
+    <StartupObject>FF16Tools.Pack.GUI.App</StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FF16PackLib\FF16PackLib.csproj" />
+    <ProjectReference Include="..\FF16Tools.Pack\FF16Tools.Pack.csproj" />
   </ItemGroup>
 
 </Project>

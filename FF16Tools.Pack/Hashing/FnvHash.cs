@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FF16PackLib.Hashing;
+namespace FF16Tools.Hashing;
 
 public struct Fnv1Hash
 {

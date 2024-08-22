@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
-namespace FF16PackLib.GUI;
+namespace FF16Tools.Pack.GUI;
 
 public class TextRedirectLoggerProvider : ILoggerProvider
 {

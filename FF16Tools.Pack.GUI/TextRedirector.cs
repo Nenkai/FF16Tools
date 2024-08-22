@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace FF16PackLib.GUI;
+namespace FF16Tools.Pack.GUI;
 
 public class TextRedirector : TextWriter
 {

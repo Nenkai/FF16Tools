@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FF16PackLib.Packing;
+namespace FF16Tools.Pack.Packing;
 
 public class PackBuildOptions
 {

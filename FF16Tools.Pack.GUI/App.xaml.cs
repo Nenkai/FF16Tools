@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace FF16Pack.GUI
+namespace FF16Tools.Pack.GUI
 {
     /// <summary>
     /// Interaction logic for App.xaml

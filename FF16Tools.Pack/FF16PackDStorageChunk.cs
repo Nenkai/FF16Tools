@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Syroot.BinaryData;
 
-namespace FF16PackLib;
+namespace FF16Tools.Pack;
 
 public class FF16PackDStorageChunk
 {
