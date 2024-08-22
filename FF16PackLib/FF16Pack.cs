@@ -47,12 +47,6 @@ public class FF16Pack : IDisposable
         _stream = stream;
     }
 
-    private static IDStorageCompressionCodec _codec;
-    static FF16Pack()
-    {
-        _codec = DirectStorage.DStorageCreateCompressionCodec(CompressionFormat.GDeflate, (uint)Environment.ProcessorCount);
-    }
-
     public static FF16Pack Open(string path)
     {
         var fs = File.OpenRead(path);
@@ -235,14 +229,8 @@ public class FF16Pack : IDisposable
             _stream.Position = (long)(packFile.DataOffset + chunkOffsets[i]);
             _stream.Read(compBuffer, 0, chunkCompSize);
 
-            unsafe
-            {
-                fixed (byte* buffer = compBuffer)
-                fixed (byte* buffer2 = decompBuffer)
-                {
-                    _codec.DecompressBuffer((nint)buffer, chunkCompSize, (nint)buffer2, chunkDecompSize, chunkDecompSize);
-                }
-            }
+            GDeflate.Decompress(compBuffer.AsSpan(0, chunkCompSize),
+                decompBuffer.AsSpan(0, chunkDecompSize));
 
             outputStream.Write(decompBuffer, 0, chunkDecompSize);
             crc.Append(decompBuffer.AsSpan(0, chunkDecompSize));
@@ -264,14 +252,8 @@ public class FF16Pack : IDisposable
         byte[] decompBuffer = ArrayPool<byte>.Shared.Rent((int)packFile.DecompressedFileSize);
         _stream.Read(compBuffer, 0, (int)packFile.CompressedFileSize);
 
-        unsafe
-        {
-            fixed (byte* buffer = compBuffer)
-            fixed (byte* buffer2 = decompBuffer)
-            {
-                _codec.DecompressBuffer((nint)buffer, (int)packFile.CompressedFileSize, (nint)buffer2, (int)MAX_DECOMPRESSED_MULTI_CHUNK_SIZE, (int)packFile.DecompressedFileSize);
-            }
-        }
+        GDeflate.Decompress(compBuffer.AsSpan(0, (int)packFile.CompressedFileSize),
+            decompBuffer.AsSpan(0, MAX_DECOMPRESSED_MULTI_CHUNK_SIZE));
 
         using var outputStream = new FileStream(outputPath, FileMode.Create);
         outputStream.Write(decompBuffer, 0, (int)packFile.DecompressedFileSize);
@@ -307,15 +289,8 @@ public class FF16Pack : IDisposable
             byte[] decompBuffer = ArrayPool<byte>.Shared.Rent((int)chunk.DecompressedSize);
             _stream.Read(compBuffer, 0, (int)chunk.CompressedChunkSize);
 
-            unsafe
-            {
-
-                fixed (byte* buffer = compBuffer)
-                fixed (byte* buffer2 = decompBuffer)
-                {
-                    _codec.DecompressBuffer((nint)buffer, (int)chunk.CompressedChunkSize, (nint)buffer2, (int)chunk.DecompressedSize, (int)chunk.DecompressedSize);
-                }
-            }
+            GDeflate.Decompress(compBuffer.AsSpan(0, (int)chunk.CompressedChunkSize),
+                decompBuffer.AsSpan(0, (int)chunk.DecompressedSize));
 
             chunk.CachedBuffer = decompBuffer;
             ArrayPool<byte>.Shared.Return(compBuffer);

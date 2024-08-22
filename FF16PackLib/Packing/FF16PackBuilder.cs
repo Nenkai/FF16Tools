@@ -111,7 +111,6 @@ public class FF16PackBuilder
         using var bs = new BinaryStream(ms);
         foreach (var file in _packFileTasks)
         {
-            file.StringTableNameOffsetRelative = bs.Position;
             bs.WriteString(file.GamePath, StringCoding.ZeroTerminated);
         }
 
@@ -292,22 +291,13 @@ public class FF16PackBuilder
             long sizeCompressed = _codec.CompressBufferBound((long)task.PackFile.DecompressedFileSize * 2); // Incase
             byte[] compBuffer = ArrayPool<byte>.Shared.Rent((int)sizeCompressed); // Incase
 
+            uint compressedDataSize = GDeflate.Compress(fileBytes.AsSpan(0, (int)task.PackFile.DecompressedFileSize),
+                compBuffer.AsSpan(0, (int)sizeCompressed));
 
-            unsafe
-            {
-                fixed (byte* inputDecompChunkPtr = fileBytes)
-                fixed (byte* outputCompChunkPtr = compBuffer)
-                {
-                    CompressBuffer(_codec, (nint)inputDecompChunkPtr, (long)task.PackFile.DecompressedFileSize,
-                        Compression.BestRatio, // Matches original
-                        (nint)outputCompChunkPtr, sizeCompressed, out long compressedDataSize);
-
-                    packStream.Write(compBuffer, 0, (int)compressedDataSize);
-                    task.PackFile.CompressedFileSize = (uint)compressedDataSize;
-                    task.PackFile.ChunkedCompressionFlags = FF16PackChunkCompressionType.UseSpecificChunk;
-                    task.PackFile.IsCompressed = true;
-                }
-            }
+            packStream.Write(compBuffer, 0, (int)compressedDataSize);
+            task.PackFile.CompressedFileSize = compressedDataSize;
+            task.PackFile.ChunkedCompressionFlags = FF16PackChunkCompressionType.UseSpecificChunk;
+            task.PackFile.IsCompressed = true;
 
             ArrayPool<byte>.Shared.Return(compBuffer);
         }
@@ -341,21 +331,12 @@ public class FF16PackBuilder
                 task.SplitChunkOffsets[i] = (uint)(lastDataOffset - startDataOffset);
 
                 packStream.Position = lastDataOffset;
-                unsafe
-                {
-                    fixed (byte* inputDecompChunkPtr = buffer)
-                    fixed (byte* outputCompChunkPtr = compBuffer)
-                    {
-                        CompressBuffer(_codec, (nint)inputDecompChunkPtr, (long)thisSize,
-                            Compression.BestRatio, // Matches original
-                            (nint)outputCompChunkPtr, (long)0x100000, out long compressedDataSize);
+                uint compressedDataSize = GDeflate.Compress(buffer.AsSpan(0, thisSize), compBuffer.AsSpan(0, 0x100000));
 
-                        packStream.Write(compBuffer, 0, (int)compressedDataSize);
-                        lastDataOffset = packStream.Position;
+                packStream.Write(compBuffer, 0, (int)compressedDataSize);
+                lastDataOffset = packStream.Position;
 
-                        totalCompressedSize += (uint)compressedDataSize;
-                    }
-                }
+                totalCompressedSize += (uint)compressedDataSize;
 
                 if (i == task.SplitChunkOffsets.Length - 1)
                     task.SplitLastChunkSize = (uint)remBytes;
@@ -396,20 +377,12 @@ public class FF16PackBuilder
             file.PackFile.ChunkHeaderSize = FF16PackDStorageChunk.GetSize();
         }
 
-        unsafe
-        {
-            fixed (byte* inputDecompChunkPtr = decompBuffer)
-            fixed (byte* outputCompChunkPtr = compBuffer)
-            {
-                CompressBuffer(_codec, (nint)inputDecompChunkPtr, chunkTask.PackChunk.DecompressedSize, 
-                    Compression.BestRatio, // Matches original
-                    (nint)outputCompChunkPtr, chunkTask.PackChunk.DecompressedSize, out long compressedDataSize);
+        uint compressedDataSize = GDeflate.Compress(decompBuffer.AsSpan(0, (int)chunkTask.PackChunk.DecompressedSize),
+            compBuffer.AsSpan(0, (int)chunkTask.PackChunk.DecompressedSize));
 
-                chunkTask.PackChunk.DataOffset = (ulong)packStream.Position;
-                chunkTask.PackChunk.CompressedChunkSize = (uint)compressedDataSize;
-                packStream.Write(compBuffer, 0, (int)compressedDataSize);
-            }
-        }
+        chunkTask.PackChunk.DataOffset = (ulong)packStream.Position;
+        chunkTask.PackChunk.CompressedChunkSize = compressedDataSize;
+        packStream.Write(compBuffer, 0, (int)compressedDataSize);
 
         ArrayPool<byte>.Shared.Return(decompBuffer);
         ArrayPool<byte>.Shared.Return(compBuffer);
@@ -431,17 +404,6 @@ public class FF16PackBuilder
         }
 
         return crc.GetCurrentHashAsUInt32();
-    }
-
-    // This is a hack. CompressBuffer would offer no way to grab back the compressed size
-    private static unsafe void CompressBuffer(IDStorageCompressionCodec codec,
-        nint uncompressedData, PointerSize uncompressedDataSize, Compression compressionSetting, nint compressedBuffer, PointerSize compressedBufferSize, out long compressedDataSize)
-    {
-        long value;
-        long** vtbl = (long**)codec.NativePointer;
-        ((Result)((delegate* unmanaged[Stdcall]<nint, void*, void*, int, void*, void*, void*, int>)(*vtbl)[3])(
-            codec.NativePointer, (void*)uncompressedData, uncompressedDataSize, (int)compressionSetting, (void*)compressedBuffer, compressedBufferSize, &value)).CheckError();
-        compressedDataSize = value;
     }
 
     public bool IsCompressionForFileSuggested(string file)
@@ -481,7 +443,6 @@ public class FileTask
     public string LocalPath { get; set; }
     public string GamePath { get; set; }
     public FF16PackFile PackFile { get; set; } = new();
-    public long StringTableNameOffsetRelative { get; set; }
     public ChunkTask SharedChunk { get; set; }
     public uint[] SplitChunkOffsets { get; set; }
     public uint SplitLastChunkSize { get; set; }
