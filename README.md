@@ -49,6 +49,7 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
 ---
 * [Nenkai](https://github.com/Nenkai) - Reverse-Engineering, Unpack/Packing
+* [frostbone25](https://github.com/frostbone25) GUI Version of the Unpack tool (thanks!)
 * [yretenai](https://github.com/yretenai) - Information on the file structure
 
 ## License
