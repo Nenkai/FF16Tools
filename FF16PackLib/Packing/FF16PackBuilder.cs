@@ -331,7 +331,8 @@ public class FF16PackBuilder
                 task.SplitChunkOffsets[i] = (uint)(lastDataOffset - startDataOffset);
 
                 packStream.Position = lastDataOffset;
-                uint compressedDataSize = GDeflate.Compress(buffer.AsSpan(0, thisSize), compBuffer.AsSpan(0, 0x100000));
+                uint compressedDataSize = GDeflate.Compress(buffer.AsSpan(0, thisSize), 
+                    compBuffer.AsSpan(0, 0x100000));
 
                 packStream.Write(compBuffer, 0, (int)compressedDataSize);
                 lastDataOffset = packStream.Position;
