@@ -157,10 +157,14 @@ public partial class MainWindow : Window
             //perform an extraction on all of the pac files we found...
             try
             {
-                foreach(string pacFilePath in pacFilePaths)
+                foreach (string pacFilePath in pacFilePaths)
                 {
                     using var pack = FF16PackLib.FF16Pack.Open(pacFilePath);
-                    pack.ExtractAll(unpackOutputPath);
+                    string packName = System.IO.Path.GetFileNameWithoutExtension(pacFilePath);
+                    string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}_extracted");
+                    Directory.CreateDirectory(outputDir);
+
+                    pack.ExtractAll(outputDir);
                 }
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
@@ -180,11 +184,15 @@ public partial class MainWindow : Window
             {
                 using var pack = FF16PackLib.FF16Pack.Open(unpackInputPath);
 
+                string packName = System.IO.Path.GetFileNameWithoutExtension(unpackInputPath);
+                string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}_extracted");
+                Directory.CreateDirectory(outputDir);
+
                 //if its configured to where the user wants to extract a specific game file from an archive, then let them
                 if(extractionMode == ExtractionMode.SingleArchiveWithGameFile)
-                    pack.ExtractFile(unpackGameFile, unpackOutputPath);
+                    pack.ExtractFile(unpackGameFile, outputDir);
                 else //otherwise extract all of the files from the archive...
-                    pack.ExtractAll(unpackOutputPath);
+                    pack.ExtractAll(outputDir);
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
             }
