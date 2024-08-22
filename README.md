@@ -1,16 +1,16 @@
-# FF16Pack
+# FF16Tools
 
-Unpacker/Repacker for Final Fantasy XVI / 16 .pac files.
+Tools for Final Fantasy XVI / 16. (Unpacker/Repacker)
 
 This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
 
 ## Usage
 
 Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/releases).
-* Unpacking all files: `FF16Pack.CLI unpack-all -i <path_to_pac> [-o output_directory]`
-* Unpacking a specific file: `FF16Pack.CLI unpack -i <path_to_pac> -f <game_file> [-o output_directory]`
-* Pack a directory into a `.pac`: `FF16Pack.CLI pack -i <path_to_directory> [-o output_directory]`
-* Listing files: `FF16Pack.CLI list-files -i <path_to_pac>`
+* Unpacking all files: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o output_directory]`
+* Unpacking a specific file: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o output_directory]`
+* Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o output_directory]`
+* Listing files: `FF16Tools.CLI list-files -i <path_to_pac>`
 
 ### Modding
 
@@ -38,7 +38,6 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
 * Return building/unpack progress
 * Expose lib as a NuGet Package (for package consumption from i.e mod managers)
-* Swap console prints to ILogger
 * Find a GDeflate library that actually works cross-platform
 
 ## Acknowledgements
