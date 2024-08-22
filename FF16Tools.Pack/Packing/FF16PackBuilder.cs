@@ -18,6 +18,8 @@ using Syroot.BinaryData;
 
 using FF16Tools.Hashing;
 using FF16Tools.Crypto;
+using CommunityToolkit.HighPerformance.Buffers;
+using CommunityToolkit.HighPerformance;
 
 namespace FF16Tools.Pack.Packing;
 
@@ -26,8 +28,8 @@ public class FF16PackBuilder
     private ILoggerFactory _loggerFactory;
     private ILogger _logger;
 
-    public List<FileTask> _packFileTasks { get; set; } = [];
-    public List<ChunkTask> _sharedChunksTasks { get; set; } = [];
+    private List<FileTask> _packFileTasks { get; set; } = [];
+    private List<ChunkTask> _sharedChunksTasks { get; set; } = [];
     private ChunkTask _lastSharedChunk;
     private byte[] _stringTable;
     private long _lastMultiChunkHeaderOffset;
@@ -51,9 +53,21 @@ public class FF16PackBuilder
             _logger = _loggerFactory.CreateLogger(GetType().ToString());
     }
 
-    public void InitFromDirectory(string dir)
+    /// <summary>
+    /// Inits the builder from the specified directory to pack.
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <param name="ct"></param>
+    public void InitFromDirectory(string dir, CancellationToken ct = default)
     {
-        var files = Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Order().ToList();
+        List<string> fileList = [];
+        foreach (var file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories))
+        {
+            fileList.Add(file);
+            ct.ThrowIfCancellationRequested();
+        }
+
+        var files = fileList.Order().ToList();
         foreach (var file in files)
         {
             string gamePath = file[(dir.Length + 1)..].ToLower().Replace('\\', '/');
@@ -68,9 +82,14 @@ public class FF16PackBuilder
             task.PackFile.DecompressedFileSize = (ulong)fileInfo.Length;
 
             _packFileTasks.Add(task);
+
+            ct.ThrowIfCancellationRequested();
         }
 
         BuildSharedChunks();
+
+        ct.ThrowIfCancellationRequested();
+
         BuildStringTable();
     }
 
@@ -151,7 +170,12 @@ public class FF16PackBuilder
         return size;
     }
 
-    public void WriteTo(string file)
+    /// <summary>
+    /// Writes the pack to the specified file.
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public async Task WriteToAsync(string file, CancellationToken ct = default)
     {
         _logger?.LogInformation("PACK: Starting write.");
 
@@ -166,8 +190,8 @@ public class FF16PackBuilder
         for (int i = 0; i < _sharedChunksTasks.Count; i++)
         {
             _logger?.LogInformation("PACK: Writing shared chunk {chunkNumber}/{totalChunks}..", i+1, _sharedChunksTasks.Count);
-            ChunkTask? chunk = _sharedChunksTasks[i];
-            WriteSharedChunk(fs, chunk);
+            ChunkTask chunk = _sharedChunksTasks[i];
+            await WriteSharedChunk(fs, chunk, ct);
         }
 
         foreach (FileTask task in _packFileTasks)
@@ -175,7 +199,7 @@ public class FF16PackBuilder
             if (task.SharedChunk is not null)
                 continue; // Already written
 
-            WriteFile(fs, task);
+            await WriteFile(fs, task, ct);
         }
 
         byte[] header = new byte[(int)headerLength];
@@ -276,7 +300,7 @@ public class FF16PackBuilder
         packStream.Write(headerBuffer);
     }
 
-    public void WriteFile(FileStream packStream, FileTask task)
+    private async Task WriteFile(FileStream packStream, FileTask task, CancellationToken ct = default)
     {
         if (!IsCompressionForFileSuggested(task.GamePath))
         {
@@ -285,7 +309,7 @@ public class FF16PackBuilder
             task.PackFile.DataOffset = (ulong)packStream.Position;
 
             using var fileStream = File.Open(task.LocalPath, FileMode.Open);
-            uint crc = CopyToWithChecksum(fileStream, packStream);
+            uint crc = await CopyToWithChecksumAsync(fileStream, packStream, ct);
             task.PackFile.CRC32Checksum = crc;
             task.PackFile.CompressedFileSize = (uint)task.PackFile.DecompressedFileSize;
         }
@@ -293,23 +317,25 @@ public class FF16PackBuilder
         {
             _logger?.LogInformation("PACK: Compressing '{path}' into unique chunk..", task.GamePath);
 
-            byte[] fileBytes = File.ReadAllBytes(task.LocalPath);
-
             task.PackFile.DataOffset = (ulong)packStream.Position;
-            task.PackFile.CRC32Checksum = Crc32.HashToUInt32(fileBytes);
 
+            using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate((int)task.PackFile.DecompressedFileSize);
             long sizeCompressed = _codec.CompressBufferBound((long)task.PackFile.DecompressedFileSize * 2); // Incase
-            byte[] compBuffer = ArrayPool<byte>.Shared.Rent((int)sizeCompressed); // Incase
+            using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate((int)sizeCompressed);
 
-            uint compressedDataSize = GDeflate.Compress(fileBytes.AsSpan(0, (int)task.PackFile.DecompressedFileSize),
-                compBuffer.AsSpan(0, (int)sizeCompressed));
+            using var fileStream = new FileStream(task.LocalPath, FileMode.Open);
+            using var decompStream = decompBuffer.AsStream();
+            uint crc = await CopyToWithChecksumAsync(fileStream, decompStream, ct);
 
-            packStream.Write(compBuffer, 0, (int)compressedDataSize);
+            uint compressedDataSize = GDeflate.Compress(
+                decompBuffer.Span.Slice(0, (int)task.PackFile.DecompressedFileSize), compBuffer.Span);
+
+            await packStream.WriteAsync(compBuffer.Memory.Slice(0, (int)compressedDataSize), ct);
+
+            task.PackFile.CRC32Checksum = crc;
             task.PackFile.CompressedFileSize = compressedDataSize;
             task.PackFile.ChunkedCompressionFlags = FF16PackChunkCompressionType.UseSpecificChunk;
             task.PackFile.IsCompressed = true;
-
-            ArrayPool<byte>.Shared.Return(compBuffer);
         }
         else
         {
@@ -326,25 +352,26 @@ public class FF16PackBuilder
             task.PackFile.ChunkDefOffset = (ulong)_lastMultiChunkHeaderOffset;
 
             var crc = new Crc32();
-            byte[] buffer = ArrayPool<byte>.Shared.Rent(0x80000);
-            byte[] compBuffer = ArrayPool<byte>.Shared.Rent(0x100000); // double, incase it's somehow larger
+            using MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate(0x80000);
+            using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate(0x100000); // double, incase it's somehow larger
 
             int i = 0;
             uint totalCompressedSize = 0;
             while (remBytes > 0)
             {
                 int thisSize = (int)Math.Min(remBytes, 0x80000);
-                fileStream.Read(buffer, 0, thisSize);
-                crc.Append(buffer.AsSpan(0, thisSize));
+
+                Memory<byte> slice = buffer.Memory.Slice(0, thisSize);
+                await fileStream.ReadAsync(slice, ct);
+                crc.Append(slice.Span);
 
                 packStream.Position = (long)task.PackFile.ChunkDefOffset + 8 + (i * sizeof(int));
                 task.SplitChunkOffsets[i] = (uint)(lastDataOffset - startDataOffset);
 
                 packStream.Position = lastDataOffset;
-                uint compressedDataSize = GDeflate.Compress(buffer.AsSpan(0, thisSize), 
-                    compBuffer.AsSpan(0, 0x100000));
+                uint compressedDataSize = GDeflate.Compress(slice.Span, compBuffer.Span);
 
-                packStream.Write(compBuffer, 0, (int)compressedDataSize);
+                await packStream.WriteAsync(compBuffer.Memory.Slice(0, (int)compressedDataSize), ct);
                 lastDataOffset = packStream.Position;
 
                 totalCompressedSize += (uint)compressedDataSize;
@@ -364,22 +391,21 @@ public class FF16PackBuilder
             long chunkHeaderSize = (long)8 + (task.SplitChunkOffsets.Length * sizeof(int));
             task.PackFile.ChunkHeaderSize = (uint)chunkHeaderSize;
             _lastMultiChunkHeaderOffset += chunkHeaderSize;
-
         }
     }
 
-    public void WriteSharedChunk(FileStream packStream, ChunkTask chunkTask)
+    private async Task WriteSharedChunk(FileStream packStream, ChunkTask chunkTask, CancellationToken ct = default)
     {
-        byte[] decompBuffer = ArrayPool<byte>.Shared.Rent((int)chunkTask.PackChunk.DecompressedSize);
+        using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate((int)chunkTask.PackChunk.DecompressedSize);
         long sizeCompressed = _codec.CompressBufferBound(chunkTask.PackChunk.DecompressedSize);
-        byte[] compBuffer = ArrayPool<byte>.Shared.Rent((int)sizeCompressed);
+        using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate((int)sizeCompressed);
 
-        using var bufferStream = new MemoryStream(decompBuffer);
+        using var bufferStream = decompBuffer.AsStream();
         foreach (var file in chunkTask.Files)
         {
             bufferStream.Position = (long)file.PackFile.DataOffset;
             using var inputFileStream = File.Open(file.LocalPath, FileMode.Open);
-            uint crc = CopyToWithChecksum(inputFileStream, bufferStream);
+            uint crc = await CopyToWithChecksumAsync(inputFileStream, bufferStream, ct);
 
             file.PackFile.CRC32Checksum = crc;
             file.PackFile.CompressedFileSize = (uint)file.PackFile.DecompressedFileSize;
@@ -388,29 +414,27 @@ public class FF16PackBuilder
             file.PackFile.ChunkHeaderSize = FF16PackDStorageChunk.GetSize();
         }
 
-        uint compressedDataSize = GDeflate.Compress(decompBuffer.AsSpan(0, (int)chunkTask.PackChunk.DecompressedSize),
-            compBuffer.AsSpan(0, (int)chunkTask.PackChunk.DecompressedSize));
+        uint compressedDataSize = GDeflate.Compress(
+            decompBuffer.Span.Slice(0, (int)chunkTask.PackChunk.DecompressedSize), compBuffer.Span);
 
         chunkTask.PackChunk.DataOffset = (ulong)packStream.Position;
         chunkTask.PackChunk.CompressedChunkSize = compressedDataSize;
-        packStream.Write(compBuffer, 0, (int)compressedDataSize);
-
-        ArrayPool<byte>.Shared.Return(decompBuffer);
-        ArrayPool<byte>.Shared.Return(compBuffer);
+        await packStream.WriteAsync(compBuffer.Memory.Slice(0, (int)compressedDataSize), ct);
     }
 
-    private static uint CopyToWithChecksum(Stream input, Stream output)
+    private static async Task<uint> CopyToWithChecksumAsync(FileStream inputFile, Stream output, CancellationToken ct = default)
     {
         var crc = new Crc32();
-        byte[] buffer = ArrayPool<byte>.Shared.Rent(0x20000);
+        using MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate(0x20000);
 
-        long len = input.Length;
+        long len = inputFile.Length;
         while (len > 0)
         {
             int thisSize = (int)Math.Min(len, 0x20000);
-            input.Read(buffer, 0, thisSize);
-            output.Write(buffer, 0, thisSize);
-            crc.Append(buffer.AsSpan(0, thisSize));
+            Memory<byte> slice = buffer.Memory.Slice(0, thisSize);
+            await inputFile.ReadAsync(slice, ct);
+            await output.WriteAsync(slice, ct);
+            crc.Append(slice.Span);
             len -= thisSize;
         }
 

@@ -37,7 +37,7 @@ public class GDeflate
             fixed (byte* inputDecompChunkPtr = decompressedData)
             fixed (byte* outputCompChunkPtr = outputCompressedData)
             {
-                CompressBuffer(_codec, (nint)outputCompChunkPtr, outputCompressedData.Length, Compression.BestRatio, (nint)inputDecompChunkPtr, decompressedData.Length, out long compressedDataSize);
+                CompressBuffer(_codec, (nint)inputDecompChunkPtr, decompressedData.Length, Compression.BestRatio, (nint)outputCompChunkPtr, outputCompressedData.Length, out long compressedDataSize);
                 return (uint)compressedDataSize;
             }
         }

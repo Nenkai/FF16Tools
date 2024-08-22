@@ -18,7 +18,7 @@ public class Program
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
 
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine($"- FF16Tools.CLI {Version} by Nenkai");
@@ -31,14 +31,15 @@ public class Program
         _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
         _logger = _loggerFactory.CreateLogger<Program>();
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs>(args)
-            .WithParsed<UnpackFileVerbs>(UnpackFile)
-            .WithParsed<UnpackAllVerbs>(UnpackAll)
-            .WithParsed<ListFilesVerbs>(ListFiles)
-            .WithParsed<PackVerbs>(PackFiles);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs>(args);
+        await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
+        await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
+        await p.WithParsedAsync<PackVerbs>(PackFiles);
+        p.WithParsed<ListFilesVerbs>(ListFiles);
+        
     }
 
-    static void UnpackFile(UnpackFileVerbs verbs)
+    static async Task UnpackFile(UnpackFileVerbs verbs)
     {
         if (!File.Exists(verbs.InputFile))
         {
@@ -58,7 +59,7 @@ public class Program
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
-            pack.ExtractFile(verbs.FileToUnpack, verbs.OutputPath);
+            await pack.ExtractFile(verbs.FileToUnpack, verbs.OutputPath);
         }
         catch (Exception ex)
         {
@@ -66,7 +67,7 @@ public class Program
         }
     }
 
-    static void UnpackAll(UnpackAllVerbs verbs)
+    static async Task UnpackAll(UnpackAllVerbs verbs)
     {
         if (!File.Exists(verbs.InputFile))
         {
@@ -86,7 +87,7 @@ public class Program
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
-            pack.ExtractAll(verbs.OutputPath);
+            await pack.ExtractAll(verbs.OutputPath);
             _logger.LogInformation("Done.");
         }
         catch (Exception ex)
@@ -119,7 +120,7 @@ public class Program
         }
     }
 
-    static void PackFiles(PackVerbs verbs)
+    static async Task PackFiles(PackVerbs verbs)
     {
         if (!Directory.Exists(verbs.InputFile))
         {
@@ -140,7 +141,7 @@ public class Program
         }
 
         builder.InitFromDirectory(verbs.InputFile);
-        builder.WriteTo(verbs.OutputFile);
+        await builder.WriteToAsync(verbs.OutputFile);
 
         _logger.LogInformation("Done packing.");
     }

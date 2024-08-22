@@ -61,10 +61,6 @@ public partial class MainWindow : Window
     //NOTE: Janky way of displaying work at the moment, it's better to have a progress bar displaying progress but this will suffice.
     private bool isWorking = false;
 
-    //create a couple of objects here that allow us to do async work without freezing the main UI thread.
-    private BackgroundWorker extractionBackgroundWorker;
-    private BackgroundWorker listFilesBackgroundWorker;
-
     //custom class that will redirect classic Console.Write's to a UI window
     private TextRedirector textRedirect;
 
@@ -126,7 +122,7 @@ public partial class MainWindow : Window
         return true;
     }
 
-    public void Extract()
+    public async Task Extract()
     {
         //Make sure we can extract...
         if (!CanExtract())
@@ -163,7 +159,7 @@ public partial class MainWindow : Window
                     string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}_extracted");
                     Directory.CreateDirectory(outputDir);
 
-                    pack.ExtractAll(outputDir);
+                    await pack.ExtractAll(outputDir);
                 }
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
@@ -189,9 +185,9 @@ public partial class MainWindow : Window
 
                 //if its configured to where the user wants to extract a specific game file from an archive, then let them
                 if(extractionMode == ExtractionMode.SingleArchiveWithGameFile)
-                    pack.ExtractFile(unpackGameFile, outputDir);
+                    await pack.ExtractFile(unpackGameFile, outputDir);
                 else //otherwise extract all of the files from the archive...
-                    pack.ExtractAll(outputDir);
+                    await pack.ExtractAll(outputDir);
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
             }
@@ -214,8 +210,7 @@ public partial class MainWindow : Window
 
         string inputFileName = System.IO.Path.GetFileNameWithoutExtension(path);
         string outputPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(path)), $"{inputFileName}_files.txt");
-        pack.ListFiles(outputPath);
-        Console.WriteLine($"Done. ({outputPath})");
+        pack.ListFiles(outputPath, log: true);
     }
 
     public void ListFiles()
@@ -257,31 +252,6 @@ public partial class MainWindow : Window
         }
     }
 
-    //|||||||||||||||||||||||||||||||||| BACKGROUND WORKER EVENTS ||||||||||||||||||||||||||||||||||
-    //|||||||||||||||||||||||||||||||||| BACKGROUND WORKER EVENTS ||||||||||||||||||||||||||||||||||
-    //|||||||||||||||||||||||||||||||||| BACKGROUND WORKER EVENTS ||||||||||||||||||||||||||||||||||
-    //This fancy stuff allows us to do work in async! (Won't freeze the Main UI thread)
-
-    private void BackgroundWorker_DoWork_Extract(object? sender, DoWorkEventArgs e) => Extract();
-
-    private void BackgroundWorker_RunWorkerCompleted_Extract(object? sender, RunWorkerCompletedEventArgs e)
-    {
-        //NOTE: replace in future with progress bar
-        isWorking = false;
-        UpdateUI();
-    }
-
-    private void BackgroundWorker_DoWork_ListFiles(object? sender, DoWorkEventArgs e) => ListFiles();
-
-    private void BackgroundWorker_RunWorkerCompleted_ListFiles(object? sender, RunWorkerCompletedEventArgs e)
-    {
-        //NOTE: replace in future with progress bar
-        isWorking = false;
-        UpdateUI();
-
-        BigTextWindow bigTextWindow = new BigTextWindow(textRedirect);
-        bigTextWindow.ShowDialog(); //Use showdialog so we can freeze the previous window
-    }
 
     //|||||||||||||||||||||||||||||||||| STATIC UTILITY FUNCTIONS ||||||||||||||||||||||||||||||||||
     //|||||||||||||||||||||||||||||||||| STATIC UTILITY FUNCTIONS ||||||||||||||||||||||||||||||||||
@@ -337,15 +307,6 @@ public partial class MainWindow : Window
     {
         this.Title = WindowTitle;
         ui_extractiomode_combobox.SelectedIndex = 0; //Select the first index of extraction mode by default "SingleArchive"
-
-        //setup background workers so we can do async work
-        extractionBackgroundWorker = new BackgroundWorker();
-        extractionBackgroundWorker.DoWork += BackgroundWorker_DoWork_Extract;
-        extractionBackgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted_Extract;
-
-        listFilesBackgroundWorker = new BackgroundWorker();
-        listFilesBackgroundWorker.DoWork += BackgroundWorker_DoWork_ListFiles;
-        listFilesBackgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted_ListFiles;
 
         //setup our log provider so we can output everything to our BigTextWindow later.
         textRedirect = new TextRedirector();
@@ -485,16 +446,25 @@ public partial class MainWindow : Window
         isWorking = true;
         UpdateUI();
 
-        listFilesBackgroundWorker.RunWorkerAsync();
+        ListFiles();
+
+        BigTextWindow bigTextWindow = new BigTextWindow(textRedirect);
+        bigTextWindow.ShowDialog(); //Use showdialog so we can freeze the previous window
+
+        isWorking = false;
+        UpdateUI();
     }
 
-    private void ui_extract_button_Click(object sender, RoutedEventArgs e)
+    private async void ui_extract_button_Click(object sender, RoutedEventArgs e)
     {
         //NOTE: replace in future with progress bar
         isWorking = true;
         UpdateUI();
 
-        extractionBackgroundWorker.RunWorkerAsync();
+        await Extract();
+
+        isWorking = false;
+        UpdateUI();
     }
 
 
