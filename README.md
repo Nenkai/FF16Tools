@@ -38,7 +38,6 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
 * Return building/unpack progress
 * Expose lib as a NuGet Package (for package consumption from i.e mod managers)
-* Swap console prints to ILogger
 * Find a GDeflate library that actually works cross-platform
 
 ## Acknowledgements
