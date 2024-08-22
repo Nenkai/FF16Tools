@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FF16PackLib.Files\FF16PackLib.Files.csproj" />
     <ProjectReference Include="..\FF16PackLib\FF16PackLib.csproj" />
   </ItemGroup>
 

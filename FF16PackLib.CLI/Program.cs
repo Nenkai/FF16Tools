@@ -2,12 +2,6 @@
 
 using Syroot.BinaryData;
 
-using CommunityToolkit.HighPerformance;
-using CommunityToolkit.HighPerformance.Buffers;
-
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-
 using FF16PackLib;
 using FF16PackLib.Packing;
 
@@ -19,7 +13,7 @@ namespace FF16PackLib.CLI;
 
 public class Program
 {
-    public const string Version = "1.0.1";
+    public const string Version = "1.1.0";
 
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
