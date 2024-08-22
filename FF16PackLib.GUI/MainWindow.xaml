@@ -33,7 +33,9 @@
 
                     <!-- INPUT SECTION -->
                     <Label Name="ui_input_label" Content="Input:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
-                    <TextBox Name="ui_input_textbox" Margin="79,64,77,0" TextWrapping="Wrap" Text="Input Path" VerticalAlignment="Top" Height="26" TextChanged="ui_input_textbox_TextChanged" MouseDoubleClick="ui_input_textbox_MouseDoubleClick"/>
+                    <TextBox Name="ui_input_textbox" Margin="79,64,77,0" TextWrapping="Wrap" Text="Input Path" VerticalAlignment="Top" Height="26" TextChanged="ui_input_textbox_TextChanged" 
+                             MouseDoubleClick="ui_input_textbox_MouseDoubleClick" AllowDrop="True" PreviewDragOver="ui_input_textbox_PreviewDragOver" Drop="ui_input_textbox_Drop"/>
+                    
                     <Button Name="ui_input_button" Content="Open" HorizontalAlignment="Right" Margin="0,64,10,0" VerticalAlignment="Top" Height="32" Width="62" Click="ui_input_button_Click"/>
 
                     <!-- GAME FILE SECTION -->
@@ -42,7 +44,8 @@
 
                     <!-- OUTPUT SECTION -->
                     <Label Name="ui_output_label" Content="Output:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
-                    <TextBox Name="ui_output_textbox" Margin="79,138,77,0" TextWrapping="Wrap" Text="Output Folder" VerticalAlignment="Top" Height="26" TextChanged="ui_output_textbox_TextChanged" MouseDoubleClick="ui_output_textbox_MouseDoubleClick"/>
+                    <TextBox Name="ui_output_textbox" Margin="79,138,77,0" TextWrapping="Wrap" Text="Output Folder" VerticalAlignment="Top" Height="26" TextChanged="ui_output_textbox_TextChanged" 
+                             MouseDoubleClick="ui_output_textbox_MouseDoubleClick" AllowDrop="True" PreviewDragOver="ui_output_textbox_PreviewDragOver" Drop="ui_output_textbox_Drop"/>
                     <Button Name="ui_output_button" Content="Open" Margin="0,138,10,0" Height="32" Width="62" Click="ui_output_button_Click" VerticalAlignment="Top" HorizontalAlignment="Right"/>
 
                     <Separator Name="ui_seperatorBottom" Margin="10,175,10,0" VerticalAlignment="Top" Height="12"/>

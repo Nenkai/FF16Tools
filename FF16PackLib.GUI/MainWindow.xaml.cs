@@ -416,6 +416,27 @@ public partial class MainWindow : Window
         ui_input_textbox.Text = unpackInputPath;
     }
 
+    private void ui_input_textbox_Drop(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        {
+            string[] dataString = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string path = dataString[0];
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            if (!File.Exists(path) && !Directory.Exists(path))
+                return;
+
+            ui_input_textbox.Text = path;
+        }
+    }
+
+    private void ui_input_textbox_PreviewDragOver(object sender, DragEventArgs e)
+    {
+        e.Handled = true;
+    }
+
     //================= (UNPACK) GAME FILE SECTION =================
 
     private void ui_gamefile_textbox_TextChanged(object sender, TextChangedEventArgs e) => unpackGameFile = ui_gamefile_textbox.Text;
@@ -434,6 +455,27 @@ public partial class MainWindow : Window
     {
         GetPath(ref unpackOutputPath, true);
         ui_output_textbox.Text = unpackOutputPath;
+    }
+
+    private void ui_output_textbox_PreviewDragOver(object sender, DragEventArgs e)
+    {
+        e.Handled = true;
+    }
+
+    private void ui_output_textbox_Drop(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        {
+            string[] dataString = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string path = dataString[0];
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            if (!Directory.Exists(path))
+                return;
+
+            ui_output_textbox.Text = path;
+        }
     }
 
     //================= (UNPACK) ACTIONS SECTION =================
