@@ -19,7 +19,7 @@
         <TabControl >
             <!-- UNPACK TAB -->
             <TabItem Header="Unpack">
-                <Grid Background="White">
+                <Grid>
                     <Separator Name="ui_seperatorTop" Margin="10,10,10,0" VerticalAlignment="Top" Height="12"/>
 
                     <!-- EXTRACTION MODE SECTION -->
@@ -58,7 +58,7 @@
 
             <!-- REPACK TAB -->
             <TabItem Header="Repack">
-                <Grid Background="White">
+                <Grid>
                     <Separator Name="ui_repack_seperatorTop" Margin="10,10,10,0" VerticalAlignment="Top" Height="12"/>
 
                     <!-- INPUT SECTION -->
