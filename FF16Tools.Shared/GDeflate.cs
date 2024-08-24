@@ -1,5 +1,4 @@
-﻿using SharpGen.Runtime;
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Vortice.DirectStorage;
+using SharpGen.Runtime;
 
-namespace FF16Tools;
+namespace FF16Tools.Shared;
 
 public class GDeflate
 {
