@@ -73,6 +73,9 @@ public class FF16PackBuilder
         foreach (var file in files)
         {
             string gamePath = file[(dir.Length + 1)..].ToLower().Replace('\\', '/');
+            if (gamePath.Equals(".path"))
+                continue;
+
             _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
 
             var fileInfo = new FileInfo(file);
@@ -93,6 +96,20 @@ public class FF16PackBuilder
         ct.ThrowIfCancellationRequested();
 
         BuildStringTable();
+
+        if (string.IsNullOrEmpty(_options.Name) && File.Exists(Path.Combine(dir, ".path")))
+        {
+            string[] lines = File.ReadAllLines(Path.Combine(dir, ".path"));
+            if (lines.Length < 2)
+            {
+                _logger.LogWarning(".path file should have two lines, but it has {lineCount}.", lines.Length);
+            }
+            else
+            {
+                _logger.LogInformation("Using archive name/dir '{dir}' from .path file", lines[1]);
+                _options.Name = lines[1];
+            }
+        }
     }
 
     private void BuildSharedChunks()

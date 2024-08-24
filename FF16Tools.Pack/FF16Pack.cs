@@ -151,6 +151,15 @@ public class FF16Pack : IDisposable
             await ExtractFile(file.Key, outputDir);
             _fileCounter++;
         }
+
+        if (!string.IsNullOrEmpty(ArchiveDir))
+        {
+            File.WriteAllLines(Path.Combine(outputDir, ".path"), 
+            [ 
+                "// This is the internal name/dir for this pack. Do not rename it if you are repacking.",
+                ArchiveDir
+            ]);
+        }
     }
 
     public async Task ExtractFile(string path, string outputDir, CancellationToken ct = default)
