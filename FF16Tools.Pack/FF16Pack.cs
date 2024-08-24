@@ -172,7 +172,7 @@ public class FF16Pack : IDisposable
         else
             _logger?.LogInformation("Extracting '{path}' (0x{packSize:X} bytes)...", path, packFile.DecompressedFileSize);
 
-        string outputPath = Path.Combine(Path.GetFullPath(outputDir), path);
+        string outputPath = Path.Combine(Path.GetFullPath(outputDir), ArchiveDir, path);
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
 
         if (packFile.IsCompressed)

@@ -62,6 +62,20 @@ public class FF16PackBuilder
     /// <param name="ct"></param>
     public void InitFromDirectory(string dir, CancellationToken ct = default)
     {
+        if (string.IsNullOrEmpty(_options.Name) && File.Exists(Path.Combine(dir, ".path")))
+        {
+            string[] lines = File.ReadAllLines(Path.Combine(dir, ".path"));
+            if (lines.Length < 2)
+            {
+                _logger.LogWarning(".path file should have two lines, but it has {lineCount}.", lines.Length);
+            }
+            else
+            {
+                _logger.LogInformation("Using archive name/dir '{dir}' from .path file", lines[1]);
+                _options.Name = lines[1];
+            }
+        }
+
         List<string> fileList = [];
         foreach (var file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories))
         {
@@ -69,11 +83,13 @@ public class FF16PackBuilder
             ct.ThrowIfCancellationRequested();
         }
 
+        string actualDir = Path.Combine(dir, _options.Name);
+
         var files = fileList.Order().ToList();
         foreach (var file in files)
         {
-            string gamePath = file[(dir.Length + 1)..].ToLower().Replace('\\', '/');
-            if (gamePath.Equals(".path"))
+            string gamePath = file[(actualDir.Length + 1)..].ToLower().Replace('\\', '/');
+            if (Path.GetFileName(file) == ".path")
                 continue;
 
             _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
@@ -96,20 +112,6 @@ public class FF16PackBuilder
         ct.ThrowIfCancellationRequested();
 
         BuildStringTable();
-
-        if (string.IsNullOrEmpty(_options.Name) && File.Exists(Path.Combine(dir, ".path")))
-        {
-            string[] lines = File.ReadAllLines(Path.Combine(dir, ".path"));
-            if (lines.Length < 2)
-            {
-                _logger.LogWarning(".path file should have two lines, but it has {lineCount}.", lines.Length);
-            }
-            else
-            {
-                _logger.LogInformation("Using archive name/dir '{dir}' from .path file", lines[1]);
-                _options.Name = lines[1];
-            }
-        }
     }
 
     private void BuildSharedChunks()

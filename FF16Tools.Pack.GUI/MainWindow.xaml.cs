@@ -156,7 +156,7 @@ public partial class MainWindow : Window
                 {
                     using var pack = FF16Pack.Open(pacFilePath);
                     string packName = System.IO.Path.GetFileNameWithoutExtension(pacFilePath);
-                    string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}_extracted");
+                    string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}.extracted");
                     Directory.CreateDirectory(outputDir);
 
                     await pack.ExtractAll(outputDir);
@@ -180,7 +180,7 @@ public partial class MainWindow : Window
                 using var pack = FF16Pack.Open(unpackInputPath);
 
                 string packName = System.IO.Path.GetFileNameWithoutExtension(unpackInputPath);
-                string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}_extracted");
+                string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}.extracted");
                 Directory.CreateDirectory(outputDir);
 
                 //if its configured to where the user wants to extract a specific game file from an archive, then let them

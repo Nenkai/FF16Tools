@@ -82,7 +82,7 @@ public class Program
         if (string.IsNullOrEmpty(verbs.OutputPath))
         {
             string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}_extracted");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}.extracted");
         }
 
         try
@@ -110,7 +110,7 @@ public class Program
         if (string.IsNullOrEmpty(verbs.OutputPath))
         {
             string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}_extracted");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}.extracted");
         }
 
         try
@@ -169,12 +169,23 @@ public class Program
         if (string.IsNullOrEmpty(verbs.OutputFile))
         {
             string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+
+            List<string> spl = fileName.Split('.').ToList();
+            if (spl.Count >= 1)
+            {
+                spl.Insert(1, "diff");
+                fileName = string.Join('.', spl);
+            }
+            else
+                fileName += "_new";
+
             verbs.OutputFile = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{fileName}.pac");
         }
 
         builder.InitFromDirectory(verbs.InputFile);
         await builder.WriteToAsync(verbs.OutputFile);
 
+        _logger.LogInformation("-> {output}", verbs.OutputFile);
         _logger.LogInformation("Done packing.");
     }
 
