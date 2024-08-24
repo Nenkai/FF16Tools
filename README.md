@@ -1,6 +1,11 @@
 # FF16Tools
 
-Tools for Final Fantasy XVI / 16. (Unpacker/Repacker)
+Tools for Final Fantasy XVI / 16. 
+
+### Features
+
+* `.pac` Unpacker/Repacker
+* `.tex` to `.png` conversion
 
 This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
 
@@ -11,6 +16,7 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 * Unpacking a specific file: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o output_directory]`
 * Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o output_directory]`
 * Listing files: `FF16Tools.CLI list-files -i <path_to_pac>`
+* Converting `.tex` to `.png`: Drag-drop files/folders or `FF16Tools.CLI tex-conv -i <path>`
 
 ### Modding
 
