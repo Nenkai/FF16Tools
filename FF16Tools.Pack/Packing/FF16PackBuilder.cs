@@ -9,6 +9,9 @@ using System.Buffers;
 
 using Microsoft.Extensions.Logging;
 
+using CommunityToolkit.HighPerformance.Buffers;
+using CommunityToolkit.HighPerformance;
+
 using Vortice.DirectStorage;
 
 using SharpGen.Runtime;
@@ -18,8 +21,7 @@ using Syroot.BinaryData;
 
 using FF16Tools.Hashing;
 using FF16Tools.Crypto;
-using CommunityToolkit.HighPerformance.Buffers;
-using CommunityToolkit.HighPerformance;
+using FF16Tools.Shared;
 
 namespace FF16Tools.Pack.Packing;
 
