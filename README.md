@@ -23,13 +23,16 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 > [!NOTE]  
 > You may choose to rebuild a `.pac` entirely, or **preferably** you can use `.diff.pac` files.
 > 
-> If you wish to edit files already present in pac files, copy their file structure into a new directory, then pack it. Rename the result `.pac` file `<name>.diff.pac`.
+> When packing an extracted folder, the output pack file should have `.diff` in its name. The game will load this file.
 > 
 > So if your files came from `0000.pac`, the new pac file should be `0000.diff.pac`. 
 
 > [!IMPORTANT]
 > **You only have to include files you want to edit, not ALL the files from the original `.pac`**.
-> You might also have to set the internal archive name/directory using `--name`, if the original had it.
+> 
+> If the extracted archive had a `.path` file, it should be present when packing.
+> 
+> If you are editing any of the language files (like `0001.en.pac`), you should have `0001.diff.pac` AND `0001.diff.en.pac`. if you don't have the first one, the second one won't load. If you don't need to edit the first one, just copy it and rename it.
 
 ## Building
 
