@@ -34,6 +34,16 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 > 
 > If you are editing any of the language files (like `0001.en.pac`), you should have `0001.diff.pac` AND `0001.diff.en.pac`. if you don't have the first one, the second one won't load. If you don't need to edit the first one, just copy it and rename it.
 
+#### Extra Notes
+
+Each pack file can contain a general embedded folder name. This is the case for `0001.pac`, or nested packs inside `0000.pac`.
+
+For instance, `0001.pac` has `nxd` has its embedded folder name. Which means that every file in that pack is inside a folder named `nxd`. Example: `ability.nxd` becomes `nxd/ability.nxd` 
+
+This can be tricky to handle, so the *unpacker* creates a `.path` file with the name of the folder.
+
+The *packer* picks the path from this file accordingly. It can also be set manually with the `--name` argument, if needed.
+
 ## Building
 
 Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
