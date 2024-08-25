@@ -62,7 +62,7 @@ public class FF16PackBuilder
     /// <param name="ct"></param>
     public void InitFromDirectory(string dir, CancellationToken ct = default)
     {
-        dir = dir.Replace('\\', '/');
+        dir = Path.TrimEndingDirectorySeparator(dir).Replace('\\', '/');
         if (string.IsNullOrEmpty(_options.Name) && File.Exists(Path.Combine(dir, ".path")))
         {
             string[] lines = File.ReadAllLines(Path.Combine(dir, ".path"));
