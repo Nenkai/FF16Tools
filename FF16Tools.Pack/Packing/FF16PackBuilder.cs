@@ -89,7 +89,10 @@ public class FF16PackBuilder
             ct.ThrowIfCancellationRequested();
         }
 
-        string actualDir = Path.Combine(dir, _options.Name).Replace('\\', '/');
+        string actualDir = dir;
+        if (!string.IsNullOrEmpty(_options.Name))
+            actualDir = Path.Combine(dir, _options.Name);
+        actualDir = actualDir.Replace("\\", "/");
 
         var files = fileList.Order().ToList();
         foreach (var file in files)
