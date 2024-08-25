@@ -276,10 +276,10 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         else
             _logger?.LogInformation("Extracting '{path}' (0x{packSize:X} bytes)...", path, packFile.DecompressedFileSize);
 
-        string outputPath = Path.Combine(Path.GetFullPath(outputDir), ArchiveDir, path);
+        string outputPath = Path.Combine(Path.GetFullPath(outputDir), path);
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
 
-        var outputStream = new FileStream(outputPath, FileMode.Create);
+        using var outputStream = new FileStream(outputPath, FileMode.Create);
         await UnpackFileToStream(packFile, outputStream, outputPath, ct);
     }
 
