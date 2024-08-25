@@ -269,8 +269,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         ArgumentException.ThrowIfNullOrEmpty(path);
         ArgumentException.ThrowIfNullOrEmpty(outputDir);
 
-        if (!_files.TryGetValue(path, out FF16PackFile packFile))
-            throw new FileNotFoundException("File not found in pack.");
+        FF16PackFile packFile = GetFileInfo(path);
 
         if (_fileCounter is not null)
             _logger?.LogInformation("[{fileNumber}/{fileCount}] Extracting '{path}' (0x{packSize:X} bytes)...", _fileCounter + 1, _files.Count, path, packFile.DecompressedFileSize);

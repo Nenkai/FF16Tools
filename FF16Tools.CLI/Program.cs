@@ -177,7 +177,7 @@ public class Program
                 fileName = string.Join('.', spl);
             }
             else
-                fileName += "_new";
+                fileName += ".diff"; // should never be called
 
             verbs.OutputFile = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{fileName}.pac");
         }
@@ -294,7 +294,7 @@ public class UnpackFileVerbs
     [Option('f', "file", Required = true, HelpText = "File to unpack.")]
     public string FileToUnpack { get; set; }
 
-    [Option('o', "output", HelpText = "Output file. Optional, defaults to a folder named the same as the .pac file.")]
+    [Option('o', "output", HelpText = "Optional. Output directory.")]
     public string OutputPath { get; set; }
 }
 
@@ -304,23 +304,23 @@ public class UnpackAllVerbs
     [Option('i', "input", Required = true, HelpText = "Input .pac file")]
     public string InputFile { get; set; }
 
-    [Option('o', "output", HelpText = "Output file. Optional, defaults to a folder named the same as the .pac file.")]
+    [Option('o', "output", HelpText = "Output directory. Optional, defaults to a folder named the same as the .pac file.")]
     public string OutputPath { get; set; }
 }
 
 [Verb("pack", HelpText = "Pack files from a directory.")]
 public class PackVerbs
 {
-    [Option('i', "input", Required = true, HelpText = "Input directory")]
+    [Option('i', "input", Required = true, HelpText = "Input directory containing files to pack.")]
     public string InputFile { get; set; }
 
-    [Option('o', "output", HelpText = "Output '.pac' file.")]
+    [Option('o', "output", HelpText = "Optional. Output '.pac' file. Optional, defaults to <filename>.diff.pac for modding purposes.")]
     public string OutputFile { get; set; }
 
-    [Option('n', "name", HelpText = "Name of the pack file.")]
+    [Option('n', "name", HelpText = "Optional. This overrides the internal parent path specified by the archive (normally in the .path file).")]
     public string Name { get; set; }
 
-    [Option('e', "encrypt", HelpText = "Whether to encrypt the header.")]
+    [Option('e', "encrypt", HelpText = "Optional. Whether to encrypt the header. Defaults to no.")]
     public bool Encrypt { get; set; }
 }
 

@@ -62,6 +62,7 @@ public class FF16PackBuilder
     /// <param name="ct"></param>
     public void InitFromDirectory(string dir, CancellationToken ct = default)
     {
+        dir = dir.Replace('\\', '/');
         if (string.IsNullOrEmpty(_options.Name) && File.Exists(Path.Combine(dir, ".path")))
         {
             string[] lines = File.ReadAllLines(Path.Combine(dir, ".path"));
@@ -72,23 +73,28 @@ public class FF16PackBuilder
             else
             {
                 _logger.LogInformation("Using archive name/dir '{dir}' from .path file", lines[1]);
-                _options.Name = lines[1];
+                _options.Name = lines[1].Replace('\\', '/');
             }
+        }
+
+        if (!string.IsNullOrEmpty(_options.Name) && !Directory.Exists(Path.Combine(dir, _options.Name)))
+        {
+            throw new DirectoryNotFoundException($"Directory '{_options.Name}' does not exist inside input directory.");
         }
 
         List<string> fileList = [];
         foreach (var file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories))
         {
-            fileList.Add(file);
+            fileList.Add(file.Replace('\\', '/'));
             ct.ThrowIfCancellationRequested();
         }
 
-        string actualDir = Path.Combine(dir, _options.Name);
+        string actualDir = Path.Combine(dir, _options.Name).Replace('\\', '/');
 
         var files = fileList.Order().ToList();
         foreach (var file in files)
         {
-            string gamePath = file[(actualDir.Length + 1)..].ToLower().Replace('\\', '/');
+            string gamePath = file[(actualDir.Length + 1)..].ToLower();
             if (Path.GetFileName(file) == ".path")
                 continue;
 
