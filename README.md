@@ -55,6 +55,7 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
 ## Roadmap
 
+* Support `.nxd` files - export/import from SQLite (let's not use excel like they did.)
 * Return building/unpack progress
 * Expose lib as a NuGet Package (for package consumption from i.e mod managers)
 * Find a GDeflate library that actually works cross-platform
