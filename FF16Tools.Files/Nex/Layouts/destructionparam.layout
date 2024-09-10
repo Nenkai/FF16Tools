@@ -1,0 +1,6 @@
+define_struct|Unk3_Struct|int|int
+
+add_column|Unk1|int
+add_column|Unk2|int
+add_column|Unk3|Unk3_Struct[]
+add_column|Unk4|string

@@ -1,0 +1,6 @@
+// This layout was generated, guessed row length: 0x14
+add_column|Unk1|int
+add_column|Unk2|int
+add_column|Unk3|int
+add_column|Unk4|int
+add_column|Unk5|int

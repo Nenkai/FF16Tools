@@ -1,0 +1,5 @@
+add_column|Unk1|int
+add_column|Unk2|string
+add_column|Unk3|int
+add_column|Unk4|int
+add_column|Unk5|string|rel

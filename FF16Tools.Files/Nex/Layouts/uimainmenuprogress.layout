@@ -1,0 +1,11 @@
+define_struct|Unk5_struct|int|int|int|int|int|int|int|int|int|int
+
+add_column|Unk1|int
+add_column|Unk2|string
+add_column|Unk3|int
+add_column|Unk4|int
+add_column|Unk5|Unk5_struct[]
+add_column|Unk6|short
+add_column|Unk7|short
+add_column|Unk8|short
+add_column|Unk9|short

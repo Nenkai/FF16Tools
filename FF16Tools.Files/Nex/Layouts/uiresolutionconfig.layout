@@ -1,0 +1,3 @@
+add_column|Unk1|int
+add_column|Width|int
+add_column|Height|int

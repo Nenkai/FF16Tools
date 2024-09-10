@@ -1,0 +1,20 @@
+define_struct|Unk_struct|int|int
+
+// What a weird table.
+add_column|Unk1|int
+add_column|Unk2|int[]
+add_column|Unk3|int[]|rel
+add_column|Unk4|int[]|rel
+// Uses base offset from above column
+add_column|Unk5|int[]|rel|-8
+add_column|Unk6|int[]|rel
+add_column|Unk7|int[]|rel
+add_column|Unk8|int[]|rel
+add_column|Unk9|string
+add_column|Unk10|int[]
+add_column|Unk11|int[]|rel
+add_column|Unk12|Unk_struct[]
+add_column|Unk13|int
+add_column|Unk14|int[]
+add_column|Unk15|Unk_struct[]
+add_column|Unk16|Unk_struct[]

@@ -10,6 +10,13 @@ using NLog.Extensions.Logging;
 using NLog;
 using FF16Tools.Files.Textures;
 using SixLabors.ImageSharp;
+using FF16Tools.Files.Nex;
+using FF16Tools.Files.Nex.Exporters;
+using FF16Tools.Files.Nex.Entities;
+
+using FF16Tools.Files;
+
+using FF16Tools.Files.Nex.Managers;
 
 namespace FF16Tools.CLI;
 
@@ -63,12 +70,13 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
         p.WithParsed<ListFilesVerbs>(ListFiles);
         p.WithParsed<TexConvVerbs>(TexConv);
+        p.WithParsed<NxdToSqliteVerbs>(NxdToSqlite);
     }
 
     static async Task UnpackFile(UnpackFileVerbs verbs)
@@ -283,6 +291,24 @@ public class Program
             }
         }
     }
+
+    public static void NxdToSqlite(NxdToSqliteVerbs verbs)
+    {
+        if (!Directory.Exists(verbs.InputFile))
+        {
+            _logger.LogError("Directory '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        var db = NexDatabase.Open(verbs.InputFile);
+        if (string.IsNullOrEmpty(verbs.OutputFile))
+        {
+            verbs.OutputFile = Path.ChangeExtension(verbs.InputFile, ".sqlite");
+        }
+
+        using var exporter = new NexToSQLiteExporter(db, _loggerFactory);
+        exporter.ExportTables(verbs.OutputFile);
+    }
 }
 
 [Verb("unpack", HelpText = "Unpacks a .pac (FF16 Pack) file.")]
@@ -329,6 +355,16 @@ public class ListFilesVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .pac file")]
     public string InputFile { get; set; }
+}
+
+[Verb("nxd-to-sqlite", HelpText = "Converts nxd files to sqlite.")]
+public class NxdToSqliteVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input directory with .nxd files.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output sqlite file.")]
+    public string OutputFile { get; set; }
 }
 
 [Verb("tex-conv", HelpText = "Converts a tex file.")]
