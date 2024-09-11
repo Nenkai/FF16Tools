@@ -16,9 +16,9 @@ namespace FF16Tools.Files.Nex;
 /// </summary>
 public class TableMappingReader
 {
-    public static NexTableColumnLayout ReadColumnMappings(string tableName, Version version)
+    public static NexTableLayout ReadTableLayout(string tableName, Version version)
     {
-        var columnLayout = new NexTableColumnLayout();
+        var columnLayout = new NexTableLayout();
         int offset = 0;
         IterativeLayoutReader(columnLayout, tableName, ref offset, version);
 
@@ -56,7 +56,7 @@ public class TableMappingReader
         return null;
     }
 
-    private static void IterativeLayoutReader(NexTableColumnLayout tableColumnLayout, string filename, ref int offset, Version inputVersion)
+    private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int offset, Version inputVersion)
     {
         string path = GetHeadersFilePath(filename);
         using var sr = new StreamReader(path);
@@ -89,7 +89,7 @@ public class TableMappingReader
                 case "add_column":
                     {
                         if (split.Length < 3)
-                            Console.WriteLine($"Metadata error: {debugln} has malformed 'add_column' - expected 2 or 3 arguments (name, type, offset?), may break!");
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - expected 2 or 3 arguments (name, type, offset?)");
 
                         string columnName = split[1];
                         string columnTypeStr = split[2];
@@ -108,8 +108,7 @@ public class TableMappingReader
                         {
                             NexColumnType columnType = NexUtils.ColumnIdentifierToColumnType(columnTypeStr);
                             if (columnType == NexColumnType.Unknown)
-                                Console.WriteLine($"Metadata error: {debugln} has malformed 'add_column' - type '{columnTypeStr}' is invalid\n" +
-                                    $"Valid types: str, int8, int16, int32/int, int64, uint8, uint16, uint32/uint, uint64, float, double");
+                                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - type '{columnTypeStr}' is invalid\n");
 
                             column = new NexStructColumn
                             {
@@ -136,20 +135,35 @@ public class TableMappingReader
                         tableColumnLayout.Columns.Add(column);
                         break;
                     }
+                case "set_table_type":
+                    {
+                        if (split.Length < 2)
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_table_type' - expected 1 argument (type)");
 
-                case "padding":
-                    if (split.Length != 2)
-                        Console.WriteLine($"Metadata error: {debugln} has malformed 'padding' - expected 1 argument (length), may break!");
+                        if (!Enum.TryParse(split[1], out NexTableType tableType))
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_table_type' - invalid table type");
 
-                    offset += Convert.ToInt32(split[1], 16);
-                    break;
+                        tableColumnLayout.Type = tableType;
+                        break;
+                    }
+                case "set_table_category":
+                    {
+                        if (split.Length < 2)
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_table_category' - expected 1 argument (category)");
+
+                        if (!Enum.TryParse(split[1], out NexTableCategory tableCategory))
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_table_category' - invalid table category");
+
+                        tableColumnLayout.Category = tableCategory;
+                        break;
+                    }
                 case "set_min_version":
                     {
                         if (split.Length < 2)
-                            Console.WriteLine($"Metadata error: {debugln} has malformed 'set_min_version' - expected 1 arguments (version), may break!");
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_min_version' - expected 1 arguments (version)");
 
                         if (!Version.TryParse(split[1], out Version ver))
-                            Console.WriteLine($"Metadata error: {debugln} has malformed 'set_min_version' - version is invalid - may break!");
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_min_version' - version is invalid");
 
                         min_version = ver;
                         break;
@@ -158,10 +172,10 @@ public class TableMappingReader
                 case "set_max_version":
                     {
                         if (split.Length < 2)
-                            Console.WriteLine($"Metadata error: {debugln} has malformed 'set_max_version' - expected 1 arguments (version), may break!");
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_max_version' - expected 1 arguments (version)");
 
                         if (!Version.TryParse(split[1], out Version ver))
-                            Console.WriteLine($"Metadata error: {debugln} has malformed 'set_max_version' - version is invalid - may break!");
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_max_version' - version is invalid");
 
                         max_version = ver;
                         break;
@@ -173,21 +187,6 @@ public class TableMappingReader
                 case "reset_max_version":
                     max_version = null;
                     break;
-                case "include":
-                    {
-                        if (split.Length != 2)
-                            Console.WriteLine($"Metadata error: {debugln} has malformed 'include' - expected 1 argument (filename), may break!");
-
-                        var headersFilename = GetHeadersFilePath($"{split[1]}.headers");
-                        if (headersFilename == null)
-                        {
-                            Console.WriteLine($"Metadata error: unknown include file '{split[1]}.headers' - may break!");
-                            continue;
-                        }
-
-                        IterativeLayoutReader(tableColumnLayout, headersFilename, ref offset, inputVersion);
-                        break;
-                    }
 
                 case "define_struct":
                     string structName = split[1];
@@ -211,5 +210,8 @@ public class TableMappingReader
                     break;
             }
         }
+
+        if (tableColumnLayout.Type == NexTableType.Unknown || tableColumnLayout.Category == NexTableCategory.Unknown)
+            throw new InvalidDataException("Layout validation error: type or category is unknown.");
     }
 }

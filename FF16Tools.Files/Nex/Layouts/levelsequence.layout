@@ -1,3 +1,7 @@
+set_table_type|RowSets
+set_table_category|RowSets
+use_base_row_id|false
+
 define_struct|Unk3_Struct|int|int
 
 add_column|Unk1|int

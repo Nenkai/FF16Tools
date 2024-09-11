@@ -20,7 +20,7 @@ public class NexUtils
     /// <param name="nexFileBuffer"></param>
     /// <param name="rowOffset"></param>
     /// <returns></returns>
-    public static List<object> ReadRow(NexTableColumnLayout tableColumnLayout, byte[] nexFileBuffer, int rowOffset)
+    public static List<object> ReadRow(NexTableLayout tableColumnLayout, byte[] nexFileBuffer, int rowOffset)
     {
         List<object> cells = [];
 
@@ -41,7 +41,7 @@ public class NexUtils
         return cells;
     }
 
-    private static object ReadCell(ref SpanReader sr, NexTableColumnLayout tableColumnLayout, NexStructColumn column,
+    private static object ReadCell(ref SpanReader sr, NexTableLayout tableColumnLayout, NexStructColumn column,
         int rowOffset)
     {
         switch (column.Type)

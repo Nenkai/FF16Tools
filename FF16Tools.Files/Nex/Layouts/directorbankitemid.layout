@@ -1,3 +1,7 @@
+set_table_type|Rows
+set_table_category|Rows
+use_base_row_id|false
+
 // This layout was generated, guessed row length: 0x14
 add_column|Unk1|int
 add_column|Unk2|int

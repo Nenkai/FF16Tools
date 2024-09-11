@@ -76,6 +76,7 @@ public class NexDataFile
 
 public enum NexTableType
 {
+    Unknown = 0,
     Rows = 1,
     RowSets = 2,
     DoubleKeyed = 3,
@@ -83,6 +84,7 @@ public enum NexTableType
 
 public enum NexTableCategory
 {
+    Unknown = 0,
     Rows = 1,
     Rows_Localized = 2,
     RowSets = 3,

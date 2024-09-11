@@ -1,2 +1,6 @@
+set_table_type|Rows
+set_table_category|Rows_Localized
+use_base_row_id|false
+
 add_column|Unk1|int
 add_column|Unk2|string

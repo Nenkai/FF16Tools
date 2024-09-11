@@ -1,1 +1,5 @@
+set_table_type|RowSets
+set_table_category|RowSets
+use_base_row_id|false
+
 // No table has any rows for this

@@ -70,13 +70,14 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
         p.WithParsed<ListFilesVerbs>(ListFiles);
         p.WithParsed<TexConvVerbs>(TexConv);
         p.WithParsed<NxdToSqliteVerbs>(NxdToSqlite);
+        p.WithParsed<SqliteToNxdVerbs>(SqliteToNxd);
     }
 
     static async Task UnpackFile(UnpackFileVerbs verbs)
@@ -309,6 +310,25 @@ public class Program
         using var exporter = new NexToSQLiteExporter(db, _loggerFactory);
         exporter.ExportTables(verbs.OutputFile);
     }
+
+    public static void SqliteToNxd(SqliteToNxdVerbs verbs)
+    {
+        if (!File.Exists(verbs.InputFile))
+        {
+            _logger.LogError("Directory '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        if (string.IsNullOrEmpty(verbs.OutputFile))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+            verbs.OutputFile = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}_nxds");
+        }
+
+        using var importer = new SQLiteToNexImporter(verbs.InputFile, verbs.Tables.ToList(), _loggerFactory);
+        importer.ReadSqlite();
+        importer.SaveTo(verbs.OutputFile);
+    }
 }
 
 [Verb("unpack", HelpText = "Unpacks a .pac (FF16 Pack) file.")]
@@ -357,14 +377,27 @@ public class ListFilesVerbs
     public string InputFile { get; set; }
 }
 
-[Verb("nxd-to-sqlite", HelpText = "Converts nxd files to sqlite.")]
+[Verb("nxd-to-sqlite", HelpText = "Converts nxd files to SQLite.")]
 public class NxdToSqliteVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input directory with .nxd files.")]
     public string InputFile { get; set; }
 
-    [Option('o', "output", HelpText = "Output sqlite file.")]
+    [Option('o', "output", HelpText = "Output SQLite database file.")]
     public string OutputFile { get; set; }
+}
+
+[Verb("sqlite-to-nxd", HelpText = "Converts a SQLite database to nxd files.")]
+public class SqliteToNxdVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input SQLite file.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output directory for .nxd files.")]
+    public string OutputFile { get; set; }
+
+    [Option('t', "tables", HelpText = "Table(s) to import. If not provided, all tables in the database be imported.")]
+    public IEnumerable<string> Tables { get; set; } = [];
 }
 
 [Verb("tex-conv", HelpText = "Converts a tex file.")]

@@ -1,3 +1,7 @@
+set_table_type|Rows
+set_table_category|Rows
+use_base_row_id|true
+
 // Size: 0x1C
 define_struct|Unk2_Struct|int|int|int|int|int[]|int
 

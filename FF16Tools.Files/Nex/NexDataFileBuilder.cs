@@ -28,7 +28,7 @@ public class NexDataFileBuilder
     private List<NexRowBuild> _rows = [];
     private Dictionary<uint, List<NexRowBuild>> _rowSets = [];
 
-    private NexTableColumnLayout _columnLayout;
+    private NexTableLayout _columnLayout;
 
     private record ArrayPointerRef(int RelativeOffset, int StringFieldOffset);
     private Dictionary<byte[], List<ArrayPointerRef>> _byteArrayTable = new(new ByteArrayComparer());
@@ -36,20 +36,20 @@ public class NexDataFileBuilder
     private long _lastRowDataStartOffset;
     private long _lastDataEndOffset;
 
-    public NexDataFileBuilder(NexTableType tableType, NexTableCategory category, NexTableColumnLayout columnLayout, bool usesBaseRow = false, uint baseRowId = 0, 
+    public NexDataFileBuilder(NexTableLayout columnLayout, uint baseRowId = 0, 
         ILoggerFactory loggerFactory = null)
     {
         ArgumentNullException.ThrowIfNull(columnLayout);
 
-        if (!Enum.IsDefined(tableType))
+        if (!Enum.IsDefined(columnLayout.Type))
             throw new ArgumentException("Invalid nex table type.");
 
-        if (!Enum.IsDefined(category))
+        if (!Enum.IsDefined(columnLayout.Category))
             throw new ArgumentException("Invalid nex category type.");
 
-        Type = tableType;
-        Category = category;
-        UsesBaseRow = usesBaseRow;
+        Type = columnLayout.Type;
+        Category = columnLayout.Category;
+        UsesBaseRow = columnLayout.UsesBaseRowId;
         BaseRowId = baseRowId;
 
         _columnLayout = columnLayout;

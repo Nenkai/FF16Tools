@@ -16,6 +16,8 @@ using FF16Tools.Files;
 using System.IO;
 using System.Data;
 using Microsoft.Extensions.Logging;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace FF16Tools.Files.Nex.Exporters;
 
@@ -29,6 +31,9 @@ public class NexToSQLiteExporter : IDisposable
 
     private NexDatabase _database;
     private SqliteConnection _con;
+
+    // We don't want byte arrays to be converted to base64.
+    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { Converters = { new JsonByteArrayConverter() } };
 
     public NexToSQLiteExporter(NexDatabase database, ILoggerFactory loggerFactory = null)
     {
@@ -66,7 +71,7 @@ public class NexToSQLiteExporter : IDisposable
 
             List<NexRowInfo> nexRows = table.Value.RowManager.GetAllRowInfos();
 
-            NexTableColumnLayout tableColumnLayout = TableMappingReader.ReadColumnMappings(table.Key, new Version(1, 0, 0));
+            NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(table.Key, new Version(1, 0, 0));
             ExportTableToSQLite(table.Key, table.Value, tableColumnLayout, nexRows);
         }
 
@@ -74,7 +79,7 @@ public class NexToSQLiteExporter : IDisposable
     }
 
 
-    private void ExportTableToSQLite(string tableName, NexDataFile nexFile, NexTableColumnLayout columnLayout, List<NexRowInfo> rows)
+    private void ExportTableToSQLite(string tableName, NexDataFile nexFile, NexTableLayout columnLayout, List<NexRowInfo> rows)
     {
         //SQL: DROP TABLE IF EXISTS
         var command = _con.CreateCommand();
@@ -189,7 +194,7 @@ public class NexToSQLiteExporter : IDisposable
         }
     }
 
-    private static void CreateInsertInto(StringBuilder sb, string tableName, NexDataFile nexFile, NexTableColumnLayout columnLayout)
+    private static void CreateInsertInto(StringBuilder sb, string tableName, NexDataFile nexFile, NexTableLayout columnLayout)
     {
         sb.Append($"INSERT INTO \"{tableName}\"\n\t(");
         switch (nexFile.Type)
@@ -216,47 +221,19 @@ public class NexToSQLiteExporter : IDisposable
         sb.Append(")\nVALUES\n");
     }
 
-    private static string CellToSql(string tableName, string columnName, object cell, NexTableColumnLayout tableColumnLayout, NexStructColumn column)
+    private static string CellToSql(string tableName, string columnName, object cell, NexTableLayout tableColumnLayout, NexStructColumn column)
     {
         if (column.Type == NexColumnType.CustomStructArray)
         {
-            StringBuilder sb = new StringBuilder();
             object[] structArray = (object[])cell;
-            for (int i = 0; i < structArray.Length; i++)
-            {
-                sb.Append('(');
-                object[] fields = (object[])structArray[i];
-                for (int j = 0; j < fields.Length; j++)
-                {
-                    if (!string.IsNullOrEmpty(column.StructTypeName))
-                    {
-                        sb.Append('(');
-                        var structFields = tableColumnLayout.CustomStructDefinitions[column.StructTypeName];
-                        for (int k = 0; k < structFields.Count; k++)
-                        {
-                            sb.Append(CellToSql(tableName, column.Name, fields[k], tableColumnLayout, structFields[k]));
-                            if (k != structFields.Count - 1)
-                                sb.Append(", ");
-                        }
-                        sb.Append(')');
-                    }
-                    else
-                        throw new Exception("Struct type name was empty");
 
-                    if (j != fields.Length - 1)
-                        sb.Append(", ");
-                }
-                sb.Append(')');
-                if (i != structArray.Length - 1)
-                    sb.Append(", ");
-            }
-            return sb.ToString();
+            return JsonSerializer.Serialize(structArray, _jsonSerializerOptions);
         }
         else
         {
             return column.Type switch
             {
-                NexColumnType.String => $"\"{((string)cell)}\"",
+                NexColumnType.String => $"\"{(string)cell}\"",
                 NexColumnType.Int => $"{(int)cell}",
                 NexColumnType.UInt => $"{(uint)cell}",
                 NexColumnType.Float => $"{(float)cell}",
@@ -266,10 +243,10 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.Byte => $"{(byte)cell}",
                 NexColumnType.SByte => $"{(sbyte)cell}",
                 NexColumnType.Double => $"{(double)cell}",
-                NexColumnType.ByteArray => $"\"{string.Join(", ", (byte[])cell)}\"",
-                NexColumnType.IntArray => $"\"{string.Join(", ", (int[])cell)}\"",
-                NexColumnType.FloatArray => $"\"{string.Join(", ", (float[])cell)}\"",
-                NexColumnType.StringArray => $"\"{string.Join(", ", ((string[])cell).Select(e => e.Replace("'", "\'\'").Replace("\"", "\"\"")))}\"",
+                NexColumnType.ByteArray => $"\"{JsonSerializer.Serialize((byte[])cell, _jsonSerializerOptions)}\"",
+                NexColumnType.IntArray => $"\"{JsonSerializer.Serialize((int[])cell, _jsonSerializerOptions)}\"",
+                NexColumnType.FloatArray => $"\"{JsonSerializer.Serialize((float[])cell, _jsonSerializerOptions)}\"",
+                NexColumnType.StringArray => $"\"{JsonSerializer.Serialize((string[])cell, _jsonSerializerOptions).Replace("\"", "\"\"")}\"",
                 _ => throw new InvalidDataException($"Unexpected type '{column.Type}' for column '{columnName}' in table '{tableName}'")
             };
         }
