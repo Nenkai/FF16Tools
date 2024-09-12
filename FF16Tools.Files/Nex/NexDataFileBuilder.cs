@@ -26,7 +26,7 @@ public class NexDataFileBuilder
     public uint BaseRowId { get; }
 
     private List<NexRowBuild> _rows = [];
-    private Dictionary<uint, List<NexRowBuild>> _rowSets = [];
+    private SortedDictionary<uint, SortedList<uint, NexRowBuild>> _rowSets = [];
 
     private NexTableLayout _columnLayout;
 
@@ -80,7 +80,7 @@ public class NexDataFileBuilder
         if (Type == NexTableType.RowSets)
         {
             AddRowSet(keyId);
-            _rowSets[keyId].Add(row);
+            _rowSets[keyId].Add(row.ArrayIndex, row);
         }
 
         _rows.Add(row);
@@ -117,6 +117,8 @@ public class NexDataFileBuilder
 
     private void WriteRowTable(BinaryStream bs)
     {
+        _rows = _rows.OrderBy(e => e.RowId).ToList();
+
         bs.WriteUInt32(0x30); // offset to rows
         bs.WriteUInt32((uint)_rows.Count);
         bs.Align(0x10, grow: true);
@@ -146,6 +148,9 @@ public class NexDataFileBuilder
 
     private void WriteRowSetTable(BinaryStream bs)
     {
+        _rows = _rows.OrderBy(e => e.RowId)
+                     .ThenBy(e => e.ArrayIndex).ToList();
+
         long subHeaderOffset = bs.Position;
         bs.WriteUInt32(0x1C); // offset to rows
         bs.WriteInt32(_rowSets.Count);
@@ -170,9 +175,10 @@ public class NexDataFileBuilder
             bs.WriteUInt32((uint)(thisRowSetInfoOffset - arrOffset));
             bs.WriteUInt32((uint)set.Value.Count);
 
-            for (int j = 0; j < set.Value.Count; j++)
+            int j = 0;
+            foreach (var arr in set.Value)
             {
-                NexRowBuild row = set.Value[j];
+                NexRowBuild row = arr.Value;
 
                 _lastRowDataStartOffset = _lastDataEndOffset;
                 _lastDataEndOffset = _lastRowDataStartOffset + _columnLayout.TotalInlineSize;
@@ -185,6 +191,7 @@ public class NexDataFileBuilder
 
                 bs.Position = _lastRowDataStartOffset;
                 WriteRowData(bs, row);
+                j++;
             }
 
             i++;
@@ -423,6 +430,11 @@ public class NexDataFileBuilder
         public uint ArrayIndex { get; set; }
         public List<object> Cells { get; set; }
         public int RowDataOffset { get; set; }
+
+        public override string ToString()
+        {
+            return $"RowId: {RowId}, SubId: {SubId}, ArrayIndex: {ArrayIndex}";
+        }
     }
 
     public class ByteArrayComparer : IEqualityComparer<byte[]>
