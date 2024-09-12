@@ -17,7 +17,7 @@ add_column|Unk12|string|rel|-4
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
-add_column|Unk16|string|rel|-16
+add_column|Unk16|string
 add_column|Unk17|int
 add_column|Unk18|int
 add_column|Unk19|int

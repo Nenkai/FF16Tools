@@ -252,17 +252,20 @@ public class NexDataFileBuilder
 
             case NexColumnType.ByteArray: // byte arrays are combined with strings at the end of the file
                 {
+                    int relOffset = column.UsesRelativeOffset ? (int)bs.Position + column.RelativeOffsetShift : rowDataOffset;
                     byte[] array = (byte[])cellValue;
-                    AddByteArray(bs, rowDataOffset, array);
+                    AddByteArray(bs, relOffset, array);
                     bs.Position += 8; // Skip (write later)
                 }
                 break;
 
             case NexColumnType.String:
-                int relOffset = column.UsesRelativeOffset ? (int)bs.Position + column.RelativeOffsetShift : rowDataOffset;
-                AddString(bs, relOffset, cellValue);
-                bs.Position += 4; // Skip (write later)
-                break;
+                {
+                    int relOffset = column.UsesRelativeOffset ? (int)bs.Position + column.RelativeOffsetShift : rowDataOffset;
+                    AddString(bs, relOffset, cellValue);
+                    bs.Position += 4; // Skip (write later)
+                    break;
+                }
 
             case NexColumnType.IntArray:
             case NexColumnType.FloatArray:

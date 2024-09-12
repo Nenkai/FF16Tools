@@ -27,7 +27,7 @@ add_column|Unk20|byte
 add_column|Unk21|byte
 add_column|Unk22|byte
 add_column|Unk23|byte
-add_column|Unk24|string|rel
+add_column|Unk24|string|rel|-24
 add_column|Unk25|int
 add_column|Unk26|Unk26_Struct[]
 add_column|Unk27|int

@@ -157,6 +157,17 @@ public class TableMappingReader
                         tableColumnLayout.Category = tableCategory;
                         break;
                     }
+                case "use_base_row_id":
+                    {
+                        if (split.Length < 2)
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'use_base_row_id' - expected 1 argument (bool)");
+
+                        if (!bool.TryParse(split[1], out bool flag))
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'use_base_row_id' - unable to parse bool");
+
+                        tableColumnLayout.UsesBaseRowId = flag;
+                        break;
+                    }
                 case "set_min_version":
                     {
                         if (split.Length < 2)

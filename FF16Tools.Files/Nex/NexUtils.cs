@@ -32,7 +32,7 @@ public class NexUtils
         {
             NexStructColumn column = tableColumnLayout.Columns[j];
             if (sr.Position >= sr.Length || sr.Position + NexUtils.TypeToSize(column.Type) > sr.Length)
-                break;
+                throw new Exception("Row data out of stream range. Layout outdated?");
 
             var cell = ReadCell(ref sr, tableColumnLayout, column, rowOffset);
             cells.Add(cell);
@@ -144,7 +144,7 @@ public class NexUtils
                             }
 
                         default:
-                            throw new NotImplementedException();
+                            throw new NotImplementedException($"ReadCell: Unimplemented array type {column.Type}");
                     }
                 }
             case NexColumnType.Int64:
@@ -172,7 +172,7 @@ public class NexUtils
                 return sr.ReadUInt16();
 
             default:
-                throw new NotImplementedException($"Type {column.Type} is invalid or not supported.");
+                throw new NotImplementedException($"ReadCell: Type {column.Type} is invalid or not supported.");
         }
     }
 
@@ -278,7 +278,7 @@ public class NexUtils
             NexColumnType.IntArray => "int[]",
             NexColumnType.FloatArray => "float[]",
             NexColumnType.StringArray => "string[]",
-            NexColumnType.CustomStructArray => throw new ArgumentException("CustomStructArray does not have an identifier."),
+            NexColumnType.CustomStructArray => throw new ArgumentException("CustomStructArray does not have a fixed identifier."),
             _ => throw new InvalidDataException($"Unknown type {type}"),
         };
 }

@@ -26,8 +26,5 @@ add_column|Unk19|byte
 add_column|Unk20|byte
 add_column|Unk21|byte
 add_column|Unk22|byte
-add_column|Unk23|byte
-add_column|Unk24|byte
-add_column|Unk25|byte
-add_column|Unk26|byte
+
 

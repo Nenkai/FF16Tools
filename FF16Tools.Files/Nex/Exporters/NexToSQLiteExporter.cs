@@ -233,7 +233,7 @@ public class NexToSQLiteExporter : IDisposable
         {
             return column.Type switch
             {
-                NexColumnType.String => $"\"{(string)cell}\"",
+                NexColumnType.String => string.IsNullOrEmpty((string)cell) ? "NULL" : $"\'{((string)cell).Replace("\'", "\'\'")}\'",
                 NexColumnType.Int => $"{(int)cell}",
                 NexColumnType.UInt => $"{(uint)cell}",
                 NexColumnType.Float => $"{(float)cell}",
@@ -246,7 +246,7 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.ByteArray => $"\"{JsonSerializer.Serialize((byte[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.IntArray => $"\"{JsonSerializer.Serialize((int[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.FloatArray => $"\"{JsonSerializer.Serialize((float[])cell, _jsonSerializerOptions)}\"",
-                NexColumnType.StringArray => $"\"{JsonSerializer.Serialize((string[])cell, _jsonSerializerOptions).Replace("\"", "\"\"")}\"",
+                NexColumnType.StringArray => $"\'{JsonSerializer.Serialize((string[])cell, _jsonSerializerOptions).Replace("\'", "\'\'")}\'",
                 _ => throw new InvalidDataException($"Unexpected type '{column.Type}' for column '{columnName}' in table '{tableName}'")
             };
         }

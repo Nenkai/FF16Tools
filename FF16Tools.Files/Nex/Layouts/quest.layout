@@ -17,8 +17,7 @@ add_column|Unk12|int
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
-add_column|Unk16|int
-add_column|Unk17|int
+add_column|Unk16|int[]
 add_column|Unk18|int
 add_column|Unk19|int
 add_column|Unk20|int
@@ -31,7 +30,3 @@ add_column|Unk26|byte
 add_column|Unk27|byte
 add_column|Unk28|byte
 add_column|Unk29|byte
-add_column|Unk30|int
-add_column|Unk31|int
-add_column|Unk32|int
-add_column|Unk33|int

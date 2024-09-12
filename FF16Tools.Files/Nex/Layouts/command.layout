@@ -2,6 +2,8 @@ set_table_type|Rows
 set_table_category|Rows_Localized
 use_base_row_id|false
 
+define_struct|Unk55_Struct|int|int|int[]|float[]|int
+
 add_column|Unk1|int
 add_column|Unk2|string
 add_column|Unk3|int
@@ -56,7 +58,7 @@ add_column|Unk51|int
 add_column|Unk52|int
 add_column|Unk53|float
 add_column|Unk54|float
-add_column|Unk55|int[]
+add_column|Unk55|Unk55_Struct[]
 add_column|Unk56|int
 add_column|Unk57|int
 add_column|Unk58|int
@@ -105,11 +107,5 @@ add_column|Unk100|byte
 add_column|Unk101|byte
 add_column|Unk102|byte
 add_column|Unk103|byte
-add_column|Unk104|byte
-add_column|Unk105|byte
-add_column|Unk106|byte
-add_column|Unk107|byte
-add_column|Unk108|byte
-add_column|Unk109|byte
-add_column|Unk110|byte
-add_column|Unk111|byte
+
+

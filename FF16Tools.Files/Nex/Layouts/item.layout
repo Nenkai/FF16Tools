@@ -5,7 +5,7 @@ use_base_row_id|false
 add_column|Unk1|int
 add_column|Unk2|int
 add_column|Unk3|string|rel
-add_column|Unk4|int
+add_column|Unk4|string|rel|-4
 add_column|Unk5|string|rel|-8
 add_column|Unk6|string|rel|-12
 add_column|Unk7|byte
