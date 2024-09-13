@@ -35,6 +35,7 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 * From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list> -o <output_directory>]`
 
 > [!NOTE]
+> * When converting from SQLite to Nex, you can provide a table list to avoid converting all the tables if not needed.
 > * Nex can contain nested data, therefore arrays and other structs are converted to json strings.
 > * Nex can contain row sets that don't actually contain any rows. This information is lost between SQLite conversion, but should *hopefully* not matter.
 > * You may need to edit `root.nxl` from `0001` to reflect the number of rows (if you've added/removed any).
