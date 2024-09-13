@@ -11,7 +11,6 @@ using Syroot.BinaryData;
 
 using FF16Tools.Files.Nex.Managers;
 using FF16Tools.Files.Nex.Entities;
-using FF16Tools.Files.Nex;
 using FF16Tools.Files;
 using System.IO;
 using System.Data;
@@ -57,6 +56,8 @@ public class NexToSQLiteExporter : IDisposable
     /// <exception cref="FileNotFoundException"></exception>
     public void ExportTables(string sqliteDbFile)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(sqliteDbFile, nameof(sqliteDbFile));
+
         _con = new SqliteConnection($"Data Source={sqliteDbFile}");
         _con.Open();
 

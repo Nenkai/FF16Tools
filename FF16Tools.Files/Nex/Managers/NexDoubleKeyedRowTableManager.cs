@@ -1,4 +1,5 @@
-﻿using Syroot.BinaryData;
+﻿using FF16Tools.Files.Nex.Entities;
+using Syroot.BinaryData;
 
 using System;
 using System.Collections.Generic;

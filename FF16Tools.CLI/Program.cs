@@ -301,14 +301,22 @@ public class Program
             return;
         }
 
-        var db = NexDatabase.Open(verbs.InputFile);
-        if (string.IsNullOrEmpty(verbs.OutputFile))
+        try
         {
-            verbs.OutputFile = Path.ChangeExtension(verbs.InputFile, ".sqlite");
-        }
+            var db = NexDatabase.Open(verbs.InputFile, _loggerFactory);
+            if (string.IsNullOrEmpty(verbs.OutputFile))
+            {
+                verbs.OutputFile = Path.ChangeExtension(verbs.InputFile, ".sqlite");
+            }
 
-        using var exporter = new NexToSQLiteExporter(db, _loggerFactory);
-        exporter.ExportTables(verbs.OutputFile);
+
+            using var exporter = new NexToSQLiteExporter(db, _loggerFactory);
+            exporter.ExportTables(verbs.OutputFile);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to export to SQLite");
+        }
     }
 
     public static void SqliteToNxd(SqliteToNxdVerbs verbs)
@@ -325,10 +333,62 @@ public class Program
             verbs.OutputFile = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}_nxds");
         }
 
-        using var importer = new SQLiteToNexImporter(verbs.InputFile, verbs.Tables.ToList(), _loggerFactory);
-        importer.ReadSqlite();
-        importer.SaveTo(verbs.OutputFile);
+        try
+        {
+            using var importer = new SQLiteToNexImporter(verbs.InputFile, verbs.Tables.ToList(), _loggerFactory);
+            importer.ReadSqlite();
+            importer.SaveTo(verbs.OutputFile);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to import from SQLite");
+        }
     }
+
+
+#if DEBUG
+    // Debug utility for reading and re-serializing tables
+    private static void DebugReBuildTables(string dir)
+    {
+        var db = NexDatabase.Open(dir);
+
+        Directory.CreateDirectory("built");
+        foreach (var table in db.Tables)
+        {
+            var layout = TableMappingReader.ReadTableLayout(table.Key, new System.Version(1, 0, 0));
+            var builder = new NexDataFileBuilder(layout);
+
+            List<NexRowInfo> rowInfos = table.Value.RowManager.GetAllRowInfos();
+            if (table.Value.Type == NexTableType.DoubleKeyed)
+            {
+                NexDoubleKeyedRowTableManager rowSetManager = table.Value.RowManager as NexDoubleKeyedRowTableManager;
+                foreach (var dk in rowSetManager.GetRowSets())
+                {
+                    builder.AddDoubleKeyedSet(dk.Key);
+                    foreach (var subSet in dk.Value.SubSets)
+                        builder.AddSubSet(dk.Key, subSet.Key);
+                }
+            }
+            else if (table.Value.Type == NexTableType.RowSets)
+            {
+                NexRowSetTableManager rowSetManager = table.Value.RowManager as NexRowSetTableManager;
+                foreach (var set in rowSetManager.GetRowSets())
+                    builder.AddRowSet(set.Key);
+            }
+
+            for (int i = 0; i < rowInfos.Count; i++)
+            {
+                var row = rowInfos[i];
+                List<object> cells = NexUtils.ReadRow(layout, table.Value.Buffer, row.RowDataOffset);
+                builder.AddRow(row.Id, row.SubId, row.ArrayIndex, cells);
+            }
+
+            using var fs = new FileStream(Path.Combine("built", table.Key + ".nxd"), FileMode.Create);
+            builder.Write(fs);
+        }
+    }
+#endif
+
 }
 
 [Verb("unpack", HelpText = "Unpacks a .pac (FF16 Pack) file.")]

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FF16Tools.Files.Nex;
+namespace FF16Tools.Files.Nex.Entities;
 
 public class NexRowInfo
 {

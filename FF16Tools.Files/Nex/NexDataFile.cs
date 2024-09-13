@@ -1,15 +1,14 @@
-﻿using FF16Tools.Files.Nex.Entities;
-using FF16Tools.Files.Nex.Managers;
-using Syroot.BinaryData;
-using Syroot.BinaryData.Memory;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Vortice.Direct3D12.Video;
+using Syroot.BinaryData;
+using Syroot.BinaryData.Memory;
+
+using FF16Tools.Files.Nex.Entities;
+using FF16Tools.Files.Nex.Managers;
 
 namespace FF16Tools.Files.Nex;
 
@@ -28,10 +27,15 @@ public class NexDataFile
     public bool UsesBaseRowId { get; set; }
     public uint BaseRowId { get; set; }
 
+    /// <summary>
+    /// Row manager. Allows access to underlying row information.
+    /// </summary>
     public INexRowManager RowManager { get; set; }
 
     public static NexDataFile FromFile(string file)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(file);
+
         NexDataFile nxdFile = new NexDataFile();
         nxdFile.Read(File.ReadAllBytes(file));
         return nxdFile;
@@ -39,6 +43,8 @@ public class NexDataFile
 
     public void Read(byte[] data)
     {
+        ArgumentNullException.ThrowIfNull(data, nameof(data));
+
         Buffer = data;
 
         var ms = new MemoryStream(Buffer);

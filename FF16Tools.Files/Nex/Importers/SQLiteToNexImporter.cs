@@ -40,9 +40,10 @@ public class SQLiteToNexImporter : IDisposable
 
     public SQLiteToNexImporter(string sqliteFile, List<string> tablesToConvert = null, ILoggerFactory loggerFactory = null)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(sqliteFile, nameof(sqliteFile));
+
         _tablesToConvert = tablesToConvert;
 
-        ArgumentNullException.ThrowIfNullOrEmpty(sqliteFile, nameof(sqliteFile));
 
         _sqliteFile = sqliteFile;
 
@@ -63,6 +64,8 @@ public class SQLiteToNexImporter : IDisposable
 
     public void SaveTo(string directory)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(directory, nameof(directory));
+
         Directory.CreateDirectory(directory);
 
         foreach (var table in _tableBuilders)
@@ -100,7 +103,7 @@ public class SQLiteToNexImporter : IDisposable
             _logger?.LogInformation("Fetching table {tableName}", tableName);
 
             var layout = TableMappingReader.ReadTableLayout(tableName, new Version(1, 0, 0));
-            _tableBuilders.Add(tableName, new NexDataFileBuilder(layout, 0, _loggerFactory));
+            _tableBuilders.Add(tableName, new NexDataFileBuilder(layout, _loggerFactory));
             _tableLayouts.Add(tableName, layout);
         }
 
@@ -144,6 +147,12 @@ public class SQLiteToNexImporter : IDisposable
                 else if (tableLayout.Type == NexTableType.RowSets)
                 {
                     rowId = (uint)(long)reader["RowID"];
+                    arrayIndex = (uint)(long)reader["ArrayIndex"];
+                }
+                else if (tableLayout.Type == NexTableType.DoubleKeyed)
+                {
+                    rowId = (uint)(long)reader["RowID"];
+                    subId = (uint)(long)reader["SubID"];
                     arrayIndex = (uint)(long)reader["ArrayIndex"];
                 }
                 else
