@@ -37,7 +37,7 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 > [!NOTE]
 > * When converting from SQLite to Nex, you can provide a table list to avoid converting all the tables if not needed.
 > * Use a SQLite database editor/viewer such as [SQLiteStudio](https://sqlitestudio.pl/).
-> * Refer to the [table layouts here](FF16Tools.Files/Nex/Layouts) for the column value types.
+> * Refer to the [table layouts here](FF16Tools.Files/Nex/Layouts) for the column value types. Note: this has been mapped mostly manually. Please contribute if something is amiss or you have figured out the column names.
 > * Nex can contain nested data, therefore arrays and other structs are converted to json strings.
 > * Nex can contain row sets that don't actually contain any rows. This information is lost between SQLite conversion, but should *hopefully* not matter.
 > * You may need to edit `root.nxl` from `0001` to reflect the number of rows (if you've added/removed any).
