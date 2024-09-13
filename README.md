@@ -7,7 +7,8 @@ Tools for Final Fantasy XVI / 16.
 * `.pac` Unpacker/Repacker
 * `.tex` to `.png` conversion
 * Nex `.nxd` conversion
- 
+* *Planned*: Automatic Mod Manager
+
 This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
 
 ## Usage
