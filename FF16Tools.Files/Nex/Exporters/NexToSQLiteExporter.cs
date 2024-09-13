@@ -100,6 +100,10 @@ public class NexToSQLiteExporter : IDisposable
             case NexTableType.RowSets:
                 tableDefinition += "RowID INTEGER, ArrayIndex INTEGER";
                 break;
+
+            case NexTableType.DoubleKeyed:
+                tableDefinition += "RowID INTEGER, SubID INTEGER, ArrayIndex INTEGER";
+                break;
         }
 
         if (columnLayout.Columns.Count > 0)
@@ -140,7 +144,12 @@ public class NexToSQLiteExporter : IDisposable
                     case NexTableType.RowSets:
                         sb.Append($"{row.Id}, {row.ArrayIndex}");
                         break;
+
+                    case NexTableType.DoubleKeyed:
+                        sb.Append($"{row.Id}, {row.SubId}, {row.ArrayIndex}");
+                        break;
                 }
+
                 if (columnLayout.Columns.Count > 0)
                     sb.Append(", ");
 
@@ -206,7 +215,12 @@ public class NexToSQLiteExporter : IDisposable
             case NexTableType.RowSets:
                 sb.Append("RowId, ArrayIndex");
                 break;
+
+            case NexTableType.DoubleKeyed:
+                sb.Append("RowId, SubId, ArrayIndex");
+                break;
         }
+
         if (columnLayout.Columns.Count > 0)
             sb.Append(", ");
 

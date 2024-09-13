@@ -23,6 +23,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Nex\Layouts\questparalleltodo.layout">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Nex\Layouts\scoreattacksectionscoreset.layout">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Nex\Layouts\itemset.layout">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Nex\Layouts\questtodo.layout">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Nex\Layouts\itempresettable.layout">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Nex\Layouts\characterskinmodelparam.layout">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Nex\Layouts\ztext.layout">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

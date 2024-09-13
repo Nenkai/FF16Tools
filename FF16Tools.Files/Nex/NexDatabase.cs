@@ -16,8 +16,12 @@ public class NexDatabase
     /// </summary>
     public Dictionary<string, NexDataFile> Tables { get; set; } = [];
 
-    public static NexDatabase Open(string directory, ILoggerFactory logger = null)
+    public static NexDatabase Open(string directory, ILoggerFactory loggerFactory = null)
     {
+        ILogger logger = null;
+        if (loggerFactory is not null)
+            logger = loggerFactory.CreateLogger(typeof(NexDatabase).ToString());
+
         var database = new NexDatabase();
         foreach (var path in Directory.GetFiles(directory, "*.nxd", SearchOption.TopDirectoryOnly))
         {
@@ -25,9 +29,11 @@ public class NexDatabase
             {
                 NexDataFile nxdFile = NexDataFile.FromFile(path);
                 database.Tables.Add(Path.GetFileNameWithoutExtension(path), nxdFile);
+                logger?.LogInformation("Loaded '{tableName}'", Path.GetFileNameWithoutExtension(path));
             }
             catch (Exception ex)
             {
+                logger?.LogError(ex, "Could not load database table '{path}'", Path.GetFileNameWithoutExtension(path));
                 continue;
             }
         }

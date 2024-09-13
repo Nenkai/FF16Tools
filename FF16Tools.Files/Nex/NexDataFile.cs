@@ -66,8 +66,13 @@ public class NexDataFile
                 RowManager = new NexRowSetTableManager();
                 break;
 
+            case NexTableCategory.DoubleKeyed:
+            case NexTableCategory.DoubleKeyed_Localized:
+                RowManager = new NexDoubleKeyedRowTableManager();
+                break;
+
             default:
-                throw new NotSupportedException();
+                throw new NotSupportedException($"Table category type '{Category}' is not supported");
         }
 
         RowManager.Read(bs);
