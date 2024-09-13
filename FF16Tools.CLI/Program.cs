@@ -10,6 +10,13 @@ using NLog.Extensions.Logging;
 using NLog;
 using FF16Tools.Files.Textures;
 using SixLabors.ImageSharp;
+using FF16Tools.Files.Nex;
+using FF16Tools.Files.Nex.Exporters;
+using FF16Tools.Files.Nex.Entities;
+
+using FF16Tools.Files;
+
+using FF16Tools.Files.Nex.Managers;
 
 namespace FF16Tools.CLI;
 
@@ -63,12 +70,14 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
         p.WithParsed<ListFilesVerbs>(ListFiles);
         p.WithParsed<TexConvVerbs>(TexConv);
+        p.WithParsed<NxdToSqliteVerbs>(NxdToSqlite);
+        p.WithParsed<SqliteToNxdVerbs>(SqliteToNxd);
     }
 
     static async Task UnpackFile(UnpackFileVerbs verbs)
@@ -283,6 +292,103 @@ public class Program
             }
         }
     }
+
+    public static void NxdToSqlite(NxdToSqliteVerbs verbs)
+    {
+        if (!Directory.Exists(verbs.InputFile))
+        {
+            _logger.LogError("Directory '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        try
+        {
+            var db = NexDatabase.Open(verbs.InputFile, _loggerFactory);
+            if (string.IsNullOrEmpty(verbs.OutputFile))
+            {
+                verbs.OutputFile = Path.ChangeExtension(verbs.InputFile, ".sqlite");
+            }
+
+
+            using var exporter = new NexToSQLiteExporter(db, _loggerFactory);
+            exporter.ExportTables(verbs.OutputFile);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to export to SQLite");
+        }
+    }
+
+    public static void SqliteToNxd(SqliteToNxdVerbs verbs)
+    {
+        if (!File.Exists(verbs.InputFile))
+        {
+            _logger.LogError("Directory '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        if (string.IsNullOrEmpty(verbs.OutputFile))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+            verbs.OutputFile = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}_nxds");
+        }
+
+        try
+        {
+            using var importer = new SQLiteToNexImporter(verbs.InputFile, verbs.Tables.ToList(), _loggerFactory);
+            importer.ReadSqlite();
+            importer.SaveTo(verbs.OutputFile);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to import from SQLite");
+        }
+    }
+
+
+#if DEBUG
+    // Debug utility for reading and re-serializing tables
+    private static void DebugReBuildTables(string dir)
+    {
+        var db = NexDatabase.Open(dir);
+
+        Directory.CreateDirectory("built");
+        foreach (var table in db.Tables)
+        {
+            var layout = TableMappingReader.ReadTableLayout(table.Key, new System.Version(1, 0, 0));
+            var builder = new NexDataFileBuilder(layout);
+
+            List<NexRowInfo> rowInfos = table.Value.RowManager.GetAllRowInfos();
+            if (table.Value.Type == NexTableType.DoubleKeyed)
+            {
+                NexDoubleKeyedRowTableManager rowSetManager = table.Value.RowManager as NexDoubleKeyedRowTableManager;
+                foreach (var dk in rowSetManager.GetRowSets())
+                {
+                    builder.AddDoubleKeyedSet(dk.Key);
+                    foreach (var subSet in dk.Value.SubSets)
+                        builder.AddSubSet(dk.Key, subSet.Key);
+                }
+            }
+            else if (table.Value.Type == NexTableType.RowSets)
+            {
+                NexRowSetTableManager rowSetManager = table.Value.RowManager as NexRowSetTableManager;
+                foreach (var set in rowSetManager.GetRowSets())
+                    builder.AddRowSet(set.Key);
+            }
+
+            for (int i = 0; i < rowInfos.Count; i++)
+            {
+                var row = rowInfos[i];
+                List<object> cells = NexUtils.ReadRow(layout, table.Value.Buffer, row.RowDataOffset);
+                builder.AddRow(row.Id, row.SubId, row.ArrayIndex, cells);
+            }
+
+            using var fs = new FileStream(Path.Combine("built", table.Key + ".nxd"), FileMode.Create);
+            builder.Write(fs);
+        }
+    }
+#endif
+
 }
 
 [Verb("unpack", HelpText = "Unpacks a .pac (FF16 Pack) file.")]
@@ -329,6 +435,29 @@ public class ListFilesVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .pac file")]
     public string InputFile { get; set; }
+}
+
+[Verb("nxd-to-sqlite", HelpText = "Converts nxd files to SQLite.")]
+public class NxdToSqliteVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input directory with .nxd files.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output SQLite database file.")]
+    public string OutputFile { get; set; }
+}
+
+[Verb("sqlite-to-nxd", HelpText = "Converts a SQLite database to nxd files.")]
+public class SqliteToNxdVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input SQLite file.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output directory for .nxd files.")]
+    public string OutputFile { get; set; }
+
+    [Option('t', "tables", HelpText = "Table(s) to import. If not provided, all tables in the database be imported.")]
+    public IEnumerable<string> Tables { get; set; } = [];
 }
 
 [Verb("tex-conv", HelpText = "Converts a tex file.")]

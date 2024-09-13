@@ -1,0 +1,11 @@
+set_table_type|Rows
+set_table_category|Rows
+use_base_row_id|true
+
+add_column|Unk1|int
+add_column|Unk2|int
+add_column|Unk3|int[]
+add_column|Unk4|int
+add_column|Unk5|int
+add_column|Unk6|string
+add_column|Unk7|int

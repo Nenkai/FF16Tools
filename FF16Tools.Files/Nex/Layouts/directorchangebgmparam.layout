@@ -1,0 +1,14 @@
+set_table_type|Rows
+set_table_category|Rows
+use_base_row_id|false
+
+define_struct|Unk5_Struct|int|int
+
+add_column|Unk1|int
+add_column|Unk2|int
+add_column|Unk3|int
+add_column|Unk4|int
+add_column|Unk5|Unk5_Struct[]
+add_column|Unk7|string
+add_column|Unk8|int
+add_column|Unk9|int

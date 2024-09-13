@@ -1,0 +1,55 @@
+set_table_type|Rows
+set_table_category|Rows
+use_base_row_id|true
+
+add_column|Unk1|int
+
+// 6 inline strings
+add_column|Unk2|string|rel
+add_column|Unk3|string|rel|-4
+add_column|Unk4|string|rel|-8
+add_column|Unk5|string|rel|-12
+add_column|Unk6|string|rel|-16
+add_column|Unk7|string|rel|-20
+
+// 16 inline strings
+add_column|Unk8|string|rel
+add_column|Unk9|string|rel|-4
+add_column|Unk10|string|rel|-8
+add_column|Unk11|string|rel|-12
+add_column|Unk12|string|rel|-16
+add_column|Unk13|string|rel|-20
+add_column|Unk14|string|rel|-24
+add_column|Unk15|string|rel|-28
+add_column|Unk16|string|rel|-32
+add_column|Unk17|string|rel|-36
+add_column|Unk18|string|rel|-40
+add_column|Unk19|string|rel|-44
+add_column|Unk20|string|rel|-48
+add_column|Unk21|string|rel|-52
+add_column|Unk22|string|rel|-56
+add_column|Unk23|string|rel|-60
+
+// 16 inline strings
+add_column|Unk24|string|rel
+add_column|Unk25|string|rel|-4
+add_column|Unk26|string|rel|-8
+add_column|Unk27|string|rel|-12
+add_column|Unk28|string|rel|-16
+add_column|Unk29|string|rel|-20
+add_column|Unk30|string|rel|-24
+add_column|Unk31|string|rel|-28
+add_column|Unk32|string|rel|-32
+add_column|Unk33|string|rel|-36
+add_column|Unk34|string|rel|-40
+add_column|Unk35|string|rel|-44
+add_column|Unk36|string|rel|-48
+add_column|Unk37|string|rel|-52
+add_column|Unk38|string|rel|-56
+add_column|Unk39|string|rel|-60
+
+// 4 inline strings
+add_column|Unk40|string|rel
+add_column|Unk41|string|rel|-4
+add_column|Unk42|string|rel|-8
+add_column|Unk43|string|rel|-12

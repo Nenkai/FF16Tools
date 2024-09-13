@@ -1,0 +1,14 @@
+set_table_type|RowSets
+set_table_category|RowSets
+use_base_row_id|false
+
+add_column|Unk1|int
+add_column|Unk2|int
+add_column|Unk3|int
+add_column|Unk4|int
+add_column|Unk5|int
+add_column|Unk6|int
+add_column|Unk7|int
+add_column|Unk8|int
+add_column|Unk9|int
+add_column|Unk10|int

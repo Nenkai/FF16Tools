@@ -1,0 +1,27 @@
+set_table_type|Rows
+set_table_category|Rows
+use_base_row_id|true
+
+// This layout was generated, guessed row length: 0x58
+add_column|Unk1|int
+add_column|Unk2|int
+add_column|Unk3|int
+add_column|Unk4|int
+add_column|Unk5|int
+add_column|Unk6|int
+add_column|Unk7|int
+add_column|Unk8|int
+add_column|Unk9|int
+add_column|Unk10|int
+add_column|Unk11|int
+add_column|Unk12|int
+add_column|Unk13|int
+add_column|Unk14|int
+add_column|Unk15|int
+add_column|Unk16|int
+add_column|Unk17|int
+add_column|Unk18|int
+add_column|Unk19|int
+add_column|Unk20|int
+add_column|Unk21|int
+add_column|Unk22|int
