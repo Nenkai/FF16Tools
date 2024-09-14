@@ -6,19 +6,44 @@ Tools for Final Fantasy XVI / 16.
 
 * `.pac` Unpacker/Repacker
 * `.tex` to `.png` conversion
+* Nex `.nxd` conversion
+* *Planned*: Automatic Mod Manager
 
 This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
 
 ## Usage
 
 Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/releases).
-* Unpacking all files: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o output_directory]`
-* Unpacking a specific file: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o output_directory]`
-* Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o output_directory]`
+
+### Pac File
+* Unpacking all files: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>]`
+* Unpacking a specific file: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>]`
+* Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o <output_directory>]`
 * Listing files: `FF16Tools.CLI list-files -i <path_to_pac>`
+
+### Textures
 * Converting `.tex` to `.png`: Drag-drop files/folders or `FF16Tools.CLI tex-conv -i <path>`
 
-### Modding
+> [!WARNING]  
+> * 3D textures are not yet supported.
+> * Textures using `R32G32_UINT` and `R10G10B10A2_UNORM` formats are not yet supported.
+> * Textures using `BC6` (HDR) are not yet supported.
+> * Currently converts only to `.png`.
+
+### Nex (NXD)
+
+* To SQLite: `nxd-to-sqlite -i <path to directory> [-o output sqlite file]`
+* From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list> -o <output_directory>]`
+
+> [!NOTE]
+> * When converting from SQLite to Nex, you can provide a table list to avoid converting all the tables if not needed.
+> * Use a SQLite database editor/viewer such as [SQLiteStudio](https://sqlitestudio.pl/).
+> * Refer to the [table layouts here](FF16Tools.Files/Nex/Layouts) for the column value types. Note: this has been mapped mostly manually. Please contribute if something is amiss or you have figured out the column names.
+> * Nex can contain nested data, therefore arrays and other structs are converted to json strings.
+> * Nex can contain row sets that don't actually contain any rows. This information is lost between SQLite conversion, but should *hopefully* not matter.
+> * You may need to edit `root.nxl` from `0001` to reflect the number of rows (if you've added/removed any).
+
+## Modding
 
 > [!NOTE]  
 > You may choose to rebuild a `.pac` entirely, or **preferably** you can use `.diff.pac` files.
