@@ -7,7 +7,6 @@ Tools for Final Fantasy XVI / 16.
 * `.pac` Unpacker/Repacker
 * `.tex` to `.png` conversion
 * Nex `.nxd` conversion
-* *Planned*: Automatic Mod Manager
 
 This has been tested on Final Fantasy 16 Demo (Steam/PC) files. Pack handling is available as a [NuGet Package](https://www.nuget.org/packages/FF16Tools.Pack/).
 
@@ -44,6 +43,14 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 > * You may need to edit `root.nxl` from `0001` to reflect the number of rows (if you've added/removed any).
 
 ## Modding
+
+### Method 1: Automatic Mod Loader
+
+Use [Reloaded-II](https://github.com/Reloaded-Project/Reloaded-II/releases) and install the [FFXVI Mod Loader](https://github.com/Nenkai/ff16.utility.modloader).
+
+Refer to the readme of the FFXVI Mod Loader for usage.
+
+### Method 2: Modding Manually
 
 > [!NOTE]  
 > You may choose to rebuild a `.pac` entirely, or **preferably** you can use `.diff.pac` files.
