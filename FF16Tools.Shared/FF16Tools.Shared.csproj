@@ -13,6 +13,7 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Authors>Nenkai</Authors>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   
   <ItemGroup>
