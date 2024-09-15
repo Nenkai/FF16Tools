@@ -36,7 +36,7 @@ public class SQLiteToNexImporter : IDisposable
     private SqliteConnection _con;
 
     // We don't want byte arrays to be converted to base64.
-    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { Converters = { new JsonByteArrayConverter() } };
+    private static JsonSerializerOptions _jsonSerializerOptions = new() { Converters = { new JsonByteArrayConverter() } };
 
     public SQLiteToNexImporter(string sqliteFile, List<string> tablesToConvert = null, ILoggerFactory loggerFactory = null)
     {
@@ -176,27 +176,30 @@ public class SQLiteToNexImporter : IDisposable
         switch (column.Type)
         {
             case NexColumnType.SByte:
-                return (sbyte)(long)val;
+                return val is not DBNull ? (sbyte)(long)val : (sbyte)0;
             case NexColumnType.Byte:
-                return (byte)(long)val;
+                return val is not DBNull ? (byte)(long)val : (byte)0;
             case NexColumnType.Short:
-                return (short)(long)val;
+                return val is not DBNull ? (short)(long)val : (short)0;
             case NexColumnType.UShort:
-                return (ushort)(long)val;
+                return val is not DBNull ? (ushort)(long)val : (ushort)0;
             case NexColumnType.Int:
-                return (int)(long)val;
+                return val is not DBNull ? (int)(long)val : 0;
             case NexColumnType.UInt:
-                return (uint)(long)val;
+                return val is not DBNull ? (uint)(long)val : 0u;
             case NexColumnType.Float:
-                return (float)(double)val;
+                return val is not DBNull ? (float)(double)val : 0f;
             case NexColumnType.Int64:
-                return (long)val;
+                return val is not DBNull ? (long)val : 0L;
             case NexColumnType.Double:
-                return (double)val;
+                return val is not DBNull ? (double)val : 0d;
             case NexColumnType.String:
-                return (string)val;
+                return val is not DBNull ? (string)val : string.Empty;
             case NexColumnType.ByteArray:
                 {
+                    if (val is DBNull)
+                        return Array.Empty<byte>();
+
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
@@ -204,10 +207,13 @@ public class SQLiteToNexImporter : IDisposable
                         return arr;
                     }
                     else
-                        return Array.Empty<int>();
+                        return Array.Empty<byte>();
                 }
             case NexColumnType.IntArray:
                 {
+                    if (val is DBNull)
+                        return Array.Empty<int>();
+
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
@@ -219,6 +225,9 @@ public class SQLiteToNexImporter : IDisposable
                 }
             case NexColumnType.FloatArray:
                 {
+                    if (val is DBNull)
+                        return Array.Empty<float>();
+
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
@@ -230,6 +239,9 @@ public class SQLiteToNexImporter : IDisposable
                 }
             case NexColumnType.StringArray:
                 {
+                    if (val is DBNull)
+                        return Array.Empty<string>();
+
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
@@ -241,9 +253,12 @@ public class SQLiteToNexImporter : IDisposable
                 }
             case NexColumnType.CustomStructArray:
                 {
+                    List<object> array = [];
+                    if (val is DBNull)
+                        return array;
+
                     string arrStr = (string)val;
                     var col = tableLayout.CustomStructDefinitions[column.StructTypeName];
-                    List<object> array = [];
 
                     if (!string.IsNullOrEmpty(arrStr))
                     {
