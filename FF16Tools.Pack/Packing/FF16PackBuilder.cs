@@ -62,19 +62,12 @@ public class FF16PackBuilder
     /// <param name="ct"></param>
     public void InitFromDirectory(string dir, CancellationToken ct = default)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(dir, nameof(dir));
+
         dir = Path.TrimEndingDirectorySeparator(dir).Replace('\\', '/');
         if (string.IsNullOrEmpty(_options.Name) && File.Exists(Path.Combine(dir, ".path")))
         {
-            string[] lines = File.ReadAllLines(Path.Combine(dir, ".path"));
-            if (lines.Length < 2)
-            {
-                _logger.LogWarning(".path file should have two lines, but it has {lineCount}.", lines.Length);
-            }
-            else
-            {
-                _logger.LogInformation("Using archive name/dir '{dir}' from .path file", lines[1]);
-                _options.Name = lines[1].Replace('\\', '/');
-            }
+            RegisterPathFile(Path.Combine(dir, ".path"));
         }
 
         if (!string.IsNullOrEmpty(_options.Name) && !Directory.Exists(Path.Combine(dir, _options.Name)))
@@ -89,38 +82,63 @@ public class FF16PackBuilder
             ct.ThrowIfCancellationRequested();
         }
 
-        string actualDir = dir;
-        if (!string.IsNullOrEmpty(_options.Name))
-            actualDir = Path.Combine(dir, _options.Name);
-        actualDir = actualDir.Replace("\\", "/");
+        dir = dir.Replace("\\", "/");
 
         var files = fileList.Order().ToList();
         foreach (var file in files)
         {
-            string gamePath = file[(actualDir.Length + 1)..].ToLower();
+            string gamePath = file[(dir.Length + 1)..].ToLower();
             if (Path.GetFileName(file) == ".path")
                 continue;
 
-            _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
-
-            var fileInfo = new FileInfo(file);
-            var task = new FileTask()
-            {
-                LocalPath = file,
-                GamePath = gamePath,
-            };
-            task.PackFile.DecompressedFileSize = (ulong)fileInfo.Length;
-
-            _packFileTasks.Add(task);
-
-            ct.ThrowIfCancellationRequested();
+            AddFile(file, gamePath);
         }
+    }
 
-        BuildSharedChunks();
+    /// <summary>
+    /// Registers a .path file. This should be called first (if it exists) before adding files.
+    /// </summary>
+    /// <param name="path"></param>
+    public void RegisterPathFile(string path)
+    {
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2)
+        {
+            _logger?.LogWarning(".path file should have two lines, but it has {lineCount}.", lines.Length);
+        }
+        else
+        {
+            _logger?.LogInformation("Using archive name/dir '{dir}' from .path file", lines[1]);
+            _options.Name = lines[1].Replace('\\', '/');
+        }
+    }
 
-        ct.ThrowIfCancellationRequested();
+    /// <summary>
+    /// Adds a file to the pack.
+    /// </summary>
+    /// <param name="localPath"></param>
+    /// <param name="gamePath"></param>
+    public void AddFile(string localPath, string gamePath)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(localPath, nameof(gamePath));
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
 
-        BuildStringTable();
+        if (!gamePath.StartsWith(_options.Name))
+            throw new ArgumentException($"Game path should start with '{_options.Name}'.");
+
+        gamePath = Path.GetRelativePath(_options.Name, gamePath.ToLower().Replace('\\', '/'));
+
+        _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
+
+        var fileInfo = new FileInfo(localPath);
+        var task = new FileTask()
+        {
+            LocalPath = localPath,
+            GamePath = gamePath,
+        };
+        task.PackFile.DecompressedFileSize = (ulong)fileInfo.Length;
+
+        _packFileTasks.Add(task);
     }
 
     private void BuildSharedChunks()
@@ -207,6 +225,11 @@ public class FF16PackBuilder
     /// <returns></returns>
     public async Task WriteToAsync(string file, CancellationToken ct = default)
     {
+        BuildSharedChunks();
+        ct.ThrowIfCancellationRequested();
+        BuildStringTable();
+        ct.ThrowIfCancellationRequested();
+
         _logger?.LogInformation("PACK: Starting write.");
 
         using var fs = new FileStream(file, FileMode.Create);
@@ -478,8 +501,8 @@ public class FF16PackBuilder
         {
             // 0000
             case ".anmb":
-            case ".tex":
-            case ".mdl":
+            case ".tex": // <- Textures, texture data is already dstorage compressed.
+            case ".mdl": // <- Models, geometry is already dstorage compressed.
             case ".spd8":
             case ".tera":
             case ".gid":
