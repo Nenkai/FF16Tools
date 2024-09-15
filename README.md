@@ -91,6 +91,12 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 * Return building/unpack progress
 * Find a GDeflate library that actually works cross-platform
 
+## Discord
+
+<a href="https://discord.gg/D7jhUDfYZh">
+  <img src="https://discordapp.com/api/guilds/1284918645675397140/widget.png?style=banner2" alt="Discord Banner 1"/>
+</a>
+
 ## Acknowledgements
 
 [Vortice.Windows](https://github.com/amerkoleci/Vortice.Windows) for having a usable DirectStorage wrapper/API.
