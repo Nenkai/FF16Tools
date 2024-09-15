@@ -9,7 +9,7 @@ Tools for Final Fantasy XVI / 16.
 * Nex `.nxd` conversion
 * *Planned*: Automatic Mod Manager
 
-This has been tested on Final Fantasy 16 Demo (Steam/PC) files.
+This has been tested on Final Fantasy 16 Demo (Steam/PC) files. Pack handling is available as a [NuGet Package](https://www.nuget.org/packages/FF16Tools.Pack/).
 
 ## Usage
 
@@ -82,7 +82,6 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
 * Support `.nxd` files - export/import from SQLite (let's not use excel like they did.)
 * Return building/unpack progress
-* Expose lib as a NuGet Package (for package consumption from i.e mod managers)
 * Find a GDeflate library that actually works cross-platform
 
 ## Acknowledgements
