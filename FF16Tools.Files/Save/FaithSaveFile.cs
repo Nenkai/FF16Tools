@@ -68,7 +68,7 @@ public class FaithSaveGameData
         return saveFile;
     }
 
-    // FF14 Demo 1.0.0: 1409DD0DC
+    // FF16 Demo 1.0.0: 1409DD0DC
     public static void DecryptDecompress(byte[] encryptedData, byte[] decompressedBuffer)
     {
         // This is pretty much accurate to how the game does it.
