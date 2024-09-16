@@ -1,22 +1,28 @@
-﻿using CommandLine;
-
-using Syroot.BinaryData;
-
-using FF16Tools.Pack;
-using FF16Tools.Pack.Packing;
+﻿using System.Buffers.Binary;
+using System.IO.Compression;
 
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
+
+using CommandLine;
+
 using NLog;
-using FF16Tools.Files.Textures;
+using NLog.Extensions.Logging;
+
 using SixLabors.ImageSharp;
-using FF16Tools.Files.Nex;
-using FF16Tools.Files.Nex.Exporters;
-using FF16Tools.Files.Nex.Entities;
+
+using Syroot.BinaryData;
+using Syroot.BinaryData.Memory;
 
 using FF16Tools.Files;
-
+using FF16Tools.Files.Save;
+using FF16Tools.Files.Nex;
+using FF16Tools.Files.Nex.Entities;
+using FF16Tools.Files.Nex.Exporters;
 using FF16Tools.Files.Nex.Managers;
+using FF16Tools.Files.Textures;
+using FF16Tools.Pack;
+using FF16Tools.Pack.Packing;
+using FF16Tools.Shared;
 
 namespace FF16Tools.CLI;
 
@@ -70,7 +76,7 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, ExtractSaveVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
@@ -78,6 +84,7 @@ public class Program
         p.WithParsed<TexConvVerbs>(TexConv);
         p.WithParsed<NxdToSqliteVerbs>(NxdToSqlite);
         p.WithParsed<SqliteToNxdVerbs>(SqliteToNxd);
+        p.WithParsed<ExtractSaveVerbs>(ExtractSave);
     }
 
     static async Task UnpackFile(UnpackFileVerbs verbs)
@@ -345,6 +352,41 @@ public class Program
         }
     }
 
+    public static void ExtractSave(ExtractSaveVerbs verbs)
+    {
+        if (!File.Exists(verbs.InputFile))
+        {
+            _logger.LogError("File '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(verbs.OutputDir))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+            verbs.OutputDir = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}_extracted");
+        }
+
+        try
+        {
+            var faithSaveFile = FaithSaveGameData.Open(verbs.InputFile);
+
+            Directory.CreateDirectory(verbs.OutputDir);
+
+            foreach (KeyValuePair<string, byte[]> file in faithSaveFile.Files)
+            {
+                _logger.LogInformation("Writing {fileName}...", file.Key);
+                File.WriteAllBytes(Path.Combine(verbs.OutputDir, file.Key), file.Value);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to read save file");
+            return;
+        }
+
+        _logger.LogInformation("Done.");
+    }
+
 
 #if DEBUG
     // Debug utility for reading and re-serializing tables
@@ -468,4 +510,14 @@ public class TexConvVerbs
 
     [Option('r', "recursive", HelpText = "If a folder is provided, whether to recursively convert.")]
     public bool Recursive { get; set; }
+}
+
+[Verb("extract-save", HelpText = "Extracts a save file.")]
+public class ExtractSaveVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input save (.png) file.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output directory for .nxd files.")]
+    public string OutputDir { get; set; }
 }
