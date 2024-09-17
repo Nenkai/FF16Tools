@@ -76,7 +76,7 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, ExtractSaveVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, ExtractSaveVerbs, PackSaveVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
@@ -85,6 +85,7 @@ public class Program
         p.WithParsed<NxdToSqliteVerbs>(NxdToSqlite);
         p.WithParsed<SqliteToNxdVerbs>(SqliteToNxd);
         p.WithParsed<ExtractSaveVerbs>(ExtractSave);
+        p.WithParsed<PackSaveVerbs>(PackSave);
     }
 
     static async Task UnpackFile(UnpackFileVerbs verbs)
@@ -363,7 +364,7 @@ public class Program
         if (string.IsNullOrWhiteSpace(verbs.OutputDir))
         {
             string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputDir = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}_extracted");
+            verbs.OutputDir = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.extracted");
         }
 
         try
@@ -377,6 +378,54 @@ public class Program
                 _logger.LogInformation("Writing {fileName}...", file.Key);
                 File.WriteAllBytes(Path.Combine(verbs.OutputDir, file.Key), file.Value);
             }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to read save file");
+            return;
+        }
+
+        _logger.LogInformation("Done.");
+    }
+
+    public static void PackSave(PackSaveVerbs verbs)
+    {
+        if (!Directory.Exists(verbs.InputFile))
+        {
+            _logger.LogError("Directory '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(verbs.OutputPath))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.png");
+        }
+
+        try
+        {
+            var save = new FaithSaveGameData();
+            foreach (var file in Directory.GetFiles(verbs.InputFile))
+            {
+                save.AddFile(file);
+            }
+
+            byte[] serialized = save.WriteSaveFile();
+
+            if (File.Exists(verbs.OutputPath))
+            {
+                _logger.LogInformation("File already exists. Overwrite? [y/n]");
+                if (Console.ReadKey().Key != ConsoleKey.Y)
+                {
+                    _logger.LogInformation("Aborting.");
+                    return;
+                }
+                Console.WriteLine();
+            }
+
+            File.WriteAllBytes(verbs.OutputPath, serialized);
+            _logger.LogInformation("Save writen to {path}.", verbs.OutputPath);
+
         }
         catch (Exception ex)
         {
@@ -512,12 +561,22 @@ public class TexConvVerbs
     public bool Recursive { get; set; }
 }
 
-[Verb("extract-save", HelpText = "Extracts a save file.")]
+[Verb("extract-save", HelpText = "Extracts a save file (.png) into a folder.")]
 public class ExtractSaveVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input save (.png) file.")]
     public string InputFile { get; set; }
 
-    [Option('o', "output", HelpText = "Output directory for .nxd files.")]
+    [Option('o', "output", HelpText = "Output directory.")]
     public string OutputDir { get; set; }
+}
+
+[Verb("pack-save", HelpText = "Packs a save folder into a save file (.png).")]
+public class PackSaveVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input directory.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output save (.png) file.")]
+    public string OutputPath { get; set; }
 }

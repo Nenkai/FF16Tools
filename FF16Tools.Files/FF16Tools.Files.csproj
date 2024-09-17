@@ -18,6 +18,7 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
     <PackageReference Include="Syroot.BinaryData" Version="5.2.2" />
     <PackageReference Include="Syroot.BinaryData.Memory" Version="5.2.2" />
+    <PackageReference Include="System.IO.Hashing" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
