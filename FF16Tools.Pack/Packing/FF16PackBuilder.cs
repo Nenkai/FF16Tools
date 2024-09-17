@@ -123,10 +123,15 @@ public class FF16PackBuilder
         ArgumentException.ThrowIfNullOrWhiteSpace(localPath, nameof(gamePath));
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
 
-        if (!gamePath.StartsWith(_options.Name))
-            throw new ArgumentException($"Game path should start with '{_options.Name}'.");
+        if (!string.IsNullOrEmpty(_options.Name))
+        {
+            if (!gamePath.StartsWith(_options.Name))
+                throw new ArgumentException($"Game path should start with '{_options.Name}'.");
 
-        gamePath = Path.GetRelativePath(_options.Name, gamePath.ToLower().Replace('\\', '/'));
+            gamePath = Path.GetRelativePath(_options.Name, gamePath);
+        }
+
+        gamePath = gamePath.ToLower().Replace('\\', '/');
 
         _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
 
@@ -242,7 +247,7 @@ public class FF16PackBuilder
 
         for (int i = 0; i < _sharedChunksTasks.Count; i++)
         {
-            _logger?.LogInformation("PACK: Writing shared chunk {chunkNumber}/{totalChunks}..", i+1, _sharedChunksTasks.Count);
+            _logger?.LogInformation("PACK: Writing shared chunk {chunkNumber}/{totalChunks}..", i + 1, _sharedChunksTasks.Count);
             ChunkTask chunk = _sharedChunksTasks[i];
             await WriteSharedChunk(fs, chunk, ct);
         }
@@ -277,7 +282,7 @@ public class FF16PackBuilder
         bs.WriteBoolean(_options.Encrypt);
         bs.WriteUInt16((ushort)_sharedChunksTasks.Count);
         bs.WriteUInt64(0); // Pack size, write later
-        
+
         byte[] nameBuffer = new byte[0x100];
         Encoding.UTF8.GetBytes(_options.Name, nameBuffer);
         if (_options.Encrypt)
