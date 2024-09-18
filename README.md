@@ -48,7 +48,7 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 
 Use [Reloaded-II](https://github.com/Reloaded-Project/Reloaded-II/releases) and install the [FFXVI Mod Loader](https://github.com/Nenkai/ff16.utility.modloader).
 
-Refer to the readme of the FFXVI Mod Loader for usage.
+Refer to [this](https://nenkai.github.io/ffxvi-modding/modding/installing_mods/).
 
 ### Method 2: Modding Manually
 
