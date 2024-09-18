@@ -20,7 +20,7 @@ public class PackBuildOptions
             if (Encoding.UTF8.GetByteCount(value) > 255)
                 throw new ArgumentException("Name of pack must not be longer than 255 bytes.");
 
-            _name = value;
+            _name = value.Replace('\\', '/');
         }
     }
 

@@ -123,15 +123,12 @@ public class FF16PackBuilder
         ArgumentException.ThrowIfNullOrWhiteSpace(localPath, nameof(gamePath));
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
 
-        if (!string.IsNullOrEmpty(_options.Name))
-        {
-            if (!gamePath.StartsWith(_options.Name))
-                throw new ArgumentException($"Game path should start with '{_options.Name}'.");
-
-            gamePath = Path.GetRelativePath(_options.Name, gamePath);
-        }
-
         gamePath = gamePath.ToLower().Replace('\\', '/');
+
+        if (!gamePath.StartsWith(_options.Name))
+            throw new ArgumentException($"Game path should start with '{_options.Name}'.");
+
+        gamePath = Path.GetRelativePath(_options.Name, gamePath);
 
         _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
 
