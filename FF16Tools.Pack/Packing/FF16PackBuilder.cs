@@ -128,7 +128,7 @@ public class FF16PackBuilder
         if (!gamePath.StartsWith(_options.Name))
             throw new ArgumentException($"Game path should start with '{_options.Name}'.");
 
-        gamePath = Path.GetRelativePath(_options.Name, gamePath);
+        gamePath = Path.GetRelativePath(_options.Name, gamePath).Replace('\\', '/'); // normalize again since GetRelativePath can swap back to '\\'..
 
         _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
 
