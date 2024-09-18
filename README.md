@@ -52,12 +52,14 @@ Refer to the readme of the FFXVI Mod Loader for usage.
 
 ### Method 2: Modding Manually
 
-> [!NOTE]  
-> You may choose to rebuild a `.pac` entirely, or **preferably** you can use `.diff.pac` files.
-> 
-> When packing an extracted folder, the output pack file should have `.diff` in its name. The game will load this file.
-> 
-> So if your files came from `0000.pac`, the new pac file should be `0000.diff.pac`. 
+> [!NOTE]
+> You should use **Method 1** if you intend to distribute mods, otherwise it is not possible for users to install multiple mods that edits the same pack contents.
+
+You may choose to rebuild a `.pac` entirely, or **preferably** you can use `.diff.pac` files.
+
+When packing an extracted folder, the output pack file should have `.diff` in its name. The game will load this file.
+
+So if your files came from `0000.pac`, the new pac file should be `0000.diff.pac`. 
 
 > [!IMPORTANT]
 > **You only have to include files you want to edit, not ALL the files from the original `.pac`**.
@@ -87,7 +89,6 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 
 ## Roadmap
 
-* Support `.nxd` files - export/import from SQLite (let's not use excel like they did.)
 * Return building/unpack progress
 * Find a GDeflate library that actually works cross-platform
 
