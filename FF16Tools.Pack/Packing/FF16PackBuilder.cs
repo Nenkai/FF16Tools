@@ -125,8 +125,11 @@ public class FF16PackBuilder
 
         gamePath = gamePath.ToLower().Replace('\\', '/');
 
-        if (!gamePath.StartsWith(_options.Name))
-            throw new ArgumentException($"Game path should start with '{_options.Name}'.");
+        if (!string.IsNullOrEmpty(_options.Name))
+        {
+            if (!gamePath.StartsWith(_options.Name))
+                throw new ArgumentException($"Game path should start with '{_options.Name}'.");
+        }
 
         gamePath = Path.GetRelativePath(_options.Name, gamePath).Replace('\\', '/'); // normalize again since GetRelativePath can swap back to '\\'..
 
@@ -281,7 +284,7 @@ public class FF16PackBuilder
         bs.WriteUInt64(0); // Pack size, write later
 
         byte[] nameBuffer = new byte[0x100];
-        Encoding.UTF8.GetBytes(_options.Name, nameBuffer);
+        Encoding.UTF8.GetBytes(_options.Name ?? "", nameBuffer);
         if (_options.Encrypt)
             XorEncrypt.CryptHeaderPart(nameBuffer);
         bs.WriteBytes(nameBuffer);
