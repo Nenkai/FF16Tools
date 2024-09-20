@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Nex\Layouts\razerevent.layout">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Nex\Layouts\questparalleltodo.layout">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

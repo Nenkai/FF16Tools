@@ -14,8 +14,8 @@ add_column|Unk10|int
 add_column|Unk11|float
 add_column|BossDamage|short
 add_column|EnemyDamage|short
-add_column|HealthStagerMult|short
-add_column|BossStager|short
+add_column|BossStagger|short
+add_column|EnemyFlinch|short
 add_column|BossHp|short
 add_column|EnemyHp|short
 add_column|Unk18|byte

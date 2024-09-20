@@ -7,3 +7,6 @@ add_column|Unk2|string
 add_column|Unk3|float
 add_column|Unk4|float
 add_column|Unk5|float
+
+// NOTE: Added in retail? wasn't in demo
+add_column|Unk6|float

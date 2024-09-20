@@ -45,7 +45,7 @@ add_column|Unk38|float
 add_column|Unk39|int
 add_column|Unk40|int
 add_column|Unk41|int
-add_column|Unk42|float[]
+add_column|CooldownArray|float[]
 add_column|Unk43|int
 add_column|Unk44|float[]
 add_column|Unk45|int
