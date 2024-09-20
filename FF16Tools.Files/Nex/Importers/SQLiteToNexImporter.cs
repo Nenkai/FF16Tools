@@ -136,37 +136,57 @@ public class SQLiteToNexImporter : IDisposable
                 }
             }
 
-            while (reader.Read())
+            NexStructColumn lastColumn = null;
+            uint rowId = 0, subId = 0, arrayIndex = 0;
+
+            try
             {
-                List<object> cells = [];
-                uint rowId = 0, subId = 0, arrayIndex = 0;
-                if (tableLayout.Type == NexTableType.Rows)
+                while (reader.Read())
                 {
-                    rowId = (uint)(long)reader["RowID"];
-                }
-                else if (tableLayout.Type == NexTableType.RowSets)
-                {
-                    rowId = (uint)(long)reader["RowID"];
-                    arrayIndex = (uint)(long)reader["ArrayIndex"];
-                }
-                else if (tableLayout.Type == NexTableType.DoubleKeyed)
-                {
-                    rowId = (uint)(long)reader["RowID"];
-                    subId = (uint)(long)reader["SubID"];
-                    arrayIndex = (uint)(long)reader["ArrayIndex"];
-                }
-                else
-                    throw new NotImplementedException($"Table layout type {tableLayout.Type} not yet supported");
+                    rowId = 0;
+                    subId = 0;
+                    arrayIndex = 0;
 
-                for (int i = 0; i < tableLayout.Columns.Count; i++)
-                {
-                    var column = tableLayout.Columns[i];
-                    object val = reader[column.Name];
-                    object cell = ParseCell(tableLayout, column, val);
-                    cells.Add(cell);
-                }
+                    List<object> cells = [];
+                    if (tableLayout.Type == NexTableType.Rows)
+                    {
+                        rowId = (uint)(long)reader["RowID"];
+                    }
+                    else if (tableLayout.Type == NexTableType.RowSets)
+                    {
+                        rowId = (uint)(long)reader["RowID"];
+                        arrayIndex = (uint)(long)reader["ArrayIndex"];
+                    }
+                    else if (tableLayout.Type == NexTableType.DoubleKeyed)
+                    {
+                        rowId = (uint)(long)reader["RowID"];
+                        subId = (uint)(long)reader["SubID"];
+                        arrayIndex = (uint)(long)reader["ArrayIndex"];
+                    }
+                    else
+                        throw new NotImplementedException($"Table layout type {tableLayout.Type} not yet supported");
 
-                tableBuilder.AddRow(rowId, subId, arrayIndex, cells);
+                    for (int i = 0; i < tableLayout.Columns.Count; i++)
+                    {
+                        lastColumn = tableLayout.Columns[i];
+                        object val = reader[lastColumn.Name];
+
+                        object cell = ParseCell(tableLayout, lastColumn, val);
+                        cells.Add(cell);
+                    }
+
+                    tableBuilder.AddRow(rowId, subId, arrayIndex, cells);
+                    rowId++;
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = $"Error in row (RowID: {rowId}, SubId: {subId}, ArrayIndex: {arrayIndex}";
+                if (lastColumn is not null)
+                    message += $", At Column: {lastColumn.Name} ({lastColumn.Type})";
+                message += ")\n";
+
+                throw new Exception(message + ex.Message);
             }
         }
     }
@@ -253,9 +273,8 @@ public class SQLiteToNexImporter : IDisposable
                 }
             case NexColumnType.CustomStructArray:
                 {
-                    List<object> array = [];
                     if (val is DBNull)
-                        return array;
+                        return Array.Empty<object>();
 
                     string arrStr = (string)val;
                     var col = tableLayout.CustomStructDefinitions[column.StructTypeName];
@@ -263,9 +282,12 @@ public class SQLiteToNexImporter : IDisposable
                     if (!string.IsNullOrEmpty(arrStr))
                     {
                         JsonElement obj = (JsonElement)JsonSerializer.Deserialize<object>(arrStr);
+                        object[] array = new object[obj.GetArrayLength()];
+
+                        int arrayIndex = 0;
                         foreach (JsonElement item in obj.EnumerateArray())
                         {
-                            var structItem = new List<object>();
+                            var structItem = new object[col.Count];
 
                             int fieldIndex = 0;
                             foreach (JsonElement field in item.EnumerateArray())
@@ -273,16 +295,16 @@ public class SQLiteToNexImporter : IDisposable
                                 switch (col[fieldIndex].Type)
                                 {
                                     case NexColumnType.Short:
-                                        structItem.Add(field.GetInt16());
+                                        structItem[fieldIndex] = field.GetInt16();
                                         break;
                                     case NexColumnType.String:
-                                        structItem.Add(field.GetString());
+                                        structItem[fieldIndex] = field.GetString();
                                         break;
                                     case NexColumnType.Float:
-                                        structItem.Add(field.GetSingle());
+                                        structItem[fieldIndex] = field.GetSingle();
                                         break;
                                     case NexColumnType.Int:
-                                        structItem.Add(field.GetInt32());
+                                        structItem[fieldIndex] = field.GetInt32();
                                         break;
                                     case NexColumnType.ByteArray:
                                         {
@@ -292,7 +314,7 @@ public class SQLiteToNexImporter : IDisposable
                                             int j = 0;
                                             foreach (JsonElement elem in field.EnumerateArray())
                                                 arr[j++] = elem.GetByte();
-                                            structItem.Add(arr);
+                                            structItem[fieldIndex] = arr;
                                             break;
                                         }
                                     case NexColumnType.IntArray:
@@ -303,7 +325,18 @@ public class SQLiteToNexImporter : IDisposable
                                             int j = 0;
                                             foreach (JsonElement elem in field.EnumerateArray())
                                                 arr[j++] = elem.GetInt32();
-                                            structItem.Add(arr);
+                                            structItem[fieldIndex] = arr;
+                                            break;
+                                        }
+                                    case NexColumnType.FloatArray:
+                                        {
+                                            int arrLen = field.GetArrayLength();
+                                            var arr = new float[arrLen];
+
+                                            int j = 0;
+                                            foreach (JsonElement elem in field.EnumerateArray())
+                                                arr[j++] = elem.GetSingle();
+                                            structItem[fieldIndex] = arr;
                                             break;
                                         }
                                     default:
@@ -313,14 +346,14 @@ public class SQLiteToNexImporter : IDisposable
                                 fieldIndex++;
                             }
 
-                            array.Add(structItem);
+                            array[arrayIndex++] = structItem;
                         }
 
                         return array;
                     }
                     else
                     {
-                        return array;
+                        return Array.Empty<object>();
                     }
                 }
             default:
