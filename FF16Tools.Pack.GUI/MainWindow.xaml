@@ -7,16 +7,19 @@
         mc:Ignorable="d"
         Title="FF16 Unpacker by Nenkai (GUI)" 
         Height="354" 
-        Width="700" 
+        Width="800" 
         MinHeight="345" 
         MaxHeight="345"
-        MinWidth="700"
-        
+        MinWidth="800"
+        WindowStartupLocation="CenterScreen"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"        
         >
     <Grid>
-        <TabControl >
+        <!-- janky "working..." text -->
+        <Label Name="ui_working_label" Content="Application working... please wait while it finishes..." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,38,10,0" Visibility="Hidden" FontStyle="Italic"/>
+
+        <TabControl Name="tb_TabControl" Visibility="Visible">
             <!-- UNPACK TAB -->
             <TabItem Header="Unpack">
                 <Grid>
@@ -53,9 +56,6 @@
                     <!-- ACTIONS SECTION -->
                     <Button Name="ui_extract_button" Content="Extract" Margin="10,229,10,0" VerticalAlignment="Top" Height="32" Click="ui_extract_button_Click" HorizontalAlignment="Stretch"/>
                     <Button Name="ui_listfiles_button" Content="List Files" Margin="10,192,10,0" VerticalAlignment="Top" Height="32" Click="ui_listfiles_button_Click" HorizontalAlignment="Stretch"/>
-
-                    <!-- janky "working..." text -->
-                    <Label Name="ui_working_label" Content="Application working... please wait while it finishes..." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,38,10,0" Visibility="Hidden" FontStyle="Italic"/>
                 </Grid>
             </TabItem>
 
@@ -75,9 +75,8 @@
                     <Button Name="ui_repack_output_button" Content="Open" Margin="0,64,10,0" Height="32" Width="62" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ui_repack_output_button_Click"/>
 
                     <!-- PACK FILE NAME SECTION -->
-                    <Label Name="ui_repack_packName_label" Content="Name:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" Width="64" Height="32"/>
-                    <TextBox Name="ui_repack_packName_textbox" Margin="79,101,10,0" TextWrapping="Wrap" Text="Pack Name" VerticalAlignment="Top" Height="26" TextChanged="ui_repack_packName_textbox_TextChanged"/>
-                    <CheckBox Name="ui_repack_encrypt_checkbox" Content="Encrypt" Margin="10,138,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="29" Click="ui_repack_encrypt_checkbox_Click"/>
+                    <CheckBox Name="ui_repack_encrypt_checkbox" Content="Encrypt" Margin="10,101,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="29" Click="ui_repack_encrypt_checkbox_Click"/>
+                    <CheckBox Name="ui_repack_open_on_finish_checkbox" IsChecked="True" Content="Open Directory on Pack" Margin="10,138,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="29"/>
 
                     <Separator Name="ui_repack_seperatorBottom" Margin="11,175,9,0" VerticalAlignment="Top" Height="12"/>
 

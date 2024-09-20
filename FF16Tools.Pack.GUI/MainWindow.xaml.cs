@@ -14,6 +14,8 @@ using System.ComponentModel;
 using Microsoft.Win32;
 
 using Microsoft.Extensions.Logging;
+using FF16Tools.Pack.Packing;
+using System.Diagnostics;
 
 namespace FF16Tools.Pack.GUI;
 
@@ -156,13 +158,14 @@ public partial class MainWindow : Window
                 {
                     using var pack = FF16Pack.Open(pacFilePath);
                     string packName = System.IO.Path.GetFileNameWithoutExtension(pacFilePath);
-                    string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}.extracted");
+                    string outputDir = System.IO.Path.Combine(unpackOutputPath, packName);
                     Directory.CreateDirectory(outputDir);
 
                     await pack.ExtractAll(outputDir);
                 }
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
+                Process.Start("explorer.exe", System.IO.Path.GetDirectoryName(repackInputPath));
             }
             catch (Exception ex)
             {
@@ -180,7 +183,7 @@ public partial class MainWindow : Window
                 using var pack = FF16Pack.Open(unpackInputPath);
 
                 string packName = System.IO.Path.GetFileNameWithoutExtension(unpackInputPath);
-                string outputDir = System.IO.Path.Combine(unpackOutputPath, $"{packName}.extracted");
+                string outputDir = System.IO.Path.Combine(unpackOutputPath, packName);
                 Directory.CreateDirectory(outputDir);
 
                 //if its configured to where the user wants to extract a specific game file from an archive, then let them
@@ -190,6 +193,7 @@ public partial class MainWindow : Window
                     await pack.ExtractAll(outputDir);
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
+                Process.Start("explorer.exe", outputDir);
             }
             catch (Exception ex)
             {
@@ -324,21 +328,7 @@ public partial class MainWindow : Window
         Visibility mainElementVisibility = isWorking ? Visibility.Hidden : Visibility.Visible;
 
         ui_working_label.Visibility = isWorking ? Visibility.Visible : Visibility.Hidden;
-
-        ui_seperatorTop.Visibility = mainElementVisibility;
-        ui_extractiomode_combobox.Visibility = mainElementVisibility;
-        ui_extractiomode_label.Visibility = mainElementVisibility;
-        ui_input_label.Visibility = mainElementVisibility;
-        ui_input_textbox.Visibility = mainElementVisibility;
-        ui_input_button.Visibility = mainElementVisibility;
-        ui_gamefile_label.Visibility = mainElementVisibility;
-        ui_gamefile_textbox.Visibility = mainElementVisibility;
-        ui_output_label.Visibility = mainElementVisibility;
-        ui_output_textbox.Visibility = mainElementVisibility;
-        ui_output_button.Visibility = mainElementVisibility;
-        ui_seperatorBottom.Visibility = mainElementVisibility;
-        ui_listfiles_button.Visibility = mainElementVisibility;
-        ui_extract_button.Visibility = mainElementVisibility;
+        tb_TabControl.Visibility = mainElementVisibility;
 
         //enable this field if the user wants to extract a specific file from the .pac archive, otherwise disable it because we'd confuse the user
         ui_gamefile_label.IsEnabled = extractionMode == ExtractionMode.SingleArchiveWithGameFile;
@@ -368,12 +358,14 @@ public partial class MainWindow : Window
     {
         GetPath(ref unpackInputPath, unpackInputPathIsFolder);
         ui_input_textbox.Text = unpackInputPath;
+        ui_output_textbox.Text = unpackOutputPath = System.IO.Path.GetDirectoryName(unpackInputPath);
     }
 
     private void ui_input_button_Click(object sender, RoutedEventArgs e)
     {
         GetPath(ref unpackInputPath, unpackInputPathIsFolder);
         ui_input_textbox.Text = unpackInputPath;
+        ui_output_textbox.Text = unpackOutputPath = System.IO.Path.GetDirectoryName(unpackInputPath);
     }
 
     private void ui_input_textbox_Drop(object sender, DragEventArgs e)
@@ -476,12 +468,26 @@ public partial class MainWindow : Window
     {
         GetPath(ref repackInputPath, true);
         ui_repack_input_textbox.Text = repackInputPath;
+        ui_repack_output_textbox.Text = repackOutputPath = GenerateOutputPathFromInput();
     }
 
     private void ui_repack_input_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         GetPath(ref repackInputPath, true);
         ui_repack_input_textbox.Text = repackInputPath;
+
+        ui_repack_output_textbox.Text = repackOutputPath = GenerateOutputPathFromInput();
+    }
+
+    private string GenerateOutputPathFromInput()
+    {
+        string packName = System.IO.Path.GetFileName(repackInputPath);
+        List<string> spl = packName.Split('.').ToList();
+        spl.Insert(1, "diff");
+        string diffPackName = string.Join('.', spl);
+
+        string diffFullPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(repackInputPath), diffPackName) + ".pac";
+        return diffFullPath;
     }
 
     //================= (REPACK) OUTPUT SECTION =================
@@ -490,19 +496,15 @@ public partial class MainWindow : Window
 
     private void ui_repack_output_button_Click(object sender, RoutedEventArgs e)
     {
-        GetPath(ref repackOutputPath, true);
+        GetPath(ref repackOutputPath, false);
         ui_repack_output_textbox.Text = repackOutputPath;
     }
 
     private void ui_repack_output_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        GetPath(ref repackOutputPath, true);
+        GetPath(ref repackOutputPath, false);
         ui_repack_output_textbox.Text = repackOutputPath;
     }
-
-    //================= (REPACK) PACK NAME SECTION =================
-
-    private void ui_repack_packName_textbox_TextChanged(object sender, TextChangedEventArgs e) => repackPackName = ui_repack_packName_textbox.Text;
 
     //================= (REPACK) ENCRYPT SECTION =================
 
@@ -510,10 +512,52 @@ public partial class MainWindow : Window
 
     //================= (REPACK) ACTIONS SECTION =================
 
-    private void ui_repack_pack_button_Click(object sender, RoutedEventArgs e)
+    private async void ui_repack_pack_button_Click(object sender, RoutedEventArgs e)
     {
-        //NOTE: replace in future with progress bar
-        //isWorking = true;
-        //UpdateUI();
+        isWorking = true;
+        UpdateUI();
+
+        await Pack();
+
+        isWorking = false;
+        UpdateUI();
+    }
+
+    public bool CanPack()
+    {
+        //Make sure the output folder that the user set does exist...
+        if (!Directory.Exists(repackInputPath))
+        {
+            ErrorBox("Extraction Error!", "Error! The input folder path you set does not exist! (or is not a valid folder path)");
+            return false;
+        }
+
+        return true;
+    }
+
+    private async Task Pack()
+    {
+        if (!CanPack())
+            return;
+
+        try
+        {
+            var packBuilder = new FF16PackBuilder(new PackBuildOptions()
+            {
+                Encrypt = repackEncrypt,
+            });
+
+            packBuilder.InitFromDirectory(repackInputPath);
+            await packBuilder.WriteToAsync(repackOutputPath);
+
+            InfoBox("Extraction Complete!", "Finished packing.");
+
+            if (ui_repack_open_on_finish_checkbox.IsChecked == true)
+                Process.Start("explorer.exe", $"/select, \"{System.IO.Path.GetFullPath(repackOutputPath)}\"");
+        }
+        catch (Exception ex)
+        {
+            ErrorBox("Pack Error!", ex.Message);
+        }
     }
 }
