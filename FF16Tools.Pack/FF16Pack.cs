@@ -285,11 +285,11 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     private async Task UnpackFileToStream(FF16PackFile packFile, Stream outputStream, string pathForLogging, CancellationToken ct = default)
     {
-        _logger.LogInformation("Fetching {path} (compressed={compressed}, dataOffset=0x{offset:X8})", pathForLogging, packFile.IsCompressed, packFile.DataOffset);
+        _logger?.LogInformation("Fetching {path} (compressed={compressed}, dataOffset=0x{offset:X8})", pathForLogging, packFile.IsCompressed, packFile.DataOffset);
 
         if (packFile.IsCompressed)
         {
-            _logger.LogTrace("Compression type: {compressionType}", packFile.ChunkedCompressionFlags);
+            _logger?.LogTrace("Compression type: {compressionType}", packFile.ChunkedCompressionFlags);
             switch (packFile.ChunkedCompressionFlags)
             {
                 case FF16PackChunkCompressionType.UseSharedChunk:

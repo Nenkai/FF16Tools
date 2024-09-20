@@ -72,7 +72,7 @@ public class TextureFile
         if (texture.Dimension == 3)
             throw new NotSupportedException("3D textures are not supported yet.");
 
-        _logger.LogInformation("Texture #{texIndex}: {width}x{height} ({format})", textureIndex, texture.Width, texture.Height, texture.PixelFormat);
+        _logger?.LogInformation("Texture #{texIndex}: {width}x{height} ({format})", textureIndex, texture.Width, texture.Height, texture.PixelFormat);
 
         if (!texture.NoChunks)
         {
@@ -88,7 +88,7 @@ public class TextureFile
                 TextureChunkInfo chunkInfo = TextureChunks[texture.ChunkIndex + i];
                 textureFileStream.Position = basePos + chunkInfo.CompressedDataOffset;
 
-                _logger.LogTrace("Extracting texture chunk #{index}, offset @ 0x{offset:X8}, compSize=0x{compSize:X8}, decompSize=0x{decompSize:X8}", 
+                _logger?.LogTrace("Extracting texture chunk #{index}, offset @ 0x{offset:X8}, compSize=0x{compSize:X8}, decompSize=0x{decompSize:X8}", 
                     texture.ChunkIndex + i, chunkInfo.CompressedDataOffset, chunkInfo.CompressedChunkSize, chunkInfo.DecompressedChunkSize);
 
                 if (chunkInfo.CompressedChunkSize == chunkInfo.DecompressedChunkSize) // TODO: Find the "is compressed" flag

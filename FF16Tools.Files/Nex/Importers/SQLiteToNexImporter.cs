@@ -77,14 +77,14 @@ public class SQLiteToNexImporter : IDisposable
             table.Value.Write(fs);
         }
 
-        _logger.LogInformation("Exported to {directory}.", directory);
+        _logger?.LogInformation("Exported to {directory}.", directory);
     }
 
     private void CreateTables()
     {
         var command = _con.CreateCommand();
         command.CommandText = $"SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';";
-        _logger.LogTrace(command.CommandText);
+        _logger?.LogTrace(command.CommandText);
 
         var reader = command.ExecuteReader();
 
@@ -107,7 +107,7 @@ public class SQLiteToNexImporter : IDisposable
             _tableLayouts.Add(tableName, layout);
         }
 
-        _logger.LogInformation("Loaded {count} tables from SQLite", _tableLayouts.Count);
+        _logger?.LogInformation("Loaded {count} tables from SQLite", _tableLayouts.Count);
     }
 
     private void FillTables()
