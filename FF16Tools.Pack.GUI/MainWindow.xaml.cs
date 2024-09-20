@@ -330,10 +330,6 @@ public partial class MainWindow : Window
         ui_working_label.Visibility = isWorking ? Visibility.Visible : Visibility.Hidden;
         tb_TabControl.Visibility = mainElementVisibility;
 
-        //enable this field if the user wants to extract a specific file from the .pac archive, otherwise disable it because we'd confuse the user
-        ui_gamefile_label.IsEnabled = extractionMode == ExtractionMode.SingleArchiveWithGameFile;
-        ui_gamefile_textbox.IsEnabled = extractionMode == ExtractionMode.SingleArchiveWithGameFile;
-
         //Disable the list files button because with this mode the user already knows what file they want (supposedly)
         ui_listfiles_button.IsEnabled = extractionMode != ExtractionMode.SingleArchiveWithGameFile;
     }
@@ -389,9 +385,6 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    //================= (UNPACK) GAME FILE SECTION =================
-
-    private void ui_gamefile_textbox_TextChanged(object sender, TextChangedEventArgs e) => unpackGameFile = ui_gamefile_textbox.Text;
 
     //================= (UNPACK) OUTPUT SECTION =================
 
