@@ -44,6 +44,9 @@ public class FaithSaveGameData
         var pngReader = new PngReader(ms);
         ChunksList chunks = pngReader.GetChunksList();
         PngChunkUNKNOWN faithChunk = (PngChunkUNKNOWN)chunks.GetById1(PNG_CHUNK_FAITH, false);
+        if (faithChunk is null)
+            throw new KeyNotFoundException($"Faith Chunk '{PNG_CHUNK_FAITH}' was not found in PNG Save File. Is this a valid save file?");
+
         byte[] saveData = faithChunk.GetData();
 
         saveFile.ReadSaveData(saveData);
