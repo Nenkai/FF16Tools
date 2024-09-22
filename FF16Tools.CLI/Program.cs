@@ -76,7 +76,7 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, ExtractSaveVerbs, PackSaveVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
@@ -84,7 +84,7 @@ public class Program
         p.WithParsed<TexConvVerbs>(TexConv);
         p.WithParsed<NxdToSqliteVerbs>(NxdToSqlite);
         p.WithParsed<SqliteToNxdVerbs>(SqliteToNxd);
-        p.WithParsed<ExtractSaveVerbs>(ExtractSave);
+        p.WithParsed<UnpackSaveVerbs>(UnpackSave);
         p.WithParsed<PackSaveVerbs>(PackSave);
     }
 
@@ -353,7 +353,7 @@ public class Program
         }
     }
 
-    public static void ExtractSave(ExtractSaveVerbs verbs)
+    public static void UnpackSave(UnpackSaveVerbs verbs)
     {
         if (!File.Exists(verbs.InputFile))
         {
@@ -369,6 +369,7 @@ public class Program
 
         try
         {
+            _logger.LogInformation("Opening save file {file}..", verbs.InputFile);
             var faithSaveFile = FaithSaveGameData.Open(verbs.InputFile);
 
             Directory.CreateDirectory(verbs.OutputDir);
@@ -407,12 +408,13 @@ public class Program
             var save = new FaithSaveGameData();
             foreach (var file in Directory.GetFiles(verbs.InputFile))
             {
+                _logger.LogInformation("Adding {file} to save..", file);
                 save.AddFile(file);
             }
 
             byte[] serialized = save.WriteSaveFile();
 
-            if (File.Exists(verbs.OutputPath))
+            if (!verbs.SkipOverwritePrompt && File.Exists(verbs.OutputPath))
             {
                 _logger.LogInformation("File already exists. Overwrite? [y/n]");
                 if (Console.ReadKey().Key != ConsoleKey.Y)
@@ -561,8 +563,8 @@ public class TexConvVerbs
     public bool Recursive { get; set; }
 }
 
-[Verb("extract-save", HelpText = "Extracts a save file (.png) into a folder.")]
-public class ExtractSaveVerbs
+[Verb("unpack-save", HelpText = "Unpacks a save file (.png) into a folder.")]
+public class UnpackSaveVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input save (.png) file.")]
     public string InputFile { get; set; }
@@ -579,4 +581,7 @@ public class PackSaveVerbs
 
     [Option('o', "output", HelpText = "Output save (.png) file.")]
     public string OutputPath { get; set; }
+
+    [Option('s', "skip", HelpText = "Skip overwrite prompt.")]
+    public bool SkipOverwritePrompt { get; set; }
 }
