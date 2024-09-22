@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 using CommunityToolkit.HighPerformance.Buffers;
 
@@ -16,21 +17,34 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
     private Dictionary<string, FF16Pack> _packFiles { get; set; } = [];
     public IReadOnlyDictionary<string, FF16Pack> PackFiles => _packFiles;
 
+    private ILogger _logger;
+
+    public FF16PackManager(ILoggerFactory loggerFactory = null)
+    {
+        if (loggerFactory is not null)
+            _logger = loggerFactory.CreateLogger(GetType().ToString());
+    }
+
     /// <summary>
     /// Opens a directory containing pack files.
     /// </summary>
     /// <param name="directory"></param>
-    public static FF16PackManager Open(string directory)
+    public void Open(string directory)
     {
-        var packManager = new FF16PackManager();
-
         foreach (var file in Directory.GetFiles(directory, "*.pac", SearchOption.TopDirectoryOnly))
         {
-            FF16Pack pack = FF16Pack.Open(file);
-            packManager._packFiles.Add(Path.GetFileNameWithoutExtension(file), pack);
+            try
+            {
+                FF16Pack pack = FF16Pack.Open(file);
+                _packFiles.Add(Path.GetFileNameWithoutExtension(file), pack);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to open pack {file}", file);
+            }
         }
 
-        return packManager;
+        _logger?.LogInformation("Loaded {count} pack(s).", _packFiles.Count);
     }
 
     /// <summary>

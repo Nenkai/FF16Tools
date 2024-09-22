@@ -85,7 +85,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         var fileBinStream = new BinaryStream(fs);
 
         if (fileBinStream.ReadUInt32() != MAGIC)
-            throw new InvalidDataException("Not a FF16 Pack file");
+            throw new InvalidDataException("Not a FF16 Pack file, magic did not match.");
 
         FF16Pack pack = new FF16Pack(fs, loggerFactory);
         uint headerSize = fileBinStream.ReadUInt32();
