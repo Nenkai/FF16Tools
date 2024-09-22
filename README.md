@@ -15,6 +15,8 @@ This has been tested on Final Fantasy 16 Demo (Steam/PC) files. Pack handling is
 Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/releases).
 
 ### Pac File
+You can use the **GUI/Graphical version**, or for the command line (CLI) commands:
+
 * Unpacking all files: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>]`
 * Unpacking a specific file: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>]`
 * Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o <output_directory>]`
