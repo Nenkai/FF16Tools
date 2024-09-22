@@ -4,8 +4,8 @@ use_base_row_id|false
 
 define_struct|Unk55_Struct|int|int|int[]|float[]|int
 
-add_column|Unk1|int
-add_column|Unk2|string
+add_column|DLCFlags|int
+add_column|JPName|string
 add_column|Unk3|int
 add_column|Unk4|int
 add_column|Unk5|int
@@ -14,7 +14,7 @@ add_column|Unk7|int
 add_column|Unk8|int
 add_column|Unk9|int[]
 add_column|Unk10|int
-add_column|Unk11|string|rel
+add_column|Name|string|rel
 add_column|Unk12|int
 add_column|Unk13|int
 add_column|Unk14|int
@@ -36,7 +36,15 @@ add_column|Unk29|int
 add_column|Unk30|int
 add_column|Unk31|int
 add_column|Unk32|int[]
-add_column|Unk33|int[]
+
+// Note with command: If you adjust PerformedSkillArray to another skill it will typically work. 
+// Certain skills like Gigaflare will crash after initial animation is done. Don't know why. 
+// Megaflare level 4 will half cast. Only beginning animation will play out without any damage. 
+// If you spam it, it increases your score like crazy though.
+// If you combine skill arrays, it will simply perform the normal skill. 
+// I.e. Trying to add Rift Slip properties did not work.
+// ~from Darchiev
+add_column|PerformedSkillArray|int[]
 add_column|Unk34|int[]
 add_column|Unk35|int[]
 add_column|Unk36|int[]
@@ -45,7 +53,7 @@ add_column|Unk38|float
 add_column|Unk39|int
 add_column|Unk40|int
 add_column|Unk41|int
-add_column|CooldownArray|float[]
+add_column|Cooldowns|float[]
 add_column|Unk43|int
 add_column|Unk44|float[]
 add_column|Unk45|int

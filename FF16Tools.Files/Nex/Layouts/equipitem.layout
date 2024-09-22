@@ -2,23 +2,23 @@ set_table_type|Rows
 set_table_category|Rows_Localized
 use_base_row_id|false
 
-define_struct|Unk26_Struct|int|int
+define_struct|EffectStruct|int|int
 
-add_column|Unk1|int
-add_column|Unk2|int
+add_column|DLCFlags|int
+add_column|EquipCategory|int
 add_column|Unk3|int
 add_column|Attack|int
-add_column|Unk5|int
-add_column|WillStagger|int
+add_column|Defense|int
+add_column|Stagger|int
 add_column|Unk7|int
-add_column|Unk8|int
+add_column|SalePrice|int
 add_column|Unk9|int
 add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|string|rel
-add_column|Unk13|string|rel|-4
-add_column|Unk14|string|rel|-8
-add_column|Unk15|string|rel|-12
+add_column|EffectFlag|int
+add_column|Name|string|rel
+add_column|Description|string|rel|-4
+add_column|Name1|string|rel|-8
+add_column|Name2|string|rel|-12
 add_column|Unk16|byte
 add_column|Unk17|byte
 add_column|Unk18|byte
@@ -28,9 +28,9 @@ add_column|Unk21|byte
 add_column|Unk22|byte
 add_column|Unk23|byte
 add_column|Unk24|string|rel|-24
-add_column|Unk25|int
-add_column|Unk26|Unk26_Struct[]
-add_column|Unk27|int
+add_column|EffectPotency|int
+add_column|EffectArray|EffectStruct[]
+add_column|HP|int
 add_column|Unk28|int
 add_column|Unk29|int
 add_column|Unk30|int

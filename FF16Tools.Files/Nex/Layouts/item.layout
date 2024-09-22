@@ -16,7 +16,7 @@ add_column|Unk11|int
 add_column|Unk12|int
 add_column|Unk13|int
 add_column|Unk14|int
-add_column|Unk15|int
+add_column|FileIconID|int
 add_column|Unk16|int
 add_column|Unk17|int
 add_column|Unk18|byte
@@ -25,8 +25,14 @@ add_column|Unk20|byte
 add_column|Unk21|byte
 add_column|Unk22|int
 add_column|Unk23|int
-add_column|Unk24|int
-add_column|Unk25|int
-add_column|Unk26|int
-add_column|Unk27|int
+add_column|Unk24|byte
+add_column|Unk25|byte
+add_column|Unk26|byte
+add_column|Unk27|byte
+add_column|Unk28|int
+add_column|Unk29|int
+add_column|Unk30|byte
+add_column|Unk31|byte
+add_column|Unk32|byte
+add_column|Unk33|byte
 
