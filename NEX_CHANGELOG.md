@@ -2,6 +2,48 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.3.7
+
+#### `command`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `JPName`
+* `Unk11` -> `Name`
+* `Unk33` -> `PerformedSkillArray`
+* `CooldownArray` -> `Cooldowns`
+
+
+#### `equipitem`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `EquipCategory`
+* `Unk5` -> `Defense`
+* `WillStagger` -> `Stagger`
+* `Unk8` -> `SalePrice`
+* `Unk11` -> `EffectFlag`
+* `Unk12` -> `Name`
+* `Unk13` -> `Description`
+* `Unk14` -> `Name1`
+* `Unk15` -> `Name2`
+* `Unk25` -> `EffectPotency`
+* `Unk26` -> `EffectArray`
+* `Unk27` -> `HP`
+
+#### `item`
+* `Unk15` -> `FileIconID`
+* `Unk24` (`int`) split into 4 bools (Unk24 through 27)
+* Old `Unk27` (`int`) split into 4 bools (Unk27 through 30)
+
+#### `skill`
+* `Unk2` -> `DLCFlags`
+* `Unk9` -> `Name`
+* `Unk10` -> `Description`
+* `Unk11` -> `Description1`
+* `Unk12` -> `UpgradeCost`
+
+##### Contributors
+* darchiev (Discord)
+
+---
+
 ## CLI 1.3.5
 
 * `command`
