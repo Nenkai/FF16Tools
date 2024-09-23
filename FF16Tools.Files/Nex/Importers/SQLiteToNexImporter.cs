@@ -191,7 +191,7 @@ public class SQLiteToNexImporter : IDisposable
         }
     }
 
-    private static object ParseCell(NexTableLayout tableLayout, NexStructColumn column, object val)
+    private object ParseCell(NexTableLayout tableLayout, NexStructColumn column, object val)
     {
         switch (column.Type)
         {
@@ -288,6 +288,9 @@ public class SQLiteToNexImporter : IDisposable
                         foreach (JsonElement item in obj.EnumerateArray())
                         {
                             var structItem = new object[col.Count];
+                            int itemsInJson = item.GetArrayLength();
+                            if (itemsInJson != col.Count)
+                                throw new Exception($"Error in column {column.Name} - expected {col.Count} fields in struct array index {arrayIndex}, got {itemsInJson} in json.");
 
                             int fieldIndex = 0;
                             foreach (JsonElement field in item.EnumerateArray())
@@ -295,19 +298,24 @@ public class SQLiteToNexImporter : IDisposable
                                 switch (col[fieldIndex].Type)
                                 {
                                     case NexColumnType.Short:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetInt16();
                                         break;
                                     case NexColumnType.String:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.String, col[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetString();
                                         break;
                                     case NexColumnType.Float:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetSingle();
                                         break;
                                     case NexColumnType.Int:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetInt32();
                                         break;
                                     case NexColumnType.ByteArray:
                                         {
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
                                             int arrLen = field.GetArrayLength();
                                             var arr = new byte[arrLen];
 
@@ -319,6 +327,8 @@ public class SQLiteToNexImporter : IDisposable
                                         }
                                     case NexColumnType.IntArray:
                                         {
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+
                                             int arrLen = field.GetArrayLength();
                                             var arr = new int[arrLen];
 
@@ -330,6 +340,8 @@ public class SQLiteToNexImporter : IDisposable
                                         }
                                     case NexColumnType.FloatArray:
                                         {
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+
                                             int arrLen = field.GetArrayLength();
                                             var arr = new float[arrLen];
 
@@ -357,8 +369,14 @@ public class SQLiteToNexImporter : IDisposable
                     }
                 }
             default:
-                throw new NotImplementedException($"Could not parse cell - type {column.Type} not supported");
+                throw new NotImplementedException("Could not parse cell - type {column.Type} not supported");
         }
+    }
+
+    private void ThrowIfStructElemNotValueKind(JsonElement jsonElement, JsonValueKind expectedKind, NexStructColumn nexColumn, int arrayIndex, int fieldIndex)
+    {
+        if (jsonElement.ValueKind != expectedKind)
+            throw new Exception($"Expected '{nexColumn.Type}' type in struct array index {arrayIndex}, struct item {fieldIndex}, got '{jsonElement.ValueKind}' from json.");
     }
 
     public void Dispose()
