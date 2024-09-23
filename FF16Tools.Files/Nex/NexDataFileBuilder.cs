@@ -387,7 +387,10 @@ public class NexDataFileBuilder
     {
         row.RowDataOffset = (int)bs.Position;
         for (int j = 0; j < row.Cells.Count; j++)
+        {
+            bs.Position = row.RowDataOffset + (int)_columnLayout.Columns[j].Offset;
             WriteCell(bs, (int)_lastRowDataStartOffset, row.Cells[j], _columnLayout.Columns[j]);
+        }
 
         for (int j = 0; j < row.Cells.Count; j++)
         {
@@ -510,6 +513,7 @@ public class NexDataFileBuilder
                         List<NexStructColumn> structColumns = _columnLayout.CustomStructDefinitions[column.StructTypeName];
                         for (int j = 0; j < structFields.Length; j++)
                         {
+                            bs.Position = arrayOffset + structColumns[j].Offset;
                             WriteCell(bs, arrayOffset, structFields[j], structColumns[j]);
                         }
                     }

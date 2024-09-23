@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -121,7 +122,8 @@ public class TableMappingReader
                         if (inputVersion < min_version || (max_version != null && inputVersion > max_version))
                             continue;
 
-                        column.Offset = offset;
+                        // Implicit padding. i.e current offset = 2, next type is int. align to 4 first.
+                        column.Offset = ImplicitPadType(column.Type, offset);
 
                         if (split.Length >= 4 && split[3] == "rel")
                         {
@@ -203,7 +205,7 @@ public class TableMappingReader
                     string structName = split[1];
 
                     int fieldOffset = 0;
-                    List<NexStructColumn> columns = new List<NexStructColumn>();
+                    List<NexStructColumn> columns = [];
                     for (int i = 2; i < split.Length; i++)
                     {
                         NexColumnType type = NexUtils.ColumnIdentifierToColumnType(split[i]);
@@ -214,6 +216,7 @@ public class TableMappingReader
                             Offset = fieldOffset,
                         });
 
+                        fieldOffset = ImplicitPadType(type, fieldOffset);
                         fieldOffset += NexUtils.TypeToSize(type);
                     }
                     tableColumnLayout.CustomStructDefinitions.Add(structName, columns);
@@ -224,5 +227,31 @@ public class TableMappingReader
 
         if (tableColumnLayout.Type == NexTableType.Unknown || tableColumnLayout.Category == NexTableCategory.Unknown)
             throw new InvalidDataException("Layout validation error: type or category is unknown.");
+
+        // pad whole row
+        offset = (int)NexUtils.AlignValue((uint)offset, 0x04);
+    }
+
+    private static int ImplicitPadType(NexColumnType type, int offset)
+    {
+        switch (type)
+        {
+            case NexColumnType.Int:
+            case NexColumnType.UInt:
+            case NexColumnType.HexUInt:
+            case NexColumnType.Float:
+            case NexColumnType.Int64:
+            case NexColumnType.Double:
+            case NexColumnType.String:
+            case NexColumnType.ByteArray:
+            case NexColumnType.IntArray:
+            case NexColumnType.FloatArray:
+            case NexColumnType.StringArray:
+            case NexColumnType.CustomStructArray:
+                offset = (int)NexUtils.AlignValue((uint)offset, 0x04);
+                break;
+        }
+
+        return offset;
     }
 }

@@ -27,12 +27,14 @@ public class NexUtils
         SpanReader sr = new SpanReader(nexFileBuffer);
         sr.Position = rowOffset;
 
-        int basePos = sr.Position;
         for (int j = 0; j < tableColumnLayout.Columns.Count; j++)
         {
             NexStructColumn column = tableColumnLayout.Columns[j];
-            if (sr.Position >= sr.Length || sr.Position + NexUtils.TypeToSize(column.Type) > sr.Length)
-                throw new Exception("Row data out of stream range. Layout outdated?");
+            int rowColumnOffset = rowOffset + (int)column.Offset;
+            if (rowColumnOffset + NexUtils.TypeToSize(column.Type) > sr.Length)
+                throw new Exception($"Column {column.Name} out of stream range. Layout outdated or file corrupted?");
+
+            sr.Position = rowColumnOffset;
 
             var cell = ReadCell(ref sr, tableColumnLayout, column, rowOffset);
             cells.Add(cell);
@@ -281,4 +283,10 @@ public class NexUtils
             NexColumnType.CustomStructArray => throw new ArgumentException("CustomStructArray does not have a fixed identifier."),
             _ => throw new InvalidDataException($"Unknown type {type}"),
         };
+
+    public static uint AlignValue(uint x, uint alignment)
+    {
+        uint mask = ~(alignment - 1);
+        return (x + (alignment - 1)) & mask;
+    }
 }
