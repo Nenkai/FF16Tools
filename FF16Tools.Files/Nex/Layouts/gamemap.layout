@@ -2,32 +2,51 @@ set_table_type|RowSets
 set_table_category|RowSets
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|string
 add_column|Unk3|string
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
+add_column|LayoutNamedInstanceId|int
+add_column|MapDirectorId|int
+add_column|LevelSequenceId|int
 add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
+
+// If this is 314, checked against bgmselect table instead?
+add_column|BgmType|short
+add_column|BgmOrBgmSelectId|short
+add_column|BgmType2|short
+add_column|BgmOrBgmSelectId2|short
+
+add_column|Unk10|short
+// Seems correct? Checked in debugger
+add_column|PartySelectId|short
+
+// Same - demo 1.0.0 -> 140451DF6
+add_column|QuestId|int
+
 add_column|Unk12|int
-add_column|Unk13|int
+add_column|SpecialAreaId|int
 add_column|Unk14|int
-add_column|Unk15|int
-add_column|Unk16|int
-add_column|Unk17|int
-add_column|Unk18|int
-add_column|Unk19|int
+add_column|CollisionMaterialColorId|int
+add_column|Unk16|byte
+
+// Related to hara/map/pack/timeline/m%06u/s%04u/timeline.pac?
+// retail 1.0.0 -> 1407E1BA0
+add_column|Unk16_2|byte
+
+// calls something in sound if true - retail 1.0.0 -> 14043D3BA
+add_column|Unk16_3|byte
+add_column|Unk16_4|byte
+
+add_column|PlaceNameId|int
+add_column|LayoutSettingId|int
+add_column|LayoutSettingSubId|int
 add_column|Unk20|byte
 add_column|Unk21|byte
 add_column|Unk22|byte
 add_column|Unk23|byte
 add_column|Unk24|float
 add_column|Unk25|float
-add_column|Unk26|int
+add_column|UserSituationId|int
 add_column|Unk27|int
 add_column|Unk28|int
 add_column|Unk29|int

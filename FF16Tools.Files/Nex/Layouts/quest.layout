@@ -4,13 +4,20 @@ use_base_row_id|false
 
 add_column|Unk1|int
 add_column|Unk2|string
-add_column|Unk3|string|rel
-add_column|Unk4|string|rel|-4
-add_column|Unk5|string|rel|-8
+add_column|Name|string|rel
+add_column|Desc|string|rel|-4
+add_column|CompletedDesc|string|rel|-8
 add_column|Unk6|string|rel|-12
-add_column|Unk7|int
+
+// unknown, checks against hardcoded value
+// demo 1.0.0 exe 1402A0E91 into 14028D1B0, also 1402EEFE2 & others
+// dlc related? demo exe 1402F6D24
+add_column|QuestType|int
 add_column|Unk8|int
+
+// no more than 9? 14053A276
 add_column|Unk9|int
+
 add_column|Unk10|int
 add_column|Unk11|int
 add_column|Unk12|int
@@ -18,13 +25,18 @@ add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
 add_column|Unk16|int[]
-add_column|Unk18|int
+
+// 0 = none
+add_column|DropTableId|int
 add_column|Unk19|int
 add_column|Unk20|int
 add_column|Unk21|int
 add_column|Unk22|string
 add_column|Unk23|int
 add_column|Unk24|int
+
+// count of sorts?
+// ffxvi_demo.exe 1.0.0 check at 14028CF96
 add_column|Unk25|int
 add_column|Unk26|byte
 add_column|Unk27|byte

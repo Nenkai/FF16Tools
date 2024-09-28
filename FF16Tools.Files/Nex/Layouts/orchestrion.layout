@@ -4,16 +4,23 @@ use_base_row_id|true
 
 add_column|Unk1|int
 add_column|Unk2|string
-add_column|Unk3|int
-add_column|Unk4|string|rel
-add_column|Unk5|string|rel|-4
-add_column|Unk6|string|rel|-8
-add_column|Unk7|int
+add_column|BgmModeId|int
+add_column|Name|string|rel
+add_column|How|string|rel|-4
+add_column|HowFormat|string|rel|-8
+
+// 124 and 277 are explicitly checked
+add_column|UnlockCondition|short
+// <implicit 2 bytes padding>
+
+// explicitly checked against numbers i.e 10002, to 10005, etc
 add_column|Unk8|int
+
 add_column|Unk9|int
-add_column|Unk10|int
+add_column|SortOrder|int
+// type from 1 to 6
 add_column|Unk11|int
-add_column|Unk12|int
+add_column|IsDefault|int
 
 
 

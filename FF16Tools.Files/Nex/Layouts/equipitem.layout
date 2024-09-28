@@ -12,8 +12,8 @@ add_column|Defense|int
 add_column|Stagger|int
 add_column|Unk7|int
 add_column|SalePrice|int
-add_column|Unk9|int
-add_column|Unk10|int
+add_column|Rarity|int
+add_column|IconTexFileId|int
 add_column|EffectFlag|int
 add_column|Name|string|rel
 add_column|Description|string|rel|-4

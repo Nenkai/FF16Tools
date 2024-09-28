@@ -9,7 +9,7 @@ add_column|Unk4|int
 add_column|Unk5|int
 add_column|Unk6|int
 add_column|Unk7|float
-add_column|Unk8|int
+add_column|CommandId|int
 add_column|Name|string|rel
 add_column|Description|string|rel|-4
 add_column|Description1|string|rel|-8
