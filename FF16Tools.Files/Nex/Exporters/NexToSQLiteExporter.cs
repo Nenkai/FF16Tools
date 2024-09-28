@@ -17,6 +17,7 @@ using System.Data;
 using Microsoft.Extensions.Logging;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Globalization;
 
 namespace FF16Tools.Files.Nex.Exporters;
 
@@ -36,6 +37,8 @@ public class NexToSQLiteExporter : IDisposable
 
     public NexToSQLiteExporter(NexDatabase database, ILoggerFactory loggerFactory = null)
     {
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         ArgumentNullException.ThrowIfNull(database, nameof(database));
 
         _database = database;

@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Globalization;
+using System.Text.Json;
 
 using Microsoft.Data.Sqlite;
-
-using Syroot.BinaryData.Memory;
-using Syroot.BinaryData;
-
-using FF16Tools.Files.Nex.Managers;
-using FF16Tools.Files.Nex.Entities;
-using FF16Tools.Files.Nex;
-using FF16Tools.Files;
-using System.IO;
-using System.Data;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
+
+using FF16Tools.Files.Nex.Entities;
 
 namespace FF16Tools.Files.Nex.Exporters;
 
@@ -40,6 +34,8 @@ public class SQLiteToNexImporter : IDisposable
 
     public SQLiteToNexImporter(string sqliteFile, List<string> tablesToConvert = null, ILoggerFactory loggerFactory = null)
     {
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         ArgumentException.ThrowIfNullOrWhiteSpace(sqliteFile, nameof(sqliteFile));
 
         _tablesToConvert = tablesToConvert;
