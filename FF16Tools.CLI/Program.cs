@@ -28,7 +28,7 @@ namespace FF16Tools.CLI;
 
 public class Program
 {
-    public const string Version = "1.3.7";
+    public const string Version = "1.4.0";
 
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
