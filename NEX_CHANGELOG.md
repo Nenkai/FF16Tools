@@ -60,11 +60,6 @@ Always try to keep your database table columns up-to-date.
 * `Unk29` & `Unk30` removed (padding)
 
 #### `fatalattack`
-* `Unk9` -> `Rarity`
-* `Unk10` -> `IconTexFileId`
-
-
-#### `fatalattack`
 * `Unk7`: `int` -> `float`
 
 #### `gamemap`
