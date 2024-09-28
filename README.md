@@ -7,8 +7,9 @@ Tools for Final Fantasy XVI / 16.
 * `.pac` Unpacker/Repacker
 * `.tex` to `.png` conversion
 * Nex `.nxd` conversion
+* Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 
-This has been tested on Final Fantasy 16 Demo (Steam/PC) files. Pack handling is available as a [NuGet Package](https://www.nuget.org/packages/FF16Tools.Pack/).
+This has been tested on Final Fantasy 16 (Steam/PC) files. Pack handling is available as a [NuGet Package](https://www.nuget.org/packages/FF16Tools.Pack/).
 
 ## Usage
 
