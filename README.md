@@ -5,7 +5,7 @@ Tools for Final Fantasy XVI / 16.
 ### Features
 
 * `.pac` Unpacker/Repacker
-* `.tex` to `.png` conversion
+* `.tex` to `.dds` conversion
 * Nex `.nxd` conversion
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 
