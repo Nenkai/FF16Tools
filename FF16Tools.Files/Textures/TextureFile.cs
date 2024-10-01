@@ -99,7 +99,7 @@ public class TextureFile
                 _logger?.LogTrace("Extracting texture chunk #{index}, offset @ 0x{offset:X8}, compSize=0x{compSize:X8}, decompSize=0x{decompSize:X8}", 
                     texture.ChunkIndex + i, chunkInfo.CompressedDataOffset, chunkInfo.CompressedChunkSize, chunkInfo.DecompressedChunkSize);
 
-                if (chunkInfo.CompressedChunkSize == chunkInfo.DecompressedChunkSize) // TODO: Find the "is compressed" flag
+                if (chunkInfo.CompressedChunkSize == chunkInfo.DecompressedChunkSize) // <- This is how the game checks
                 {
                     textureFileStream.Read(decompressedBuffer.Span.Slice(offset, (int)chunkInfo.DecompressedChunkSize));
                 }
@@ -174,8 +174,8 @@ public class TextureFile
             Span<byte> outputMip = nonAlignedData.Span.Slice((int)offset, (int)slicePitch);
 
             // Gotta divide by 4 for BC formats as it deals in 4x4 blocks.
-            int wd = DxgiUtils.IsBCnFormat(dxgiFormat) ? h / 4 : h;
-            for (int y = 0; y < wd; y++)
+            int actualHeight = DxgiUtils.IsBCnFormat(dxgiFormat) ? h / 4 : h;
+            for (int y = 0; y < actualHeight; y++)
             {
                 Span<byte> inputRow = inputMip.Slice((int)(y * rowPitchAligned), (int)rowPitch);
                 Span<byte> outputRow = outputMip.Slice((int)(y * (uint)rowPitch), (int)rowPitch);
