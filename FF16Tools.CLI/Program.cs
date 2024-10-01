@@ -10,9 +10,6 @@ using NLog.Extensions.Logging;
 
 using SixLabors.ImageSharp;
 
-using Syroot.BinaryData;
-using Syroot.BinaryData.Memory;
-
 using FF16Tools.Files;
 using FF16Tools.Files.Save;
 using FF16Tools.Files.Nex;
@@ -208,13 +205,13 @@ public class Program
 
     public static void TexConv(TexConvVerbs verbs)
     {
-        if (verbs.InputPaths.Count() == 1)
+        if (verbs.InputPaths.Count() == 1 && Directory.Exists(verbs.InputPaths.First()))
         {
             foreach (var file in Directory.GetFiles(verbs.InputPaths.First(), "*.tex", verbs.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
             {
                 try
                 {
-                    ProcessTexFile(file);
+                     ProcessTexFile(file);
                 }
                 catch (Exception e)
                 {
@@ -262,6 +259,7 @@ public class Program
         var textureFile = new TextureFile(_loggerFactory);
         textureFile.FromStream(fs);
 
+
         fs.Position = 0;
 
         _logger.LogInformation("Processing {path} ({numTextures} texture(s))", path, textureFile.Textures.Count);
@@ -276,9 +274,12 @@ public class Program
             {
                 try
                 {
+
                     fs.Position = 0;
-                    var data = textureFile.GetImageData(i, fs);
-                    data.SaveAsPng(Path.Combine(outputDir, $"{i}.png"));
+
+                    using var data = textureFile.GetAsDds(0, fs);
+                    using (var outputStream = new FileStream(Path.Combine(outputDir, $"{i}.dds"), FileMode.Create))
+                        outputStream.Write(data.Span);
                 }
                 catch (Exception ex)
                 {
@@ -291,8 +292,9 @@ public class Program
             try
             {
                 fs.Position = 0;
-                var data = textureFile.GetImageData(0, fs);
-                data.SaveAsPng(Path.ChangeExtension(path, ".png"));
+                using var data = textureFile.GetAsDds(0, fs);
+                using (var outputStream = new FileStream(Path.ChangeExtension(path, ".dds"), FileMode.Create))
+                    outputStream.Write(data.Span);
             }
             catch (Exception ex)
             {

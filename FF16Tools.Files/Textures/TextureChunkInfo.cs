@@ -14,7 +14,12 @@ namespace FF16Tools.Files.Textures;
 public class TextureChunkInfo
 {
     public uint CompressedDataOffset { get; set; }
-    public uint TypeFlags { get; set; }
+
+    // If 1, DSTORAGE_REQUEST_DESTINATION_MULTIPLE_SUBRESOURCES (3) is used for IDStorageQueue::EnqueueRequest
+    // -> May use Unk_0x0D?
+    // Otherwise DSTORAGE_REQUEST_DESTINATION_TEXTURE_REGION (2)?
+    public uint TypeBits { get; set; }
+
     public uint CompressedChunkSize { get; set; }
     public uint DecompressedChunkSize { get; set; }
     public byte UnkIndex_0x0C { get; set; }
@@ -26,7 +31,7 @@ public class TextureChunkInfo
         CompressedDataOffset = bs.ReadUInt32();
 
         uint bits = bs.ReadUInt32();
-        TypeFlags = bits & 0b11; // 2 bits
+        TypeBits = bits & 0b11; // 2 bits
         CompressedChunkSize = bits >> 2; // 30 bits
         DecompressedChunkSize = bs.ReadUInt32();
 
@@ -34,7 +39,7 @@ public class TextureChunkInfo
         UnkIndex_0x0C = (byte)(bits & 0x111_1111); // 7 bits
         UnkBool_0x0C = bits >> 7 != 0;
         Unk_0x0D = bs.Read1Byte();
-        bs.ReadInt16();
+        bs.ReadInt16(); // Pad
     }
 
     public static int GetSize()

@@ -69,8 +69,16 @@ public class TextureFile
         long basePos = textureFileStream.Position;
 
         var texture = Textures[textureIndex];
-        if (texture.Dimension == 3)
-            throw new NotSupportedException("3D textures are not supported yet.");
+
+        // Used by: 
+        // - system/graphics/atmosphere/texture/tmultiscattering_atms.tex (R16G16B16A16_FLOAT)
+        if (texture.DimensionType == 2)
+            throw new NotSupportedException("3D textures (type 2) are not supported yet.");
+
+        // Used by:
+        // - system/graphics/texture/omni_cube_index.tex
+        if (texture.DimensionType == 3)
+            throw new NotSupportedException("3D textures (type 3) are not supported yet.");
 
         _logger?.LogInformation("Texture #{texIndex}: {width}x{height} ({format})", textureIndex, texture.Width, texture.Height, texture.PixelFormat);
 
@@ -118,20 +126,68 @@ public class TextureFile
         }
     }
 
-    /* TODO: Restore this when it's eventually figured out.
-     * Paint.NET seems to give literally no crap to the pitch field in dds (so does anything else)
-     * Textures seem to be padded, so it's important if we're just shoving the data straight into a dds
-     * doesn't work though, bleh. */
-    /*
+
     public MemoryOwner<byte> GetAsDds(int textureIndex, Stream textureFileStream)
     {
-        using var buffer = GetTextureData(textureIndex, textureFileStream);
+        using var inputData = GetTextureData(textureIndex, textureFileStream);
         var texture = Textures[textureIndex];
         DXGI_FORMAT dxgiFormat = TextureUtils.TexPixelFormatToDdsFormat(texture.PixelFormat);
 
-        var ddsHeader = MemoryOwner<byte>.Allocate(0x100 + buffer.Length, AllocationMode.Clear);
+        uint totalSize = 0;
+        int w = texture.Width; int h = texture.Height;
 
-        int padded = (int)AlignValue(texture.Width, 64);
+        // Start calculating the total size we need for our output DDS
+        // Note: While it is possible to determine the total size of a texture using alignedSlicePitch
+        // >> The last row of the last mip is never padded to D3D12_TEXTURE_DATA_PITCH_ALIGNMENT. <<
+
+        ulong basePitch = 0;
+        for (int i = 0; i < texture.MipmapCount; i++)
+        {
+            DxgiUtils.ComputePitch(dxgiFormat, w, h, out ulong rowPitch, out ulong slicePitch, out ulong alignedSlicePitch);
+            totalSize += (uint)slicePitch;
+
+            w >>= 1;
+            h >>= 1;
+
+            if (i == 0)
+                basePitch = rowPitch;
+        }
+
+        using MemoryOwner<byte> nonAlignedData = MemoryOwner<byte>.Allocate((int)totalSize);
+        MemoryOwner<byte> ddsHeader = MemoryOwner<byte>.Allocate(0x100 + nonAlignedData.Length, AllocationMode.Clear);
+
+        w = texture.Width;
+        h = texture.Height;
+        ulong offset = 0, alignedOffset = 0;
+        for (int i = 0; i < texture.MipmapCount; i++)
+        {
+            DxgiUtils.ComputePitch(dxgiFormat, w, h, out ulong rowPitch, out ulong slicePitch, out ulong alignedSlicePitch);
+
+            // Very important. Each row is padded to 256 bytes normally (only if dstorage chunked, which will pass the data directly into a ID3D12Resource).
+            // Non-chunked:
+            // - gracommon/texture/speedtree/
+            // - system/graphics/atmosphere/ (note: the textures are way larger than they should be?)
+            uint rowPitchAligned = texture.ChunkCount == 0 ? (uint)rowPitch : Align((uint)rowPitch, DxgiUtils.D3D12_TEXTURE_DATA_PITCH_ALIGNMENT);
+            uint thisPitchSize = i == texture.MipmapCount - 1 ? (uint)rowPitch : (uint)alignedSlicePitch;
+
+            Span<byte> inputMip = inputData.Span.Slice((int)alignedOffset);
+            Span<byte> outputMip = nonAlignedData.Span.Slice((int)offset, (int)slicePitch);
+
+            // Gotta divide by 4 for BC formats as it deals in 4x4 blocks.
+            int wd = DxgiUtils.IsBCnFormat(dxgiFormat) ? h / 4 : h;
+            for (int y = 0; y < wd; y++)
+            {
+                Span<byte> inputRow = inputMip.Slice((int)(y * rowPitchAligned), (int)rowPitch);
+                Span<byte> outputRow = outputMip.Slice((int)(y * (uint)rowPitch), (int)rowPitch);
+                inputRow.CopyTo(outputRow);
+            }
+
+            w >>= 1;
+            h >>= 1;
+
+            offset += slicePitch;
+            alignedOffset += thisPitchSize;
+        }
 
         var flags = DDSHeaderFlags.TEXTURE | DDSHeaderFlags.LINEARSIZE;
         if (texture.MipmapCount > 1)
@@ -145,101 +201,15 @@ public class TextureFile
             FormatFlags = DDSPixelFormatFlags.DDPF_FOURCC,
             LastMipmapLevel = texture.MipmapCount,
             FourCCName = "DX10",
-            PitchOrLinearSize = (int)AlignValue(texture.Width, 64),
+            PitchOrLinearSize = (int)basePitch,
             DxgiFormat = TextureUtils.TexPixelFormatToDdsFormat(texture.PixelFormat),
-            ImageData = buffer.Memory,
+            ImageData = nonAlignedData.Memory,
         };
 
         dds.Write(ddsHeader.AsStream());
         return ddsHeader;
     }
-    */
-
-    public Image GetImageData(int textureIndex, Stream fileStream)
-    {
-        long basePos = fileStream.Position;
-
-        using MemoryOwner<byte> textureData = GetTextureData(textureIndex, fileStream);
-
-        var texture = Textures[textureIndex];
-
-        int paddedWidth = (int)Align(texture.Width, 64);
-        if (texture.SignedDistanceField) // Seems to be the only way this works (used for font textures), so w/e i guess
-            paddedWidth = (int)Align(texture.Width, 256); 
-
-        int paddedHeight = texture.Height > 4 ? (int)Align(texture.Height, 4) : texture.Height;
-
-        var bytesPerPixel = DdsHeader.BitsPerPixel(TextureUtils.TexPixelFormatToDdsFormat(texture.PixelFormat)) / 8;
-        int pixelSize = paddedWidth * paddedHeight * bytesPerPixel;
-        byte[] pixelBuffer = new byte[pixelSize];
-        textureData.Span.Slice(0, Math.Min(pixelSize, textureData.Length)).CopyTo(pixelBuffer); // Decompressed size does not mean it's the actual size of the pixel buffer
-
-        Image img;
-        switch (texture.PixelFormat) // as of 24/08/2024, this is all the formats used by the demo
-        {
-            case TexturePixelFormat.R8_UNORM:
-                img = Image.LoadPixelData<L8>(pixelBuffer, paddedWidth, texture.Height);
-                break;
-
-            case TexturePixelFormat.R16_UINT:
-            case TexturePixelFormat.R16_UNORM:
-                img = Image.LoadPixelData<L16>(pixelBuffer, paddedWidth, texture.Height);
-                break;
-
-            case TexturePixelFormat.R16_FLOAT:
-                img = Image.LoadPixelData<HalfSingle>(pixelBuffer, paddedWidth, texture.Height);
-                break;
-
-            case TexturePixelFormat.R16G16B16A16_FLOAT:
-                img = Image.LoadPixelData<HalfVector4>(pixelBuffer, paddedWidth, texture.Height);
-                break;
-
-            case TexturePixelFormat.R8G8B8A8_UNORM:
-            case TexturePixelFormat.R8G8B8A8_UNORM_SRGB:
-                img = Image.LoadPixelData<Rgba32>(pixelBuffer, paddedWidth, texture.Height);
-                break;
-
-            case TexturePixelFormat.BC3_UNORM:
-            case TexturePixelFormat.BC4_UNORM:
-            case TexturePixelFormat.BC5_UNORM:
-            case TexturePixelFormat.BC6H_SF16:
-            case TexturePixelFormat.BC6H_UF16:
-            case TexturePixelFormat.BC7_UNORM:
-            case TexturePixelFormat.BC7_UNORM_SRGB:
-                {
-                    var memStream = textureData.Memory.AsStream();
-
-                    var decoder = new BcDecoder();
-
-                    var bcType = texture.PixelFormat switch
-                    {
-                        TexturePixelFormat.BC3_UNORM => BCnEncoder.Shared.CompressionFormat.Bc3,
-                        TexturePixelFormat.BC4_UNORM => BCnEncoder.Shared.CompressionFormat.Bc4,
-                        TexturePixelFormat.BC5_UNORM => BCnEncoder.Shared.CompressionFormat.Bc5,
-                        TexturePixelFormat.BC6H_UF16 or TexturePixelFormat.BC6H_SF16 => throw new NotSupportedException("HDR format (BC6H_UF16) is not yet supported."),
-                        TexturePixelFormat.BC7_UNORM or TexturePixelFormat.BC7_UNORM_SRGB => BCnEncoder.Shared.CompressionFormat.Bc7,
-                        _ => throw new NotSupportedException(),
-                    };
-
-                    img = decoder.DecodeRawToImageRgba32(memStream, paddedWidth, paddedHeight, bcType);
-                }
-                break;
-
-            // Known to be used, not yet supported.
-            case TexturePixelFormat.R32G32_UINT:
-            case TexturePixelFormat.R10G10B10A2_UNORM:
-                throw new NotSupportedException($"{texture.PixelFormat} is not yet supported.");
-
-            default:
-                throw new NotSupportedException($"{texture.PixelFormat} is not yet supported.");
-        }
-
-        img.Mutate(e => e.Crop(texture.Width, texture.Height));
-        fileStream.Position = 0;
-
-        return img;
-    }
-
+    
     private void ReadMainHeader(BinaryStream bs)
     {
         Debug.Assert(bs.Length - bs.Position >= HEADER_SIZE, "Not enough space for texture header");

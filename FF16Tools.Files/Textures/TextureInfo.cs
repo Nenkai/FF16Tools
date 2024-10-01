@@ -26,9 +26,9 @@ public class TextureInfo
     public uint BitFlags { get; set; }
 
     /// <summary>
-    /// Unknown (1 to 3)
+    /// Unknown (1 to 3) where 1 is 2D, 2/3 is 3D?
     /// </summary>
-    public byte Dimension
+    public byte DimensionType
     {
         get => (byte)(BitFlags & 0b11);
         set => BitFlags |= (uint)(value & 0b11);
@@ -72,7 +72,10 @@ public class TextureInfo
     /// </summary>
     public ushort Height { get; set; }
 
-    public ushort Field_0x0E { get; set; }
+    /// <summary>
+    /// Normally used when <see cref="DimensionType"/> is 2 or 3
+    /// </summary>
+    public ushort Depth { get; set; }
 
     /// <summary>
     /// Offset to the start of the data for this texture.
@@ -106,7 +109,7 @@ public class TextureInfo
         MipmapCount = bs.ReadUInt16();
         Width = bs.ReadUInt16();
         Height = bs.ReadUInt16();
-        Field_0x0E = bs.ReadUInt16();
+        Depth = bs.ReadUInt16();
         DataOffset = bs.ReadUInt32();
         DataSize = bs.ReadUInt32();
         ColorMaybe = bs.ReadUInt32();
