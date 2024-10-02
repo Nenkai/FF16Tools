@@ -6,6 +6,7 @@ Tools for Final Fantasy XVI / 16.
 
 * `.pac` Unpacker/Repacker
 * `.tex` to `.dds` conversion
+* `.dds` & other image formats to `.tex`
 * Nex `.nxd` conversion
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 
@@ -25,6 +26,7 @@ You can use the **GUI/Graphical version**, or for the command line (CLI) command
 
 ### Textures
 * Converting `.tex` to `.dds`: Drag-drop files/folders or `FF16Tools.CLI tex-conv -i <path>`
+* Converting to `.tex`: Drag-drop files or `FF16Tools.CLI img-conv -i <path>`
 
 > [!WARNING]  
 > * 3D textures are not yet supported.
