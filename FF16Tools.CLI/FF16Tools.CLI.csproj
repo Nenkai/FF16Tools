@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <OutputType>Exe</OutputType>
-	  <AssemblyVersion>1.4.1.0</AssemblyVersion>
-	  <FileVersion>1.4.1.0</FileVersion>
+	  <AssemblyVersion>1.5.0.0</AssemblyVersion>
+	  <FileVersion>1.5.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

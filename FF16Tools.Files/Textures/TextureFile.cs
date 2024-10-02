@@ -131,10 +131,10 @@ public class TextureFile
     {
         using var inputData = GetTextureData(textureIndex, textureFileStream);
         var texture = Textures[textureIndex];
-        DXGI_FORMAT dxgiFormat = TextureUtils.TexPixelFormatToDdsFormat(texture.PixelFormat);
+        DXGI_FORMAT dxgiFormat = TextureUtils.TexPixelFormatToDxgiFormat(texture.PixelFormat);
 
         uint totalSize = 0;
-        int w = texture.Width; int h = texture.Height;
+        uint w = texture.Width; uint h = texture.Height;
 
         // Start calculating the total size we need for our output DDS
         // Note: While it is possible to determine the total size of a texture using alignedSlicePitch
@@ -167,14 +167,14 @@ public class TextureFile
             // Non-chunked:
             // - gracommon/texture/speedtree/
             // - system/graphics/atmosphere/ (note: the textures are way larger than they should be?)
-            uint rowPitchAligned = texture.ChunkCount == 0 ? (uint)rowPitch : Align((uint)rowPitch, DxgiUtils.D3D12_TEXTURE_DATA_PITCH_ALIGNMENT);
+            uint rowPitchAligned = texture.ChunkCount == 0 ? (uint)rowPitch : TextureUtils.Align((uint)rowPitch, DxgiUtils.D3D12_TEXTURE_DATA_PITCH_ALIGNMENT);
             uint thisPitchSize = i == texture.MipmapCount - 1 ? (uint)rowPitch : (uint)alignedSlicePitch;
 
             Span<byte> inputMip = inputData.Span.Slice((int)alignedOffset);
             Span<byte> outputMip = nonAlignedData.Span.Slice((int)offset, (int)slicePitch);
 
             // Gotta divide by 4 for BC formats as it deals in 4x4 blocks.
-            int actualHeight = DxgiUtils.IsBCnFormat(dxgiFormat) ? h / 4 : h;
+            uint actualHeight = DxgiUtils.IsBCnFormat(dxgiFormat) ? h / 4 : h;
             for (int y = 0; y < actualHeight; y++)
             {
                 Span<byte> inputRow = inputMip.Slice((int)(y * rowPitchAligned), (int)rowPitch);
@@ -202,7 +202,7 @@ public class TextureFile
             LastMipmapLevel = texture.MipmapCount,
             FourCCName = "DX10",
             PitchOrLinearSize = (int)basePitch,
-            DxgiFormat = TextureUtils.TexPixelFormatToDdsFormat(texture.PixelFormat),
+            DxgiFormat = TextureUtils.TexPixelFormatToDxgiFormat(texture.PixelFormat),
             ImageData = nonAlignedData.Memory,
         };
 
@@ -248,11 +248,5 @@ public class TextureFile
             chunkInfo.FromStream(bs);
             TextureChunks.Add(chunkInfo);
         }
-    }
-
-    private static uint Align(uint x, uint alignment)
-    {
-        uint mask = ~(alignment - 1);
-        return (x + (alignment - 1)) & mask;
     }
 }

@@ -64,7 +64,7 @@ public class TextureDecompressEmulationTest
 
         // Create the ID3D12Resource buffer which will be populated with the file's contents
         HeapProperties bufferHeapProps = new HeapProperties(HeapType.Custom, CpuPageProperty.WriteCombine, MemoryPool.L0);
-        ResourceDescription bufferDesc = ResourceDescription.Texture2D((Vortice.DXGI.Format)TextureUtils.TexPixelFormatToDdsFormat(textureFile.Textures[0].PixelFormat), textureFile.Textures[0].Width, textureFile.Textures[0].Height);
+        ResourceDescription bufferDesc = ResourceDescription.Texture2D((Vortice.DXGI.Format)TextureUtils.TexPixelFormatToDxgiFormat(textureFile.Textures[0].PixelFormat), textureFile.Textures[0].Width, textureFile.Textures[0].Height);
 
         using ID3D12Resource bufferResource = device.CreateCommittedResource(
             bufferHeapProps,

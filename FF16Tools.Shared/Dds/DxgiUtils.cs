@@ -175,7 +175,7 @@ public class DxgiUtils
         return (x + (alignment - 1)) & mask;
     }
 
-    public static int ComputePitch(DXGI_FORMAT fmt, int width, int height,
+    public static int ComputePitch(DXGI_FORMAT fmt, uint width, uint height,
         out ulong rowPitch, out ulong slicePitch, out ulong alignedSlicePitch)
     {
         rowPitch = 0;
@@ -230,14 +230,14 @@ public class DxgiUtils
             case DXGI_FORMAT.DXGI_FORMAT_G8R8_G8B8_UNORM:
             case DXGI_FORMAT.DXGI_FORMAT_YUY2:
                 pitch = (((ulong)(width) + 1u) >> 1) * 4u;
-                slice = pitch * (ulong)(height);
+                slice = pitch * height;
                 aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * (ulong)(height);
                 break;
             
             case DXGI_FORMAT.DXGI_FORMAT_Y210:
             case DXGI_FORMAT.DXGI_FORMAT_Y216:
                 pitch = (((ulong)(width) + 1u) >> 1) * 8u;
-                slice = pitch * (ulong)(height);
+                slice = pitch * height;
                 aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * (ulong)(height);
                 break;
             
@@ -250,8 +250,8 @@ public class DxgiUtils
                 }
 
                 pitch = (((ulong)(width) + 1u) >> 1) * 2u;
-                slice = pitch * ((ulong)(height) + (((ulong)(height) + 1u) >> 1));
-                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * ((ulong)(height) + (((ulong)(height) + 1u) >> 1));
+                slice = pitch * (height + (((ulong)(height) + 1u) >> 1));
+                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * (height + (((ulong)(height) + 1u) >> 1));
                 break;
             
             case DXGI_FORMAT.DXGI_FORMAT_P010:
@@ -263,8 +263,8 @@ public class DxgiUtils
                 }
     
                 pitch = (((ulong)(width) + 1u) >> 1) * 4u;
-                slice = pitch * ((ulong)(height) + (((ulong)(height) + 1u) >> 1));
-                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * ((ulong)(height) + (((ulong)(height) + 1u) >> 1));
+                slice = pitch * (height + (((ulong)(height) + 1u) >> 1));
+                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * (height + (((ulong)(height) + 1u) >> 1));
                 break;
 
             case DXGI_FORMAT.DXGI_FORMAT_NV11:
@@ -285,15 +285,15 @@ public class DxgiUtils
                     // Requires a height alignment of 2.
                     return -1;
                 }
-                pitch = (ulong)(width);
-                slice = pitch * ((ulong)(height) + ((((ulong)(height) + 1u) >> 1) * 2u));
-                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * ((ulong)(height) + ((((ulong)(height) + 1u) >> 1) * 2u));
+                pitch = width;
+                slice = pitch * (height + ((((ulong)(height) + 1u) >> 1) * 2u));
+                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * (height + ((((ulong)(height) + 1u) >> 1) * 2u));
                 break;
             
             case DXGI_FORMAT.DXGI_FORMAT_V408:
-                pitch = (ulong)(width);
-                slice = pitch * ((ulong)(height) + ((ulong)(height >> 1) * 4u));
-                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * ((ulong)(height) + ((ulong)(height >> 1) * 4u));
+                pitch = width;
+                slice = pitch * (height + ((ulong)(height >> 1) * 4u));
+                aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * (height + ((ulong)(height >> 1) * 4u));
                 break;
 
             default:
@@ -306,7 +306,7 @@ public class DxgiUtils
 
                     // Default byte alignment
                     pitch = ((ulong)(width) * bpp + 7u) / 8u;
-                    slice = pitch * (ulong)(height);
+                    slice = pitch * height;
                     aSlice = Align((uint)pitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * (ulong)(height);
                 }
                 break;

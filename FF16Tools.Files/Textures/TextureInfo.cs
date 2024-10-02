@@ -18,7 +18,8 @@ public class TextureInfo
     // 1 bit no chunks
     // 1 bit unk
     // 1 bit unk
-    // rest of bits I have no idea
+    // rest of bits can be set, but are not read by the game it seems
+    // seems to be FFFFFF for nothing?
 
     /// <summary>
     /// Raw bit flags for this texture.
@@ -128,7 +129,7 @@ public class TextureInfo
 // sub_1409B4084
 // XXYYYY - XX = Group, YYYY = Format
 // There's probably more. Only followed that function which translates dds format to custom
-public enum TexturePixelFormat
+public enum TexturePixelFormat : uint
 {
     // 8 bpp
     R8_TYPELESS = 0x10130,

@@ -25,7 +25,7 @@ namespace FF16Tools.CLI;
 
 public class Program
 {
-    public const string Version = "1.4.1";
+    public const string Version = "1.5.0";
 
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
@@ -54,7 +54,7 @@ public class Program
 
                     try
                     {
-                        ProcessTexFile(file);
+                        ProcessFile(file);
                     }
                     catch (Exception ex)
                     {
@@ -67,18 +67,19 @@ public class Program
             else if (File.Exists(args[0]))
             {
                 if (CanProcessFile(args[0]))
-                    ProcessTexFile(args[0]);
+                    ProcessFile(args[0]);
 
                 return;
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
         p.WithParsed<ListFilesVerbs>(ListFiles);
         p.WithParsed<TexConvVerbs>(TexConv);
+        p.WithParsed<ImgConvVerbs>(ImgConv);
         p.WithParsed<NxdToSqliteVerbs>(NxdToSqlite);
         p.WithParsed<SqliteToNxdVerbs>(SqliteToNxd);
         p.WithParsed<UnpackSaveVerbs>(UnpackSave);
@@ -211,7 +212,7 @@ public class Program
             {
                 try
                 {
-                     ProcessTexFile(file);
+                    ProcessTexFile(file);
                 }
                 catch (Exception e)
                 {
@@ -241,15 +242,69 @@ public class Program
         }
     }
 
+    public static void ImgConv(ImgConvVerbs verbs)
+    {
+        foreach (var file in verbs.InputPaths)
+        {
+            if (!File.Exists(file))
+            {
+                _logger.LogError("File {file} does not exist", file);
+                continue;
+            }
+
+            try
+            {
+                using (var fs = new FileStream(Path.ChangeExtension(file, ".tex"), FileMode.Create))
+                {
+                    var builder = new TextureFileBuilder(_loggerFactory);
+                    builder.AddImage(file, new TextureOptions()
+                    {
+                        NoChunkCompression = verbs.NoChunkCompression,
+                        SignedDistanceField = verbs.SignedDistanceField,
+                    });
+                    builder.Build(fs);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not process texture file");
+            }
+        }
+    }
+
     public static bool CanProcessFile(string file)
     {
         switch (Path.GetExtension(file))
         {
-            case ".tex":
+            case ".tex": // tex to dds
+                return true;
+
+            // image to .tex
+            case ".dds":
+            case ".png":
+            case ".jpg":
+            case ".gif":
+            case ".webp":
+            case ".tga":
                 return true;
         }
 
         return false;
+    }
+
+    private static void ProcessFile(string file)
+    {
+        if (Path.GetExtension(file) == ".tex")
+            ProcessTexFile(file);
+        else
+        {
+            using (var fs = new FileStream(Path.ChangeExtension(file, ".tex"), FileMode.Create))
+            {
+                var builder = new TextureFileBuilder(_loggerFactory);
+                builder.AddImage(file);
+                builder.Build(fs);
+            }
+        }
     }
 
     public static void ProcessTexFile(string path)
@@ -258,7 +313,6 @@ public class Program
 
         var textureFile = new TextureFile(_loggerFactory);
         textureFile.FromStream(fs);
-
 
         fs.Position = 0;
 
@@ -300,6 +354,23 @@ public class Program
             {
                 _logger.LogError(ex, "Could not process texture");
             }
+        }
+    }
+
+    public static void ProcessImageFile(string file)
+    {
+        try
+        {
+            using (var fs = new FileStream(Path.ChangeExtension(file, ".tex"), FileMode.Create))
+            {
+                var builder = new TextureFileBuilder(_loggerFactory);
+                builder.AddImage(file);
+                builder.Build(fs);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to convert to .tex file");
         }
     }
 
@@ -555,14 +626,27 @@ public class SqliteToNxdVerbs
     public IEnumerable<string> Tables { get; set; } = [];
 }
 
-[Verb("tex-conv", HelpText = "Converts a tex file.")]
+[Verb("tex-conv", HelpText = "Converts tex files to dds.")]
 public class TexConvVerbs
 {
-    [Option('i', "input", Required = true, HelpText = "Input .tex file or folder")]
+    [Option('i', "input", Required = true, HelpText = "Input .tex file or folder containing tex files")]
     public IEnumerable<string> InputPaths { get; set; }
 
     [Option('r', "recursive", HelpText = "If a folder is provided, whether to recursively convert.")]
     public bool Recursive { get; set; }
+}
+
+[Verb("img-conv", HelpText = "Converts image files to .tex. Supported: .dds (recommended), .png, .jpg, .gif, .bmp, .tga, .webp")]
+public class ImgConvVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input .tex file or folder containing tex files")]
+    public IEnumerable<string> InputPaths { get; set; }
+
+    [Option("sdf", HelpText = "Mark texture as signed distance field (used for fonts and other textures)")]
+    public bool SignedDistanceField { get; set; }
+
+    [Option("no-chunk-compression", HelpText = "Whether not to use compression for chunks")]
+    public bool NoChunkCompression { get; set; }
 }
 
 [Verb("unpack-save", HelpText = "Unpacks a save file (.png) into a folder.")]
