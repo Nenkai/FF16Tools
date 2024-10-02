@@ -24,13 +24,10 @@ You can use the **GUI/Graphical version**, or for the command line (CLI) command
 * Listing files: `FF16Tools.CLI list-files -i <path_to_pac>`
 
 ### Textures
-* Converting `.tex` to `.png`: Drag-drop files/folders or `FF16Tools.CLI tex-conv -i <path>`
+* Converting `.tex` to `.dds`: Drag-drop files/folders or `FF16Tools.CLI tex-conv -i <path>`
 
 > [!WARNING]  
 > * 3D textures are not yet supported.
-> * Textures using `R32G32_UINT` and `R10G10B10A2_UNORM` formats are not yet supported.
-> * Textures using `BC6` (HDR) are not yet supported.
-> * Currently converts only to `.png`.
 
 ### Nex (NXD)
 
