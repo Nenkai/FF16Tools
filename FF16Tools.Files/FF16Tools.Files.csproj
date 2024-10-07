@@ -7,6 +7,14 @@
     <Nullable>disable</Nullable>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Title>FF16Tools.Files</Title>
+    <Company>Nenkai</Company>
+    <Description>Library for handling various FF16 file formats.</Description>
+    <Copyright>Copyright (c) Nenkai 2024</Copyright>
+    <RepositoryUrl>https://github.com/Nenkai/FF16Tools</RepositoryUrl>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
