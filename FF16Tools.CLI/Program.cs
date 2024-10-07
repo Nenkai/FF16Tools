@@ -527,26 +527,26 @@ public class Program
             List<NexRowInfo> rowInfos = table.Value.RowManager.GetAllRowInfos();
             if (table.Value.Type == NexTableType.DoubleKeyed)
             {
-                NexDoubleKeyedRowTableManager rowSetManager = table.Value.RowManager as NexDoubleKeyedRowTableManager;
+                NexTripleKeyedRowTableManager rowSetManager = table.Value.RowManager as NexTripleKeyedRowTableManager;
                 foreach (var dk in rowSetManager.GetRowSets())
                 {
-                    builder.AddDoubleKeyedSet(dk.Key);
+                    builder.AddTripleKeyedSet(dk.Key);
                     foreach (var subSet in dk.Value.SubSets)
-                        builder.AddSubSet(dk.Key, subSet.Key);
+                        builder.AddTripleKeyedSubset(dk.Key, subSet.Key);
                 }
             }
-            else if (table.Value.Type == NexTableType.RowSets)
+            else if (table.Value.Type == NexTableType.DoubleKeyed)
             {
-                NexRowSetTableManager rowSetManager = table.Value.RowManager as NexRowSetTableManager;
+                NexDoubleKeyedRowTableManager rowSetManager = table.Value.RowManager as NexDoubleKeyedRowTableManager;
                 foreach (var set in rowSetManager.GetRowSets())
-                    builder.AddRowSet(set.Key);
+                    builder.AddDoubleKeyedSet(set.Key);
             }
 
             for (int i = 0; i < rowInfos.Count; i++)
             {
                 var row = rowInfos[i];
                 List<object> cells = NexUtils.ReadRow(layout, table.Value.Buffer, row.RowDataOffset);
-                builder.AddRow(row.Id, row.SubId, row.ArrayIndex, cells);
+                builder.AddRow(row.Key, row.Key2, row.Key3, cells);
             }
 
             using var fs = new FileStream(Path.Combine("built", table.Key + ".nxd"), FileMode.Create);
