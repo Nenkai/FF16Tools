@@ -27,7 +27,7 @@ public class NexDataFileBuilder
     public NexTableCategory Category { get; }
     public bool UsesBaseRow { get; }
 
-    private List<NexRowBuild> _rows = [];
+    private Dictionary<(uint Key, uint Key2, uint Key3), NexRowBuild> _rows = [];
     private SortedDictionary<uint, SortedList<uint, NexRowBuild>> _rowSets = [];
     private SortedDictionary<uint, SortedList<uint, SortedList<uint, NexRowBuild>>> _dkSets = [];
 
@@ -110,7 +110,8 @@ public class NexDataFileBuilder
     /// <param name="key2"></param>
     /// <param name="key3"></param>
     /// <param name="cells">Row cells.</param>
-    public void AddRow(uint key, uint key2, uint key3, List<object> cells)
+    /// <param name="overwriteIfExists">Whether to overwrite if the row exists (will still return false). If this is false, an exception will be thrown instead.</param>
+    public bool AddRow(uint key, uint key2, uint key3, List<object> cells, bool overwriteIfExists = false)
     {
         ArgumentNullException.ThrowIfNull(cells, nameof(cells));
 
@@ -122,15 +123,40 @@ public class NexDataFileBuilder
         if (Type == NexTableType.DoubleKeyed)
         {
             AddDoubleKeyedSet(key);
-            _rowSets[key].Add(row.Key2, row);
+
+            if (!_rowSets[key].TryAdd(row.Key2, row))
+            {
+                if (overwriteIfExists)
+                    _rowSets[key][row.Key2] = row;
+                else
+                    throw new Exception($"Row with key ({key},{key2},{key3}) already exists in builder.");
+            }
         }
         else if (Type == NexTableType.TripleKeyed)
         {
             AddTripleKeyedSubset(key, key2);
-            _dkSets[key][key2].Add(row.Key3, row);
+
+            if (!_dkSets[key][key2].TryAdd(row.Key3, row))
+            {
+                if (overwriteIfExists)
+                    _dkSets[key][key2][key3] = row;
+                else
+                    throw new Exception($"Row with key ({key},{key2},{key3}) already exists in builder.");
+            }
         }
 
-        _rows.Add(row);
+        bool res = _rows.TryAdd((key, key2, key3), row);
+        if (!res)
+        {
+            if (overwriteIfExists)
+                _rows[(key, key2, key3)] = row;
+            else
+                throw new Exception($"Row with key ({key},{key2},{key3}) already exists in builder.");
+
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -158,8 +184,7 @@ public class NexDataFileBuilder
             }
         }
 
-        var row = _rows.Find(e => e.Key == key && e.Key2 == key2 && e.Key3 == key3);
-        return _rows.Remove(row);
+        return _rows.Remove((key, key2, key3));
     }
 
     /// <summary>
@@ -171,7 +196,7 @@ public class NexDataFileBuilder
     /// <returns></returns>
     public NexRowBuild GetRow(uint key, uint key2, uint key3)
     {
-        return _rows.Find(e => e.Key == key && e.Key2 == key2 && e.Key3 == key3);
+        return _rows[(key, key2, key3)];
     }
 
     public void Write(Stream stream)
@@ -180,7 +205,7 @@ public class NexDataFileBuilder
 
         uint baseRowId = 0;
         if (UsesBaseRow && _rows.Count > 0)
-            baseRowId = _rows[0].Key;
+            baseRowId = _rows.First().Key.Key;
 
         var bs = new BinaryStream(stream, ByteConverter.Little);
         bs.WriteUInt32(NexDataFile.MAGIC);
@@ -213,7 +238,7 @@ public class NexDataFileBuilder
 
     private void WriteRowTable(BinaryStream bs)
     {
-        _rows = _rows.OrderBy(e => e.Key).ToList();
+        _rows = _rows.OrderBy(e => e.Key.Key).ToDictionary();
 
         bs.WriteUInt32(0x30); // offset to rows
         bs.WriteUInt32((uint)_rows.Count);
@@ -223,10 +248,9 @@ public class NexDataFileBuilder
         _lastRowDataStartOffset = bs.Position + (_rows.Count * 0x08);
         _lastDataEndOffset = _lastRowDataStartOffset;
 
-        for (int i = 0; i < _rows.Count; i++)
+        int i = 0;
+        foreach (NexRowBuild row in _rows.Values)
         {
-            NexRowBuild row = _rows[i];
-
             _lastRowDataStartOffset = _lastDataEndOffset;
             _lastDataEndOffset = _lastRowDataStartOffset + _columnLayout.TotalInlineSize;
 
@@ -237,6 +261,8 @@ public class NexDataFileBuilder
 
             bs.Position = _lastRowDataStartOffset;
             WriteRowData(bs, row);
+
+            i++;
         }
 
         WriteByteArrayTable(bs);
@@ -244,8 +270,8 @@ public class NexDataFileBuilder
 
     private void WriteDoubleKeyedTable(BinaryStream bs)
     {
-        _rows = _rows.OrderBy(e => e.Key)
-                     .ThenBy(e => e.Key3).ToList();
+        _rows = _rows.OrderBy(e => e.Key.Key)
+                     .ThenBy(e => e.Key.Key2).ToDictionary();
 
         long subHeaderOffset = bs.Position;
         bs.WriteUInt32(0x1C); // offset to rows
@@ -294,15 +320,17 @@ public class NexDataFileBuilder
         }
 
         long rowDataInfoOffset = _lastDataEndOffset;
-        for (i = 0; i < _rows.Count; i++)
+        i = 0;
+        foreach (var row in _rows.Values)
         {
-            NexRowBuild row = _rows[i];
             long thisRowInfoOffset = rowDataInfoOffset + (i * 0x0C);
             bs.Position = thisRowInfoOffset;
 
             bs.WriteUInt32(row.Key);
             bs.WriteUInt32(row.Key2);
             bs.WriteInt32((int)(row.RowDataOffset - thisRowInfoOffset)); // Will be negative
+
+            i++;
         }
         _lastDataEndOffset = bs.Position;
         WriteByteArrayTable(bs);
@@ -317,9 +345,9 @@ public class NexDataFileBuilder
 
     private void WriteTripleKeyedRowTable(BinaryStream bs)
     {
-        _rows = _rows.OrderBy(e => e.Key)
-                .ThenBy(e => e.Key2)
-                .ThenBy(e => e.Key3).ToList();
+        _rows = _rows.OrderBy(e => e.Key.Key)
+                .ThenBy(e => e.Key.Key2)
+                .ThenBy(e => e.Key.Key3).ToDictionary();
 
         long subHeaderOffset = bs.Position;
         bs.WriteUInt32(0x18); // offset to rows
@@ -395,9 +423,9 @@ public class NexDataFileBuilder
         }
 
         long rowDataInfoOffset = _lastDataEndOffset;
-        for (i = 0; i < _rows.Count; i++)
+        i = 0;
+        foreach (var row in _rows.Values)
         {
-            NexRowBuild row = _rows[i];
             long thisRowInfoOffset = rowDataInfoOffset + (i * 0x14);
             bs.Position = thisRowInfoOffset;
 
@@ -406,6 +434,8 @@ public class NexDataFileBuilder
             bs.WriteUInt32(row.Key3);
             bs.WriteUInt32(0);
             bs.WriteInt32((int)(row.RowDataOffset - thisRowInfoOffset)); // Will be negative
+
+            i++;
         }
         _lastDataEndOffset = bs.Position;
         WriteByteArrayTable(bs);
