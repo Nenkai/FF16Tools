@@ -60,6 +60,9 @@ public class TableMappingReader
     private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int offset, Version inputVersion)
     {
         string path = GetHeadersFilePath(filename);
+        if (string.IsNullOrEmpty(path))
+            throw new FileNotFoundException($"Layout file '{filename}' not found. Does it exist in the Nex/Layouts folder?");
+
         using var sr = new StreamReader(path);
 
         var dir = Path.GetDirectoryName(filename);
