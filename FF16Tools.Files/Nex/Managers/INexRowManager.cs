@@ -13,7 +13,9 @@ public interface INexRowManager
 {
     public void Read(BinaryStream bs);
 
-    public NexRowInfo GetRowInfo(uint rowId, uint subId = 0, uint arrayIndex = 0);
+    public NexRowInfo GetRowInfo(uint key, uint key2 = 0, uint key3 = 0);
+
+    public bool TryGetRowInfo(out NexRowInfo rowInfo, uint key, uint key2 = 0, uint key3 = 0);
 
     public List<NexRowInfo> GetAllRowInfos();
 }

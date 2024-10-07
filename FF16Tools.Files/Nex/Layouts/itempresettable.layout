@@ -1,5 +1,5 @@
-set_table_type|DoubleKeyed
-set_table_category|DoubleKeyed
+set_table_type|TripleKeyed
+set_table_category|TripleKeyed
 use_base_row_id|false
 
 // No data for this table

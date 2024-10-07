@@ -133,31 +133,31 @@ public class SQLiteToNexImporter : IDisposable
             }
 
             NexStructColumn lastColumn = null;
-            uint rowId = 0, subId = 0, arrayIndex = 0;
+            uint key = 0, key2 = 0, key3 = 0;
 
             try
             {
                 while (reader.Read())
                 {
-                    rowId = 0;
-                    subId = 0;
-                    arrayIndex = 0;
+                    key = 0;
+                    key2 = 0;
+                    key3 = 0;
 
                     List<object> cells = [];
-                    if (tableLayout.Type == NexTableType.Rows)
+                    if (tableLayout.Type == NexTableType.SingleKeyed)
                     {
-                        rowId = (uint)(long)reader["RowID"];
-                    }
-                    else if (tableLayout.Type == NexTableType.RowSets)
-                    {
-                        rowId = (uint)(long)reader["RowID"];
-                        arrayIndex = (uint)(long)reader["ArrayIndex"];
+                        key = (uint)(long)reader["Key"];
                     }
                     else if (tableLayout.Type == NexTableType.DoubleKeyed)
                     {
-                        rowId = (uint)(long)reader["RowID"];
-                        subId = (uint)(long)reader["SubID"];
-                        arrayIndex = (uint)(long)reader["ArrayIndex"];
+                        key = (uint)(long)reader["Key"];
+                        key2 = (uint)(long)reader["Key2"];
+                    }
+                    else if (tableLayout.Type == NexTableType.TripleKeyed)
+                    {
+                        key = (uint)(long)reader["Key"];
+                        key2 = (uint)(long)reader["Key2"];
+                        key3 = (uint)(long)reader["Key3"];
                     }
                     else
                         throw new NotImplementedException($"Table layout type {tableLayout.Type} not yet supported");
@@ -171,13 +171,13 @@ public class SQLiteToNexImporter : IDisposable
                         cells.Add(cell);
                     }
 
-                    tableBuilder.AddRow(rowId, subId, arrayIndex, cells);
-                    rowId++;
+                    tableBuilder.AddRow(key, key2, key3, cells);
+                    key++;
                 }
             }
             catch (Exception ex)
             {
-                string message = $"Error in row (RowID: {rowId}, SubId: {subId}, ArrayIndex: {arrayIndex}";
+                string message = $"Error in row (Key: {key}, Key2: {key2}, Key3: {key3}";
                 if (lastColumn is not null)
                     message += $", At Column: {lastColumn.Name} ({lastColumn.Type})";
                 message += ")\n";

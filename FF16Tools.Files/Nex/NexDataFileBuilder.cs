@@ -62,81 +62,116 @@ public class NexDataFileBuilder
     }
 
     /// <summary>
-    /// Adds a double keyed set to the builder (table type must be <see cref="NexTableType.DoubleKeyed"/>).
+    /// Adds a double keyed set to the builder (table type must be <see cref="NexTableType.TripleKeyed"/>).
     /// </summary>
     /// <param name="rowId"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public void AddDoubleKeyedSet(uint rowId)
+    public void AddTripleKeyedSet(uint rowId)
     {
-        if (Type == NexTableType.DoubleKeyed)
+        if (Type == NexTableType.TripleKeyed)
             _dkSets.TryAdd(rowId, []);
         else
-            throw new InvalidOperationException("Trying to add a double-keyed set to a non double-keyed row table.");
+            throw new InvalidOperationException("Trying to add a triple-keyed set to a non triple-keyed row table.");
     }
 
     /// <summary>
-    /// Adds a row sub set to the builder (table type must be <see cref="NexTableType.DoubleKeyed"/>).
+    /// Adds a row sub set to the builder (table type must be <see cref="NexTableType.TripleKeyed"/>).
     /// </summary>
-    /// <param name="rowId"></param>
+    /// <param name="key1"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public void AddSubSet(uint rowId, uint subId)
+    public void AddTripleKeyedSubset(uint key1, uint key2)
     {
-        if (Type == NexTableType.DoubleKeyed)
+        if (Type == NexTableType.TripleKeyed)
         {
-            AddDoubleKeyedSet(rowId);
-            _dkSets[rowId].TryAdd(subId, []);
+            AddTripleKeyedSet(key1);
+            _dkSets[key1].TryAdd(key2, []);
         }
         else
-            throw new InvalidOperationException("Trying to add a sub set to a non double-keyed row table.");
+            throw new InvalidOperationException("Trying to add a triple-keyed sub set to a non triple-keyed row table.");
     }
 
     /// <summary>
-    /// Adds a row set to the builder (table type must be <see cref="NexTableType.RowSets"/>).
+    /// Adds a row set to the builder (table type must be <see cref="NexTableType.DoubleKeyed"/>).
     /// </summary>
     /// <param name="rowId"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public void AddRowSet(uint keyId)
+    public void AddDoubleKeyedSet(uint keyId)
     {
-        if (Type == NexTableType.RowSets)
+        if (Type == NexTableType.DoubleKeyed)
             _rowSets.TryAdd(keyId, []);
         else
-            throw new InvalidOperationException("Trying to add a row set to a non row-set table.");
+            throw new InvalidOperationException("Trying to add a doubled-keyed set to a non double-keyed table.");
     }
 
     /// <summary>
     /// Adds a row to the builder. Sets will be created if they do not already exist.
     /// </summary>
-    /// <param name="keyId"></param>
-    /// <param name="subId"></param>
-    /// <param name="arrayIndex"></param>
+    /// <param name="key"></param>
+    /// <param name="key2"></param>
+    /// <param name="key3"></param>
     /// <param name="cells">Row cells.</param>
-    public void AddRow(uint keyId, uint subId, uint arrayIndex, List<object> cells)
+    public void AddRow(uint key, uint key2, uint key3, List<object> cells)
     {
         ArgumentNullException.ThrowIfNull(cells, nameof(cells));
 
         if (cells.Count != _columnLayout.Columns.Count)
             throw new ArgumentException($"Cells only has {cells.Count} element(s), while the layout expects {_columnLayout.Columns.Count} columns.");
 
-        var row = new NexRowBuild()
-        {
-            RowId = keyId,
-            SubId = subId,
-            ArrayIndex = arrayIndex,
-            Cells = cells,
-        };
+        var row = new NexRowBuild(key, key2, key3, cells);
 
-        if (Type == NexTableType.RowSets)
+        if (Type == NexTableType.DoubleKeyed)
         {
-            AddRowSet(keyId);
-            _rowSets[keyId].Add(row.ArrayIndex, row);
+            AddDoubleKeyedSet(key);
+            _rowSets[key].Add(row.Key2, row);
         }
-        else if (Type == NexTableType.DoubleKeyed)
+        else if (Type == NexTableType.TripleKeyed)
         {
-            AddSubSet(keyId, subId);
-            _dkSets[keyId][subId].Add(row.ArrayIndex, row);
+            AddTripleKeyedSubset(key, key2);
+            _dkSets[key][key2].Add(row.Key3, row);
         }
 
         _rows.Add(row);
+    }
+
+    /// <summary>
+    /// Removes a row from the builder.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="key2"></param>
+    /// <param name="key3"></param>
+    public bool RemoveRow(uint key, uint key2, uint key3)
+    {
+        if (Type == NexTableType.DoubleKeyed)
+        {
+            _rowSets[key].Remove(key2);
+            if (_rowSets[key].Count == 0)
+                _rowSets.Remove(key);
+        }
+        else if (Type == NexTableType.TripleKeyed)
+        {
+            _dkSets[key][key2].Remove(key3);
+            if (_dkSets[key][key2].Count == 0)
+            {
+                _dkSets[key].Remove(key2);
+                if (_dkSets[key].Count == 0)
+                    _dkSets.Remove(key);
+            }
+        }
+
+        var row = _rows.Find(e => e.Key == key && e.Key2 == key2 && e.Key3 == key3);
+        return _rows.Remove(row);
+    }
+
+    /// <summary>
+    /// Gets a row from the builder (for cell edit only).
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="key2"></param>
+    /// <param name="key3"></param>
+    /// <returns></returns>
+    public NexRowBuild GetRow(uint key, uint key2, uint key3)
+    {
+        return _rows.Find(e => e.Key == key && e.Key2 == key2 && e.Key3 == key3);
     }
 
     public void Write(Stream stream)
@@ -145,7 +180,7 @@ public class NexDataFileBuilder
 
         uint baseRowId = 0;
         if (UsesBaseRow && _rows.Count > 0)
-            baseRowId = _rows[0].RowId;
+            baseRowId = _rows[0].Key;
 
         var bs = new BinaryStream(stream, ByteConverter.Little);
         bs.WriteUInt32(NexDataFile.MAGIC);
@@ -159,16 +194,16 @@ public class NexDataFileBuilder
 
         switch (Type)
         {
-            case NexTableType.Rows:
+            case NexTableType.SingleKeyed:
                 WriteRowTable(bs);
                 break;
 
-            case NexTableType.RowSets:
-                WriteRowSetTable(bs);
+            case NexTableType.DoubleKeyed:
+                WriteDoubleKeyedTable(bs);
                 break;
 
-            case NexTableType.DoubleKeyed:
-                WriteDoubleKeyedRowTable(bs);
+            case NexTableType.TripleKeyed:
+                WriteTripleKeyedRowTable(bs);
                 break;
 
             default:
@@ -178,7 +213,7 @@ public class NexDataFileBuilder
 
     private void WriteRowTable(BinaryStream bs)
     {
-        _rows = _rows.OrderBy(e => e.RowId).ToList();
+        _rows = _rows.OrderBy(e => e.Key).ToList();
 
         bs.WriteUInt32(0x30); // offset to rows
         bs.WriteUInt32((uint)_rows.Count);
@@ -197,7 +232,7 @@ public class NexDataFileBuilder
 
             int thisRowInfoOffset = (int)rowInfosOffset + (i * 0x08);
             bs.Position = thisRowInfoOffset;
-            bs.WriteUInt32(row.RowId);
+            bs.WriteUInt32(row.Key);
             bs.WriteUInt32((uint)(_lastRowDataStartOffset - thisRowInfoOffset));
 
             bs.Position = _lastRowDataStartOffset;
@@ -207,10 +242,10 @@ public class NexDataFileBuilder
         WriteByteArrayTable(bs);
     }
 
-    private void WriteRowSetTable(BinaryStream bs)
+    private void WriteDoubleKeyedTable(BinaryStream bs)
     {
-        _rows = _rows.OrderBy(e => e.RowId)
-                     .ThenBy(e => e.ArrayIndex).ToList();
+        _rows = _rows.OrderBy(e => e.Key)
+                     .ThenBy(e => e.Key3).ToList();
 
         long subHeaderOffset = bs.Position;
         bs.WriteUInt32(0x1C); // offset to rows
@@ -246,8 +281,8 @@ public class NexDataFileBuilder
 
                 int thisRowInfoOffset = (int)thisRowSetInfoOffset + (j * 0x0C);
                 bs.Position = thisRowInfoOffset;
-                bs.WriteUInt32(row.RowId);
-                bs.WriteUInt32(row.ArrayIndex);
+                bs.WriteUInt32(row.Key);
+                bs.WriteUInt32(row.Key2);
                 bs.WriteUInt32((uint)(_lastRowDataStartOffset - thisRowInfoOffset));
 
                 bs.Position = _lastRowDataStartOffset;
@@ -265,8 +300,8 @@ public class NexDataFileBuilder
             long thisRowInfoOffset = rowDataInfoOffset + (i * 0x0C);
             bs.Position = thisRowInfoOffset;
 
-            bs.WriteUInt32(row.RowId);
-            bs.WriteUInt32(row.ArrayIndex);
+            bs.WriteUInt32(row.Key);
+            bs.WriteUInt32(row.Key2);
             bs.WriteInt32((int)(row.RowDataOffset - thisRowInfoOffset)); // Will be negative
         }
         _lastDataEndOffset = bs.Position;
@@ -280,11 +315,11 @@ public class NexDataFileBuilder
         bs.Position = tempLastPos;
     }
 
-    private void WriteDoubleKeyedRowTable(BinaryStream bs)
+    private void WriteTripleKeyedRowTable(BinaryStream bs)
     {
-        _rows = _rows.OrderBy(e => e.RowId)
-                .ThenBy(e => e.SubId)
-                .ThenBy(e => e.ArrayIndex).ToList();
+        _rows = _rows.OrderBy(e => e.Key)
+                .ThenBy(e => e.Key2)
+                .ThenBy(e => e.Key3).ToList();
 
         long subHeaderOffset = bs.Position;
         bs.WriteUInt32(0x18); // offset to rows
@@ -337,9 +372,9 @@ public class NexDataFileBuilder
                     bs.Position = thisRowInfoOffset;
 
                     NexRowBuild row = actual.Value;
-                    bs.WriteUInt32(row.RowId);
-                    bs.WriteUInt32(row.SubId);
-                    bs.WriteUInt32(row.ArrayIndex);
+                    bs.WriteUInt32(row.Key);
+                    bs.WriteUInt32(row.Key2);
+                    bs.WriteUInt32(row.Key3);
                     bs.WriteUInt32(0);
                     bs.WriteUInt32((uint)(_lastRowDataStartOffset - thisRowInfoOffset));
 
@@ -366,9 +401,9 @@ public class NexDataFileBuilder
             long thisRowInfoOffset = rowDataInfoOffset + (i * 0x14);
             bs.Position = thisRowInfoOffset;
 
-            bs.WriteUInt32(row.RowId);
-            bs.WriteUInt32(row.SubId);
-            bs.WriteUInt32(row.ArrayIndex);
+            bs.WriteUInt32(row.Key);
+            bs.WriteUInt32(row.Key2);
+            bs.WriteUInt32(row.Key3);
             bs.WriteUInt32(0);
             bs.WriteInt32((int)(row.RowDataOffset - thisRowInfoOffset)); // Will be negative
         }
@@ -589,53 +624,60 @@ public class NexDataFileBuilder
 
         _lastDataEndOffset = lastArrOffset;
     }
+}
 
+public class NexRowBuild
+{
+    public uint Key { get; }
+    public uint Key2 { get; }
+    public uint Key3 { get; }
+    public List<object> Cells { get; }
+    public int RowDataOffset { get; set; }
 
-    internal class NexRowBuild
+    public NexRowBuild(uint key, uint key2, uint key3, List<object> cells)
     {
-        public uint RowId { get; set; }
-        public uint SubId { get; set; }
-        public uint ArrayIndex { get; set; }
-        public List<object> Cells { get; set; }
-        public int RowDataOffset { get; set; }
-
-        public override string ToString()
-        {
-            return $"RowId: {RowId}, SubId: {SubId}, ArrayIndex: {ArrayIndex}";
-        }
+        Key = key;
+        Key2 = key2;
+        Key3 = key3;
+        Cells = cells;
     }
 
-    public class ByteArrayComparer : IEqualityComparer<byte[]>
+    public override string ToString()
     {
-        public bool Equals(byte[] left, byte[] right)
+        return $"Key: {Key}, Key2: {Key2}, Key3: {Key3}";
+    }
+}
+
+public class ByteArrayComparer : IEqualityComparer<byte[]>
+{
+    public bool Equals(byte[] left, byte[] right)
+    {
+        if (left == null || right == null)
         {
-            if (left == null || right == null)
-            {
-                return left == right;
-            }
-            if (left.Length != right.Length)
+            return left == right;
+        }
+        if (left.Length != right.Length)
+        {
+            return false;
+        }
+        for (int i = 0; i < left.Length; i++)
+        {
+            if (left[i] != right[i])
             {
                 return false;
             }
-            for (int i = 0; i < left.Length; i++)
-            {
-                if (left[i] != right[i])
-                {
-                    return false;
-                }
-            }
-            return true;
         }
-        public int GetHashCode(byte[] key)
+        return true;
+    }
+    public int GetHashCode(byte[] key)
+    {
+        if (key == null)
+            throw new ArgumentNullException("key");
+        int sum = 0;
+        foreach (byte cur in key)
         {
-            if (key == null)
-                throw new ArgumentNullException("key");
-            int sum = 0;
-            foreach (byte cur in key)
-            {
-                sum += cur;
-            }
-            return sum;
+            sum += cur;
         }
+        return sum;
     }
 }

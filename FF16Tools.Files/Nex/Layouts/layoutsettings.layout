@@ -1,9 +1,9 @@
-set_table_type|RowSets
-set_table_category|RowSets
+set_table_type|DoubleKeyed
+set_table_category|DoubleKeyed
 use_base_row_id|false
 
 add_column|Unk1|int
-add_column|Unk2|int
+add_column|GameMapSettingsId|int
 add_column|Unk3|int
 add_column|Unk4|int
 add_column|Unk5|int
@@ -12,7 +12,7 @@ add_column|Unk7|int
 add_column|Unk8|int
 add_column|Unk9|int
 add_column|Unk10|int
-add_column|Unk11|int
+add_column|MapSettingsId|int
 add_column|Unk12|int
 add_column|Unk13|int
 add_column|Unk14|int

@@ -1,5 +1,5 @@
-set_table_type|RowSets
-set_table_category|RowSets_Localized
+set_table_type|DoubleKeyed
+set_table_category|DoubleKeyed_Localized
 use_base_row_id|false
 
 add_column|Unk1|int
@@ -14,10 +14,10 @@ add_column|Unk9|int
 add_column|GameMapId|int
 add_column|Unk11|int
 add_column|Unk12|int
-add_column|Unk13|int
+add_column|LoadingImageId|int
 add_column|Unk14|int
 add_column|Unk15|int
-add_column|Unk16|int
+add_column|GameMapSubId|int
 add_column|Unk17|int
 add_column|Unk18|int
 add_column|Unk19|int

@@ -62,19 +62,19 @@ public class NexDataFile
 
         switch (Category)
         {
-            case NexTableCategory.Rows:
-            case NexTableCategory.Rows_Localized:
+            case NexTableCategory.SingleKeyed:
+            case NexTableCategory.SingleKeyed_Localized:
                 RowManager = new NexRowTableManager();
-                break;
-
-            case NexTableCategory.RowSets:
-            case NexTableCategory.RowSets_Localized:
-                RowManager = new NexRowSetTableManager();
                 break;
 
             case NexTableCategory.DoubleKeyed:
             case NexTableCategory.DoubleKeyed_Localized:
                 RowManager = new NexDoubleKeyedRowTableManager();
+                break;
+
+            case NexTableCategory.TripleKeyed:
+            case NexTableCategory.TripleKeyed_Localized:
+                RowManager = new NexTripleKeyedRowTableManager();
                 break;
 
             default:
@@ -88,18 +88,18 @@ public class NexDataFile
 public enum NexTableType
 {
     Unknown = 0,
-    Rows = 1,
-    RowSets = 2,
-    DoubleKeyed = 3,
+    SingleKeyed = 1,
+    DoubleKeyed = 2,
+    TripleKeyed = 3,
 }
 
 public enum NexTableCategory
 {
     Unknown = 0,
-    Rows = 1,
-    Rows_Localized = 2,
-    RowSets = 3,
-    RowSets_Localized = 4,
-    DoubleKeyed = 5,
-    DoubleKeyed_Localized = 6,
+    SingleKeyed = 1,
+    SingleKeyed_Localized = 2,
+    DoubleKeyed = 3,
+    DoubleKeyed_Localized = 4,
+    TripleKeyed = 5,
+    TripleKeyed_Localized = 6,
 }

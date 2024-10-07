@@ -5,7 +5,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCnEncoder.Net" Version="2.1.0" />
@@ -27,6 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
+	<None Include="Nex\Layouts\*.*" Pack="true" PackagePath="contentFiles/any/any/Nex/Layouts">
+	  <PackageCopyToOutput>true</PackageCopyToOutput>
+	</None>
     <None Update="Nex\Layouts\razerevent.layout">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2507,6 +2518,10 @@
     </None>
     <None Update="Nex\Layouts\bnpcbase.layout">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="README.md">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
     </None>
   </ItemGroup>
 

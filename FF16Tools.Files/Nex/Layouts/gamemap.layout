@@ -1,5 +1,5 @@
-set_table_type|RowSets
-set_table_category|RowSets
+set_table_type|DoubleKeyed
+set_table_category|DoubleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
@@ -8,7 +8,11 @@ add_column|Unk3|string
 add_column|LayoutNamedInstanceId|int
 add_column|MapDirectorId|int
 add_column|LevelSequenceId|int
-add_column|Unk7|int
+
+// Loops through all rows of a map set.
+// IF this isn't 0 AND fits the user situation then the row fitting this user situation is selected instead
+// i.e 602000 (hideaway 2), if fits usersituation 15020 then 602000 (sub id 1) is selected (pink sky)
+add_column|ReqUserSituationId|int
 
 // If this is 314, checked against bgmselect table instead?
 add_column|BgmType|short

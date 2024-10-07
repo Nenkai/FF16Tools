@@ -1,12 +1,12 @@
-set_table_type|RowSets
-set_table_category|RowSets
+set_table_type|DoubleKeyed
+set_table_category|DoubleKeyed
 use_base_row_id|false
 
 add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|string
+add_column|HasUserSituationCondition|int
+add_column|UnkUnused|int
+add_column|ReqUserSituationId|int
+add_column|HasUserSituationCondition2|int
+add_column|UnkUnused2|int
+add_column|ReqUserSituationId2|int
+add_column|UnusedUnk8|string

@@ -11,7 +11,8 @@ namespace FF16Tools.Files.Nex.Managers;
 
 public class NexDoubleKeyedRowTableManager : INexRowManager
 {
-    private Dictionary<uint, NexDoubleKeyedSet> _dkSets { get; set; } = [];
+    // Row length can be variable. See: battlehudgroup
+    private Dictionary<uint, Dictionary<uint, NexRowInfo>> _rowSets { get; set; } = [];
     private List<NexRowInfo> _allRows { get; set; } = [];
 
     public void Read(BinaryStream bs)
@@ -20,52 +21,41 @@ public class NexDoubleKeyedRowTableManager : INexRowManager
 
         uint thisHeaderSize = bs.ReadUInt32();
         uint setCount = bs.ReadUInt32();
+        bs.ReadUInt32();
         uint allRowsInfoOffset = bs.ReadUInt32();
         uint totalRowCount = bs.ReadUInt32();
-        bs.ReadUInt32();
 
         for (int i = 0; i < setCount; i++)
         {
-            bs.Position = basePos + thisHeaderSize + (i * 0x14);
+            bs.Position = basePos + thisHeaderSize + (i * 0x0C);
             long rowSetInfoOffset = bs.Position;
 
-            uint rowId = bs.ReadUInt32();
-            uint rowSubSetOffset = bs.ReadUInt32();
-            uint numSets = bs.ReadUInt32();
-            uint unkOffset = bs.ReadUInt32();
-            uint unkCount = bs.ReadUInt32();
+            uint key = bs.ReadUInt32();
+            uint rowArrayOffset = bs.ReadUInt32();
+            uint arrayLength = bs.ReadUInt32();
 
-            _dkSets.Add(rowId, new NexDoubleKeyedSet());
+            _rowSets.Add(key, []);
 
-            for (int j = 0; j < numSets; j++)
+            for (int j = 0; j < arrayLength; j++)
             {
-                bs.Position = rowSetInfoOffset + rowSubSetOffset + (j * 0x14);
-                long rowSubSetInfoOffset = bs.Position;
+                bs.Position = rowSetInfoOffset + rowArrayOffset + (j * 0x0C);
+                long rowInfoOffset = bs.Position;
 
-                uint subId_ = bs.ReadUInt32();
-                uint unkOffset_ = bs.ReadUInt32();
-                uint unkCount_ = bs.ReadUInt32();
-                uint rowInfosOffset = bs.ReadUInt32();
-                uint arrayLength = bs.ReadUInt32();
+                uint key_ = bs.ReadUInt32();
+                uint key2 = bs.ReadUInt32();
+                uint rowDataOffsetRelative = bs.ReadUInt32();
 
-                _dkSets[rowId].SubSets.TryAdd(subId_, []);
+                var rowInfo = new NexRowInfo(key, key2, 0);
+                rowInfo.RowDataOffset = (int)(rowInfoOffset + rowDataOffsetRelative);
 
-                for (int k = 0; k < arrayLength; k++)
+                if (!_rowSets.TryGetValue(key_, out Dictionary<uint, NexRowInfo> rowSet))
                 {
-                    bs.Position = rowSubSetInfoOffset + rowInfosOffset + (k * 0x14);
-                    long rowInfoOffset = bs.Position;
-
-                    uint actualRowId = bs.ReadUInt32();
-                    uint actualSubId = bs.ReadUInt32();
-                    uint actualArrayIndex = bs.ReadUInt32();
-                    bs.ReadUInt32(); // Unk
-                    uint rowDataOffset = bs.ReadUInt32();
-
-                    var rowInfo = new NexRowInfo(actualRowId, actualSubId, actualArrayIndex);
-                    rowInfo.RowDataOffset = (int)(rowInfoOffset + rowDataOffset);
-
-                    _dkSets[rowId].SubSets[actualSubId].Add(actualArrayIndex, rowInfo);
+                    rowSet = new Dictionary<uint, NexRowInfo>();
+                    _rowSets.Add(key_, rowSet);
                 }
+                
+                 if (!rowSet.TryAdd(key2, rowInfo))
+                    throw new Exception($"Row at array index {key2} already exists in row set");
             }
         }
 
@@ -74,41 +64,44 @@ public class NexDoubleKeyedRowTableManager : INexRowManager
         {
             long rowInfoOffset = bs.Position;
 
-            uint rowId = bs.ReadUInt32();
-            uint subId = bs.ReadUInt32();
-            uint arrayIndex = bs.ReadUInt32();
-            bs.ReadUInt32(); // Always 0
+            uint key = bs.ReadUInt32();
+            uint key2 = bs.ReadUInt32();
             uint rowOffsetRelative = bs.ReadUInt32();
 
-            var rowInfo = new NexRowInfo(rowId, subId, arrayIndex);
+            var rowInfo = new NexRowInfo(key, key2, 0);
             rowInfo.RowDataOffset = (int)(rowInfoOffset + rowOffsetRelative);
             _allRows.Add(rowInfo);
         }
     }
 
-    public NexRowInfo GetRowInfo(uint rowId, uint subId = 0, uint arrayIndex = 0)
+    public NexRowInfo GetRowInfo(uint key, uint key2 = 0, uint key3 = 0)
     {
-        if (!_dkSets.TryGetValue(rowId, out NexDoubleKeyedSet dkSet))
-            throw new KeyNotFoundException($"RowId {rowId} does not exist in table.");
+        if (!_rowSets.TryGetValue(key, out Dictionary<uint, NexRowInfo> rowSet))
+            throw new Exception($"Key {key} was not found.");
 
-        if (!dkSet.SubSets.TryGetValue(subId, out Dictionary<uint, NexRowInfo> subSet))
-            throw new KeyNotFoundException($"SubId {subId} for RowId {rowId} does not exist in table.");
-
-        if (!subSet.TryGetValue(arrayIndex, out NexRowInfo rowInfo))
-            throw new KeyNotFoundException($"Array index {arrayIndex} for ids {rowId},{subId} does not exist in table.");
+        if (!rowSet.TryGetValue(key2, out NexRowInfo rowInfo))
+            throw new Exception($"Key2 {key2} for row set key {key} was not found.");
 
         return rowInfo;
     }
 
-    public Dictionary<uint, NexDoubleKeyedSet> GetRowSets() => _dkSets;
+    public bool TryGetRowInfo(out NexRowInfo rowInfo, uint key, uint key2 = 0, uint key3 = 0)
+    {
+        rowInfo = default;
+
+        if (!_rowSets.TryGetValue(key, out Dictionary<uint, NexRowInfo> rowSet))
+            return false;
+
+        if (!rowSet.TryGetValue(key2, out rowInfo))
+            return false;
+
+        return true;
+    }
+
+    public Dictionary<uint, Dictionary<uint, NexRowInfo>> GetRowSets() => _rowSets;
 
     public List<NexRowInfo> GetAllRowInfos()
     {
         return _allRows;
     }
-}
-
-public class NexDoubleKeyedSet
-{
-    public Dictionary<uint, Dictionary<uint, NexRowInfo>> SubSets { get; set; } = [];
 }

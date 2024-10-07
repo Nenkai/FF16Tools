@@ -1,5 +1,5 @@
-set_table_type|Rows
-set_table_category|Rows
+set_table_type|SingleKeyed
+set_table_category|SingleKeyed
 use_base_row_id|true
 
 // This layout was generated, guessed row length: 0x50

@@ -97,16 +97,16 @@ public class NexToSQLiteExporter : IDisposable
 
         switch (nexFile.Type)
         {
-            case NexTableType.Rows:
-                tableDefinition += "RowID INTEGER";
-                break;
-
-            case NexTableType.RowSets:
-                tableDefinition += "RowID INTEGER, ArrayIndex INTEGER";
+            case NexTableType.SingleKeyed:
+                tableDefinition += "Key INTEGER";
                 break;
 
             case NexTableType.DoubleKeyed:
-                tableDefinition += "RowID INTEGER, SubID INTEGER, ArrayIndex INTEGER";
+                tableDefinition += "Key INTEGER, Key2 INTEGER";
+                break;
+
+            case NexTableType.TripleKeyed:
+                tableDefinition += "Key INTEGER, Key2 INTEGER, Key3 INTEGER";
                 break;
         }
 
@@ -141,16 +141,16 @@ public class NexToSQLiteExporter : IDisposable
 
                 switch (nexFile.Type)
                 {
-                    case NexTableType.Rows:
-                        sb.Append($"{row.Id}");
-                        break;
-
-                    case NexTableType.RowSets:
-                        sb.Append($"{row.Id}, {row.ArrayIndex}");
+                    case NexTableType.SingleKeyed:
+                        sb.Append($"{row.Key}");
                         break;
 
                     case NexTableType.DoubleKeyed:
-                        sb.Append($"{row.Id}, {row.SubId}, {row.ArrayIndex}");
+                        sb.Append($"{row.Key}, {row.Key2}");
+                        break;
+
+                    case NexTableType.TripleKeyed:
+                        sb.Append($"{row.Key}, {row.Key2}, {row.Key3}");
                         break;
                 }
 
@@ -212,16 +212,16 @@ public class NexToSQLiteExporter : IDisposable
         sb.Append($"INSERT INTO \"{tableName}\"\n\t(");
         switch (nexFile.Type)
         {
-            case NexTableType.Rows:
-                sb.Append("RowId");
-                break;
-
-            case NexTableType.RowSets:
-                sb.Append("RowId, ArrayIndex");
+            case NexTableType.SingleKeyed:
+                sb.Append("Key");
                 break;
 
             case NexTableType.DoubleKeyed:
-                sb.Append("RowId, SubId, ArrayIndex");
+                sb.Append("Key, Key2");
+                break;
+
+            case NexTableType.TripleKeyed:
+                sb.Append("Key, Key2, Key3");
                 break;
         }
 

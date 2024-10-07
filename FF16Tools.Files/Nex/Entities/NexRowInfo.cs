@@ -8,15 +8,15 @@ namespace FF16Tools.Files.Nex.Entities;
 
 public class NexRowInfo
 {
-    public uint Id { get; set; }
-    public uint SubId { get; set; }
-    public uint ArrayIndex { get; set; }
+    public uint Key { get; set; }
+    public uint Key2 { get; set; }
+    public uint Key3 { get; set; }
     public int RowDataOffset { get; set; }
 
-    public NexRowInfo(uint id, uint subId = 0, uint arrayIndex = 0)
+    public NexRowInfo(uint key, uint key2 = 0, uint key3 = 0)
     {
-        Id = id;
-        SubId = subId;
-        ArrayIndex = arrayIndex;
+        Key = key;
+        Key2 = key2;
+        Key3 = key3;
     }
 }

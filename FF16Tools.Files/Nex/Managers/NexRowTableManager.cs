@@ -38,13 +38,22 @@ public class NexRowTableManager : INexRowManager
         }
     }
 
-    public NexRowInfo GetRowInfo(uint rowId, uint subId = 0, uint arrayIndex = 0)
+    public NexRowInfo GetRowInfo(uint key, uint key2 = 0, uint key3 = 0)
     {
-        if (!_rows.TryGetValue(rowId, out NexRowInfo rowInfo))
-            throw new Exception($"Row id {rowId} was not found.");
+        if (!_rows.TryGetValue(key, out NexRowInfo rowInfo))
+            throw new Exception($"Row id {key} was not found.");
 
         return rowInfo;
     }
+
+    public bool TryGetRowInfo(out NexRowInfo rowInfo, uint key, uint key2 = 0, uint key3 = 0)
+    {
+        if (!_rows.TryGetValue(key3, out rowInfo))
+            return false;
+
+        return true;
+    }
+
 
     public List<NexRowInfo> GetAllRowInfos()
     {

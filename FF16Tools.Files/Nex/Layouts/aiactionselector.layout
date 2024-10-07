@@ -1,5 +1,5 @@
-set_table_type|RowSets
-set_table_category|RowSets
+set_table_type|DoubleKeyed
+set_table_category|DoubleKeyed
 use_base_row_id|false
 
 define_struct|Unk28_struct|short|short
