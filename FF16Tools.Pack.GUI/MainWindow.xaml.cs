@@ -161,7 +161,7 @@ public partial class MainWindow : Window
                     string outputDir = System.IO.Path.Combine(unpackOutputPath, packName);
                     Directory.CreateDirectory(outputDir);
 
-                    await pack.ExtractAll(outputDir);
+                    await pack.ExtractAllAsync(outputDir);
                 }
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
@@ -188,9 +188,9 @@ public partial class MainWindow : Window
 
                 //if its configured to where the user wants to extract a specific game file from an archive, then let them
                 if(extractionMode == ExtractionMode.SingleArchiveWithGameFile)
-                    await pack.ExtractFile(unpackGameFile, outputDir);
+                    await pack.ExtractFileAsync(unpackGameFile, outputDir);
                 else //otherwise extract all of the files from the archive...
-                    await pack.ExtractAll(outputDir);
+                    await pack.ExtractAllAsync(outputDir);
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
                 Process.Start("explorer.exe", outputDir);

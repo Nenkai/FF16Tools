@@ -106,7 +106,7 @@ public class Program
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
-            await pack.ExtractFile(verbs.FileToUnpack, verbs.OutputPath);
+            await pack.ExtractFileAsync(verbs.FileToUnpack, verbs.OutputPath);
         }
         catch (Exception ex)
         {
@@ -134,7 +134,7 @@ public class Program
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
-            await pack.ExtractAll(verbs.OutputPath);
+            await pack.ExtractAllAsync(verbs.OutputPath);
             _logger.LogInformation("Done.");
         }
         catch (Exception ex)

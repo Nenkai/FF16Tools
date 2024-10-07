@@ -63,6 +63,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     private FF16Pack(FileStream stream, ILoggerFactory loggerFactory = null)
     {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+
         _stream = stream;
         _loggerFactory = loggerFactory;
 
@@ -79,7 +81,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <exception cref="InvalidDataException">If the file is not a pack file.</exception>
     public static FF16Pack Open(string path, ILoggerFactory loggerFactory = null)
     {
-        ArgumentException.ThrowIfNullOrEmpty(path);
+        ArgumentException.ThrowIfNullOrWhiteSpace(path, nameof(path));
 
         var fs = File.OpenRead(path);
         var fileBinStream = new BinaryStream(fs);
@@ -145,16 +147,15 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <summary>
     /// Gets a file info for the specified path.
     /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    /// <exception cref="FileNotFoundException">If the file is not found in the archive.</exception>
-    public FF16PackFile GetFileInfo(string path)
+    /// <param name="gamePath">Game path.</param>
+    /// <returns>null if not found.</returns>
+    public FF16PackFile GetFileInfo(string gamePath)
     {
-        ArgumentException.ThrowIfNullOrEmpty(path);
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
 
-        path = path.Replace('\\', '/');
-        if (!_files.TryGetValue(path, out FF16PackFile file))
-            throw new FileNotFoundException("File not found in pack.");
+        gamePath = gamePath.Replace('\\', '/');
+        if (!_files.TryGetValue(gamePath, out FF16PackFile file))
+            return null;
 
         return file;
     }
@@ -180,13 +181,13 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <summary>
     /// Returns whether the specified file exists in this pack.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="gamePath">Game path.</param>
     /// <returns></returns>
-    public bool FileExists(string path)
+    public bool FileExists(string gamePath)
     {
-        ArgumentException.ThrowIfNullOrEmpty(path);
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
 
-        return _files.ContainsKey(path);
+        return _files.ContainsKey(gamePath);
     }
 
     private int? _fileCounter;
@@ -194,37 +195,38 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <summary>
     /// Gets file data to a stream.
     /// </summary>
-    /// <param name="path"></param>
-    /// <param name="ct"></param>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="outputStream">Output stream. It should be writable.</param>
+    /// <param name="ct">Cancellation token.</param>
     /// <returns></returns>
     /// <exception cref="FileNotFoundException">If the file is not found in the archive.</exception>
-    public async Task GetFileDataStream(string path, Stream outputStream, CancellationToken ct = default)
+    public async Task GetFileDataStreamAsync(string gamePath, Stream outputStream, CancellationToken ct = default)
     {
-        ArgumentException.ThrowIfNullOrEmpty(path);
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
         ArgumentNullException.ThrowIfNull(outputStream);
 
         if (!outputStream.CanWrite)
             throw new ArgumentException("Output stream should be writable.");
 
-        FF16PackFile file = GetFileInfo(path);
-        await UnpackFileToStream(file, outputStream, path, ct: ct);
+        FF16PackFile file = GetFileInfo(gamePath);
+        await UnpackFileToStreamAsync(file, outputStream, gamePath, ct: ct);
     }
 
     /// <summary>
     /// Gets file data. Returning buffer is disposable.
     /// </summary>
     /// <param name="path">Game path.</param>
-    /// <param name="ct"></param>
-    /// <returns></returns>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Disposable MemoryOwner.</returns>
     /// <exception cref="FileNotFoundException">If the file is not found in the archive.</exception>
-    public async Task<MemoryOwner<byte>> GetFileData(string path, CancellationToken ct = default)
+    public async Task<MemoryOwner<byte>> GetFileDataAsync(string path, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
 
         FF16PackFile file = GetFileInfo(path);
 
         MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate((int)file.DecompressedFileSize);
-        await UnpackFileToStream(file, buffer.AsStream(), path, ct: ct);
+        await UnpackFileToStreamAsync(file, buffer.AsStream(), path, ct: ct);
         return buffer;
     }
 
@@ -234,7 +236,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <param name="outputDir">Output directory for the extracted files.</param>
     /// <returns></returns>
     /// <exception cref="DirectoryNotFoundException"></exception>
-    public async Task ExtractAll(string outputDir)
+    public async Task ExtractAllAsync(string outputDir)
     {
         if (string.IsNullOrEmpty(outputDir))
             throw new DirectoryNotFoundException("Output dir is invalid.");
@@ -242,7 +244,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         _fileCounter = 0;
         foreach (KeyValuePair<string, FF16PackFile> file in _files)
         {
-            await ExtractFile(file.Key, outputDir);
+            await ExtractFileAsync(file.Key, outputDir);
             _fileCounter++;
         }
 
@@ -264,7 +266,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="FileNotFoundException"></exception>
-    public async Task ExtractFile(string path, string outputDir, CancellationToken ct = default)
+    public async Task ExtractFileAsync(string path, string outputDir, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
         ArgumentException.ThrowIfNullOrEmpty(outputDir);
@@ -280,10 +282,10 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
 
         using var outputStream = new FileStream(outputPath, FileMode.Create);
-        await UnpackFileToStream(packFile, outputStream, outputPath, ct);
+        await UnpackFileToStreamAsync(packFile, outputStream, outputPath, ct);
     }
 
-    private async Task UnpackFileToStream(FF16PackFile packFile, Stream outputStream, string pathForLogging, CancellationToken ct = default)
+    private async Task UnpackFileToStreamAsync(FF16PackFile packFile, Stream outputStream, string pathForLogging, CancellationToken ct = default)
     {
         _logger?.LogInformation("Fetching {path} (compressed={compressed}, dataOffset=0x{offset:X8})", pathForLogging, packFile.IsCompressed, packFile.DataOffset);
 
@@ -293,13 +295,13 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             switch (packFile.ChunkedCompressionFlags)
             {
                 case FF16PackChunkCompressionType.UseSharedChunk:
-                    await ExtractFileFromSharedChunk(packFile, outputStream, pathForLogging, ct);
+                    await ExtractFileFromSharedChunkAsync(packFile, outputStream, pathForLogging, ct);
                     break;
                 case FF16PackChunkCompressionType.UseMultipleChunks:
-                    await ExtractFileFromMultipleChunks(packFile, outputStream, pathForLogging, ct);
+                    await ExtractFileFromMultipleChunksAsync(packFile, outputStream, pathForLogging, ct);
                     break;
                 case FF16PackChunkCompressionType.UseSpecificChunk:
-                    await ExtractFileFromSpecificChunk(packFile, outputStream, pathForLogging, ct);
+                    await ExtractFileFromSpecificChunkAsync(packFile, outputStream, pathForLogging, ct);
                     break;
                 case FF16PackChunkCompressionType.None:
                     throw new ArgumentException($"Pack file '{pathForLogging}' has compression flag but compression type flag is '{packFile.ChunkedCompressionFlags}'..?");
@@ -359,7 +361,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         }
     }
 
-    private async ValueTask ExtractFileFromMultipleChunks(FF16PackFile packFile, Stream outputStream, string outputPath, CancellationToken ct = default)
+    private async ValueTask ExtractFileFromMultipleChunksAsync(FF16PackFile packFile, Stream outputStream, string outputPath, CancellationToken ct = default)
     {
         _stream.Position = (long)packFile.ChunkDefOffset;
 
@@ -395,7 +397,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             ThrowHashException(outputPath);
     }
 
-    private async ValueTask ExtractFileFromSpecificChunk(FF16PackFile packFile, Stream outputStream, string outputPath, CancellationToken ct = default)
+    private async ValueTask ExtractFileFromSpecificChunkAsync(FF16PackFile packFile, Stream outputStream, string outputPath, CancellationToken ct = default)
     {
         _stream.Position = (long)packFile.DataOffset;
 
@@ -415,7 +417,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             ThrowHashException(outputPath);
     }
 
-    private async ValueTask ExtractFileFromSharedChunk(FF16PackFile packFile, Stream outputStream, string gamePath, CancellationToken ct = default)
+    private async ValueTask ExtractFileFromSharedChunkAsync(FF16PackFile packFile, Stream outputStream, string gamePath, CancellationToken ct = default)
     {
         FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffset];
         if (!_cachedChunks.Contains(chunk))
