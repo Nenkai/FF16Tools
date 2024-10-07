@@ -48,7 +48,7 @@ public class NexRowTableManager : INexRowManager
 
     public bool TryGetRowInfo(out NexRowInfo rowInfo, uint key, uint key2 = 0, uint key3 = 0)
     {
-        if (!_rows.TryGetValue(key3, out rowInfo))
+        if (!_rows.TryGetValue(key, out rowInfo))
             return false;
 
         return true;
