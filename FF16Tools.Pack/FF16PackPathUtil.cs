@@ -90,7 +90,12 @@ public class FF16PackPathUtil
     }.ToFrozenDictionary();
 
     /// <summary>
-    /// Folder to pack name mappings.
+    /// Folder to pack name mappings (ffxvi_demo.exe).
+    /// </summary>
+    public static FrozenDictionary<string, string> KnownFolderToPathNameDemo => _knownFolderToPackNameDemo;
+
+    /// <summary>
+    /// Folder to pack name mappings (ffxvi.exe).
     /// </summary>
     public static FrozenDictionary<string, string> KnownFolderToPathName => _knownFolderToPackName;
 
@@ -112,6 +117,8 @@ public class FF16PackPathUtil
     public static bool TryGetPackNameForPath(string gamePath, out string packName, out string gamePathFolder, bool demo = false)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+
+        gamePath = NormalizePath(gamePath);
 
         if (!demo)
         {
@@ -163,5 +170,15 @@ public class FF16PackPathUtil
         gamePathFolder = null;
 
         return false;
+    }
+
+    /// <summary>
+    /// Normalizes a path.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static string NormalizePath(string path)
+    {
+        return path.Replace("\\", "/").ToLower();
     }
 }

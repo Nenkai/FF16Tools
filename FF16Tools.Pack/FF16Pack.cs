@@ -153,7 +153,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
 
-        gamePath = gamePath.Replace('\\', '/');
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
         if (!_files.TryGetValue(gamePath, out FF16PackFile file))
             return null;
 
@@ -187,6 +188,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
 
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
         return _files.ContainsKey(gamePath);
     }
 
@@ -217,6 +220,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
         ArgumentNullException.ThrowIfNull(outputStream);
 
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
         if (!outputStream.CanWrite)
             throw new ArgumentException("Output stream should be writable.");
 
@@ -234,6 +239,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     public async Task<MemoryOwner<byte>> GetFileDataAsync(string path, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
+
+        path = FF16PackPathUtil.NormalizePath(path);
 
         FF16PackFile file = GetFileInfo(path);
 
@@ -283,6 +290,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
         ArgumentException.ThrowIfNullOrEmpty(outputDir);
+
+        path = FF16PackPathUtil.NormalizePath(path);
 
         FF16PackFile packFile = GetFileInfo(path);
 

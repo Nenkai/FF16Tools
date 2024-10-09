@@ -101,6 +101,8 @@ public class FF16PackBuilder
     /// <param name="path"></param>
     public void RegisterPathFile(string path)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(path, nameof(path));
+
         string[] lines = File.ReadAllLines(path);
         if (lines.Length < 2)
         {
@@ -123,7 +125,7 @@ public class FF16PackBuilder
         ArgumentException.ThrowIfNullOrWhiteSpace(localPath, nameof(gamePath));
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
 
-        gamePath = gamePath.ToLower().Replace('\\', '/');
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
 
         if (!string.IsNullOrEmpty(_options.Name))
         {
@@ -134,7 +136,7 @@ public class FF16PackBuilder
 
         }
 
-        gamePath = gamePath.Replace('\\', '/'); // normalize again since GetRelativePath can swap back to '\\'..
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath); // normalize again since GetRelativePath can swap back to '\\'..
 
         _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
 
@@ -233,6 +235,8 @@ public class FF16PackBuilder
     /// <returns></returns>
     public async Task WriteToAsync(string file, CancellationToken ct = default)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(file, nameof(file));
+
         BuildSharedChunks();
         ct.ThrowIfCancellationRequested();
         BuildStringTable();

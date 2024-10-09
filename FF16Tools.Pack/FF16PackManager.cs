@@ -74,6 +74,8 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
 
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
         foreach (KeyValuePair<string, FF16Pack> packFile in _packFiles)
         {
             if (packFile.Value.FileExists(gamePath))
@@ -107,6 +109,8 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
         ArgumentException.ThrowIfNullOrWhiteSpace(packName, nameof(packName));
 
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
         if (!_packFiles.TryGetValue(packName, out FF16Pack packFile))
             throw new KeyNotFoundException($"Pack '{packName}' was not found in pack manager.");
 
@@ -123,6 +127,8 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
     public async Task<MemoryOwner<byte>> GetFileDataAsync(string gamePath, bool includeDiff = true, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
 
         foreach (KeyValuePair<string, FF16Pack> packFile in _packFiles)
         {
@@ -158,6 +164,8 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
         ArgumentNullException.ThrowIfNull(outputStream, nameof(outputStream));
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
 
         foreach (KeyValuePair<string, FF16Pack> packFile in _packFiles)
         {
@@ -200,6 +208,8 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
         if (!_packFiles.TryGetValue(packName, out FF16Pack packFile))
             throw new KeyNotFoundException($"Pack '{packName}' was not found in pack manager.");
 
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
         if (packFile.FileExists(gamePath))
             return await packFile.GetFileDataAsync(gamePath, ct: ct);
         
@@ -220,9 +230,10 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
         ArgumentNullException.ThrowIfNull(outputStream, nameof(outputStream));
 
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
         if (!_packFiles.TryGetValue(packName, out FF16Pack packFile))
             throw new KeyNotFoundException($"Pack '{packName}' was not found in pack manager.");
-
 
         if (packFile.FileExists(gamePath))
         {
