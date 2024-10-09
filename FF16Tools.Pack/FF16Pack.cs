@@ -190,6 +190,18 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         return _files.ContainsKey(gamePath);
     }
 
+    /// <summary>
+    /// Gets the total decompressed size for all files in bytes.
+    /// </summary>
+    /// <returns></returns>
+    public ulong GetTotalDecompressedSize()
+    {
+        ulong counter = 0;
+        foreach (var file in _files)
+            counter += file.Value.DecompressedFileSize;
+        return counter;
+    }
+
     private int? _fileCounter;
 
     /// <summary>
@@ -234,9 +246,10 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// Extracts all the files in the pack to the specified directory.
     /// </summary>
     /// <param name="outputDir">Output directory for the extracted files.</param>
+    /// <param name="includePathFile">Whether to include a .path file, required for repacking individual packs.</param>
     /// <returns></returns>
     /// <exception cref="DirectoryNotFoundException"></exception>
-    public async Task ExtractAllAsync(string outputDir)
+    public async Task ExtractAllAsync(string outputDir, bool includePathFile = true)
     {
         if (string.IsNullOrEmpty(outputDir))
             throw new DirectoryNotFoundException("Output dir is invalid.");
@@ -408,7 +421,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         await _stream.ReadAsync(compSlice, ct);
 
-        GDeflate.Decompress(compSlice.Span, decompBuffer.Span.Slice(0, MAX_DECOMPRESSED_MULTI_CHUNK_SIZE));
+        GDeflate.Decompress(compSlice.Span, decompBuffer.Span.Slice(0, (int)packFile.DecompressedFileSize));
 
         await outputStream.WriteAsync(decompSlice, ct);
 

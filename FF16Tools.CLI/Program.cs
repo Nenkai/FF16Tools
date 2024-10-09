@@ -1,5 +1,6 @@
 ﻿using System.Buffers.Binary;
 using System.IO.Compression;
+using System.Globalization;
 
 using Microsoft.Extensions.Logging;
 
@@ -19,7 +20,6 @@ using FF16Tools.Files.Nex.Managers;
 using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
-using FF16Tools.Shared;
 
 namespace FF16Tools.CLI;
 
@@ -73,9 +73,11 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs>(args);
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, UnpackAllPacksVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, 
+            ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
+        await p.WithParsedAsync<UnpackAllPacksVerbs>(UnpackAllPacks);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
         p.WithParsed<ListFilesVerbs>(ListFiles);
         p.WithParsed<TexConvVerbs>(TexConv);
@@ -141,6 +143,81 @@ public class Program
         {
             _logger.LogError(ex, "Failed to unpack.");
         }
+    }
+
+    static async Task UnpackAllPacks(UnpackAllPacksVerbs verbs)
+    {
+        if (!Directory.Exists(verbs.InputFolder))
+        {
+            _logger.LogError("Directory '{path}' does not exist", verbs.InputFolder);
+            return;
+        }
+
+        List<string> packsToProcess = new List<string>();
+        foreach (var pack in Directory.GetFiles(verbs.InputFolder, "*.pac"))
+        {
+            string fileName = Path.GetFileName(pack);
+            if (!verbs.IncludeDiff && fileName.Contains(".diff"))
+            {
+                _logger.LogInformation("Skipping .diff pack '{packName}'", fileName);
+                continue;
+            }
+
+            if (FF16PackPathUtil.PackLocales.Any(locale => fileName.Contains($".{locale}.")))
+            {
+                if (fileName.Contains($".{verbs.Locale}."))
+                    packsToProcess.Add(fileName);
+            }
+            else
+                packsToProcess.Add(fileName);
+        }
+
+        ulong totalSize = 0;
+        Dictionary<string, FF16Pack> packs = [];
+        foreach (var packToProcess in packsToProcess)
+        {
+            _logger.LogInformation("Loading {pack}", packToProcess);
+
+            var pack = FF16Pack.Open(Path.Combine(verbs.InputFolder, packToProcess), _loggerFactory);
+            packs.Add(packToProcess, pack);
+
+            totalSize += pack.GetTotalDecompressedSize();
+        }
+
+        _logger.LogInformation("Loaded {packCount} packs.", packsToProcess.Count);
+        _logger.LogInformation("Required free space for extraction: {size} ({bytes} bytes)", BytesToString(totalSize), totalSize);
+
+        if (!verbs.SkipPrompt)
+        {
+            _logger.LogInformation($"Proceed? [y/n]");
+
+            if (Console.ReadKey().Key != ConsoleKey.Y)
+                return;
+        }
+
+        if (string.IsNullOrEmpty(verbs.OutputPath))
+        {
+            string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFolder);
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFolder)), "extracted");
+        }
+
+        foreach (KeyValuePair<string, FF16Pack> pack in packs)
+        {
+            try
+            {
+                _logger.LogInformation("Unpacking {pack}...", pack.Key);
+                pack.Value.DumpInfo();
+
+                await pack.Value.ExtractAllAsync(verbs.OutputPath, includePathFile: false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to unpack {pack}", pack.Key);
+            }
+        }
+
+        foreach (var pack in packs.Values)
+            await pack.DisposeAsync();
     }
 
     static void ListFiles(ListFilesVerbs verbs)
@@ -555,6 +632,42 @@ public class Program
     }
 #endif
 
+    public static string BytesToString(ulong value)
+    {
+        string suffix;
+        double readable;
+        switch (value)
+        {
+            case >= 0x1000000000000000:
+                suffix = "EiB";
+                readable = value >> 50;
+                break;
+            case >= 0x4000000000000:
+                suffix = "PiB";
+                readable = value >> 40;
+                break;
+            case >= 0x10000000000:
+                suffix = "TiB";
+                readable = value >> 30;
+                break;
+            case >= 0x40000000:
+                suffix = "GiB";
+                readable = value >> 20;
+                break;
+            case >= 0x100000:
+                suffix = "MiB";
+                readable = value >> 10;
+                break;
+            case >= 0x400:
+                suffix = "KiB";
+                readable = value;
+                break;
+            default:
+                return value.ToString("0 B");
+        }
+
+        return (readable / 1024).ToString("0.## ", CultureInfo.InvariantCulture) + suffix;
+    }
 }
 
 [Verb("unpack", HelpText = "Unpacks a .pac (FF16 Pack) file.")]
@@ -578,6 +691,26 @@ public class UnpackAllVerbs
 
     [Option('o', "output", HelpText = "Output directory. Optional, defaults to a folder named the same as the .pac file.")]
     public string OutputPath { get; set; }
+}
+
+[Verb("unpack-all-packs", HelpText = "Unpacks all packs from the specified folder.")]
+public class UnpackAllPacksVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input directory.")]
+    public string InputFolder { get; set; }
+
+    [Option('o', "output", HelpText = "Output directory.")]
+    public string OutputPath { get; set; }
+
+    [Option('l', "locale", HelpText = "Which localized packs to extract. Defaults to 'en'.\n" +
+        "Valid options: ar, cs, ct, de, en, es, fr, it, ja, ko, ls, pb, pl, ru")]
+    public string Locale { get; set; } = "en";
+
+    [Option("include-diff", HelpText = "Whether to include diff packs.")]
+    public bool IncludeDiff { get; set; }
+
+    [Option('s', "skip", HelpText = "Skip any prompt.")]
+    public bool SkipPrompt { get; set; }
 }
 
 [Verb("pack", HelpText = "Pack files from a directory.")]
