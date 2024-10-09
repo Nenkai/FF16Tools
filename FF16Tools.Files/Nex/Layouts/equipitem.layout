@@ -5,35 +5,37 @@ use_base_row_id|false
 define_struct|EffectStruct|int|int
 
 add_column|DLCFlags|int
-add_column|EquipCategory|int
+add_column|Category|int
 add_column|Unk3|int
 add_column|Attack|int
 add_column|Defense|int
 add_column|Stagger|int
 add_column|Unk7|int
 add_column|SalePrice|int
-add_column|Rarity|int
+add_column|Rarity_UIArrayIdRelated|int
 add_column|IconTexFileId|int
 add_column|EffectFlag|int
 add_column|Name|string|rel
 add_column|Description|string|rel|-4
 add_column|Name1|string|rel|-8
 add_column|Name2|string|rel|-12
+
+// These are identical to Unk7 in item
 add_column|Unk16|byte
 add_column|Unk17|byte
 add_column|Unk18|byte
 add_column|Unk19|byte
 add_column|Unk20|byte
 add_column|Unk21|byte
-add_column|Unk22|byte
-add_column|Unk23|byte
+// implicit 2 byte padding
+
 add_column|Unk24|string|rel|-24
 add_column|EffectPotency|int
 add_column|EffectArray|EffectStruct[]
 add_column|HP|int
 add_column|Unk28|int
 add_column|Unk29|int
-add_column|Unk30|int
+add_column|SortOrder1|int
 add_column|Unk31|int
 add_column|Unk32|byte
 add_column|Unk33|byte
@@ -43,5 +45,5 @@ add_column|Unk36|byte
 add_column|Unk37|byte
 add_column|Unk38|byte
 add_column|Unk39|byte
-add_column|Unk40|int
+add_column|SortOrder2|int
 add_column|Unk41|int

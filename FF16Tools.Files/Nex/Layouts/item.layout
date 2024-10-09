@@ -2,27 +2,29 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
+// ID above 100000 points to equipitem instead
 add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|string|rel
-add_column|Unk4|string|rel|-4
+add_column|Category|int
+add_column|Name|string|rel
+add_column|Description|string|rel|-4
 add_column|Unk5|string|rel|-8
 add_column|Unk6|string|rel|-12
+
 add_column|Unk7|byte
 add_column|Unk8|byte
 add_column|Unk9|byte
 add_column|Unk10|byte
-add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
-add_column|Unk14|int
-add_column|FileIconID|int
-add_column|Unk16|int
+add_column|Unk11|byte
+add_column|Unk12|byte
+// implicit 2 byte spadding
+
+add_column|ItemCap|int
+add_column|GilCost|int
+add_column|UIArrayIdRelated|int
+add_column|IconTexFileId|int
+add_column|UseItemId|int
 add_column|Unk17|int
-add_column|Unk18|byte
-add_column|Unk19|byte
-add_column|Unk20|byte
-add_column|Unk21|byte
+add_column|SortOrder1|int
 add_column|Unk22|int
 add_column|Unk23|int
 add_column|Unk24|byte
@@ -30,7 +32,7 @@ add_column|Unk25|byte
 add_column|Unk26|byte
 add_column|Unk27|byte
 add_column|Unk28|int
-add_column|Unk29|int
+add_column|SortOrder2|int
 add_column|Unk30|byte
 add_column|Unk31|byte
 add_column|Unk32|byte

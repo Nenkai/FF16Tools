@@ -4,6 +4,13 @@ use_base_row_id|false
 
 add_column|Unk1|int
 add_column|Unk2|string
+
+// Steam IDs are hardcoded
+// ADDCONT000000200 -> Steam ID 2744050 -> Echoes of the Fallen
+// ADDCONT000000300 -> Steam ID 2744060 -> The Rising Tide
+// ADDCONT000000104 -> Steam ID 3142080 -> Brave Blade
+// ADDCONT000000112 -> Steam ID 3142090 -> Cait Sith Charm
+// ADDCONT000000121 -> Steam ID 3142100 -> Sixteen Bells Orchestrion Roll
 add_column|Unk3|string
 add_column|Unk4|int
 add_column|Unk5|int
