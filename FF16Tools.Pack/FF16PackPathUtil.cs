@@ -124,10 +124,10 @@ public class FF16PackPathUtil
         {
             foreach (var knownFolderToPackName in _knownFolderToPackName)
             {
-                if (knownFolderToPackName.Key.StartsWith(gamePath))
+                if (gamePath.StartsWith(knownFolderToPackName.Key))
                 {
-                    packName = knownFolderToPackName.Key;
-                    gamePathFolder = knownFolderToPackName.Value;
+                    packName = knownFolderToPackName.Value;
+                    gamePathFolder = knownFolderToPackName.Key;
                     return true;
                 }
             }
@@ -152,10 +152,10 @@ public class FF16PackPathUtil
         {
             foreach (var knownFolderToPackName in _knownFolderToPackNameDemo)
             {
-                if (knownFolderToPackName.Key.StartsWith(gamePath))
+                if (gamePath.StartsWith(knownFolderToPackName.Key))
                 {
-                    packName = knownFolderToPackName.Key;
-                    gamePathFolder = knownFolderToPackName.Value;
+                    packName = knownFolderToPackName.Value;
+                    gamePathFolder = knownFolderToPackName.Key;
                     return true;
                 }
             }
