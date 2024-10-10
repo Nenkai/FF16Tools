@@ -133,7 +133,6 @@ public class FF16PackBuilder
                 throw new ArgumentException($"Game path should start with '{_options.Name}'.");
 
             gamePath = Path.GetRelativePath(_options.Name, gamePath);
-
         }
 
         gamePath = FF16PackPathUtil.NormalizePath(gamePath); // normalize again since GetRelativePath can swap back to '\\'..
@@ -156,7 +155,7 @@ public class FF16PackBuilder
         int i = 0;
         foreach (var file in _packFileTasks)
         {
-            if (!IsCompressionForFileSuggested(file.GamePath))
+            if (!IsCompressionForFileSuggested(file.GamePath) || file.PackFile.DecompressedFileSize == 0)
                 continue;
 
             if (file.PackFile.DecompressedFileSize >= FF16Pack.MIN_FILE_SIZE_FOR_MULTIPLE_CHUNKS)
@@ -367,7 +366,7 @@ public class FF16PackBuilder
 
     private async Task WriteFile(FileStream packStream, FileTask task, CancellationToken ct = default)
     {
-        if (!IsCompressionForFileSuggested(task.GamePath))
+        if (!IsCompressionForFileSuggested(task.GamePath) || task.PackFile.DecompressedFileSize == 0)
         {
             _logger?.LogInformation("PACK: Writing raw '{path}'..", task.GamePath);
 
