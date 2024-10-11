@@ -2,6 +2,113 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.1
+ 
+ #### `animalbase`
+* `Unk2` -> `ModelId`
+* `Unk3` -> `ModelIdKey2`
+
+ #### `bnpcbase`
+* `Unk4` -> `ModelId`
+* `Unk5` -> `ModelIdKey2`
+
+ #### `equipitem`
+* `EquipCategory` -> `Category`
+* `Rarity` -> `Rarity_UIArrayIdRelated`
+* `Unk22` & `Unk23`: Removed (implicit padding)
+* `Unk30` -> `SortOrder2`
+* `Unk40` -> `SortOrder2`
+
+#### `enpcbase`
+`Unk3` -> `ModelId`
+`Unk4` -> `ModelIdKey2`
+`Unk21` -> `ModelCoordinateId`
+`Unk22` -> `ModelCoordinateIdKey2`
+
+#### `gamemap`
+* `Unk7` -> `ReqUserSituationId`
+
+#### `item`
+* `Unk2` -> `Category`
+* `Unk3` -> `Name`
+* `Unk4` -> `Description`
+* `Unk12` -> `ItemCap`
+* `Unk13` -> `GilCost`
+* `Unk14` -> `UIArrayIdRelated`
+* `FileIconID` -> `IconTexFileId`
+* `Unk16` -> `UseItemId`
+* `Unk18-21` -> `SortOrder1` (int)
+* `Unk29` -> `SortOrder2`
+
+#### `layoutsettings`
+* `Unk2` -> `GameMapSettingsId`
+* `Unk11` -> `MapSettingsId`
+
+#### `loadingimage`
+* `Unk2` -> `ImageFileId`
+* `Unk3` -> `ReqUserSituationId`
+
+#### `model`
+* `Unk2` -> `ModelCoordinateId`
+
+#### `modelcoordinate`
+* `Unk2` -> `FaceId`
+* `Unk3` -> `SkeletonParamId`
+* `Unk4` -> `BodyId`
+* `Unk5` -> `HeadId`
+
+#### `nullactorbase`
+* `Unk2` -> `ModelId`
+* `Unk3` -> `ModelIdKey2`
+
+#### `placement`
+* `Unk2` -> `HasUserSituationCondition`
+* `Unk4` -> `ReqUserSituationId`
+
+#### `propbase`
+* `Unk2` -> `ModelId`
+* `Unk3` -> `ModelIdKey2`
+
+#### `questcharalayout`
+* `Unk12` -> `PlacementId`
+
+#### `smobdirector`
+
+* `Unk5` -> `UserSituationId`
+* `Unk9` -> `LayoutNamedInstanceId`
+* `Unk11` -> `UnkLayoutNamedInstanceIds`
+* `Unk16` -> `Name`
+* `Unk17` -> `Description`
+* `Unk18` -> `Location`
+* `Unk26` -> `UnkLayoutNamedInstanceId2`
+
+#### `useitem`
+
+* `Unk2` -> `AttackParamId`
+
+#### `usersituation`
+
+* `Unk2` -> `UnkType`
+* `Unk3` -> `UnkIdType`
+* `Unk4` -> `Id1`
+
+#### `worldmapanchor`
+
+* `Unk13` -> `LoadingImageId`
+* `Unk16` -> `GameMapSubId`
+
+#### `weaponbase`
+* `Unk2` -> `ModelId`
+* `Unk3` -> `ModelIdKey2`
+* `Unk5` -> `MotionWeaponTypeId`
+
+* ##### Contributors
+* Nenkai
+* Veralion (Discord)
+* Mrwill1019 (Discord)
+
+----
+
 ## CLI 1.4.0
 
 #### `access`
