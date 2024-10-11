@@ -7,10 +7,10 @@ Tools for Final Fantasy XVI / 16.
 * `.pac` Unpacker/Repacker
 * `.tex` to `.dds` conversion
 * `.dds` & other image formats to `.tex`
-* Nex `.nxd` conversion
+* `.nxd`  (Nex/Next ExcelDB) conversion
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 
-This has been tested on Final Fantasy 16 (Steam/PC) files. Pack handling is available as a [NuGet Package](https://www.nuget.org/packages/FF16Tools.Pack/).
+This has been tested on Final Fantasy 16 (Steam/PC) files.
 
 ## Usage
 
@@ -80,6 +80,10 @@ For instance, `0001.pac` has `nxd` has its embedded folder name. Which means tha
 This can be tricky to handle, so the *unpacker* creates a `.path` file with the name of the folder.
 
 The *packer* picks the path from this file accordingly. It can also be set manually with the `--name` argument, if needed.
+
+## NuGet
+* [FF16Tools.Pack](https://www.nuget.org/packages/FF16Tools.Pack)
+* [FF16Tools.Files](https://www.nuget.org/packages/FF16Tools.Files/)
 
 ## Building
 
