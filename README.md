@@ -19,8 +19,9 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 ### Pac File
 You can use the **GUI/Graphical version**, or for the command line (CLI) commands:
 
-* Unpacking all files: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>]`
-* Unpacking a specific file: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>]`
+* Unpacking all files from a pack: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>]`
+* Unpacking a specific file from a specific pack: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>]`
+* Unpacking all packs: `FF16Tools.CLI unpack-all-packs -i <path_to_folder_with_packs> [-o <output_directory>]`
 * Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o <output_directory>]`
 * Listing files: `FF16Tools.CLI list-files -i <path_to_pac>`
 
@@ -34,7 +35,7 @@ You can use the **GUI/Graphical version**, or for the command line (CLI) command
 ### Nex (NXD)
 
 * To SQLite: `nxd-to-sqlite -i <path to directory> [-o output sqlite file]`
-* From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list> -o <output_directory>]`
+* From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list_separated_by_spaces> -o <output_directory>]`
 
 > [!NOTE]
 > * When converting from SQLite to Nex, you can provide a table list to avoid converting all the tables if not needed.
