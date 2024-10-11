@@ -102,7 +102,7 @@ Always try to keep your database table columns up-to-date.
 * `Unk3` -> `ModelIdKey2`
 * `Unk5` -> `MotionWeaponTypeId`
 
-* ##### Contributors
+##### Contributors
 * Nenkai
 * Veralion (Discord)
 * Mrwill1019 (Discord)
