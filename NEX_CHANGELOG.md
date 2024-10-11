@@ -2,7 +2,7 @@
 
 Always try to keep your database table columns up-to-date.
 
-## CLI 1.5.1
+## CLI 1.5.1, FF16Tools.Files 1.0.3
  
  #### `animalbase`
 * `Unk2` -> `ModelId`
