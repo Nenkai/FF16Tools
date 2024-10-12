@@ -2,6 +2,71 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.2, FF16Tools.Files 1.0.3
+
+#### `action`
+* `Unk_0x30` -> `ActionMoveTypeId`
+* `Unk_0x84`: int -> float
+* `Unk_0xA8` -> `UnkSkillId`
+
+#### `command`
+* `UnkType58` -> `SkillBgOrIconColor`
+
+#### `eid`
+* `Unk3` -> `ModelFileUnkComponentName`
+
+#### `fixedpalette`
+* `Unk4` -> `SummonModeId`
+
+#### `phoenixshiftmove`
+* `Unk2` -> `GroundExitActionId`
+* `Unk3` -> `AirExitActionId`
+* `Unk4` -> `GroundExitComboId`
+* `Unk5` -> `AirExitComboId`
+* `Unk7` -> `ShiftAttackDistance`
+* `Unk14` -> `GroundDashDistance`
+* `Unk15` -> `AirDashDistance`
+
+#### `skill`
+* `Unk3` -> `SkillCategoryId`
+
+#### `summonmode`
+* `Unk2` -> `CommandId`
+* `Unk15` -> `SummonPartsId`
+* `Unk22` -> `UnkCommandId1`
+* `Unk23` -> `UnkCommandId2`
+* `Unk24` -> `UnkCommandId3`
+* `Unk25` -> `UnkCommandId4`
+* `Unk26` -> `UnkCommandId5`
+* `Unk27` -> `UnkCommandId6`
+* `Unk32` -> `RazerEventId`
+
+#### `weaponbase`
+* `Unk1` -> `DLCFlags`
+* `Unk4` -> `WeaponAttachTypeId`
+* `Unk6` -> `WeaponCollisionId`
+
+#### `weaponattachtype`
+* `Unk1` -> `DLCFlags`
+* `Unk1` -> `EidId1`
+* `Unk2` -> `EidId2`
+* `Unk3` -> `EidId3`
+* `Unk4` -> `EidId4`
+* `Unk5` -> `EidId5`
+* `Unk6` -> `EidId6`
+* `Unk7` -> `EidId7`
+
+#### `weaponcollision`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `UnkType1`
+* `Unk3` -> `UnkTable1_1`
+* `Unk4` -> `UnkTable1_2`
+* `Unk5` -> `UnkType2`
+* `Unk6` -> `UnkTable2_1`
+* `Unk7` -> `UnkTable2_2`
+
+---
+
 ## CLI 1.5.1, FF16Tools.Files 1.0.3
  
  #### `animalbase`
@@ -12,7 +77,7 @@ Always try to keep your database table columns up-to-date.
 * `Unk4` -> `ModelId`
 * `Unk5` -> `ModelIdKey2`
 
-#### `equipitem`
+ #### `equipitem`
 * `EquipCategory` -> `Category`
 * `Rarity` -> `Rarity_UIArrayIdRelated`
 * `Unk22` & `Unk23`: Removed (implicit padding)
@@ -20,10 +85,10 @@ Always try to keep your database table columns up-to-date.
 * `Unk40` -> `SortOrder2`
 
 #### `enpcbase`
-* `Unk3` -> `ModelId`
-* `Unk4` -> `ModelIdKey2`
-* `Unk21` -> `ModelCoordinateId`
-* `Unk22` -> `ModelCoordinateIdKey2`
+`Unk3` -> `ModelId`
+`Unk4` -> `ModelIdKey2`
+`Unk21` -> `ModelCoordinateId`
+`Unk22` -> `ModelCoordinateIdKey2`
 
 #### `gamemap`
 * `Unk7` -> `ReqUserSituationId`
@@ -73,6 +138,7 @@ Always try to keep your database table columns up-to-date.
 * `Unk12` -> `PlacementId`
 
 #### `smobdirector`
+
 * `Unk5` -> `UserSituationId`
 * `Unk9` -> `LayoutNamedInstanceId`
 * `Unk11` -> `UnkLayoutNamedInstanceIds`
@@ -82,14 +148,17 @@ Always try to keep your database table columns up-to-date.
 * `Unk26` -> `UnkLayoutNamedInstanceId2`
 
 #### `useitem`
+
 * `Unk2` -> `AttackParamId`
 
 #### `usersituation`
+
 * `Unk2` -> `UnkType`
 * `Unk3` -> `UnkIdType`
 * `Unk4` -> `Id1`
 
 #### `worldmapanchor`
+
 * `Unk13` -> `LoadingImageId`
 * `Unk16` -> `GameMapSubId`
 
@@ -98,7 +167,7 @@ Always try to keep your database table columns up-to-date.
 * `Unk3` -> `ModelIdKey2`
 * `Unk5` -> `MotionWeaponTypeId`
 
-##### Contributors
+* ##### Contributors
 * Nenkai
 * Veralion (Discord)
 * Mrwill1019 (Discord)
