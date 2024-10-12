@@ -65,7 +65,7 @@ Always try to keep your database table columns up-to-date.
 * `Unk6` -> `UnkTable2_1`
 * `Unk7` -> `UnkTable2_2`
 
-* ##### Contributors
+##### Contributors
 * Nenkai
 * Jj (Discord)
 * Mrwill1019 (Discord)
