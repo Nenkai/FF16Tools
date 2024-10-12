@@ -7,10 +7,10 @@ Tools for Final Fantasy XVI / 16.
 * `.pac` Unpacker/Repacker
 * `.tex` to `.dds` conversion
 * `.dds` & other image formats to `.tex`
-* Nex `.nxd` conversion
+* `.nxd`  (Nex/Next ExcelDB) conversion
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 
-This has been tested on Final Fantasy 16 (Steam/PC) files. Pack handling is available as a [NuGet Package](https://www.nuget.org/packages/FF16Tools.Pack/).
+This has been tested on Final Fantasy 16 (Steam/PC) files.
 
 ## Usage
 
@@ -19,8 +19,9 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 ### Pac File
 You can use the **GUI/Graphical version**, or for the command line (CLI) commands:
 
-* Unpacking all files: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>]`
-* Unpacking a specific file: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>]`
+* Unpacking all files from a pack: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>]`
+* Unpacking a specific file from a specific pack: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>]`
+* Unpacking all packs: `FF16Tools.CLI unpack-all-packs -i <path_to_folder_with_packs> [-o <output_directory>]`
 * Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o <output_directory>]`
 * Listing files: `FF16Tools.CLI list-files -i <path_to_pac>`
 
@@ -34,7 +35,7 @@ You can use the **GUI/Graphical version**, or for the command line (CLI) command
 ### Nex (NXD)
 
 * To SQLite: `nxd-to-sqlite -i <path to directory> [-o output sqlite file]`
-* From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list> -o <output_directory>]`
+* From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list_separated_by_spaces> -o <output_directory>]`
 
 > [!NOTE]
 > * When converting from SQLite to Nex, you can provide a table list to avoid converting all the tables if not needed.
@@ -80,6 +81,10 @@ For instance, `0001.pac` has `nxd` has its embedded folder name. Which means tha
 This can be tricky to handle, so the *unpacker* creates a `.path` file with the name of the folder.
 
 The *packer* picks the path from this file accordingly. It can also be set manually with the `--name` argument, if needed.
+
+## NuGet
+* [FF16Tools.Pack](https://www.nuget.org/packages/FF16Tools.Pack)
+* [FF16Tools.Files](https://www.nuget.org/packages/FF16Tools.Files/)
 
 ## Building
 

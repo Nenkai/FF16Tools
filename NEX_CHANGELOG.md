@@ -12,7 +12,7 @@ Always try to keep your database table columns up-to-date.
 * `Unk4` -> `ModelId`
 * `Unk5` -> `ModelIdKey2`
 
- #### `equipitem`
+#### `equipitem`
 * `EquipCategory` -> `Category`
 * `Rarity` -> `Rarity_UIArrayIdRelated`
 * `Unk22` & `Unk23`: Removed (implicit padding)
@@ -20,10 +20,10 @@ Always try to keep your database table columns up-to-date.
 * `Unk40` -> `SortOrder2`
 
 #### `enpcbase`
-`Unk3` -> `ModelId`
-`Unk4` -> `ModelIdKey2`
-`Unk21` -> `ModelCoordinateId`
-`Unk22` -> `ModelCoordinateIdKey2`
+* `Unk3` -> `ModelId`
+* `Unk4` -> `ModelIdKey2`
+* `Unk21` -> `ModelCoordinateId`
+* `Unk22` -> `ModelCoordinateIdKey2`
 
 #### `gamemap`
 * `Unk7` -> `ReqUserSituationId`
@@ -73,7 +73,6 @@ Always try to keep your database table columns up-to-date.
 * `Unk12` -> `PlacementId`
 
 #### `smobdirector`
-
 * `Unk5` -> `UserSituationId`
 * `Unk9` -> `LayoutNamedInstanceId`
 * `Unk11` -> `UnkLayoutNamedInstanceIds`
@@ -83,17 +82,14 @@ Always try to keep your database table columns up-to-date.
 * `Unk26` -> `UnkLayoutNamedInstanceId2`
 
 #### `useitem`
-
 * `Unk2` -> `AttackParamId`
 
 #### `usersituation`
-
 * `Unk2` -> `UnkType`
 * `Unk3` -> `UnkIdType`
 * `Unk4` -> `Id1`
 
 #### `worldmapanchor`
-
 * `Unk13` -> `LoadingImageId`
 * `Unk16` -> `GameMapSubId`
 
@@ -102,7 +98,7 @@ Always try to keep your database table columns up-to-date.
 * `Unk3` -> `ModelIdKey2`
 * `Unk5` -> `MotionWeaponTypeId`
 
-* ##### Contributors
+##### Contributors
 * Nenkai
 * Veralion (Discord)
 * Mrwill1019 (Discord)
