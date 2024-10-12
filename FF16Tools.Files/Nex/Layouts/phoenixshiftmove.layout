@@ -2,21 +2,26 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
+// ID 1 - All 0s
+// ID 2 - Regular Phoenix Shift
+// ID 3 - Ifrit Dash
+// ID 4 - Upgraded Phoenix Shift
+
+add_column|DLCFlags|int
+add_column|GroundExitActionId|int
+add_column|AirExitActionId|int
+add_column|GroundExitComboId|int
+add_column|AirExitComboId|int
 add_column|Unk6|float
-add_column|Unk7|float
+add_column|ShiftAttackDistance|float
 add_column|Unk8|float
 add_column|Unk9|float
 add_column|Unk10|float
 add_column|Unk11|float
 add_column|Unk12|float
 add_column|Unk13|float
-add_column|Unk14|float
-add_column|Unk15|float
+add_column|GroundDashDistance|float
+add_column|AirDashDistance|float
 add_column|Unk16|float
 add_column|Unk17|float
 add_column|Unk18|float

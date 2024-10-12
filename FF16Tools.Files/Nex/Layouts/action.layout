@@ -2,6 +2,8 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Row ID 543, 547 are known to have hardcoded checks
+
 define_struct|Unk_0xC8_Struct|int|int
 
 add_column|Unk_0x00|int
@@ -12,10 +14,14 @@ add_column|Unk_0x10|int
 add_column|Unk_0x14|int
 add_column|Unk_0x18|float
 add_column|Unk_0x1C|int
-add_column|Unk_0x20|int
+
+// Has hardcoded checks i.e 12, 1
+add_column|UnkType0x20|int
+
+// Bitset from 0-15, 0 is none
 add_column|Unk_0x24|int
 add_column|Unk_0x28|float[]
-add_column|Unk_0x30|int
+add_column|ActionMoveTypeId|int
 add_column|Unk_0x34|string
 add_column|Unk_0x38|int
 add_column|Unk_0x3C|int
@@ -34,21 +40,31 @@ add_column|Unk_0x74|int
 add_column|Unk_0x78|int
 add_column|Unk_0x7C|int
 add_column|Unk_0x80|int
-add_column|Unk_0x84|int
+add_column|Unk_0x84|float
 add_column|Unk_0x88|int[]
 add_column|Unk_0x90|int[]
+
+// 301 = phoenix/phoenixshiftmove related?
 add_column|Unk_0x98|int
+
 add_column|Unk_0x9C|int
 add_column|Unk_0xA0|float[]
-add_column|Unk_0xA8|int
+add_column|UnkSkillId|int
 add_column|Unk_0xAC|int
 add_column|Unk_0xB0|int
 add_column|Unk_0xB4|float
 add_column|Unk_0xB8|int
 add_column|Unk_0xBC|float
 add_column|Unk_0xC0|int
-add_column|Unk_0xC4|int
+
+// Checks against very hardcoded number types
+// Seems important overall, directly controls which class to init (as evidenced by a bunch of ctors)
+// ffxvi.exe steam 1.0.1: sub_14046A7AC
+add_column|UnkType0xC4|int
+
+// Second int = phoenix related
 add_column|Unk_0xC8|Unk_0xC8_Struct[]
+
 add_column|Unk_0xD0|string
 add_column|Unk_0xD4|int
 add_column|Unk_0xD8|int

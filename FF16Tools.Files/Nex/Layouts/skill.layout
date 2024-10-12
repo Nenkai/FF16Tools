@@ -4,7 +4,9 @@ use_base_row_id|true
 
 add_column|Unk1|int
 add_column|DLCFlags|string
-add_column|Unk3|int
+
+// Checked against hardcoded numbers/switch table - 0-12
+add_column|SkillCategoryId|int
 add_column|Unk4|int
 add_column|Unk5|int
 add_column|Unk6|int
@@ -17,7 +19,10 @@ add_column|UpgradeCost|int
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
+
+// Hardcoded checks against numbers like 6
 add_column|Unk16|int
+
 add_column|Unk17|int
 add_column|Unk18|int
 add_column|Unk19|int

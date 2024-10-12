@@ -2,6 +2,11 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
+// NOTE: weird usersituation hardcode going on for id 992016
+// also 992013
+
+// ffxvi.exe steam 1.0.1 - 14058B102
+
 add_column|Unk1|int
 add_column|Unk2|string
 add_column|Unk3|int

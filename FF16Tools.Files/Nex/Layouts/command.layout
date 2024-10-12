@@ -6,7 +6,7 @@ use_base_row_id|false
 define_struct|Unk55_Struct|int|float|int[]|float[]|int
 
 // Some row ids are hardcoded and seems to be mandatory
-// i.e 9, 10, 11, 261, 288, 341, 343, 364, 393
+// i.e 9, 10, 11, 261, 288, 341, 343, 360, 364, 393
 
 add_column|DLCFlags|int
 add_column|JPName|string
@@ -74,8 +74,10 @@ add_column|Unk54|float
 add_column|Unk55|Unk55_Struct[]
 add_column|Unk56|int
 add_column|Unk57|int
+
 // explicitly checked against hardcoded numbers
-add_column|UnkType58|int
+add_column|SkillBgOrIconColor|int
+
 add_column|Unk59|int
 add_column|Unk60|int
 add_column|Unk61|float

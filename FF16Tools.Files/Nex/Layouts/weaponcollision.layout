@@ -2,10 +2,15 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|float[]
-add_column|Unk4|float[]
-add_column|Unk5|int
-add_column|Unk6|float[]
-add_column|Unk7|float[]
+add_column|DLCFlags|int
+
+// hardcoded numbers - switch table 0-3
+// ffxvi.exe steam 1.0.1 - sub_1400BD618
+add_column|UnkType1|int
+add_column|UnkTable1_1|float[]
+add_column|UnkTable1_2|float[]
+
+// Same as type 1
+add_column|UnkType2|int
+add_column|UnkTable2_1|float[]
+add_column|UnkTable2_2|float[]

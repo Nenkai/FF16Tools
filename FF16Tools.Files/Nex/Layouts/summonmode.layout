@@ -2,8 +2,15 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|true
 
+// Has hardcoded row id checks/fetches
+// 1-10
+
 add_column|Unk1|int
-add_column|Unk2|int
+
+// has a check as to whether this matches skill's command id
+// ffxvi.exe steam 1.0.1 - 140201E76
+add_column|CommandId|int
+
 add_column|Unk3|string
 add_column|Unk4|int
 add_column|Unk5|int
@@ -16,22 +23,22 @@ add_column|Unk11|string|rel
 add_column|Unk12|string|rel|-4
 add_column|Unk13|int
 add_column|Unk14|int
-add_column|Unk15|int
+add_column|SummonPartsId|int
 add_column|Unk16|string
 add_column|Unk17|int
 add_column|Unk18|int
 add_column|Unk19|int
 add_column|Unk20|int
 add_column|Unk21|int
-add_column|Unk22|int
-add_column|Unk23|int
-add_column|Unk24|int
-add_column|Unk25|int
-add_column|Unk26|int
-add_column|Unk27|int
+add_column|UnkCommandId1|int
+add_column|UnkCommandId2|int
+add_column|UnkCommandId3|int
+add_column|UnkCommandId4|int
+add_column|UnkCommandId5|int
+add_column|UnkCommandId6|int
 add_column|Unk28|int
 add_column|Unk29|int
 add_column|Unk30|int
 add_column|Unk31|int
-add_column|Unk32|int
+add_column|RazerEventId|int
 add_column|Unk33|int

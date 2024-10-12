@@ -2,12 +2,12 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|ModelId|int
 add_column|ModelIdKey2|int
-add_column|Unk4|int
+add_column|WeaponAttachTypeId|int
 add_column|MotionWeaponTypeId|int
-add_column|Unk6|int
+add_column|WeaponCollisionId|int
 add_column|Unk7|string
 add_column|Unk8|string
 add_column|Unk9|string
