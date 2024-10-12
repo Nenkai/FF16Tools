@@ -2,7 +2,7 @@
 
 Always try to keep your database table columns up-to-date.
 
-## CLI 1.5.2, FF16Tools.Files 1.0.3
+## CLI 1.5.2, FF16Tools.Files 1.0.4
 
 #### `action`
 * `Unk_0x30` -> `ActionMoveTypeId`
