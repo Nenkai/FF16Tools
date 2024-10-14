@@ -59,6 +59,7 @@ public enum NexColumnType
     String,
     ByteArray,
     IntArray,
+    UIntArray,
     FloatArray,
     StringArray,
     CustomStructArray,

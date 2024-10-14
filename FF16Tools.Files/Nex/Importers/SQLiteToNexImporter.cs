@@ -203,6 +203,14 @@ public class SQLiteToNexImporter : IDisposable
                 return val is not DBNull ? (int)(long)val : 0;
             case NexColumnType.UInt:
                 return val is not DBNull ? (uint)(long)val : 0u;
+            case NexColumnType.HexUInt:
+                {
+                    var hexStr = val is not DBNull ? (string)val : "";
+                    if (!NexUtils.TryParseHexUint(hexStr, out uint value))
+                        throw new Exception($"Unable to parse hexadecimal uint {column.Name}");
+
+                    return value;
+                }
             case NexColumnType.Float:
                 return val is not DBNull ? (float)(double)val : 0f;
             case NexColumnType.Int64:
@@ -238,6 +246,20 @@ public class SQLiteToNexImporter : IDisposable
                     }
                     else
                         return Array.Empty<int>();
+                }
+            case NexColumnType.UIntArray:
+                {
+                    if (val is DBNull)
+                        return Array.Empty<uint>();
+
+                    string arrStr = (string)val;
+                    if (!string.IsNullOrEmpty(arrStr))
+                    {
+                        uint[] arr = JsonSerializer.Deserialize<uint[]>(arrStr);
+                        return arr;
+                    }
+                    else
+                        return Array.Empty<uint>();
                 }
             case NexColumnType.FloatArray:
                 {
@@ -309,6 +331,11 @@ public class SQLiteToNexImporter : IDisposable
                                         ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetInt32();
                                         break;
+                                    case NexColumnType.UInt:
+                                    case NexColumnType.HexUInt:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        structItem[fieldIndex] = field.GetUInt32();
+                                        break;
                                     case NexColumnType.ByteArray:
                                         {
                                             ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
@@ -331,6 +358,19 @@ public class SQLiteToNexImporter : IDisposable
                                             int j = 0;
                                             foreach (JsonElement elem in field.EnumerateArray())
                                                 arr[j++] = elem.GetInt32();
+                                            structItem[fieldIndex] = arr;
+                                            break;
+                                        }
+                                    case NexColumnType.UIntArray:
+                                        {
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+
+                                            int arrLen = field.GetArrayLength();
+                                            var arr = new uint[arrLen];
+
+                                            int j = 0;
+                                            foreach (JsonElement elem in field.EnumerateArray())
+                                                arr[j++] = elem.GetUInt32();
                                             structItem[fieldIndex] = arr;
                                             break;
                                         }

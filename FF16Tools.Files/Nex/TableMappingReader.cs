@@ -248,6 +248,7 @@ public class TableMappingReader
             case NexColumnType.String:
             case NexColumnType.ByteArray:
             case NexColumnType.IntArray:
+            case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
             case NexColumnType.CustomStructArray:

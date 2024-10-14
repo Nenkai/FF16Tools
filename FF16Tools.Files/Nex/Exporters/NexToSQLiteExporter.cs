@@ -254,6 +254,7 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.String => string.IsNullOrEmpty((string)cell) ? "NULL" : $"\'{((string)cell).Replace("\'", "\'\'")}\'",
                 NexColumnType.Int => $"{(int)cell}",
                 NexColumnType.UInt => $"{(uint)cell}",
+                NexColumnType.HexUInt => $"'{((uint)cell):X8}'",
                 NexColumnType.Float => $"{(float)cell}",
                 NexColumnType.Int64 => $"{(ulong)cell}",
                 NexColumnType.Short => $"{(short)cell}",
@@ -263,6 +264,7 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.Double => $"{(double)cell}",
                 NexColumnType.ByteArray => $"\"{JsonSerializer.Serialize((byte[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.IntArray => $"\"{JsonSerializer.Serialize((int[])cell, _jsonSerializerOptions)}\"",
+                NexColumnType.UIntArray => $"\"{JsonSerializer.Serialize((uint[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.FloatArray => $"\"{JsonSerializer.Serialize((float[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.StringArray => $"\'{JsonSerializer.Serialize((string[])cell, _jsonSerializerOptions).Replace("\'", "\'\'")}\'",
                 _ => throw new InvalidDataException($"Unexpected type '{column.Type}' for column '{columnName}' in table '{tableName}'")

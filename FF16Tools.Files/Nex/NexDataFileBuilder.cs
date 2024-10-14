@@ -483,6 +483,7 @@ public class NexDataFileBuilder
                 bs.WriteInt32((int)cellValue);
                 break;
             case NexColumnType.UInt:
+            case NexColumnType.HexUInt:
                 bs.WriteUInt32((uint)cellValue);
                 break;
             case NexColumnType.Float:
@@ -507,6 +508,7 @@ public class NexDataFileBuilder
                 }
 
             case NexColumnType.IntArray:
+            case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
             case NexColumnType.CustomStructArray:
@@ -543,6 +545,14 @@ public class NexDataFileBuilder
                     int[] array = (int[])cellValue;
                     for (int i = 0; i < array.Length; i++)
                         bs.WriteInt32(array[i]);
+                    arrayLength = array.Length;
+                    break;
+                }
+            case NexColumnType.UIntArray:
+                {
+                    uint[] array = (uint[])cellValue;
+                    for (int i = 0; i < array.Length; i++)
+                        bs.WriteUInt32(array[i]);
                     arrayLength = array.Length;
                     break;
                 }

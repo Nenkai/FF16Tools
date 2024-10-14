@@ -4,6 +4,8 @@ using Syroot.BinaryData.Memory;
 
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -64,6 +66,7 @@ public class NexUtils
                 }
             case NexColumnType.ByteArray:
             case NexColumnType.IntArray:
+            case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
             case NexColumnType.CustomStructArray:
@@ -94,6 +97,15 @@ public class NexUtils
                                 int[] arr = new int[arrayLength];
                                 for (int i = 0; i < arrayLength; i++)
                                     arr[i] = sr.ReadInt32();
+
+                                sr.Position = currentOffset + 8;
+                                return arr;
+                            }
+                        case NexColumnType.UIntArray:
+                            {
+                                uint[] arr = new uint[arrayLength];
+                                for (int i = 0; i < arrayLength; i++)
+                                    arr[i] = sr.ReadUInt32();
 
                                 sr.Position = currentOffset + 8;
                                 return arr;
@@ -151,16 +163,12 @@ public class NexUtils
                 }
             case NexColumnType.Int64:
                 return sr.ReadUInt64();
-            case NexColumnType.HexUInt:
-                {
-                    uint hexVal = sr.ReadUInt32();
-                    return hexVal.ToString("X8");
-                }
             case NexColumnType.Int:
                 return sr.ReadInt32();
             case NexColumnType.Short:
                 return sr.ReadInt16();
             case NexColumnType.UInt:
+            case NexColumnType.HexUInt:
                 return sr.ReadUInt32();
             case NexColumnType.Float:
                 return sr.ReadSingle();
@@ -196,7 +204,7 @@ public class NexUtils
     {
         // can't use a switch for types :(
         if (type == NexColumnType.String || type == NexColumnType.HexUInt ||
-            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray)
+            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray)
             return "TEXT";
         else if (type == NexColumnType.Byte || type == NexColumnType.Short || type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.Int64 ||
             type == NexColumnType.SByte || type == NexColumnType.UShort)
@@ -218,7 +226,7 @@ public class NexUtils
         if (type == NexColumnType.Int64 || type == NexColumnType.Double ||
             type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray)
             return 8;
-        else if (type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.Float || type == NexColumnType.HexUInt || type == NexColumnType.String)
+        else if (type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.HexUInt || type == NexColumnType.Float || type == NexColumnType.HexUInt || type == NexColumnType.String)
             return 4;
         else if (type == NexColumnType.Short || type == NexColumnType.UShort)
             return 2;
@@ -251,6 +259,7 @@ public class NexUtils
             "double" => NexColumnType.Double,
             "byte[]" => NexColumnType.ByteArray,
             "int[]" or "int32[]" => NexColumnType.IntArray,
+            "uint[]" or "uint32[]" => NexColumnType.UIntArray,
             "float[]" => NexColumnType.FloatArray,
             "string[]" => NexColumnType.StringArray,
             _ => NexColumnType.Unknown,
@@ -278,11 +287,26 @@ public class NexUtils
             NexColumnType.Double => "double",
             NexColumnType.ByteArray => "byte[]",
             NexColumnType.IntArray => "int[]",
+            NexColumnType.UIntArray => "uint[]",
             NexColumnType.FloatArray => "float[]",
             NexColumnType.StringArray => "string[]",
             NexColumnType.CustomStructArray => throw new ArgumentException("CustomStructArray does not have a fixed identifier."),
             _ => throw new InvalidDataException($"Unknown type {type}"),
         };
+
+    public static bool TryParseHexUint(string hexStr, out uint value)
+    {
+        value = 0;
+
+        if (string.IsNullOrWhiteSpace(hexStr))
+            return false;
+
+        ReadOnlySpan<char> noPrefixStr = hexStr.AsSpan(hexStr.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? 2 : 0);
+        if (string.IsNullOrEmpty(hexStr) || !uint.TryParse(noPrefixStr, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out value))
+            return false;
+
+        return true;        
+    }
 
     public static uint AlignValue(uint x, uint alignment)
     {
