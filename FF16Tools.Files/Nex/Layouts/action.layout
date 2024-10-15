@@ -6,9 +6,9 @@ use_base_row_id|false
 
 define_struct|Unk_0xC8_Struct|int|int
 
-add_column|Unk_0x00|int
-add_column|Unk_0x04|int
-add_column|Unk_0x08|int
+add_column|DLCFlags|int
+add_column|CharaTimelineId|int
+add_column|CharaTimelineId2|int
 add_column|Unk_0x0C|int
 add_column|Unk_0x10|int
 add_column|Unk_0x14|int

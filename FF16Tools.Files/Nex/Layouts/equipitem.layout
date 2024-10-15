@@ -2,7 +2,13 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
-define_struct|EffectStruct|int|int
+// Hardcoded ids: 100502, 100503, 100504, 100505, 100506, 100612, 100613, 100614, likely more
+
+// [Type, AttackParamId]
+// short is checked against hardcoded values
+// 17, 42, 
+// implicit 2 bytes padding.
+define_struct|EffectStruct|short|int
 
 add_column|DLCFlags|int
 add_column|Category|int
@@ -31,12 +37,12 @@ add_column|Unk21|byte
 
 add_column|Unk24|string|rel|-24
 add_column|EffectPotency|int
-add_column|EffectArray|EffectStruct[]
+add_column|TypeAndAttackParamId|EffectStruct[]
 add_column|HP|int
 add_column|Unk28|int
 add_column|Unk29|int
 add_column|SortOrder1|int
-add_column|Unk31|int
+add_column|WeaponSkinCategoryId|int
 add_column|Unk32|byte
 add_column|Unk33|byte
 add_column|Unk34|byte

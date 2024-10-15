@@ -2,7 +2,7 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|string
 add_column|Name|string|rel
 add_column|Desc|string|rel|-4
@@ -12,6 +12,7 @@ add_column|Unk6|string|rel|-12
 // unknown, checks against hardcoded value
 // demo 1.0.0 exe 1402A0E91 into 14028D1B0, also 1402EEFE2 & others
 // dlc related? demo exe 1402F6D24
+// Also controls jingle
 add_column|QuestType|int
 add_column|Unk8|int
 

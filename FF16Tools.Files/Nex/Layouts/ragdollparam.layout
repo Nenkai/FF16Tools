@@ -32,8 +32,8 @@ add_column|Unk27|float
 add_column|Unk28|float
 add_column|Unk29|float
 add_column|Unk30|float
-add_column|Unk31|int[]
-add_column|Unk32|int[]
+add_column|RagdollParamSetIds1|int[]
+add_column|RagdollParamSetIds2|int[]
 add_column|Unk33|int[]
 add_column|Unk34|int[]
 add_column|Unk35|int[]

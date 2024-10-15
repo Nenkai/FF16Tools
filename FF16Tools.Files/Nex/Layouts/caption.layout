@@ -3,6 +3,10 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 // This layout was generated, guessed row length: 0xC
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
+add_column|DLCFlags|int
+
+// this is a union(placename, captionfreeword)
+// 147 = placename
+// 664 = captionfreeword
+add_column|IdType|int
+add_column|Id|int

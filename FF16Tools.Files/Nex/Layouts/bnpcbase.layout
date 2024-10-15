@@ -38,7 +38,7 @@ add_column|Unk34|int
 add_column|Unk35|float
 add_column|Unk36|int
 add_column|Unk37|int
-add_column|Unk38|int
+add_column|ColorCoordinateId|int
 add_column|Unk39|int
 add_column|Unk40|int
 add_column|Unk41|int

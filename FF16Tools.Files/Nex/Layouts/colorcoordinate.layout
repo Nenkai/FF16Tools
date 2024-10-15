@@ -2,9 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
+add_column|DLCFlags|int
+add_column|EyeColorId|int
+add_column|SkinColorId|int
+add_column|HairColorId|int
 add_column|Unk5|string
 

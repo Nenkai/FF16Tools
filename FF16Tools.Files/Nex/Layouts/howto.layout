@@ -2,19 +2,33 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|int
+// Hardcoded ids:
+// 158
+
+// Actually checked for this table, 10010, 10020, 10030
+add_column|DLCFlags|int
+
+// 1 = text, 4 = movie
+add_column|DisplayType|int
 add_column|Unk3|int
-add_column|Unk4|string|rel
-add_column|Unk5|string|rel|-4
+add_column|Description|string|rel
+add_column|Title|string|rel|-4
 add_column|Unk6|int
 add_column|Unk7|string
 add_column|Unk8|int
 add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
+
+// union(icon, moviedata)
+// 266 = icon id, but not a table
+// 316 = moviedata
+add_column|AssetIdType1|short
+// <implicit 2 bytes padding>
+add_column|AssetId1|int
+
+// Same union
+add_column|AssetIdType2|short
+add_column|AssetId2|int
+
 add_column|Unk14|int
 add_column|Unk15|int
 add_column|Unk16|byte

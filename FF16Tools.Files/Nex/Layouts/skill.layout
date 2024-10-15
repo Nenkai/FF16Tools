@@ -2,8 +2,8 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|DLCFlags|string
+add_column|DLCFlags|int
+add_column|Comment|string
 
 // Checked against hardcoded numbers/switch table - 0-12
 add_column|SkillCategoryId|int
@@ -18,7 +18,7 @@ add_column|Description1|string|rel|-8
 add_column|UpgradeCost|int
 add_column|Unk13|int
 add_column|Unk14|int
-add_column|Unk15|int
+add_column|MovieDataId|int
 
 // Hardcoded checks against numbers like 6
 add_column|Unk16|int

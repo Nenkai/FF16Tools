@@ -3,5 +3,5 @@ set_table_category|SingleKeyed
 use_base_row_id|true
 
 add_column|Unk1|int
-add_column|Unk2|int[]
+add_column|Unk2|uint[]
 add_column|Unk3|float

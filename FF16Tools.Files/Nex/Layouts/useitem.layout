@@ -3,12 +3,12 @@ set_table_category|SingleKeyed
 use_base_row_id|true
 
 // This layout was generated, guessed row length: 0x28
-add_column|Unk1|int
-add_column|AttackParamId|int
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
+add_column|DLCFlags|int
+add_column|AttackParamId1|int
+add_column|AttackParamId2|int
+add_column|AttackParamId3|int
+add_column|AttackParamId4|int
+add_column|AttackParamId5|int
 add_column|ItemCap1|int
 add_column|ItemCap2|int
 add_column|ItemCap3|int

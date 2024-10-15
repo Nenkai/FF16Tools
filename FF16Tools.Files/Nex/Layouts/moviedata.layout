@@ -2,8 +2,11 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string
+// Hardcoded ids
+// 1001
+
+add_column|DLCFlags|int
+add_column|MovieFilePath|string
 add_column|Unk3|string
 add_column|Unk4|string
 add_column|Unk5|int

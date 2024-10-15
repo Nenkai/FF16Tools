@@ -2,7 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|FaceId|int
 add_column|SkeletonParamId|int
 add_column|BodyId|int
@@ -12,7 +12,7 @@ add_column|Unk8|string[]
 add_column|Unk10|float
 add_column|Unk11|float
 add_column|Unk12|float
-add_column|Unk13|int
+add_column|EdgeEmissionId|int
 add_column|Unk14|float
 add_column|Unk15|string
 add_column|Unk16|string

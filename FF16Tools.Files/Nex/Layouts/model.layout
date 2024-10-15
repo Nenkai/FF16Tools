@@ -21,7 +21,7 @@ add_column|Unk16|int[]
 add_column|Unk17|string
 add_column|Unk18|float
 add_column|Unk19|string
-add_column|Unk20|int
+add_column|HitSeIdMaybe|int
 add_column|Unk21|int
 add_column|Unk21_1|int
 add_column|Unk22|string[]
@@ -34,7 +34,7 @@ add_column|Unk28|int
 add_column|Unk29|int
 add_column|Unk30|int
 add_column|Unk31|int
-add_column|Unk32|int
+add_column|DeadParamId|int
 add_column|Unk33|int
 add_column|Unk34|int
 add_column|Unk35|int

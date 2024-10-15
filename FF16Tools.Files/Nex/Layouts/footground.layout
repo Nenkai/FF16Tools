@@ -5,6 +5,6 @@ use_base_row_id|true
 add_column|Unk1|int
 add_column|Unk2|int[]
 add_column|Unk3|float
-add_column|Unk4|int
+add_column|MastsParamId|int
 
 

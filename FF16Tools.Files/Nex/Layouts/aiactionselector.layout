@@ -4,7 +4,7 @@ use_base_row_id|false
 
 define_struct|Unk28_struct|short|short
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
 add_column|Unk4|float
@@ -14,9 +14,15 @@ add_column|Unk7|float
 add_column|Unk8|int
 add_column|Unk9|float
 add_column|Unk10|int
+
+// Related to the following, should only be array length 1 or 2
+// checked against hardcoded numbers? ffxvi.exe steam 1.0.1 - sub_1404D1898 check a3
+// maybe this is another one of those id type to id
 add_column|Unk11|int[]
-add_column|Unk13|int
-add_column|Unk14|int
+
+// Not always?
+add_column|LayoutNamedInstanceId1Maybe|int
+add_column|LayoutNamedInstanceId2Maybe|int
 add_column|Unk15|int
 add_column|Unk16|int
 add_column|Unk17|float[]

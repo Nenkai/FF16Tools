@@ -3,7 +3,7 @@ set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
 // ID above 100000 points to equipitem instead
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Category|int
 add_column|Name|string|rel
 add_column|Description|string|rel|-4
