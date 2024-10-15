@@ -5,7 +5,7 @@ Always try to keep your database table columns up-to-date.
 ## CLI 1.5.3, FF16Tools.Files 1.0.5
 
 > [!NOTE]
-> Some color related tables had their columns changed to `hex_uint` for hexadecimal display.
+> Some color related tables had their columns changed to `hex_uint` for better viewing & editing of ARGB color values.
 
 #### `abyssgate`
 * `Unk8` -> `AbyssGateRatingId`
