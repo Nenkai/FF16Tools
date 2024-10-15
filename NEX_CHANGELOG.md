@@ -2,6 +2,225 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.3, FF16Tools.Files 1.0.5
+
+#### `abyssgate`
+* `Unk8` -> `AbyssGateRatingId`
+
+#### `action`
+* `Unk_0x00` -> `DLCFlags`
+* `Unk_0x04` -> `CharaTimelineId`
+* `Unk_0x08` -> `CharaTimelineId2`
+
+#### `aiactionselector`
+* `Unk1` -> `DLCFlags`
+* `Unk13` -> `LayoutNamedInstanceId1Maybe`
+* `Unk14` -> `LayoutNamedInstanceId2Maybe`
+
+#### `aicounter`
+* `Unk1` -> `DLCFlags`
+
+#### `attackparam`
+* `Unk4` -> `UnkType4`
+* `Unk15` -> `UnkType15`
+* `Unk31` -> `UnkType31`
+* `Unk33` -> int -> float
+* `Unk38` -> `GuardReactionId`
+* `Unk44` -> `UnkType44`
+* `Unk47` -> `Unk47TitleRelatedToUnk5`
+* `Unk49` -> `BuffIdMaybe`
+* `Unk50` -> int -> float
+* `Unk51` -> `UnkType51`
+* `Unk59` through `Unk70` all changes to bytes
+* `Unk73` changes to bytes
+* `Unk76` changes to bytes
+
+#### `battleai`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `AiActionSelectorId1`
+* `Unk4` -> `AiActionSelectorId2`
+
+#### `bnpcbase`
+* `Unk38` -> `ColorCoordinateId`
+
+#### `caption`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `IdType`
+* `Unk3` -> `Id`
+
+#### `charatimelinevariation`
+* `Unk1` -> `DLCFlags`
+* `Unk5` -> `MoveParamId`
+
+#### `collisionmaterialcolor`
+* `Unk2` -> int[] -> uint[]
+
+#### `colorcoordinate`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `EyeColorId`
+* `Unk3` -> `SkinColorId`
+* `Unk4` -> `HairColorId`
+
+#### `destructorparampreset`
+* `Unk2` -> `DestructorParamIds`
+
+#### `difficultylevel`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `WeaponEquipItemId`
+* `Unk4` -> `WeaponEquipItemId2`
+* `Unk5` -> `WeaponEquipItemId3`
+* `Unk7` -> `GearEquipItemIds`
+* `Unk9` -> `Unk9EquipItemId`
+* `Unk10` -> `Unk10EquipItemId`
+
+#### `edgeemission`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Color`, int -> hex_uint
+
+#### `enpcbase`
+* `Unk9` -> `ColorCoordinateId`
+
+#### `equipitem`
+* `EffectArray` -> `TypeAndAttackParamId`
+* `Unk31` -> `WeaponSkinCategoryId`
+
+#### `equipitem`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `Color`, int -> hex_uint
+
+#### `footground`
+* `Unk4` -> `MastsParamId`
+
+#### `haircolor`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `UnkColor3`, int -> hex_uint
+* `Unk4` -> `UnkColor4`, int -> hex_uint
+
+#### `item`
+* `Unk1` -> `DLCFlags`
+
+#### `jingle`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `SoundFilePath`
+
+#### `howto`
+* `Unk1` -> `DLCFlags`
+* `Unk4` -> `Description`
+* `Unk5` -> `Title`
+* `Unk10` -> `AssetIdType1`
+* `Unk11` -> `AssetId1`
+* `Unk12` -> `AssetIdType2`
+* `Unk13` -> `AssetId2`
+
+#### `model`
+* `Unk20` -> `HitSeIdMaybe`
+* `Unk32` -> `DeadParamid`
+
+#### `modelcoordinate`
+* `Unk1` -> `DLCFlags`
+* `Unk13` -> `EdgeEmissionId`
+
+#### `moviedata`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `MovieFilePath`
+
+#### `quest`
+* `Unk1` -> `DLCFlags`
+
+#### `ragdollparam`
+* `Unk31` -> `RagdollParamSetIds1`
+* `Unk32` -> `RagdollParamSetIds2`
+
+#### `recipe`
+* `Unk1` -> `DLCFlags`
+* `Unk18` -> `UnkUserSituationId1`
+* `Unk19` -> `UnkUserSituationId1`
+
+#### `skincolor`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `Color`, int -> hex_uint
+
+#### `shopbase`
+* `Unk1` -> `DLCFlags`
+
+#### `shopbase`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `ShopTalkSequenceIds`
+* `Unk4` -> `LayoutNamedInstanceId`
+
+#### `simpleevent`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk4` -> `ShopBaseId`
+
+#### `smithshopbase`
+* `Unk1` -> `DLCFlags`
+
+#### `speakerset`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `UserSituationId1`
+* `Unk4` -> `UserSituationId2`
+
+#### `stageshopbase`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `ItemShopBaseId`
+* `Unk4` -> `SmithShopBaseId`
+* `Unk5` -> `ShopTalkId1`
+* `Unk6` -> `ShopTalkId2`
+* `Unk7` -> `ShopTalkId3`
+* `Unk8` -> `ShopTalkId4`
+* `Unk9` -> `ShopTalkId5`
+* `Unk10` -> `ShopTalkId6`
+* `Unk11` -> `ShopTalkId7`
+* `Unk12` -> `ShopTalkId8`
+* `Unk13` -> `ShopTalkId9`
+* `Unk14` -> `ShopTalkId10`
+* `Unk15` -> `ShopTalkId11`
+* `Unk16` -> `ShopTalkId12`
+* `Unk17` -> `ShopTalkId13`
+* `Unk18` -> `ShopTalkId14`
+* `Unk19` -> `ShopTalkId15`
+
+#### `skill`
+* `Unk1` -> `DLCFlags`
+* `DLCFlags` -> `Comment`
+* `Unk15` -> `MovieDataId`
+
+#### `uicolor`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `Color`, int -> hex_uint
+
+#### `useitem`
+* `Unk1` -> `DLCFlags`
+* `AttackParamId` -> `AttackParamId1`
+* `Unk3` -> `AttackParamId2`
+* `Unk4` -> `AttackParamId3`
+* `Unk5` -> `AttackParamId4`
+* `Unk6` -> `AttackParamId5`
+
+#### `uifieldmapicon`
+* `Unk2` -> `UnkType2`
+* `Unk7` -> `ReqUserSituationId`
+* `Unk8` -> `IdType`
+* `Unk9` -> `Id`
+* `Unk10` -> `ShopBaseId`
+* `Unk12` -> `UnkUserSituationId`
+
+#### `uisummonaction`
+* `Unk7` -> `MovieDataId`
+* `Unk8` -> `Name`
+* `Unk9` -> `Description`
+
+#### `window`
+* `Unk1` -> `DLCFlags`
+
+##### Contributors
+* Nenkai
+* TrisChandler (discord)
+
 ## CLI 1.5.2, FF16Tools.Files 1.0.4
 
 #### `action`
