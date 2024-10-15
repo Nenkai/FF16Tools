@@ -88,7 +88,7 @@ Always try to keep your database table columns up-to-date.
 * `EffectArray` -> `TypeAndAttackParamId`
 * `Unk31` -> `WeaponSkinCategoryId`
 
-#### `equipitem`
+#### `eyecolor`
 * `Unk1` -> `DLCFlags`
 * `Unk3` -> `Color`, int -> hex_uint
 
