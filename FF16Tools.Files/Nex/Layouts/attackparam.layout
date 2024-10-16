@@ -68,7 +68,7 @@ add_column|Unk46|int
 add_column|Unk47TitleRelatedToUnk5|int
 add_column|Unk48|int
 add_column|BuffIdMaybe|int
-add_column|Unk50|float
+add_column|Duration|float
 
 // Checked against hardcoded numbers
 add_column|UnkType51|int

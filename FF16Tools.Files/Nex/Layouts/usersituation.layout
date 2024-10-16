@@ -7,29 +7,67 @@ use_base_row_id|false
 // If UnkIdType is 204 and current quest state is >= 10900
 // Then this "usersituation" is OK
 
-add_column|Unk1|int
+//////////////////////////////////
+// ID RANGES
+/////////////////////////////////
 
-// 129?
+// 20xxxx = crafting recipe unlocks
+// - 2000xx-2001xx range = main story completion
+// - 2005xx range = side quest completion
+// - 2010xx-2011xx range = main story completion in FF mode
+// - 2015xx range = side quest completion in FF mode
+//
+// - 202xxx range = Echoes of the Fallen-related
+// - 203xxx range = EotF in FF mode
+// 
+// - 204xxx range = The Rising Tide-related
+// - 205xxx range = TRT in FF mode
+
+//////////////////////////////////
+// COLUMNS
+/////////////////////////////////
+add_column|DLCFlags|int
 add_column|UnkType|int
 
-// 204 = QuestProgressId
-add_column|UnkIdType|short
-
+// union
+// 204 = questprogress
+// 458 = usersituationflag
+// 577 = ?
+// 649 = ?
+// 847 = questsimpleventsequence
+// 856 = simpleevent
+// 978 = fixedpalette
+// 985 = questdiscardlist
+// 989 = icondiscovery
+// 1094 = ?
+// 1162 = ? 
+add_column|UnkIdType1|short
 // indirect 2 bytes padding
-add_column|Id1|int
+add_column|UnkId1|int
 
-add_column|Unk5|int
-add_column|Unk6|int
+add_column|UnkIdType2|short
+// indirect 2 bytes padding
+add_column|UnkId2|int
+
 add_column|Unk7|string
 add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
-add_column|Unk14|int
-add_column|Unk15|int
-add_column|Unk16|int
-add_column|Unk17|int
+
+add_column|UnkIdType3|short
+// indirect 2 bytes padding
+add_column|UnkId3|int
+
+add_column|UnkType4|int
+add_column|UnkIdType4|short
+// indirect 2 bytes padding
+add_column|UnkId4|int
+
+add_column|UnkIdType5|short
+// indirect 2 bytes padding
+add_column|UnkId5|int
+
+add_column|UnkIdType6|short
+// indirect 2 bytes padding
+add_column|UnkId6|int
+
 add_column|Unk18|string
 add_column|Unk19|int

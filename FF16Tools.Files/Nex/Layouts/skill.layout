@@ -7,30 +7,41 @@ add_column|Comment|string
 
 // Checked against hardcoded numbers/switch table - 0-12
 add_column|SkillCategoryId|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
+
+// Note: usersituation 992013 is checked first
+add_column|ReqSkillIdUnlock1|int
+add_column|ReqSkillIdUnlock2|int
+add_column|ReqSkillIdUnlock3|int
+
+// Unknown. This is used in battle but the purpose remains unknown
 add_column|Unk7|float
+
 add_column|CommandId|int
 add_column|Name|string|rel
 add_column|Description|string|rel|-4
 add_column|Description1|string|rel|-8
 add_column|UpgradeCost|int
-add_column|Unk13|int
-add_column|Unk14|int
+add_column|IconTexFileId|int
+add_column|ThumbnailTexFileId|int
 add_column|MovieDataId|int
 
 // Hardcoded checks against numbers like 6
 add_column|Unk16|int
 
-add_column|Unk17|int
+// But also checked against hardcoded numbers (for text color)
+add_column|SkillUiCategoryId|int
+
 add_column|Unk18|int
-add_column|Unk19|int
-add_column|Unk20|byte
-add_column|Unk21|byte
-add_column|Unk22|byte
-add_column|Unk23|byte
+
+// No more than 66
+add_column|RecommendAcquireOrder|int
+add_column|AttackHalfStars|byte
+add_column|StaggerHalfStars|byte
+add_column|MinimumResetLevel|byte
+add_column|AvailableToOtherEikonsOnMaster|byte
+
+// Same as RefundPointsOnReset, but depends on current partymember row, specifically Unk9
 add_column|Unk24|byte
-add_column|Unk25|byte
+add_column|RefundPointsOnReset|byte
 add_column|Unk26|byte
 add_column|Unk27|byte
