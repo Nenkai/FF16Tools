@@ -135,7 +135,7 @@ public class TableMappingReader
                                 column.RelativeOffsetShift = int.Parse(split[4]);
                         }
 
-                        offset += NexUtils.TypeToSize(column.Type);
+                        offset = (int)(column.Offset + NexUtils.TypeToSize(column.Type));
 
                         tableColumnLayout.Columns.Add(column);
                         break;
@@ -212,6 +212,7 @@ public class TableMappingReader
                     for (int i = 2; i < split.Length; i++)
                     {
                         NexColumnType type = NexUtils.ColumnIdentifierToColumnType(split[i]);
+                        fieldOffset = ImplicitPadType(type, fieldOffset);
                         columns.Add(new NexStructColumn()
                         {
                             Name = split[i],
@@ -219,7 +220,6 @@ public class TableMappingReader
                             Offset = fieldOffset,
                         });
 
-                        fieldOffset = ImplicitPadType(type, fieldOffset);
                         fieldOffset += NexUtils.TypeToSize(type);
                     }
                     tableColumnLayout.CustomStructDefinitions.Add(structName, columns);

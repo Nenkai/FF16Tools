@@ -146,6 +146,7 @@ public class NexUtils
                                     int startStructOffset = sr.Position;
                                     for (int j = 0; j < structFieldColumns.Count; j++)
                                     {
+                                        sr.Position = (int)(startStructOffset + structFieldColumns[j].Offset);
                                         var cell = ReadCell(ref sr, tableColumnLayout, structFieldColumns[j], startStructOffset);
                                         structFields[j] = cell;
                                     }
