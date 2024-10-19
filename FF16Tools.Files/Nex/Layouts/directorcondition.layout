@@ -2,9 +2,26 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk3_struct|int|int
+define_struct|TableValueCheckUnion|short|int
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|Unk3_struct[]
-add_column|Unk4|string
+add_column|DLCFlags|int
+
+// Very hardcoded.
+// Conditions: 1, 2 3, 4, 10, 11, 12, 14, 15, 21, 22, 25, 27, 29, 100, 101, 102, 103, 105, 106, 107, 108, 109, 1000, 2000, 2001, 3000
+// Possibly more ^, see gaps
+add_column|ConditionType|int
+
+// union
+// 0
+// 23
+// 25
+// 55
+// 79
+// 82
+// 330
+// 428
+// 557
+// 577 = ?
+// 856 = simpleevent
+add_column|TableValuesToCheck|TableValueCheckUnion[]
+add_colun|Comment|string

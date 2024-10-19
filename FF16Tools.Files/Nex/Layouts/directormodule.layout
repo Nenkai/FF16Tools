@@ -2,9 +2,36 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk3_struct|int|int
+define_struct|TableValueCheckUnion|short|int
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
-add_column|Unk3|Unk3_struct[]
-add_column|Unk4|string
+
+// NOTE: Some combinations within the array matters and are explicitly checked for in order, i.e:
+// 55 then 375 then 577
+// 55 then 577
+
+// union
+// 0
+// 23
+// 41
+// 55 = layoutnamedinstance
+// 373
+// 382
+// 399 = directoractorlist
+// 454
+// 486
+// 491
+// 494
+// 528
+// 545
+// 557
+// 568 = directoractormonitor
+// 577
+// 655
+// 935 = directormovecustomspeedparam
+// 1027
+// 1044
+// 1255
+add_column|Unk3|TableValueCheckUnion[]
+add_column|Comment|string

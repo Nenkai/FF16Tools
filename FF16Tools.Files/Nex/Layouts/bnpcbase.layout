@@ -29,7 +29,7 @@ add_column|Unk25|int
 add_column|Unk26|int
 add_column|Unk27|int
 add_column|Unk28|float
-add_column|Unk29|int
+add_column|SpeakerId|int
 add_column|Unk30|int
 add_column|Unk31|int
 add_column|Unk32|float

@@ -2,19 +2,26 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|string
-add_column|Unk4|int
-add_column|Unk5|byte
-add_column|Unk6|byte
+// Row ids are largely hardcoded for this table.
+// Basically all of them from 0 to 300.
+
+add_column|DLCFlags|int
+add_column|Unk2|short
+
+// Nothing = "#addon_%d"?
+// Starts with # = specific element?
+add_column|UiFilePath|string
+add_column|UiShopHowToId|int
+
+// Guessed
+add_column|IsPreloaded|byte
+
+add_column|AlwaysVisibleMaybe|byte
 add_column|Unk7|byte
 add_column|Unk8|byte
 add_column|Unk9|byte
 add_column|Unk10|byte
-add_column|Unk11|byte
+add_column|AllowCharacterInput|byte
 add_column|Unk12|byte
 add_column|Unk13|byte
-add_column|Unk14|byte
-add_column|Unk15|byte
-add_column|Unk16|byte
+// <implicit 3 bytes padding>

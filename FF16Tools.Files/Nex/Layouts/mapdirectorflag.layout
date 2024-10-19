@@ -2,5 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string
+// Unused table
+
+add_column|DLCFlags|int
+add_column|Comment|string

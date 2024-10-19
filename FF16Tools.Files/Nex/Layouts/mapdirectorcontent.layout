@@ -4,10 +4,10 @@ use_base_row_id|false
 
 define_struct|Unk7_struct|int|int
 
-add_column|Unk1|int
-add_column|Unk2|int[]
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|Unk7_struct[]
-add_column|Unk8|string
+add_column|DLCFlags|int
+add_column|MapDirectorModuleIds|int[]
+add_column|UnkDirectorConditionId1|int
+add_column|UnkDirectorConditionId2|int
+add_column|UnkDirectorConditionId3|int
+add_column|UnkDirectorConditionArray|Unk7_struct[]
+add_column|Comment|string
