@@ -2,6 +2,118 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.4, FF16Tools.Files 1.0.6
+
+#### `abyssgaterating`
+* `Unk1` -> `DLCFlags`
+* `Unk4` -> `SRankScoreReqActionMode`
+* `Unk5` -> `ARankScoreReqActionMode`
+* `Unk6` -> `BRankScoreReqActionMode`
+* `Unk11` -> `SRankScoreReqFFMode`
+* `Unk12` -> `ARankScoreReqFFMode`
+* `Unk13` -> `BRankScoreReqFFMode`
+* `Unk21` - int -> byte
+
+#### `bnpcbase`
+* `Unk29` -> `SpeakerId`
+
+#### `directorcondition`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `ConditionType`
+* `Unk3` -> `TableValuesToCheck`
+* `Unk4` -> `Comment`
+
+#### `directormodule`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `TableValueCheckUnion`
+* `Unk4` -> `Comment`
+
+#### `enpcbase`
+* `Unk8` -> `SpeakerId`
+
+#### `fieldmapobelisk`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk4` -> `WorldMapAnchorId`
+
+#### `layoutnamedinstance`
+* `Unk1` -> `DLCFlags`
+* `Unk4` -> `Comment`
+* `Unk5` -> `GameMapId`
+* `Unk6` -> `X`
+* `Unk7` -> `Y`
+* `Unk8` -> `Z`
+
+#### `mapdirector`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `MapDirectorContentIds`
+* `Unk3` -> `BattleBlockDirectorIds`
+* `Unk4` -> `BattleDirectorIds`
+* `Unk5` -> `ReqUserSituationIds1`
+* `Unk6` -> `TutorialDirectorIds`
+* `Unk7` -> `ReqUserSituationIds2`
+* `Unk8` -> `SMobDirectorIds`
+* `Unk9` -> `Comment`
+* `Unk10` -> `FieldEventDirectorIds`
+* `Unk11` -> `BehaviorEventDirectorIds`
+* `Unk12` -> `MissionBattleDirectorIdToReqDlcFlag`
+* `Unk13` -> `UnkType13`
+* `Unk14` -> `SideQuestBattleDirectors`
+* `Unk15` -> `FixedPaletteDirectorIdToReqDlcFlag`
+* `Unk16` -> `AbyssGateDirectorIdToReqDlcFlag`
+
+#### `mapdirectorcontent`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `MapDirectorModuleIds`
+* `Unk4` -> `UnkDirectorConditionId1`
+* `Unk5` -> `UnkDirectorConditionId2`
+* `Unk6` -> `UnkDirectorConditionId3`
+* `Unk7` -> `UnkDirectorConditionArray`
+* `Unk8` -> `Comment`
+
+#### `mapdirectorflag` (unused)
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `mapdirectormodule`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `DirectorModuleId`
+
+#### `obelisk`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `LayoutNamedInstanceId`
+* `Unk3` -> `PlaceNameId`
+
+#### `smobdirector`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `BattleTagId`
+* `Unk4` -> `ResultId`
+* `UserSituationId` -> `ReqUserSituationId`
+* `Unk13` -> `QuestId`
+* `Unk14` -> `MarkName`
+* `Unk15` -> `MarkTitle`
+* `Unk21` -> `SortOrder`
+* `Unk22` -> `IconTexFileId`
+* `Unk25` -> `MainImageTexFileId`
+* `Unk31` - int -> byte
+
+#### `trainingenemy`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `ReqUserSituationId`
+* `Unk4` -> `BNpcBaseId`
+* `Unk5` -> `NameUiId`
+* `Unk6` -> `DescriptionUiId`
+
+#### `uiaddon`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> int -> short
+* `Unk3` -> `UiFilePath`
+* `Unk4` -> `UiShopHowToId`
+* `Unk5` -> `IsPreloaded`
+* `Unk6` -> `AlwaysVisibleMaybe`
+* `Unk11` -> `AllowCharacterInput`
+
 ## CLI 1.5.3, FF16Tools.Files 1.0.5
 
 > [!NOTE]
