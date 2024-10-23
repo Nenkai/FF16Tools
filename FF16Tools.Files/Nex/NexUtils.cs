@@ -152,6 +152,7 @@ public class NexUtils
                                     }
 
                                     arr[i] = structFields;
+                                    sr.Align(0x04);
                                 }
 
                                 sr.Position = currentOffset + 8;
