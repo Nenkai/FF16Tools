@@ -2,6 +2,10 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.5, FF16Tools.Files 1.0.7
+
+Too many. Refer to [this commit](https://github.com/Nenkai/FF16Tools/commit/c4eba6337d5afae7e168c033272bbfacf5663a5a)
+
 ## CLI 1.5.4, FF16Tools.Files 1.0.6
 
 #### `abyssgaterating`
