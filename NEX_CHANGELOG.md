@@ -114,6 +114,12 @@ Always try to keep your database table columns up-to-date.
 * `Unk6` -> `AlwaysVisibleMaybe`
 * `Unk11` -> `AllowCharacterInput`
 
+##### Contributors
+* Nenkai
+* Jj (Discord)
+* Rukkard (Discord)
+* CyberSoul (Discord)
+
 ## CLI 1.5.3, FF16Tools.Files 1.0.5
 
 > [!NOTE]
