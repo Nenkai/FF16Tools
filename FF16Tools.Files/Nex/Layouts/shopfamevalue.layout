@@ -2,10 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-// This layout was generated, guessed row length: 0x18
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
+add_column|DLCFlags|int
+add_column|ShopTalkId1|int
+add_column|ShopTalkId2|int
+add_column|ShopTalkId3|int
+add_column|ShopTalkId4|int
+add_column|ShopTalkId5|int

@@ -2,8 +2,13 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|string
+// Hardcoded to 19 rows
+// ffxvi.exe steam 140C0C4B7
+
+// 6 to 9 loads system/graphics/font2/uift%02d.obin?
+
+add_column|DLCFlags|int
+add_column|FontFilePath|string
 add_column|Unk3|float
 add_column|Unk4|float
 add_column|Unk5|float

@@ -16,15 +16,15 @@ add_column|Unk_0x18|float
 add_column|Unk_0x1C|int
 
 // Has hardcoded checks i.e 12, 1
-add_column|UnkType0x20|int
-
+add_column|MovementType1|int
 // Bitset from 0-15, 0 is none
-add_column|Unk_0x24|int
+add_column|MovementType2|int
+
 add_column|Unk_0x28|float[]
 add_column|ActionMoveTypeId|int
 add_column|Unk_0x34|string
-add_column|Unk_0x38|int
-add_column|Unk_0x3C|int
+add_column|LayoutNamedInstanceId1|int
+add_column|LayoutNamedInstanceId2|int
 add_column|Unk_0x40|int
 add_column|Unk_0x44|int
 add_column|Unk_0x48|int

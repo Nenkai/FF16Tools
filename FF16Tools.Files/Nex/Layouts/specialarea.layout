@@ -6,13 +6,14 @@ use_base_row_id|false
 // I believe this is also referenced from some sort of 
 // map file? Couldn't find which though.
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 
 // ffxvi_demo.exe 1.0.0 - 140429D52
 // Also controls what ui shows up
 add_column|UserConditionId|int
 
 // What the hell is going on here. bit set of sorts?
+// >> is this linked to usercondition?
 // *(_QWORD *)(v30 + 8 * ((unsigned __int64)(unsigned int)v32 >> 6) + 29320) |= 1LL << (v32 & 0x3F);
 // ffxvi_demo.exe 1.0.0 - 140424E55
 // ----------------------------------------
@@ -36,11 +37,13 @@ add_column|UserConditionId|int
 add_column|MovementRestrictionBitSet|int
 add_column|Unk4|int
 add_column|Unk5|int
-add_column|Unk6|string
+add_column|Comment|string
 add_column|EnvironmentVibrationId|int
 add_column|CharaSituationId|int
 add_column|CustomSpeedId|int
 add_column|Unk10|int
-add_column|Unk11|string
+add_column|Comment2|string
 add_column|NormalCameraModeIdMaybe|int
-add_column|Unk13|int
+add_column|Unk13|byte
+add_column|Unk14|byte
+// <implicit 2 bytes padding>

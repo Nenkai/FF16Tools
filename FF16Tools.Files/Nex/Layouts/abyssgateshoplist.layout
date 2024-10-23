@@ -2,12 +2,16 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
-add_column|Unk3|string
+add_column|Comment|string
 add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
+
+// union
+// 1047 = abysseffect
+// 1249 = abyssboostparam
+add_column|AbyssParamUnionType|int
+add_column|AbyssParamUnionId|int
 add_column|Unk7|string|rel
 add_column|Unk8|int
 add_column|Unk9|int

@@ -2,21 +2,26 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
+add_column|DLCFlags|int
+add_column|SmallCharacterIconTexFileId|int
+add_column|LargeCharacterIconTexFileId|int
 add_column|Unk4|float
 add_column|Unk5|float
-add_column|Unk6|int
+
+// 1 = small - 20.0
+// 2 = middle - 28.0
+// 3 = big - 38.0
+// sizes: ffxvi.exe steam 1.0.1 - sub_140372918
+add_column|IconSizeType|int
 add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
-add_column|Unk14|string|rel
-add_column|Unk15|string
-add_column|Unk16|int
-add_column|Unk17|int
-add_column|Unk18|int
+add_column|LoreDictionaryId1|int
+add_column|LoreDictionaryId1Key2|int
+add_column|LoreQuestSequenceConditionId|int
+add_column|UnkMin|int
+add_column|UnkMax|int
+add_column|SpeakerId|int
+add_column|Label|string|rel
+add_column|Comment|string
+add_column|ReqUserSituationId|int
+add_column|LoreDictionaryId2|int
+add_column|LoreDictionaryIdKey2|int

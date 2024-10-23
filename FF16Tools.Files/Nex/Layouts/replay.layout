@@ -2,13 +2,25 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string
+// NOTE: Hardcoded to 19 rows!
+// while (v3 < 19)
+// ^ ffxvi.exe steam 1.0.1 - 1403FEA57
+
+add_column|DLCFlags|int
+
+// Is this used? saw something.
+// ffxvi.exe steam 1.0.1 - 1403FEB77
+add_column|Comment|string
+
+// If 0 = no show
 add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
+add_column|GameMapId|int
+add_column|GameMapIdKey2|int
+add_column|LayoutNamedInstanceId|int
+
+// Has an hardcoded check on 11
+add_column|WorldMapAnchorId|int
+
+add_column|ReqUserSituationId|int
+add_column|ThumbnailTexFileId|int
+add_column|PanelImageTexFileId|int

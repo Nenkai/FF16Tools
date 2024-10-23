@@ -3,8 +3,8 @@ set_table_category|DoubleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|string
-add_column|Unk3|string
+add_column|MainMapFilePath|string
+add_column|Comment|string
 add_column|LayoutNamedInstanceId|int
 add_column|MapDirectorId|int
 add_column|LevelSequenceId|int
@@ -14,11 +14,13 @@ add_column|LevelSequenceId|int
 // i.e 602000 (hideaway 2), if fits usersituation 15020 then 602000 (sub id 1) is selected (pink sky)
 add_column|ReqUserSituationId|int
 
-// If this is 314, checked against bgmselect table instead?
-add_column|BgmType|short
-add_column|BgmOrBgmSelectId|short
-add_column|BgmType2|short
-add_column|BgmOrBgmSelectId2|short
+// union
+// 146
+// 314 =
+add_column|BgmUnionType1|short
+add_column|BgmUnionId1|short
+add_column|BgmUnionType2|short
+add_column|BgmUnionId2|short
 
 add_column|Unk10|short
 // Seems correct? Checked in debugger
@@ -27,7 +29,9 @@ add_column|PartySelectId|short
 // Same - demo 1.0.0 -> 140451DF6
 add_column|QuestId|int
 
-add_column|Unk12|int
+// ffxvi.exe steam 1.0.1 -> 1402681E0 (checked against 3), 14044C441 & 140464271 (2), 140462505 (1)
+add_column|UnkType12|int
+
 add_column|SpecialAreaId|int
 add_column|Unk14|int
 add_column|CollisionMaterialColorId|int
@@ -50,12 +54,11 @@ add_column|Unk22|byte
 add_column|Unk23|byte
 add_column|Unk24|float
 add_column|Unk25|float
-add_column|UserSituationId|int
+add_column|StageId|int
 add_column|Unk27|int
-add_column|Unk28|int
+add_column|GameMapSafetyId|int
 add_column|Unk29|int
 add_column|Unk30|int
 add_column|Unk31|byte
 add_column|Unk32|byte
-add_column|Unk33|byte
-add_column|Unk34|byte
+// <implicit 2 bytes padding>

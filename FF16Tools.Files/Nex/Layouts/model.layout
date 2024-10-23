@@ -2,18 +2,18 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|ModelCoordinateId|int
 add_column|Unk3|int
 add_column|Unk4|float
 add_column|Unk5|string[]
-add_column|Unk6|string
-add_column|Unk7|int
+add_column|Comment|string
+add_column|MoveParamId|int
 add_column|Unk8|int
 add_column|Unk9|int
 add_column|Unk10|string[]
-add_column|Unk11|int
-add_column|Unk12|int
+add_column|EnvVfxSetId|int
+add_column|FootgroundId|int
 add_column|Unk13|int[]
 add_column|Unk14|float
 add_column|Unk15|float
@@ -24,7 +24,10 @@ add_column|Unk19|string
 add_column|HitSeIdMaybe|int
 add_column|Unk21|int
 add_column|Unk21_1|int
-add_column|Unk22|string[]
+
+// No more than 20, chosen at random
+// ffxvi.exe steam 1.0.1 - 140060211
+add_column|RandomVoiceLines|string[]
 add_column|Unk23|int
 add_column|Unk24|string
 add_column|Unk25|float
@@ -44,7 +47,7 @@ add_column|Unk38|byte
 add_column|Unk39|byte
 add_column|Unk40|byte
 add_column|Unk41|byte
-add_column|Unk42|byte
+add_column|FootWetnessId|byte
 add_column|Unk43|byte
 add_column|Unk44|byte
 add_column|Unk45|byte

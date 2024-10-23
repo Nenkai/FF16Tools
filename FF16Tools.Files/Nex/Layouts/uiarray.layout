@@ -4,5 +4,5 @@ use_base_row_id|false
 
 define_struct|Unk2_Struct|int|int
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|Unk2_Struct[]

@@ -2,5 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|int
+// whether animation/chara/c%04u/pack/animation/head/h%04u/animation.pac exists
+
+add_column|DLCFlags|int
+add_column|PackExists|byte

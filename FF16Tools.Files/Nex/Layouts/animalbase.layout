@@ -2,13 +2,13 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|ModelId|int
 add_column|ModelIdKey2|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
+add_column|AnimalBehaviorTypeId|int
+add_column|StreamingObjectSizeId|int
+add_column|AnimalBehaviorParamId|int
 add_column|Unk7|float
 add_column|Unk8|float
-add_column|Unk9|string
-add_column|Unk10|string
+add_column|Comment1|string
+add_column|Comment2|string

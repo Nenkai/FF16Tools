@@ -13,9 +13,9 @@ add_column|ReqUserSituationId|int
 // union(placename)?
 // 147 = placename
 // 1138 = ?
-add_column|IdType|short
+add_column|IdUnionType|short
 // <implcit 2 bytes padding>
-add_column|Id|int
+add_column|IdUnion|int
 
 add_column|ShopBaseId|int
 add_column|Unk11|int

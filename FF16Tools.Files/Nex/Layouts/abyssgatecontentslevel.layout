@@ -2,15 +2,15 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|string
+add_column|DLCFlags|int
+add_column|AbyssGatePlayerStatusId|int
+add_column|RankingId1|int
+add_column|Comment|string
 add_column|Unk5|int
 add_column|Unk6|int
 add_column|Unk7|int
 add_column|Unk8|int
-add_column|Unk9|int
+add_column|RankingId2|int
 add_column|Unk10|byte
 add_column|Unk11|byte
 add_column|Unk12|byte

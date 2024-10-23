@@ -2,37 +2,51 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk19_Struct|int|int
-define_struct|Unk27_Struct|int|int
+define_struct|DefaultTalkSequenceUnion|short|int
+define_struct|LocationUnion|int|int
 
 add_column|Unk1|int
 add_column|Unk2|int
 add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
+
+// union
+// 82 = ?
+// 204 = questprogress
+// 277 = usersituation
+add_column|UnkUnionType1|short
+add_column|UnkUnionId1|int
+add_column|UnkUnionType2|short
+add_column|UnkUnionId2|int
 add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|int
+add_column|UnkUnionType3|short
+add_column|UnkUnionId3|int
+add_column|UnkUnionType4|short
+add_column|UnkUnionId4|int
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
-add_column|Unk16|int
-add_column|Unk17|int
-add_column|Unk18|int[]
-add_column|Unk19|Unk19_Struct[]
-add_column|Unk20|string
-add_column|Unk21|int
-add_column|Unk22|int
-add_column|Unk23|int
+add_column|GameMapId|int
+add_column|GameMapIdKey2|int
+add_column|TalkSequenceChances|int[]
+
+// union
+// 845 = maindefaulttalksequence
+// 846 = questdefaulttalksequence
+add_column|DefaultTalkSequenceUnions|DefaultTalkSequenceUnion[]
+
+add_column|Comment|string
+add_column|QuestId1|int
+add_column|QuestId2|int
+add_column|QuestId3|int
 add_column|Unk24|int
 add_column|Unk25|float
 add_column|Unk26|float
-add_column|Unk27|Unk27_Struct[]
-add_column|Unk28|int
+
+// union
+// 55 = layoutnamedinstance
+add_column|UnkLocationUnions|LocationUnion[]
+
+add_column|SpeakerId|int
 add_column|Unk29|byte
 add_column|Unk30|byte
 add_column|Unk31|byte

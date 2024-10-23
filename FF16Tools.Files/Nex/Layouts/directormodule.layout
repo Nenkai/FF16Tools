@@ -2,6 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// !! This table is heavily hardcoded
+// See ffxvi.exe steam 1.0.1 - 14017737C - ctors for each
+
 define_struct|TableValueCheckUnion|short|int
 
 add_column|DLCFlags|int
@@ -33,5 +36,5 @@ add_column|Unk2|int
 // 1027
 // 1044
 // 1255
-add_column|Unk3|TableValueCheckUnion[]
+add_column|UnkUnions|TableValueCheckUnion[]
 add_column|Comment|string

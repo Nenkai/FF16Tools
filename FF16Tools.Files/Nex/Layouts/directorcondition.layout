@@ -19,9 +19,12 @@ add_column|ConditionType|int
 // 79
 // 82
 // 330
+// 403
 // 428
+// 454
+// 530
 // 557
 // 577 = ?
 // 856 = simpleevent
-add_column|TableValuesToCheck|TableValueCheckUnion[]
+add_column|TableValueUnionsToCheck|TableValueCheckUnion[]
 add_colun|Comment|string

@@ -2,8 +2,19 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
+// 2 = ingame
+// 3 = world map
+
+add_column|DLCFlags|int
+add_column|Comment|string
+
+// union
+// 146 - bgmmode
+// 314 - bgmselect
+add_column|BgmUnionType|short
+add_column|BgmUnionId|int
+
+// Unknown. If true, checks user situation 992050?
+// ffxvi.exe steam 1.0.1 - 140452CF7
+add_column|Unk5|byte
+// <implicit 3 bytes padding>

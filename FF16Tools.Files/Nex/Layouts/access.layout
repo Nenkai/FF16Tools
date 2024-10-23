@@ -2,21 +2,20 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
 add_column|Unk4|int
-add_column|Unk5|int
-// type
-add_column|Unk6|int
-add_column|Unk7|string
-add_column|Unk8|string|rel
+add_column|UnkType5|int
+add_column|UnkType6|int
+add_column|Comment|string
+add_column|InteractText|string|rel
 add_column|Unk9|int
 add_column|AccessHoldParamId|int
 add_column|Unk11|int
 add_column|Unk12|float
 add_column|Unk13|int
-add_column|Unk14|int
+add_column|AccessEffectTriggerId|int
 add_column|Unk15|float
 add_column|Unk16|int
 add_column|Unk17|byte

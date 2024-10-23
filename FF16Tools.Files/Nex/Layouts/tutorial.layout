@@ -2,8 +2,8 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|float[]
-add_column|Unk5|string
+add_column|DLCFlags|int
+add_column|NumToComplete|int
+add_column|HowToId|int
+add_column|SuccessDisplayDelays|float[]
+add_column|Comment|string

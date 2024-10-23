@@ -2,7 +2,10 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-// This layout was generated, guessed row length: 0xC
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
+// Hardcoded row ids
+add_column|DLCFlags|int
+
+// This is also weird (like uibuddyaction)
+// ffxvi.exe steam 1.0.1 sub_1403537F0
+add_column|UnkOrder|int
+add_column|UiId|int

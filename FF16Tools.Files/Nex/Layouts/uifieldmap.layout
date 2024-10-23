@@ -2,12 +2,14 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
+
+// Combined with MapTextureTilesX * MapTextureTilesY 
+add_column|MapTextureFileStartId|int
+add_column|GameMapId|int
 add_column|Unk5|float
-add_column|Unk6|int
+add_column|UiFieldMapDiscoveryMaskId|int
 add_column|Unk7|float
 add_column|Unk8|float
 add_column|Unk9|float
@@ -15,14 +17,21 @@ add_column|Unk10|float
 add_column|Unk11|float
 add_column|Unk12|float
 add_column|Unk13|float
-add_column|Unk14|int
-add_column|Unk15|float
-add_column|Unk16|float
-add_column|Unk17|float
-add_column|Unk18|int
-add_column|Unk19|int
+
+// ffxvi.exe steam 1.0.1 - 1403C0736
+add_column|UnkArea|float
+add_column|UnkSection|float
+add_column|UnkSpot|float
+add_column|UnkVillage|float
+add_column|UnkObelisk|float
+
+// Also known as territory
+add_column|BannerTextureFileId|int
 add_column|Unk20|float
 add_column|Unk21|float
 add_column|Unk22|float
-add_column|Unk23|int
-add_column|Unk24|int
+add_column|ReqUserSituationIdForBannerDisplay|int
+add_column|MapTextureTilesX|byte
+add_column|MapTextureTilesY|byte
+add_column|Unk25|byte
+add_column|Unk26|byte

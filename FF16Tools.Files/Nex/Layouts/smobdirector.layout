@@ -12,9 +12,9 @@ add_column|ReqUserSituationId|int
 add_column|Unk6|int
 add_column|Unk7|string
 add_column|Unk8|string
-add_column|LayoutNamedInstanceId|int
+add_column|CutsceneLayoutNamedInstanceId|int
 add_column|Unk10|int
-add_column|UnkLayoutNamedInstanceIds|int[]
+add_column|MonsterLayoutNamedInstanceIds|int[]
 add_column|QuestId|int
 
 // S = 1, A = 2, B = 3, C = 4

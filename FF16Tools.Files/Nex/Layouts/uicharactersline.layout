@@ -2,7 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
 add_column|Unk4|int
@@ -23,7 +23,7 @@ add_column|Unk16|int[]
 add_column|Unk17|int[]
 add_column|Unk18|int[]
 add_column|Unk19|int[]
-add_column|Unk20|string|rel
-add_column|Unk21|string|rel|-4
+add_column|Comment|string|rel
+add_column|Line|string|rel|-4
 add_column|Unk22|string
 add_column|Unk23|int

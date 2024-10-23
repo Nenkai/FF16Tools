@@ -3,7 +3,7 @@ set_table_category|DoubleKeyed
 use_base_row_id|true
 
 add_column|Unk1|int
-add_column|Unk2|int
+add_column|AstralProjectionId|int
 add_column|Unk3|int
 add_column|Unk4|float
 add_column|Unk5|float

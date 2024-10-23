@@ -2,13 +2,23 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk5_struct|int|int
+define_struct|LocationUnion|int|int
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|Unk5_struct[]
+
+// 1 = mpb 3006
+// 2 = mpb 3004
+// 3 = mpb 3002
+// 4 = mpb 3001
+// 5 = mpb 3005
+// ffxvi.exe steam 1.0.1 - 1401D0FAE ^
+add_column|FieldEventTypeId|int
+
+// union
+// 55 - layoutnamedinstance
+add_column|LocationUnions|LocationUnion[]
 add_column|Unk6|int
-add_column|Unk7|string
-add_column|Unk8|string
+add_column|Comment1|string
+add_column|Comment2|string

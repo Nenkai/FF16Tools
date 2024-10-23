@@ -21,13 +21,13 @@ add_column|Unk9|int
 // union(icon, moviedata)
 // 266 = icon id, but not a table
 // 316 = moviedata
-add_column|AssetIdType1|short
+add_column|AssetIdUnionType1|short
 // <implicit 2 bytes padding>
-add_column|AssetId1|int
+add_column|AssetUnionId1|int
 
 // Same union
-add_column|AssetIdType2|short
-add_column|AssetId2|int
+add_column|AssetIdUnionType2|short
+add_column|AssetUnionId2|int
 
 add_column|Unk14|int
 add_column|Unk15|int

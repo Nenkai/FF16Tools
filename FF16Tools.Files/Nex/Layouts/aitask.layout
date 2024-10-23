@@ -4,11 +4,15 @@ use_base_row_id|false
 
 define_struct|Unk19_Struct|int|int
 
-add_column|Unk1|int
-add_column|Unk2|int
+add_column|DLCFlags|int
+
+// Switch cases
+// ffxvi.exe 1.0.1 steam - sub_1404CFE14
+add_column|UnkType2|int
+
 add_column|Unk3|int
 add_column|Unk4|int
-add_column|Unk5|int
+add_column|ActionId|int
 add_column|Unk6|float[]
 add_column|Unk7|float[]
 add_column|Unk8|float
@@ -21,5 +25,5 @@ add_column|Unk14|int
 add_column|Unk15|int[]
 add_column|Unk16|int
 add_column|Unk17|int
-add_column|Unk18|int[]
+add_column|UnkLayoutNamedInstanceIds|int[]
 add_column|Unk19|Unk19_Struct[]

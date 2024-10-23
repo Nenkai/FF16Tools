@@ -2,11 +2,13 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
+// Hardcoded rows
+
+add_column|DLCFlags|int
 add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
+add_column|UiId1|int
+add_column|UiId2|int
+add_column|UserSituationId|int
 add_column|Unk6|int
 add_column|Unk7|int
 add_column|Unk8|int
@@ -21,4 +23,4 @@ add_column|Unk16|byte
 add_column|Unk17|byte
 add_column|Unk18|byte
 add_column|Unk19|byte
-add_column|Unk20|byte
+// <implicit 1 byte padding>
