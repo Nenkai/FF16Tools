@@ -20,6 +20,7 @@ using Syroot.BinaryData;
 using FF16Tools.Hashing;
 using FF16Tools.Crypto;
 using FF16Tools.Shared;
+using System.Collections.ObjectModel;
 
 namespace FF16Tools.Pack;
 
@@ -28,8 +29,8 @@ namespace FF16Tools.Pack;
 /// </summary>
 public class FF16Pack : IDisposable, IAsyncDisposable
 {
-    private ILoggerFactory _loggerFactory;
-    private ILogger _logger;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly ILogger _logger;
 
     public const uint MAGIC = 0x4B434150;
     public const uint HEADER_SIZE = 0x400;
@@ -54,12 +55,12 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// </summary>
     public bool UsesChunks { get; set; }
 
-    private Dictionary<string, FF16PackFile> _files = [];
-    private List<FF16PackDStorageChunk> _chunks { get; set; } = [];
-    private Dictionary<long, FF16PackDStorageChunk> _offsetToChunk = [];
+    private readonly Dictionary<string, FF16PackFile> _files = [];
+    private readonly List<FF16PackDStorageChunk> _chunks = [];
+    private readonly Dictionary<long, FF16PackDStorageChunk> _offsetToChunk = [];
 
-    private FileStream _stream;
-    private HashSet<FF16PackDStorageChunk> _cachedChunks = [];
+    private readonly FileStream _stream;
+    private readonly HashSet<FF16PackDStorageChunk> _cachedChunks = [];
 
     private FF16Pack(FileStream stream, ILoggerFactory loggerFactory = null)
     {
@@ -230,6 +231,28 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     }
 
     /// <summary>
+    /// Gets file data to a stream.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="outputStream">Output stream. It should be writable.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException">If the file is not found in the archive.</exception>
+    public void GetFileDataStream(string gamePath, Stream outputStream)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
+        ArgumentNullException.ThrowIfNull(outputStream);
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        if (!outputStream.CanWrite)
+            throw new ArgumentException("Output stream should be writable.");
+
+        FF16PackFile file = GetFileInfo(gamePath);
+        UnpackFileToStream(file, outputStream, gamePath);
+    }
+
+    /// <summary>
     /// Gets file data. Returning buffer is disposable.
     /// </summary>
     /// <param name="path">Game path.</param>
@@ -250,13 +273,73 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     }
 
     /// <summary>
+    /// Gets file data as allocated byte array.
+    /// </summary>
+    /// <param name="path">Game path.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Allocated byte array.</returns>
+    /// <exception cref="FileNotFoundException">If the file is not found in the archive.</exception>
+    public async Task<byte[]> GetFileDataBytesAsync(string path, CancellationToken ct = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(path);
+
+        path = FF16PackPathUtil.NormalizePath(path);
+
+        FF16PackFile file = GetFileInfo(path);
+
+        byte[] buffer = new byte[file.DecompressedFileSize];
+        await UnpackFileToStreamAsync(file, buffer.AsMemory().AsStream(), path, ct: ct);
+        return buffer;
+    }
+
+    /// <summary>
+    /// Gets file data as allocated byte array.
+    /// </summary>
+    /// <param name="path">Game path.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Allocated byte array.</returns>
+    /// <exception cref="FileNotFoundException">If the file is not found in the archive.</exception>
+    public byte[] GetFileDataBytes(string path)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(path);
+
+        path = FF16PackPathUtil.NormalizePath(path);
+
+        FF16PackFile file = GetFileInfo(path);
+
+        byte[] buffer = new byte[file.DecompressedFileSize];
+        UnpackFileToStream(file, buffer.AsMemory().AsStream(), path);
+        return buffer;
+    }
+
+    /// <summary>
+    /// Gets file data. Returning buffer is disposable.
+    /// </summary>
+    /// <param name="path">Game path.</param>
+    /// <returns>Disposable MemoryOwner.</returns>
+    /// <exception cref="FileNotFoundException">If the file is not found in the archive.</exception>
+    public MemoryOwner<byte> GetFileData(string path)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(path);
+
+        path = FF16PackPathUtil.NormalizePath(path);
+
+        FF16PackFile file = GetFileInfo(path);
+
+        MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate((int)file.DecompressedFileSize);
+        UnpackFileToStream(file, buffer.AsStream(), path);
+        return buffer;
+    }
+
+    /// <summary>
     /// Extracts all the files in the pack to the specified directory.
     /// </summary>
     /// <param name="outputDir">Output directory for the extracted files.</param>
     /// <param name="includePathFile">Whether to include a .path file, required for repacking individual packs.</param>
+    /// <param name="token">Cancellation token.</param>
     /// <returns></returns>
     /// <exception cref="DirectoryNotFoundException"></exception>
-    public async Task ExtractAllAsync(string outputDir, bool includePathFile = true)
+    public async Task ExtractAllAsync(string outputDir, bool includePathFile = true, CancellationToken token = default)
     {
         if (string.IsNullOrEmpty(outputDir))
             throw new DirectoryNotFoundException("Output dir is invalid.");
@@ -264,14 +347,43 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         _fileCounter = 0;
         foreach (KeyValuePair<string, FF16PackFile> file in _files)
         {
-            await ExtractFileAsync(file.Key, outputDir);
+            await ExtractFileAsync(file.Key, outputDir, token);
             _fileCounter++;
         }
 
-        if (!string.IsNullOrEmpty(ArchiveDir))
+        if (includePathFile && !string.IsNullOrEmpty(ArchiveDir))
         {
             File.WriteAllLines(Path.Combine(outputDir, ".path"), 
             [ 
+                "// This is the internal name/dir for this pack. Do not rename it if you are repacking.",
+                ArchiveDir
+            ]);
+        }
+    }
+
+    /// <summary>
+    /// Extracts all the files in the pack to the specified directory.
+    /// </summary>
+    /// <param name="outputDir">Output directory for the extracted files.</param>
+    /// <param name="includePathFile">Whether to include a .path file, required for repacking individual packs.</param>
+    /// <returns></returns>
+    /// <exception cref="DirectoryNotFoundException"></exception>
+    public void ExtractAll(string outputDir, bool includePathFile = true)
+    {
+        if (string.IsNullOrEmpty(outputDir))
+            throw new DirectoryNotFoundException("Output dir is invalid.");
+
+        _fileCounter = 0;
+        foreach (KeyValuePair<string, FF16PackFile> file in _files)
+        {
+            ExtractFile(file.Key, outputDir);
+            _fileCounter++;
+        }
+
+        if (includePathFile && !string.IsNullOrEmpty(ArchiveDir))
+        {
+            File.WriteAllLines(Path.Combine(outputDir, ".path"),
+            [
                 "// This is the internal name/dir for this pack. Do not rename it if you are repacking.",
                 ArchiveDir
             ]);
@@ -307,6 +419,60 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         await UnpackFileToStreamAsync(packFile, outputStream, outputPath, ct);
     }
 
+    /// <summary>
+    /// Extracts the specified file from the pack to the specified output directory.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="outputDir"></param>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public void ExtractFile(string path, string outputDir)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(path);
+        ArgumentException.ThrowIfNullOrEmpty(outputDir);
+
+        path = FF16PackPathUtil.NormalizePath(path);
+
+        FF16PackFile packFile = GetFileInfo(path);
+
+        if (_fileCounter is not null)
+            _logger?.LogInformation("[{fileNumber}/{fileCount}] Extracting '{path}' (0x{packSize:X} bytes)...", _fileCounter + 1, _files.Count, path, packFile.DecompressedFileSize);
+        else
+            _logger?.LogInformation("Extracting '{path}' (0x{packSize:X} bytes)...", path, packFile.DecompressedFileSize);
+
+        string outputPath = Path.Combine(Path.GetFullPath(outputDir), path);
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+
+        using var outputStream = new FileStream(outputPath, FileMode.Create);
+        UnpackFileToStream(packFile, outputStream, outputPath);
+    }
+
+    public void ListFiles(string outputPath, bool log = false)
+    {
+        using var sw = new StreamWriter(outputPath);
+        foreach (var file in _files)
+        {
+            sw.WriteLine($"{file.Key} - crc:{file.Value.CRC32Checksum:X8}, nameHash:{file.Value.FileNameHash:X8} compressed: {file.Value.IsCompressed} ({file.Value.ChunkedCompressionFlags}), " +
+                $"dataOffset: 0x{file.Value.DataOffset:X16}, fileSize: 0x{file.Value.DecompressedFileSize:X8}, compressedFileSize: 0x{file.Value.CompressedFileSize:X8}, chunkHeaderSize:0x{file.Value.ChunkHeaderSize:X8}");
+
+            if (log)
+            {
+                _logger?.LogInformation("{path} - crc:{crc:X8}, nameHash:{nameHash:X8} compressed: {isCompressed} ({compressionFlags}), " +
+                    "dataOffset: 0x{dataOffset:X16}, fileSize: 0x{decompressedFileSize:X8}, compressedFileSize: 0x{compressedSize:X8}, chunkHeaderSize:0x{chunkHeaderSize:X8}",
+                    file.Key,
+                    file.Value.CRC32Checksum,
+                    file.Value.FileNameHash,
+                    file.Value.IsCompressed,
+                    file.Value.ChunkedCompressionFlags,
+                    file.Value.DataOffset,
+                    file.Value.DecompressedFileSize,
+                    file.Value.CompressedFileSize,
+                    file.Value.ChunkHeaderSize);
+            }
+        }
+    }
+
+    #region Private Async
     private async Task UnpackFileToStreamAsync(FF16PackFile packFile, Stream outputStream, string pathForLogging, CancellationToken ct = default)
     {
         _logger?.LogInformation("Fetching {path} (compressed={compressed}, dataOffset=0x{offset:X8})", pathForLogging, packFile.IsCompressed, packFile.DataOffset);
@@ -355,31 +521,6 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
             if (crc.GetCurrentHashAsUInt32() != packFile.CRC32Checksum)
                 ThrowHashException(pathForLogging);
-        }
-    }
-
-    public void ListFiles(string outputPath, bool log = false)
-    {
-        using var sw = new StreamWriter(outputPath);
-        foreach (var file in _files)
-        {
-            sw.WriteLine($"{file.Key} - crc:{file.Value.CRC32Checksum:X8}, nameHash:{file.Value.FileNameHash:X8} compressed: {file.Value.IsCompressed} ({file.Value.ChunkedCompressionFlags}), " +
-                $"dataOffset: 0x{file.Value.DataOffset:X16}, fileSize: 0x{file.Value.DecompressedFileSize:X8}, compressedFileSize: 0x{file.Value.CompressedFileSize:X8}, chunkHeaderSize:0x{file.Value.ChunkHeaderSize:X8}");
-
-            if (log)
-            {
-                _logger?.LogInformation("{path} - crc:{crc:X8}, nameHash:{nameHash:X8} compressed: {isCompressed} ({compressionFlags}), " +
-                    "dataOffset: 0x{dataOffset:X16}, fileSize: 0x{decompressedFileSize:X8}, compressedFileSize: 0x{compressedSize:X8}, chunkHeaderSize:0x{chunkHeaderSize:X8}",
-                    file.Key,
-                    file.Value.CRC32Checksum,
-                    file.Value.FileNameHash,
-                    file.Value.IsCompressed,
-                    file.Value.ChunkedCompressionFlags,
-                    file.Value.DataOffset,
-                    file.Value.DecompressedFileSize,
-                    file.Value.CompressedFileSize,
-                    file.Value.ChunkHeaderSize);
-            }
         }
     }
 
@@ -489,6 +630,165 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         _cachedChunks.Add(chunk);
     }
+    #endregion
+
+    #region Private Sync
+    private void UnpackFileToStream(FF16PackFile packFile, Stream outputStream, string pathForLogging)
+    {
+        _logger?.LogInformation("Fetching {path} (compressed={compressed}, dataOffset=0x{offset:X8})", pathForLogging, packFile.IsCompressed, packFile.DataOffset);
+
+        if (packFile.IsCompressed)
+        {
+            _logger?.LogTrace("Compression type: {compressionType}", packFile.ChunkedCompressionFlags);
+            switch (packFile.ChunkedCompressionFlags)
+            {
+                case FF16PackChunkCompressionType.UseSharedChunk:
+                    ExtractFileFromSharedChunk(packFile, outputStream, pathForLogging);
+                    break;
+                case FF16PackChunkCompressionType.UseMultipleChunks:
+                    ExtractFileFromMultipleChunks(packFile, outputStream, pathForLogging);
+                    break;
+                case FF16PackChunkCompressionType.UseSpecificChunk:
+                    ExtractFileFromSpecificChunk(packFile, outputStream, pathForLogging);
+                    break;
+                case FF16PackChunkCompressionType.None:
+                    throw new ArgumentException($"Pack file '{pathForLogging}' has compression flag but compression type flag is '{packFile.ChunkedCompressionFlags}'..?");
+                default:
+                    throw new NotSupportedException($"Compression type {packFile.ChunkedCompressionFlags} for file '{pathForLogging}'");
+            }
+        }
+        else
+        {
+            int size = (int)packFile.DecompressedFileSize;
+            _stream.Position = (long)packFile.DataOffset;
+
+            using MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate(0x20000);
+
+            var crc = new Crc32();
+            while (size > 0)
+            {
+                int cnt = Math.Min(size, buffer.Length);
+                Memory<byte> slice = buffer.Memory.Slice(0, cnt);
+
+                _stream.Read(slice.Span);
+                outputStream.Write(slice.Span);
+
+                crc.Append(slice.Span);
+                size -= cnt;
+            }
+
+            if (crc.GetCurrentHashAsUInt32() != packFile.CRC32Checksum)
+                ThrowHashException(pathForLogging);
+        }
+    }
+
+    private void ExtractFileFromMultipleChunks(FF16PackFile packFile, Stream outputStream, string outputPath)
+    {
+        _stream.Position = (long)packFile.ChunkDefOffset;
+
+        using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate(0x100000);
+        using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate(MAX_DECOMPRESSED_MULTI_CHUNK_SIZE);
+
+        uint numChunks = _stream.ReadUInt32();
+        uint size = _stream.ReadUInt32();
+        uint[] chunkOffsets = _stream.ReadUInt32s((int)numChunks);
+
+        var crc = new Crc32();
+        long remSize = (long)packFile.DecompressedFileSize;
+        for (int i = 0; i < numChunks; i++)
+        {
+            int chunkCompSize = i < numChunks - 1 ?
+                  (int)(chunkOffsets[i + 1] - chunkOffsets[i])
+                : (int)packFile.CompressedFileSize - (int)chunkOffsets[i];
+            int chunkDecompSize = (int)Math.Min(remSize, MAX_DECOMPRESSED_MULTI_CHUNK_SIZE);
+
+            _stream.Position = (long)(packFile.DataOffset + chunkOffsets[i]);
+            Memory<byte> compSlice = compBuffer.Memory.Slice(0, chunkCompSize);
+            Memory<byte> decompSlice = decompBuffer.Memory.Slice(0, chunkDecompSize);
+            _stream.Read(compSlice.Span);
+
+            GDeflate.Decompress(compSlice.Span, decompSlice.Span);
+
+            outputStream.Write(decompSlice.Span);
+            crc.Append(decompSlice.Span);
+            remSize -= chunkDecompSize;
+        }
+
+        if (crc.GetCurrentHashAsUInt32() != packFile.CRC32Checksum)
+            ThrowHashException(outputPath);
+    }
+
+    private void ExtractFileFromSpecificChunk(FF16PackFile packFile, Stream outputStream, string outputPath)
+    {
+        _stream.Position = (long)packFile.DataOffset;
+
+        using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate((int)packFile.CompressedFileSize);
+        using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate((int)packFile.DecompressedFileSize);
+        Memory<byte> compSlice = compBuffer.Memory.Slice(0, (int)packFile.CompressedFileSize);
+        Memory<byte> decompSlice = decompBuffer.Memory.Slice(0, (int)packFile.DecompressedFileSize);
+
+        _stream.Read(compSlice.Span);
+
+        GDeflate.Decompress(compSlice.Span, decompBuffer.Span.Slice(0, (int)packFile.DecompressedFileSize));
+
+        outputStream.Write(decompSlice.Span);
+
+        uint hash = Crc32.HashToUInt32(decompSlice.Span);
+        if (hash != packFile.CRC32Checksum)
+            ThrowHashException(outputPath);
+    }
+
+    private void ExtractFileFromSharedChunk(FF16PackFile packFile, Stream outputStream, string gamePath)
+    {
+        FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffset];
+        if (!_cachedChunks.Contains(chunk))
+        {
+            if (_cachedChunks.Count >= 20)
+            {
+                var chunkToRemove = _cachedChunks.First();
+                ArrayPool<byte>.Shared.Return(chunkToRemove.CachedBuffer);
+                chunkToRemove.CachedBuffer = null;
+
+                _cachedChunks.Remove(chunkToRemove);
+            }
+        }
+
+        _stream.Position = (long)chunk.DataOffset;
+
+        if (chunk.CachedBuffer is null)
+        {
+            using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate((int)chunk.CompressedChunkSize);
+            Memory<byte> compSlice = compBuffer.Memory.Slice(0, (int)chunk.CompressedChunkSize);
+
+            byte[] decompressedBuffer = ArrayPool<byte>.Shared.Rent((int)chunk.DecompressedSize);
+
+            try
+            {
+                _stream.Read(compSlice.Span);
+
+                GDeflate.Decompress(compSlice.Span,
+                    decompressedBuffer.AsSpan(0, (int)chunk.DecompressedSize));
+
+                chunk.CachedBuffer = decompressedBuffer;
+            }
+            catch (Exception)
+            {
+                if (chunk.CachedBuffer is not null)
+                    ArrayPool<byte>.Shared.Return(decompressedBuffer);
+
+                throw;
+            }
+        }
+
+        outputStream.Write(chunk.CachedBuffer.AsSpan((int)packFile.DataOffset, (int)packFile.DecompressedFileSize));
+
+        uint hash = Crc32.HashToUInt32(chunk.CachedBuffer.AsSpan((int)packFile.DataOffset, (int)packFile.DecompressedFileSize));
+        if (hash != packFile.CRC32Checksum)
+            ThrowHashException(gamePath);
+
+        _cachedChunks.Add(chunk);
+    }
+    #endregion
 
     public void DumpInfo()
     {
