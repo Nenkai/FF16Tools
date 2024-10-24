@@ -385,6 +385,54 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
     }
 
     /// <summary>
+    /// Gets a file's data from the specified pack.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="packName">Pack name (without .pac extension)</param>
+    /// <param name="includeDiff">Whether to try fetching from diff packs (which override base packs)</param>
+    /// <returns>Disposable MemoryOwner.</returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public Task<byte[]> GetFileDataBytesFromPackAsync(string gamePath, string packName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+        ArgumentException.ThrowIfNullOrWhiteSpace(packName, nameof(packName));
+
+        if (!_packFiles.TryGetValue(packName, out FF16Pack packFile))
+            throw new KeyNotFoundException($"Pack '{packName}' was not found in pack manager.");
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        if (packFile.FileExists(gamePath))
+            return packFile.GetFileDataBytesAsync(gamePath);
+
+        throw new FileNotFoundException($"File '{gamePath}' was not found in pack '{packName}'.");
+    }
+
+    /// <summary>
+    /// Gets a file's data from the specified pack.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="packName">Pack name (without .pac extension)</param>
+    /// <param name="includeDiff">Whether to try fetching from diff packs (which override base packs)</param>
+    /// <returns>Disposable MemoryOwner.</returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public byte[] GetFileDataBytesFromPack(string gamePath, string packName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+        ArgumentException.ThrowIfNullOrWhiteSpace(packName, nameof(packName));
+
+        if (!_packFiles.TryGetValue(packName, out FF16Pack packFile))
+            throw new KeyNotFoundException($"Pack '{packName}' was not found in pack manager.");
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        if (packFile.FileExists(gamePath))
+            return packFile.GetFileDataBytes(gamePath);
+
+        throw new FileNotFoundException($"File '{gamePath}' was not found in pack '{packName}'.");
+    }
+
+    /// <summary>
     /// Gets a file's data from a specific pack into the specified output stream.
     /// </summary>
     /// <param name="gamePath">Game path. Throws if not found.</param>
