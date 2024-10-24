@@ -273,7 +273,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     }
 
     /// <summary>
-    /// Gets file data as allocated byte array.
+    /// Gets a file's data and returns it as newly allocated memory.    
     /// </summary>
     /// <param name="path">Game path.</param>
     /// <param name="ct">Cancellation token.</param>
@@ -293,7 +293,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     }
 
     /// <summary>
-    /// Gets file data as allocated byte array.
+    /// Gets a file's data and returns it as newly allocated memory.    
     /// </summary>
     /// <param name="path">Game path.</param>
     /// <param name="ct">Cancellation token.</param>

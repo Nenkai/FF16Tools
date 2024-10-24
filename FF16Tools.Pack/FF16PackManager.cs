@@ -117,8 +117,77 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
         return packFile.GetFileInfo(gamePath);
     }
 
+
     /// <summary>
-    /// Gets a file's data.
+    /// Gets a file's data and returns it as newly allocated memory.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="includeDiff">Whether to try fetching from diff packs (which override base packs)</param>
+    /// <returns>Disposable MemoryOwner.</returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public async Task<byte[]> GetFileDataBytesAsync(string gamePath, bool includeDiff = true, CancellationToken ct = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        foreach (KeyValuePair<string, FF16Pack> packFile in _packFiles)
+        {
+            if (packFile.Value.FileExists(gamePath))
+            {
+                if (includeDiff)
+                {
+                    string diffFile = packFile.Key + ".diff";
+                    if (_packFiles.TryGetValue(diffFile, out FF16Pack diffPack))
+                    {
+                        if (diffPack.FileExists(gamePath))
+                            return await diffPack.GetFileDataBytesAsync(gamePath, ct: ct);
+                    }
+                }
+
+                return await packFile.Value.GetFileDataBytesAsync(gamePath, ct: ct);
+            }
+        }
+
+        throw new FileNotFoundException($"File '{gamePath}' was not found in any registed packs.");
+    }
+
+    /// <summary>
+    /// Gets a file's data and returns it as newly allocated memory.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="includeDiff">Whether to try fetching from diff packs (which override base packs)</param>
+    /// <returns>Disposable MemoryOwner.</returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public byte[] GetFileDataBytes(string gamePath, bool includeDiff = true)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        foreach (KeyValuePair<string, FF16Pack> packFile in _packFiles)
+        {
+            if (packFile.Value.FileExists(gamePath))
+            {
+                if (includeDiff)
+                {
+                    string diffFile = packFile.Key + ".diff";
+                    if (_packFiles.TryGetValue(diffFile, out FF16Pack diffPack))
+                    {
+                        if (diffPack.FileExists(gamePath))
+                            return diffPack.GetFileDataBytes(gamePath);
+                    }
+                }
+
+                return packFile.Value.GetFileDataBytes(gamePath);
+            }
+        }
+
+        throw new FileNotFoundException($"File '{gamePath}' was not found in any registed packs.");
+    }
+
+    /// <summary>
+    /// Gets a file's data. Returning buffer is disposable.
     /// </summary>
     /// <param name="gamePath">Game path.</param>
     /// <param name="includeDiff">Whether to try fetching from diff packs (which override base packs)</param>
@@ -145,6 +214,40 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
                 }
 
                 return await packFile.Value.GetFileDataAsync(gamePath, ct: ct);
+            }
+        }
+
+        throw new FileNotFoundException($"File '{gamePath}' was not found in any registed packs.");
+    }
+
+    /// <summary>
+    /// Gets a file's data. Returning buffer is disposable.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="includeDiff">Whether to try fetching from diff packs (which override base packs)</param>
+    /// <returns>Disposable MemoryOwner.</returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public MemoryOwner<byte> GetFileData(string gamePath, bool includeDiff = true, CancellationToken ct = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        foreach (KeyValuePair<string, FF16Pack> packFile in _packFiles)
+        {
+            if (packFile.Value.FileExists(gamePath))
+            {
+                if (includeDiff)
+                {
+                    string diffFile = packFile.Key + ".diff";
+                    if (_packFiles.TryGetValue(diffFile, out FF16Pack diffPack))
+                    {
+                        if (diffPack.FileExists(gamePath))
+                            return diffPack.GetFileData(gamePath);
+                    }
+                }
+
+                return packFile.Value.GetFileData(gamePath);
             }
         }
 
@@ -193,6 +296,47 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
     }
 
     /// <summary>
+    /// Gets a file's data into the specified output stream.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="outputStream">Stream to place the data in. It should be writable.</param>
+    /// <param name="includeDiff">Whether to include files from 'diff' packs.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public void GetFileData(string gamePath, Stream outputStream, bool includeDiff = true)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+        ArgumentNullException.ThrowIfNull(outputStream, nameof(outputStream));
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        foreach (KeyValuePair<string, FF16Pack> packFile in _packFiles)
+        {
+            if (packFile.Value.FileExists(gamePath))
+            {
+                if (includeDiff)
+                {
+                    string diffFile = packFile.Key + ".diff";
+                    if (_packFiles.TryGetValue(diffFile, out FF16Pack diffPack))
+                    {
+                        if (diffPack.FileExists(gamePath))
+                        {
+                            diffPack.GetFileDataStream(gamePath, outputStream);
+                            return;
+                        }
+                    }
+                }
+
+                packFile.Value.GetFileDataStream(gamePath, outputStream);
+                return;
+            }
+        }
+
+        throw new FileNotFoundException($"File '{gamePath}' was not found in any registed packs.");
+    }
+
+    /// <summary>
     /// Gets a file's data from the specified pack.
     /// </summary>
     /// <param name="gamePath">Game path.</param>
@@ -213,6 +357,30 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
         if (packFile.FileExists(gamePath))
             return await packFile.GetFileDataAsync(gamePath, ct: ct);
         
+        throw new FileNotFoundException($"File '{gamePath}' was not found in pack '{packName}'.");
+    }
+
+    /// <summary>
+    /// Gets a file's data from the specified pack.
+    /// </summary>
+    /// <param name="gamePath">Game path.</param>
+    /// <param name="packName">Pack name (without .pac extension)</param>
+    /// <param name="includeDiff">Whether to try fetching from diff packs (which override base packs)</param>
+    /// <returns>Disposable MemoryOwner.</returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public MemoryOwner<byte> GetFileDataFromPack(string gamePath, string packName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+        ArgumentException.ThrowIfNullOrWhiteSpace(packName, nameof(packName));
+
+        if (!_packFiles.TryGetValue(packName, out FF16Pack packFile))
+            throw new KeyNotFoundException($"Pack '{packName}' was not found in pack manager.");
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        if (packFile.FileExists(gamePath))
+            return packFile.GetFileData(gamePath);
+
         throw new FileNotFoundException($"File '{gamePath}' was not found in pack '{packName}'.");
     }
 
@@ -238,6 +406,34 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
         if (packFile.FileExists(gamePath))
         {
             await packFile.GetFileDataStreamAsync(gamePath, outputStream, ct: ct);
+            return;
+        }
+
+        throw new FileNotFoundException($"File '{gamePath}' was not found in pack '{packName}'.");
+    }
+
+    /// <summary>
+    /// Gets a file's data from a specific pack into the specified output stream.
+    /// </summary>
+    /// <param name="gamePath">Game path. Throws if not found.</param>
+    /// <param name="packName">Pack name (without .pac extension). Throws if not found.</param>
+    /// <param name="outputStream">Output stream. It should be writable.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public void GetFileDataFromPack(string gamePath, string packName, Stream outputStream)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
+        ArgumentNullException.ThrowIfNull(outputStream, nameof(outputStream));
+
+        gamePath = FF16PackPathUtil.NormalizePath(gamePath);
+
+        if (!_packFiles.TryGetValue(packName, out FF16Pack packFile))
+            throw new KeyNotFoundException($"Pack '{packName}' was not found in pack manager.");
+
+        if (packFile.FileExists(gamePath))
+        {
+            packFile.GetFileDataStream(gamePath, outputStream);
             return;
         }
 
