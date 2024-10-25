@@ -12,6 +12,7 @@ using Syroot.BinaryData;
 
 using FF16Tools.Files.Nex.Entities;
 using System.Collections;
+using System.Data.Common;
 
 namespace FF16Tools.Files.Nex;
 
@@ -451,19 +452,24 @@ public class NexDataFileBuilder
     private void WriteRowData(BinaryStream bs, NexRowBuild row)
     {
         row.RowDataOffset = (int)bs.Position;
-        for (int j = 0; j < row.Cells.Count; j++)
+
+        int j = 0;
+        foreach (NexStructColumn column in _columnLayout.Columns.Values)
         {
-            bs.Position = row.RowDataOffset + (int)_columnLayout.Columns[j].Offset;
-            WriteCell(bs, (int)_lastRowDataStartOffset, row.Cells[j], _columnLayout.Columns[j]);
+            bs.Position = row.RowDataOffset + (int)column.Offset;
+            WriteCell(bs, (int)_lastRowDataStartOffset, row.Cells[j], column);
+            j++;
         }
 
-        for (int j = 0; j < row.Cells.Count; j++)
+        j = 0;
+        foreach (NexStructColumn column in _columnLayout.Columns.Values)
         {
             object obj = row.Cells[j];
             if (obj is not Array)
                 continue;
 
-            WriteArray(bs, (int)_lastRowDataStartOffset, (int)_lastRowDataStartOffset + (int)_columnLayout.Columns[j].Offset, obj, _columnLayout.Columns[j]);
+            WriteArray(bs, (int)_lastRowDataStartOffset, (int)_lastRowDataStartOffset + (int)column.Offset, obj, column);
+            j++;
         }
 
         bs.Align(0x04, grow: true);

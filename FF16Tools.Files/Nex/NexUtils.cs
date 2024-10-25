@@ -29,9 +29,8 @@ public class NexUtils
         SpanReader sr = new SpanReader(nexFileBuffer);
         sr.Position = rowOffset;
 
-        for (int j = 0; j < tableColumnLayout.Columns.Count; j++)
+        foreach (NexStructColumn column in tableColumnLayout.Columns.Values)
         {
-            NexStructColumn column = tableColumnLayout.Columns[j];
             int rowColumnOffset = rowOffset + (int)column.Offset;
             if (rowColumnOffset + NexUtils.TypeToSize(column.Type) > sr.Length)
                 throw new Exception($"Column {column.Name} out of stream range. Layout outdated or file corrupted?");

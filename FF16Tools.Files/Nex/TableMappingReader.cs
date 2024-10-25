@@ -137,7 +137,9 @@ public class TableMappingReader
 
                         offset = (int)(column.Offset + NexUtils.TypeToSize(column.Type));
 
-                        tableColumnLayout.Columns.Add(column);
+                        if (!tableColumnLayout.Columns.TryAdd(column.Name, column))
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - duplicate {column.Name} column\n");
+
                         break;
                     }
                 case "set_table_type":

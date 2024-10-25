@@ -122,10 +122,9 @@ public class SQLiteToNexImporter : IDisposable
             NexTableLayout tableLayout = _tableLayouts[table.Key];
 
             var rows = reader.GetSchemaTable().Rows.Cast<DataRow>();
-            for (int i = 0; i < tableLayout.Columns.Count; i++)
-            {
-                var column = tableLayout.Columns[i];
 
+            foreach (NexStructColumn column in tableLayout.Columns.Values)
+            {
                 if (!rows.Any(e => (string)e["ColumnName"] == column.Name))
                 {
                     throw new InvalidDataException($"Column '{column.Name}' for table '{table.Key}' does not exist in sqlite table");
@@ -162,9 +161,9 @@ public class SQLiteToNexImporter : IDisposable
                     else
                         throw new NotImplementedException($"Table layout type {tableLayout.Type} not yet supported");
 
-                    for (int i = 0; i < tableLayout.Columns.Count; i++)
+                    foreach (NexStructColumn column in tableLayout.Columns.Values)
                     {
-                        lastColumn = tableLayout.Columns[i];
+                        lastColumn = column;
                         object val = reader[lastColumn.Name];
 
                         object cell = ParseCell(tableLayout, lastColumn, val);

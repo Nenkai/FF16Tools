@@ -12,6 +12,6 @@ public class NexTableLayout
     public NexTableCategory Category { get; set; }
     public bool UsesBaseRowId { get; set; }
     public int TotalInlineSize { get; set; }
-    public List<NexStructColumn> Columns { get; set; } = [];
+    public Dictionary<string, NexStructColumn> Columns { get; set; } = [];
     public Dictionary<string, List<NexStructColumn>> CustomStructDefinitions { get; set; } = [];
 }

@@ -113,7 +113,7 @@ public class NexToSQLiteExporter : IDisposable
         if (columnLayout.Columns.Count > 0)
             tableDefinition += ", ";
 
-        foreach (NexStructColumn column in columnLayout.Columns)
+        foreach (NexStructColumn column in columnLayout.Columns.Values)
         {
             tableDefinition += $"\"{column.Name}\" {NexUtils.TypeToSQLiteTypeIdentifier(column.Type)}, ";
         }
@@ -158,10 +158,10 @@ public class NexToSQLiteExporter : IDisposable
                     sb.Append(", ");
 
                 var cells = NexUtils.ReadRow(columnLayout, nexFile.Buffer, row.RowDataOffset);
-                for (int i = 0; i < columnLayout.Columns.Count; i++)
-                {
-                    NexStructColumn column = columnLayout.Columns[i];
 
+                int i = 0;
+                foreach (NexStructColumn column in columnLayout.Columns.Values)
+                {
                     if (column.Type == NexColumnType.CustomStructArray)
                         sb.Append('\'');
 
@@ -173,6 +173,8 @@ public class NexToSQLiteExporter : IDisposable
 
                     if (i < columnLayout.Columns.Count - 1)
                         sb.Append(", ");
+
+                    i++;
                 }
 
                 sb.Append(')');
@@ -228,12 +230,14 @@ public class NexToSQLiteExporter : IDisposable
         if (columnLayout.Columns.Count > 0)
             sb.Append(", ");
 
-        for (int i = 0; i < columnLayout.Columns.Count; i++)
+        int i = 0;
+        foreach (NexStructColumn column in columnLayout.Columns.Values)
         {
-            NexStructColumn column = columnLayout.Columns[i];
             sb.Append($"\"{column.Name}\"");
             if (i < columnLayout.Columns.Count - 1)
                 sb.Append(", ");
+
+            i++;
         }
 
         sb.Append(")\nVALUES\n");
