@@ -2,18 +2,38 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string
-add_column|Unk3|int[]
-add_column|Unk4|int
-add_column|Unk5|byte[]
-add_column|Unk6|int[]
+// Row fetcher signature
+// 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 8B 05 ? ? ? ? 33 DB 8B F2 48 8B F9 48 85 C0 75 ? 48 8B 0D ? ? ? ? 48 85 C9 74 ? BA ? ? ? ? E8 ? ? ? ? 48 89 05 ? ? ? ? 48 85 C0 74 ? 8B D6 48 8B C8 E8 ? ? ? ? 48 89 07
+
+add_column|DLCFlags|int
+add_column|Comment|string
+
+add_column|BNpcBaseIds|int[]
+
+// Party level
+add_column|ParamGrowId|int
+
+// Linked to BNpcBaseIds
+add_column|UnkCounts1|byte[]
+
+add_column|BNpcBaseIds2|int[]
+// Linked to BNpcBaseIds2
 add_column|Unk7|byte[]
-add_column|Unk8|byte[]
-add_column|Unk9|byte
-add_column|Unk10|byte
-add_column|Unk11|short
-add_column|Unk12|short
-add_column|Unk13|short
-add_column|Unk14|short
-add_column|Unk15|short
+
+// Linked to BNpcBaseIds
+add_column|UnkCounts2|byte[]
+
+// Sets torgal stats to 0??
+add_column|UnkUiRelated|byte
+// used in skill for point refunding
+add_column|UnkSkillRefundPoints|byte
+
+add_column|UnkMember1|sbyte
+add_column|UnkMember2|sbyte
+add_column|UnkMember3|sbyte
+add_column|UnkMember4|sbyte
+add_column|UnkMember5|sbyte
+add_column|UnkMember6|sbyte
+add_column|UnkMember7|sbyte
+add_column|UnkMember8|sbyte
+// <implicit 2 bytes padding>

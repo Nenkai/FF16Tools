@@ -6,7 +6,7 @@ define_struct|Unk28_struct|short|short
 
 add_column|DLCFlags|int
 add_column|Unk2|int
-add_column|Unk3|int
+add_column|ActionId|int
 add_column|Unk4|float
 add_column|Unk5|float
 add_column|Unk6|float
@@ -30,7 +30,7 @@ add_column|Unk19|float
 add_column|Unk20|int
 add_column|Unk21|int
 add_column|Unk22|int
-add_column|Unk23|string
+add_column|Comment|string
 add_column|Unk24|int
 add_column|Unk25|float
 add_column|Unk26|int

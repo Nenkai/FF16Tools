@@ -41,7 +41,8 @@ add_column|MinimumResetLevel|byte
 add_column|AvailableToOtherEikonsOnMaster|byte
 
 // Same as RefundPointsOnReset, but depends on current partymember row, specifically Unk9
-add_column|Unk24|byte
-add_column|RefundPointsOnReset|byte
+// used by partymember flag at 0x35 (UnkSkillRelatedBool?)
+add_column|RefundPointsOnReset1|byte
+add_column|RefundPointsOnReset2|byte
 add_column|Unk26|byte
 add_column|Unk27|byte

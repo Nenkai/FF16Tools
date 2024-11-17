@@ -2,14 +2,40 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|string
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
+// Table is hardcoded with row ids 0-4 (for each character, clive, jill, joshua, torgal, ambrosia)
+// see: ffxvi.exe 1.0.1 steam 1403F84F4
+//
+// This table is pretty much useless. "Inline" arrays are hardcoded to a max size of 2.
+// for instance, see: ffxvi.exe 1.0.1 steam sub_1404056A8 
+// ---
+// That function indexes uses specific columns which behaves as inline arrays, 
+// so i.e Skins[skinId] translates to &TableRow[4 * skinId + 0x1C] where 0x1C is the offset to the column (start of TimeSkipDefaultIconId for instance)
+//
+// If we were to change this behavior, we would need to:
+// - Create a new table, alter DefaultIconId/TimeSkipDefaultIconId/SkinUiId1 to have more than two columns
+// - Alter characterskinid to have more than 2 active rows
+// - Edit the code and adjust the new column offsets if needed aswell as the max skin number (presumably generated)
+// - Of course, add your new rows to characterskinmodelparam.
+//
+// Relevant functions that would have to be edited: 
+// - sub_1404056A8 [48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 83 B9 ? ? ? ? ? 48 8B D9 4C 63 C2] : Grabs Icon ids
+// - sub_140404CAC [48 89 5C 24 ? 55 56 57 48 83 EC ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 44 24 ? 48 8B 89] : Grabs UI Label for each skin
+
+add_column|DLCFlags|int
+add_column|Comment|string
+add_column|ReqUserSituationId|int
+add_column|BNpcBaseId|int
+
+// inline array (but only 2 entries)
+add_column|DefaultIconId|int
+add_column|Skin2IconId|int
+
+add_column|VariantReqUserSituationId|int
+
+// inline array (but only 2 entries)
+add_column|TimeSkipDefaultIconId|int
+add_column|TimeSkipSkin2IconId|int
+
+// inline array (but only 2 entries)
+add_column|SkinUiId1|int
+add_column|SkinUiId2|int
