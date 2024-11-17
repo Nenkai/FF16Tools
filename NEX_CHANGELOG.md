@@ -2,6 +2,78 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.6, FF16Tools.Files 1.0.8
+
+#### `aiactionselector`
+* `Unk3` -> `ActionId`
+* `Unk23` -> `Comment`
+
+#### `attackparam`
+* `Unk3` -> `AttackValue`
+* `Unk75` -> `HitCount`
+
+#### `characterskincategory`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `ReqUserSituationId`
+* `Unk4` -> `BNpcBaseId`
+* `Unk5` -> `DefaultIconId`
+* `Unk6` -> `Skin2IconId`
+* `Unk7` -> `VariantReqUserSituationId`
+* `Unk8` -> `TimeSkipDefaultIconId`
+* `Unk9` -> `TimeSkipSkin2IconId`
+* `Unk10` -> `SkinUiId1`
+* `Unk11` -> `SkinUiId2`
+
+#### `characterskinid`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Enabled`
+
+#### `characterskinmodelparam`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `ModelCoordinateId`
+* `Unk4` -> `ModelCoordinateIdKey2`
+
+#### `partymember`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `BNpcBaseIds`
+* `Unk4` -> `ParamGrowId`
+* `Unk5` -> `UnkCounts1`
+* `Unk6` -> `BNpcBaseIds2`
+* `Unk8` -> `UnkCounts2`
+* `Unk9` -> `UnkUiRelated`
+* `Unk10` -> `UnkSkillRefundPoints`
+* `Unk11` through `Unk15` -> Split into 8 sbytes - `UnkMember1` through `UnkMember8`
+
+#### `partyselect`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `PartyMemberId`
+* `Unk3` -> `ReqUserSituationId`
+
+#### `questchara`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `skill`
+* `Unk24` -> `RefundPointsOnReset1`
+* `RefundPointsOnReset` -> `RefundPointsOnReset2`
+
+#### `weaponskincategory`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `EquipItemId`
+* `Unk4` -> `IconTexId`
+
+##### Contributors
+* Nenkai
+* Maybri (Discord)
+* CyberSoul (Discord)
+* xeeynamo (Discord)
+
+---
+
 ## CLI 1.5.5, FF16Tools.Files 1.0.7
 
 Too many. **Refer to [this commit](https://github.com/Nenkai/FF16Tools/commit/c4eba6337d5afae7e168c033272bbfacf5663a5a)**

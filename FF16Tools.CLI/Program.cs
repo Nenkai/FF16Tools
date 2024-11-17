@@ -23,7 +23,7 @@ namespace FF16Tools.CLI;
 
 public class Program
 {
-    public const string Version = "1.5.5";
+    public const string Version = "1.5.6";
 
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
@@ -453,7 +453,7 @@ public class Program
     {
         if (!Directory.Exists(verbs.InputFile))
         {
-            _logger.LogError("Directory '{path}' does not exist", verbs.InputFile);
+            _logger.LogError("Directory '{path}' containing nxd files does not exist", verbs.InputFile);
             return;
         }
 
@@ -479,7 +479,7 @@ public class Program
     {
         if (!File.Exists(verbs.InputFile))
         {
-            _logger.LogError("Directory '{path}' does not exist", verbs.InputFile);
+            _logger.LogError("Sqlite database file '{path}' does not exist", verbs.InputFile);
             return;
         }
 
@@ -747,7 +747,7 @@ public class NxdToSqliteVerbs
 [Verb("sqlite-to-nxd", HelpText = "Converts a SQLite database to nxd files.")]
 public class SqliteToNxdVerbs
 {
-    [Option('i', "input", Required = true, HelpText = "Input SQLite file.")]
+    [Option('i', "input", Required = true, HelpText = "Input SQLite database/file.")]
     public string InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output directory for .nxd files.")]
