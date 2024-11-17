@@ -4,15 +4,11 @@ use_base_row_id|false
 
 // Hardcoded ids: 100502, 100503, 100504, 100505, 100506, 100612, 100613, 100614, likely more
 
-// [Type, AttackParamId]
-// short is checked against hardcoded values
-// 17, 42, 
-// implicit 2 bytes padding.
-define_struct|EffectStruct|short|int
+define_struct|EffectUnion|short|int
 
 add_column|DLCFlags|int
 add_column|Category|int
-add_column|Unk3|int
+add_column|WeaponBaseId|int
 add_column|Attack|int
 add_column|Defense|int
 add_column|Stagger|int
@@ -37,7 +33,13 @@ add_column|Unk21|byte
 
 add_column|Unk24|string|rel|-24
 add_column|EffectPotency|int
-add_column|TypeAndAttackParamId|EffectStruct[]
+
+// union
+// 17 = attackparam
+// 42 = command
+// 58 = ?
+// 143 = ?
+add_column|EffectUnions|EffectUnion[]
 add_column|HP|int
 add_column|Unk28|int
 add_column|Unk29|int

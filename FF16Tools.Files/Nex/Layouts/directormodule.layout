@@ -25,13 +25,13 @@ add_column|Unk2|int
 // 454
 // 486
 // 491
-// 494
+// 494 = battleblockdirector
 // 528
 // 545
 // 557
 // 568 = directoractormonitor
 // 577
-// 655
+// 655 = mapdirectorsequence
 // 935 = directormovecustomspeedparam
 // 1027
 // 1044

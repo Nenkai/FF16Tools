@@ -35,6 +35,10 @@ Always try to keep your database table columns up-to-date.
 * `Unk3` -> `ModelCoordinateId`
 * `Unk4` -> `ModelCoordinateIdKey2`
 
+#### `equipitem`
+* `Unk3` -> `WeaponBaseId`
+* `TypeAndAttackParamId` -> `EffectUnions`
+
 #### `partymember`
 * `Unk1` -> `DLCFlags`
 * `Unk2` -> `Comment`

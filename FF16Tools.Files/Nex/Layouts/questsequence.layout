@@ -2,28 +2,28 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|false
 
-define_struct|Unk_Struct|int|int
+define_struct|Unk_Struct|short|int
 
 // union
 // 46 = defaulttalk
 // 55 = layoutnamedinstance
 // 108
 // 114 = sidequestbattledirector
-// 124
-// 127 = item
+// 124 = item
+// 127 = 
 // 131 = partytalk
 // 135 = droptable
 // 192 = cutsceneset
 // 198 = 
 // 208
 // 256 = partymember
-// 260
+// 260 = scenariocutscene
 // 273 = worldmapanchor
 // 317
-// 359
+// 359 = missionbattledirector
 // 375 = mapdirectorsequence
 // 458 = usersituationflag
-// 494
+// 494 = battleblockdirector
 // 528
 // 577
 // 613

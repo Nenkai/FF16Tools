@@ -14,16 +14,16 @@ add_column|ConditionType|int
 // union
 // 0
 // 23
-// 25
-// 55
+// 25 = directorbankitemid
+// 55 = layoutnamedinstance
 // 79
 // 82
 // 330
-// 403
+// 403 = behaviormovesequence
 // 428
-// 454
+// 454 = directorchangebgmparam
 // 530
-// 557
+// 557 = directorcondition
 // 577 = ?
 // 856 = simpleevent
 add_column|TableValueUnionsToCheck|TableValueCheckUnion[]

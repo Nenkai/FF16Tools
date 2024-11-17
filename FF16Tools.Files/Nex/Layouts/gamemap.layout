@@ -15,8 +15,8 @@ add_column|LevelSequenceId|int
 add_column|ReqUserSituationId|int
 
 // union
-// 146
-// 314 =
+// 146 = bgmmode
+// 314 = bgmselect
 add_column|BgmUnionType1|short
 add_column|BgmUnionId1|short
 add_column|BgmUnionType2|short
