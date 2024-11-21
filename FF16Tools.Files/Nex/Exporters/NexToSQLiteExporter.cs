@@ -26,20 +26,28 @@ namespace FF16Tools.Files.Nex.Exporters;
 /// </summary>
 public class NexToSQLiteExporter : IDisposable
 {
-    private ILoggerFactory _loggerFactory;
-    private ILogger _logger;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly ILogger _logger;
 
     private NexDatabase _database;
     private SqliteConnection _con;
+    private Version _version;
 
     // We don't want byte arrays to be converted to base64.
     private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { Converters = { new JsonByteArrayConverter() } };
 
-    public NexToSQLiteExporter(NexDatabase database, ILoggerFactory loggerFactory = null)
+    /// <summary>
+    /// Nex to SQLite exporter.
+    /// </summary>
+    /// <param name="database">Nex database. (You can get one with <see cref="NexDatabase.Open(string, ILoggerFactory)>"/>)</param>
+    /// <param name="version">Version. Should match game version and be at least 1.0.0.</param>
+    /// <param name="loggerFactory">Logger factory, for logging.</param>
+    public NexToSQLiteExporter(NexDatabase database, Version version, ILoggerFactory loggerFactory = null)
     {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
         ArgumentNullException.ThrowIfNull(database, nameof(database));
+        ArgumentNullException.ThrowIfNull(version, nameof(version));
+
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         _database = database;
 
@@ -49,6 +57,7 @@ public class NexToSQLiteExporter : IDisposable
 
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
         _con.Dispose();
     }
 

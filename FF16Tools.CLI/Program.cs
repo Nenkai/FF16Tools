@@ -466,7 +466,7 @@ public class Program
             }
 
 
-            using var exporter = new NexToSQLiteExporter(db, _loggerFactory);
+            using var exporter = new NexToSQLiteExporter(db, new Version(1, 0, 0), _loggerFactory);
             exporter.ExportTables(verbs.OutputFile);
         }
         catch (Exception ex)

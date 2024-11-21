@@ -225,7 +225,7 @@ public class NexUtils
     {
         // can't use a switch for types :(
         if (type == NexColumnType.Int64 || type == NexColumnType.Double ||
-            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray)
+            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray)
             return 8;
         else if (type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.HexUInt || type == NexColumnType.Float || type == NexColumnType.HexUInt || type == NexColumnType.String)
             return 4;
@@ -234,7 +234,7 @@ public class NexUtils
         else if (type == NexColumnType.Byte || type == NexColumnType.SByte)
             return 1;
 
-        return -1;
+        throw new NotSupportedException($"TypeToSize: unsupported type {type}");
     }
 
     /// <summary>

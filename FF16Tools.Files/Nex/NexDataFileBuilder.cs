@@ -464,12 +464,11 @@ public class NexDataFileBuilder
         j = 0;
         foreach (NexStructColumn column in _columnLayout.Columns.Values)
         {
-            object obj = row.Cells[j];
+            object obj = row.Cells[j++];
             if (obj is not Array)
                 continue;
 
             WriteArray(bs, (int)_lastRowDataStartOffset, (int)_lastRowDataStartOffset + (int)column.Offset, obj, column);
-            j++;
         }
 
         bs.Align(0x04, grow: true);
@@ -479,11 +478,17 @@ public class NexDataFileBuilder
     {
         switch (column.Type)
         {
+            case NexColumnType.SByte:
+                bs.WriteSByte((sbyte)cellValue);
+                break;
             case NexColumnType.Byte:
                 bs.WriteByte((byte)cellValue);
                 break;
             case NexColumnType.Short:
                 bs.WriteInt16((short)cellValue); 
+                break;
+            case NexColumnType.UShort:
+                bs.WriteUInt16((ushort)cellValue);
                 break;
             case NexColumnType.Int:
                 bs.WriteInt32((int)cellValue);
@@ -597,6 +602,9 @@ public class NexDataFileBuilder
                             bs.Position = arrayOffset + structColumns[j].Offset;
                             WriteCell(bs, arrayOffset, structFields[j], structColumns[j]);
                         }
+
+                        // Important to explicitly pad the struct.
+                        bs.Align(0x04, grow: true);
                     }
 
                     // Sub-Arrays are always after

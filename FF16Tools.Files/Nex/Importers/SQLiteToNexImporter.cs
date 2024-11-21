@@ -19,24 +19,35 @@ namespace FF16Tools.Files.Nex.Exporters;
 /// </summary>
 public class SQLiteToNexImporter : IDisposable
 {
-    private ILoggerFactory _loggerFactory;
-    private ILogger _logger;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly ILogger _logger;
 
-    private Dictionary<string, NexDataFileBuilder> _tableBuilders = [];
-    private Dictionary<string, NexTableLayout> _tableLayouts = [];
+    private readonly Dictionary<string, NexDataFileBuilder> _tableBuilders = [];
+    private readonly Dictionary<string, NexTableLayout> _tableLayouts = [];
 
-    private List<string> _tablesToConvert;
-    private string _sqliteFile;
+    private readonly List<string> _tablesToConvert;
+    private readonly string _sqliteFile = "<no table>";
+
     private SqliteConnection _con;
 
     // We don't want byte arrays to be converted to base64.
     private static JsonSerializerOptions _jsonSerializerOptions = new() { Converters = { new JsonByteArrayConverter() } };
 
-    public SQLiteToNexImporter(string sqliteFile, List<string> tablesToConvert = null, ILoggerFactory loggerFactory = null)
-    {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+    private string _lastTable;
 
+    /// <summary>
+    /// SQLite to Nex importer.
+    /// </summary>
+    /// <param name="sqliteFile">Path to sqlite file.</param>
+    /// <param name="version">Version which should match the game. Should be at least 1.0.0.</param>
+    /// <param name="tablesToConvert">Tables to convert. If null is provided, all tables will be converted.</param>
+    /// <param name="loggerFactory">Logger factory, for logging.</param>
+    public SQLiteToNexImporter(string sqliteFile, Version version, List<string> tablesToConvert = null, ILoggerFactory loggerFactory = null)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(sqliteFile, nameof(sqliteFile));
+        ArgumentNullException.ThrowIfNull(version, nameof(version));
+
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         _tablesToConvert = tablesToConvert;
 
@@ -47,6 +58,9 @@ public class SQLiteToNexImporter : IDisposable
             _logger = loggerFactory.CreateLogger(GetType().ToString());
     }
 
+    /// <summary>
+    /// Reads the sqlite file.
+    /// </summary>
     public void ReadSqlite()
     {
         _con = new SqliteConnection($"Data Source={_sqliteFile}");
@@ -58,6 +72,10 @@ public class SQLiteToNexImporter : IDisposable
         _con.Close();
     }
 
+    /// <summary>
+    /// Saves all read tables from sqlite as nex files to the specified directory.
+    /// </summary>
+    /// <param name="directory"></param>
     public void SaveTo(string directory)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(directory, nameof(directory));
@@ -108,8 +126,10 @@ public class SQLiteToNexImporter : IDisposable
 
     private void FillTables()
     {
-        foreach (var table in _tableBuilders)
+        foreach (KeyValuePair<string, NexDataFileBuilder> table in _tableBuilders)
         {
+            _lastTable = table.Key;
+
             var command = _con.CreateCommand();
             command.CommandText = $"SELECT * FROM {table.Key};";
             _logger.LogTrace(command.CommandText);
@@ -314,9 +334,21 @@ public class SQLiteToNexImporter : IDisposable
                             {
                                 switch (col[fieldIndex].Type)
                                 {
+                                    case NexColumnType.Byte:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        structItem[fieldIndex] = field.GetByte();
+                                        break;
+                                    case NexColumnType.SByte:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        structItem[fieldIndex] = field.GetSByte();
+                                        break;
                                     case NexColumnType.Short:
                                         ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetInt16();
+                                        break;
+                                    case NexColumnType.UShort:
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        structItem[fieldIndex] = field.GetUInt16();
                                         break;
                                     case NexColumnType.String:
                                         ThrowIfStructElemNotValueKind(field, JsonValueKind.String, col[fieldIndex], arrayIndex, fieldIndex);
@@ -411,11 +443,12 @@ public class SQLiteToNexImporter : IDisposable
     private void ThrowIfStructElemNotValueKind(JsonElement jsonElement, JsonValueKind expectedKind, NexStructColumn nexColumn, int arrayIndex, int fieldIndex)
     {
         if (jsonElement.ValueKind != expectedKind)
-            throw new Exception($"Expected '{nexColumn.Type}' type in struct array index {arrayIndex}, struct item {fieldIndex}, got '{jsonElement.ValueKind}' from json.");
+            throw new Exception($"{_lastTable}: Expected '{nexColumn.Type}' type in struct array index {arrayIndex}, struct item {fieldIndex}, got '{jsonElement.ValueKind}' from json.");
     }
 
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
         _con.Dispose();
     }
 }
