@@ -2,7 +2,7 @@
 
 Always try to keep your database table columns up-to-date.
 
-## CLI 1.5.7, FF16Tools.Files 1.0.9
+## CLI 1.5.7, FF16Tools.Files 1.0.10
 
 #### `attackparam`
 * `HitCount` -> `Unk75` (undo, not clear)
@@ -94,7 +94,7 @@ Always try to keep your database table columns up-to-date.
 
 ---
 
-## CLI 1.5.6, FF16Tools.Files 1.0.8
+## CLI 1.5.6, FF16Tools.Files 1.0.9
 
 #### `aiactionselector`
 * `Unk3` -> `ActionId`
