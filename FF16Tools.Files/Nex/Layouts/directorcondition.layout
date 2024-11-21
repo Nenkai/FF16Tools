@@ -13,7 +13,7 @@ add_column|ConditionType|int
 
 // union
 // 0
-// 23
+// 23 = questcharalayoutbnpc
 // 25 = directorbankitemid
 // 55 = layoutnamedinstance
 // 79

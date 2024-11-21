@@ -2,6 +2,98 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.7, FF16Tools.Files 1.0.9
+
+#### `attackparam`
+* `HitCount` -> `Unk75` (undo, not clear)
+
+#### `bnpccollisioncheckpreset`
+* `Unk1` -> `DLCFlags`
+
+#### `bnpcignorecollision`,
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `collisionmaterialcolor`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Colors`
+
+#### `collisionobjectlayer`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `collisiontracelayer`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `directornexscript`
+* `Unk1` -> `DLCFlags`
+* `Unk5` -> `Comment`
+
+#### `directorstagesetlist`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `Comment`
+
+#### `fixedpalette`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `fixedpalettebonustype`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `fixedpalettedifficultylevel`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `fixedpalettedirector`
+* `Unk1` -> `DLCFlags`
+* `Unk3` -> `Comment`
+* `Unk4` -> `Comment2`
+
+#### `fixedpaletteresultrank`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `fixedpalettestage`
+* `Unk1` -> `DLCFlags`
+* `Unk6` -> `Comment`
+
+#### `fixedpalettetodo`
+* `Unk1` -> `DLCFlags`
+* `Unk7` -> `Name`
+* `Unk8` -> `Description`
+* `Unk9` -> `Comment`
+
+#### `shopfixedpaletteaccess`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `shopfixedpaletteexit`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `shopfixedpalettewarp`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `skillcategory`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `squad`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+#### `tattoo`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+
+##### Contributors
+* Nenkai
+
+---
+
 ## CLI 1.5.6, FF16Tools.Files 1.0.8
 
 #### `aiactionselector`

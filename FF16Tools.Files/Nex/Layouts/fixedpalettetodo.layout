@@ -4,15 +4,15 @@ use_base_row_id|true
 
 define_struct|Unk4_Struct|int|int
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
 add_column|Unk4|Unk4_Struct[]
 add_column|Unk5|float
 add_column|Unk6|float
-add_column|Unk7|string|rel
-add_column|Unk8|string|rel|-4
-add_column|Unk9|string
+add_column|Name|string|rel
+add_column|Description|string|rel|-4
+add_column|Comment|string
 add_column|Unk10|int
 add_column|Unk11|byte
 add_column|Unk12|byte

@@ -10,7 +10,7 @@ define_struct|Unk_Struct|short|int
 // 108
 // 114 = sidequestbattledirector
 // 124 = item
-// 127 = 
+// 127 = levelcutscene
 // 131 = partytalk
 // 135 = droptable
 // 192 = cutsceneset
@@ -19,7 +19,7 @@ define_struct|Unk_Struct|short|int
 // 256 = partymember
 // 260 = scenariocutscene
 // 273 = worldmapanchor
-// 317
+// 317 = gamemap
 // 359 = missionbattledirector
 // 375 = mapdirectorsequence
 // 458 = usersituationflag
@@ -29,8 +29,8 @@ define_struct|Unk_Struct|short|int
 // 613
 // 702
 // 831 = cutsceneconnect
-// 841
-// 854
+// 841 = questcutscene
+// 854 = behavioreventdirector
 // 856 = simpleevent
 // 890
 // 942 = simpleeventselect

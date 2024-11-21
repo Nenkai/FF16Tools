@@ -134,7 +134,7 @@ add_column|Unk73_2|byte
 add_column|Unk73_3|byte
 add_column|Unk73_4|byte
 add_column|Unk74|int
-add_column|HitCount|int
+add_column|Unk75|int
 add_column|Unk76_1|byte
 add_column|Unk76_2|byte
 add_column|Unk76_3|byte
