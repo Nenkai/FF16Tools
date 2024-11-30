@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FF16Tools.Files.FlatBuffers\FF16Tools.Files.FlatBuffers.csproj" />
     <ProjectReference Include="..\FF16Tools.Files\FF16Tools.Files.csproj" />
     <ProjectReference Include="..\FF16Tools.Pack\FF16Tools.Pack.csproj" />
   </ItemGroup>

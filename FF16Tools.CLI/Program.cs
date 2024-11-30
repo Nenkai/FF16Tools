@@ -18,6 +18,9 @@ using FF16Tools.Files.Nex.Managers;
 using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
+using FF16Tools.Files.FlatBuffers;
+
+using FlatSharp;
 
 namespace FF16Tools.CLI;
 
@@ -37,6 +40,12 @@ public class Program
         Console.WriteLine("- https://twitter.com/Nenkaai");
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("");
+
+        foreach (var file in Directory.GetFiles(@"C:/Program Files (x86)/Steam/steamapps/common/FINAL FANTASY XVI/resources_win/release/master", "*.kdb", SearchOption.AllDirectories))
+        {
+            Console.WriteLine(file);
+            var kdbFile = KDBFile.Serializer.Parse(File.ReadAllBytes(file));
+        }
 
         _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
         _logger = _loggerFactory.CreateLogger<Program>();
