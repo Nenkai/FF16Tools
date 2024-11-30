@@ -1,0 +1,313 @@
+﻿
+//--------------------------------------------------
+// For KDB Files
+// *.kdb in 'animation/chara/<char_code>/skeleton'
+//--------------------------------------------------
+// Used by a fair few SQEX games
+// - FF14 (Late)
+// - FF15
+// - VALKYRIE ELYSIUM
+// - FF7R
+// - KH3
+// - ... Prolly more
+//--------------------------------------------------
+// They have moved from a binary format (FF14/FF15) to a flatbuffers file in XVI.
+
+// Potentially useful references:
+// https://github.com/0ceal0t/Dalamud-VFXEditor/tree/e3f0d8529decff83414b569638781849d9e50faa/VFXEditor/Formats/KdbFormat
+// https://github.com/Irastris/ValkyrieUproject/tree/main/VALKYRIE_ELYSIUM/Source/KineDriverRt
+// https://github.com/RussellJerome/TresGame/blob/main/Plugins/KineDriverRt/Source/KineDriverRt/Public/KineDriver_StructsAndEnums.h
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+//--------------------------
+// Util Tables/Structs
+//--------------------------
+
+struct Vec3
+{
+    x:float;
+    y:float;
+    z:float;
+}
+
+table HashedString
+{
+    hash_value:uint;  // fnv1a32(str)
+    str_value:string;
+}
+
+table BoneWeightOffset
+{
+    bone_name:HashedString;
+    weight:float;
+    offset:Vec3;
+}
+
+table UnkTypeWithString
+{
+    field_1:byte;
+    bone_name:HashedString;
+}
+
+table OperatorRef
+{
+    operator_name:HashedString;
+    type:ushort; // Maybe? https://github.com/RussellJerome/TresGame/blob/78e09b069c1566ef2f5fcf4212559514d29b582e/Plugins/KineDriverRt/Source/KineDriverRt/Public/KineDriver_StructsAndEnums.h#L34
+}
+
+//////////////////////////////////
+// Operator Structures
+//////////////////////////////////
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverSourceTranslate.h
+table KineDriverSourceTranslate
+{
+    id:HashedString;
+    source_bone_array:[BoneWeightOffset];
+    base_space_bone:UnkTypeWithString;
+    neutral_translate:Vec3;
+    neutral_rotate:Vec3;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverSourceRotate.h
+table KineDriverSourceRotate
+{
+    id:HashedString;
+    source_bone_array:[BoneWeightOffset];
+    base_space_bone:UnkTypeWithString;
+    neutral_rotate:Vec3;
+    aim_vector:Vec3;
+    up_vector:Vec3;
+    segment_scale_compensate:bool;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverSourceOther.h
+// No file uses it
+table KineDriverSourceOther
+{
+    hash_str:HashedString;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverSourceTranslate.h
+table KineDriverTargetTranslate
+{
+    id:HashedString;
+    target_object_bone_name:HashedString;
+    translate:Vec3;
+    neutral_translate:Vec3;
+    neutral_rotate:Vec3;
+    base_space_bone:UnkTypeWithString;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetScale.h
+table KineDriverTargetScale
+{
+    id:HashedString;
+    target_object_bone_name:HashedString;
+    scale:Vec3;
+    clamp_zero:bool;
+    base_space_bone:UnkTypeWithString;
+    segment_scale_compensate:bool;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetRotate.h
+table KineDriverTargetRotate
+{
+    id:HashedString;
+    hash_str2:HashedString;
+    hash_str3:HashedString;
+    field_4:byte; // Unknown
+    field_5:float;
+    field_6:UnkTypeWithString;
+    field_7:Vec3;
+    field_8:byte; // Unknown
+    field_9:byte;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetBendRoll.h
+table KineDriverTargetBendRoll
+{
+    id:HashedString;
+    target_bone_name:HashedString;
+    source_quat_maybe:HashedString;
+    field_4:byte;
+    field_5:Vec3;
+    field_6:Vec3;
+    base_space_bone:UnkTypeWithString;
+    field_8:Vec3;
+    field_9:Vec3;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetBendSTRoll.h
+table KineDriverTargetBendSTRoll
+{
+    id:HashedString;
+    target_object_bone_name:HashedString;
+    bendS:float;
+    bendT:float;
+    roll:float;
+    base_space_bone:UnkTypeWithString;
+    neutral_rotate:Vec3; // NeutralRotate or CrossVector
+    aim_vector:Vec3;
+    up_vector:Vec3;
+    segment_scale_compensate:bool;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetPoscns.h
+table KineDriverTargetPoscns
+{
+    id:HashedString;
+    target_object_bone_name:HashedString;
+    orient_affect:bool;
+    scale_affect:bool;
+    offset_translate:Vec3;
+    source_bones:[BoneWeightOffset];
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetOricns.h
+table KineDriverTargetOricns
+{
+    id:HashedString;
+    target_object_bone_name:HashedString;
+    offset_rotate:Vec3;
+    source_bones:[BoneWeightOffset];
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetDircns.h
+table KineDriverTargetDircns
+{
+    id:HashedString;
+    target_object_bone_name:HashedString;
+    aim_bone:HashedString;
+    up_object_bone:HashedString;
+    aim_vector:Vec3;
+    up_vector:Vec3;
+    neutral_rotate:Vec3; // NeutralRotate or Crossvector?
+    aim_src_offset:Vec3;
+    up_src_offset:Vec3;
+    aim_transform_affect:bool;
+    up_transform_affect:bool;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetOther.h
+// No file uses it
+table KineDriverTargetOther
+{
+    id:HashedString;
+    // TODO
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverConnectEquals.h
+table KineDriverConnectEquals
+{
+    id:HashedString;
+    in_parameter:OperatorRef;
+    out_parameter:OperatorRef;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverConnectLinkWith.h
+// No file uses it
+table KineDriverConnectLinkWith
+{
+    id:HashedString;
+    // TODO
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverConnectEZParamLink.h
+table KineDriverConnectEZParamLink
+{
+    id:HashedString;
+    in_parameter:OperatorRef;
+    out_parameter:OperatorRef;
+    field_4:float;
+    field_5:float;
+    field_6:int;
+    field_7:byte;
+    field_8:float;
+    field_9:float;
+    field_10:int;
+    field_11:byte;
+    field_12:float;
+    field_13:float;
+    field_14:int;
+    field_15:byte;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverConnectEZParamLinkLinear.h
+table KineDriverConnectEZParamLinkLinear
+{
+    id:HashedString;
+    in_parameter:OperatorRef;
+    out_parameter:OperatorRef;
+    field_4:float;
+    field_5:float;
+    field_6:float;
+    field_7:float;
+    field_8:float;
+    enable_min:bool;
+    enable_max:bool;
+}
+
+union KineDriverOperator 
+{
+    // Source
+    KineDriverSourceTranslate, // 1
+    KineDriverSourceRotate,  // 2
+    KineDriverSourceOther, // 3
+
+    // Target
+    KineDriverTargetTranslate, // 4
+    KineDriverTargetScale, // 5
+    KineDriverTargetRotate,  // 6
+    KineDriverTargetBendRoll, // 7
+    KineDriverTargetBendSTRoll, // 8
+    KineDriverTargetPoscns, // 9
+    KineDriverTargetOricns, // 10
+    KineDriverTargetDircns, // 11
+    KineDriverTargetOther, // 12
+
+    // Link/Connect
+    KineDriverConnectEquals, // 13
+    KineDriverConnectLinkWith, // 14
+    KineDriverConnectEZParamLink, // 15
+    KineDriverConnectEZParamLinkLinear // 16
+}
+
+table OperatorUnion
+{
+    operator:KineDriverOperator;
+}
+
+//--------------------------
+// field_5
+//--------------------------
+
+table Table5Entry
+{
+    unk_index:uint;
+    operators:[HashedString];
+}
+
+table Table5
+{
+    entries:[Table5Entry];
+}
+
+//--------------------------
+// Root.
+//--------------------------
+table KineDriverBinary (fs_serializer) 
+{
+    field_1:uint; // unknown, not used
+    field_2:uint; // unknown, not used
+    operators:[OperatorUnion];
+    field_4:uint; // unknown, not used
+    field_5:Table5;
+}
+
+file_identifier "KDIB";
+root_type KineDriverBinary;

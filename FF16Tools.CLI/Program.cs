@@ -41,11 +41,6 @@ public class Program
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("");
 
-        foreach (var file in Directory.GetFiles(@"C:/Program Files (x86)/Steam/steamapps/common/FINAL FANTASY XVI/resources_win/release/master", "*.kdb", SearchOption.AllDirectories))
-        {
-            Console.WriteLine(file);
-            var kdbFile = KDBFile.Serializer.Parse(File.ReadAllBytes(file));
-        }
 
         _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
         _logger = _loggerFactory.CreateLogger<Program>();

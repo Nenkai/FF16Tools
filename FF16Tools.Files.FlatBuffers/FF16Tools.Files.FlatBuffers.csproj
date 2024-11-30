@@ -14,6 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<FlatSharpSchema Include="KDB.fbs" />
+		<FlatSharpSchema Include="KDB_KineDriverBinary.fbs" />
 	</ItemGroup>
 </Project>
