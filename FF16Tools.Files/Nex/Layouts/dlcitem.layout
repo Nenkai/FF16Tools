@@ -2,9 +2,17 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|string
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
+add_column|DLCFlags|int
+add_column|Comment|string
+
+// union
+// 124 = item
+// 177 = equipitem
+add_column|ItemUnionType|int
+add_column|ItemUnionId|int
+
+// union
+// 1144 = dlcentitlement
+// 1174 = patchdlcversion
+add_column|EntitlementUnionType|int
+add_column|EntitlementUnionId|int
