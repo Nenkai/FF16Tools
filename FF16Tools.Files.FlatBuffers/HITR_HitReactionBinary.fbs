@@ -105,12 +105,21 @@ table Table4
 table Table6
 {
     field_1:bool;
-    field_2:int;
+    field_2:short;
+}
+
+table Table7_F1
+{
+    field_1:uint;
+    field_2:uint;
+    field_3:SharedStruct2;
 }
 
 table Table7
 {
-    
+    field_1:[Table7_F1];
+    field_2:bool;
+    field_3:bool;
 }
 
 table Table8
