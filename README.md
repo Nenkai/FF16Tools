@@ -1,6 +1,6 @@
 # FF16Tools
 
-Tools for Final Fantasy XVI / 16. 
+Tools & Library for Final Fantasy XVI / 16. 
 
 ### Features
 
@@ -9,6 +9,7 @@ Tools for Final Fantasy XVI / 16.
 * `.dds` & other image formats to `.tex`
 * `.nxd`  (Nex/Next ExcelDB) conversion
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
+* FlatBuffer schemas for `.kdb` (KineDriver) & `.bnmb` (Bonamik) files
 
 This has been tested on Final Fantasy 16 (Steam/PC) files.
 
