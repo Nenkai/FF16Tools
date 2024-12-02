@@ -1,0 +1,397 @@
+﻿include "BaseStructs.fbs";
+
+//--------------------------------------------------
+// For BNMB Files
+// *.bnmb in 'animation/chara/<char_code>/skeleton'
+//--------------------------------------------------
+// Used by a fair few SQEX games
+// - FF14 (Late)
+// - FF15
+// - VALKYRIE ELYSIUM
+// - FF7R
+// - KH3
+// - ... Prolly more
+//--------------------------------------------------
+// They have moved from a binary format (FF14/FF15) to a flatbuffers file in XVI.
+
+// Potentially useful references:
+// https://github.com/BlasterGrim/TresGame/tree/6a0fd71b783a1fcba90c9df619447dc620817910/Plugins/BonamikRt/Source/BonamikRt
+// https://github.com/Irastris/ValkyrieUproject/tree/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+//-----------------------------------
+// Main bonamik structures
+//-----------------------------------
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikAsset.h
+table BonamikHeader
+{
+    version_no:int;
+    total_solvers:int;
+    total_bodies:int;
+    total_links:int;
+    field_5:int;
+    field_6:int; // no file uses this, data type verified in code
+    field_7:int;
+    field_8:int;
+    field_9:int;
+    field_10:int;
+    field_11:int;
+    field_12:int;
+    field_13:int;
+    field_14:int; // no file uses this, data type verified in code
+    field_15:int;
+    field_16:int;
+}
+
+table BonamikBody_F28
+{
+    field_1:uint;
+    field_2:string; // no file uses this, data type verified in code
+    field_3:bool; // data type verified in code
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikSceneManagerDesc.h
+table BonamikSceneManager
+{
+    // Should be complete as of FFXVI 1.0.1
+    is_enable:bool;
+    is_use_gpu:bool; // no file uses this, data type verified in code
+    field_3:bool;
+    sub_step:int;
+    dt:float;
+    total_group:int;
+    field_7:Vec3;
+    field_8:bool; // no file uses this, data type verified in code
+    field_9:int; // enum (verified in code)
+    field_10:int; // no file uses this, data type verified in code
+    field_11:BonamikBody_F28; // type verified in code
+    total_link_batches:int;
+    total_cone_batches:int;
+    total_collision_batches:int;
+    total_self_collision_batches:int;
+    total_links_in_batch:[int];
+    total_cones_in_batch:[int];
+    total_collisions_in_batch:[int];
+    total_self_collisions_in_batch:[int];
+    enable_ground_collision:bool;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikSolverDesc.h
+table BonamikSolver
+{
+    // Should be complete as of FFXVI 1.0.1
+    group_name:string;
+    field_2:int; // no file uses this, data type verified in code
+    field_3:int; // no file uses this, data type verified in code
+    is_enable:bool;
+    is_use_cone_SEQ:bool;
+    is_enable_draw:bool; // no file uses this, data type verified in code
+    field_7:bool;
+    field_8:bool;
+    LOD_distance:float;
+    field_10:float;
+    field_11:int;
+    field_12:int;
+    field_13:int;
+    field_14:int;
+}
+
+table BonamikBody_F26
+{
+    field_1:int; // enum (verified in code)
+    field_2:float;
+    field_3:float;
+}
+
+table BonamikBody_F27
+{
+    field_1:float;
+    field_2:float;
+    field_3:float;
+    field_4:float;
+    field_5:float;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikBodyDesc.h
+table BonamikBody
+{
+    // Should be complete as of FFXVI 1.0.1
+    field_1:int;
+    field_2:int;
+    field_3:int;
+    field_4:int;
+    is_kinematic:bool;
+    is_collision:bool;
+    is_multiple_collision_object:bool;
+    field_8:float;
+    field_9:float;
+    field_10:float;
+    field_11:float;
+    field_12:float;
+    field_13:float;
+    field_14:float;
+    field_15:float;
+    field_16:float;
+    field_17:float; // no file uses this but data type verified in code
+    field_18:float; // no file uses this but data type verified in code
+    col_shape:int; // this is a enum (verified in code)
+    addi_const_type:int; // this is a enum (verified in code)
+    field_21:Vec3;
+    field_22:Vec3;
+    field_23:Vec3;
+    field_24:Vec3;
+    field_25:Vec3;
+    field_26:BonamikBody_F26;
+    field_27:BonamikBody_F27;
+    field_28:BonamikBody_F28;
+    field_29:string; // no file uses this but data type verified in code
+    field_30:string; // no file uses this but data type verified in code
+
+    // BIG WARNING: There's two strings after this array (in the binary) that nothing seems to point to AT ALL
+    // My guess? field_29 and 30 points to them, but the vtable values are 0 aka values are null - were they wiped?
+    col_id:[int]; 
+
+    field_32:bool;
+    field_33:float;
+    field_34:float;
+}
+
+table BonamikLinkF23
+{
+    field_1:bool; // no file uses this but data type verified in code
+    field_2:float;
+    field_3:float;
+}
+
+table BonamikLinkF24
+{
+    field_1:float;
+    field_2:float;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikLinkDesc.h
+table BonamikLink
+{
+    // Should be complete as of FFXVI 1.0.1
+    field_1:int;
+    field_2:int;
+    field_3:int;
+    field_4:int;
+    field_5:int;
+    link_type:int; // enum (verified in code)
+    field_7:bool;
+    field_8:bool;
+    field_9:bool;
+    field_10:bool;
+    field_11:bool;
+    field_12:bool;
+    field_13:float;
+    field_14:float;
+    field_15:float;
+    field_16:float;
+    field_17:float;
+    field_18:float;
+    field_19:float;
+    field_20:float;
+    field_21:Vec3;
+    field_22:Vec3;
+    field_23:BonamikLinkF23;
+    field_24:BonamikLinkF24;
+    field_25:BonamikLinkF24;
+    field_26:string;
+    field_27:string;
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikPlaneDesc.h
+table BonamikPlane
+{
+    // Should be complete as of FFXVI 1.0.1
+    group_id:int;
+    particle_A:int;
+    particle_B:int;
+    particle_C:int;
+    index:int;
+    thickness:float;
+    offset:float;  // no file uses this but data type verified in code
+    collision_batch_no:int;
+    is_collision:bool;
+    particle_A_name:string;
+    particle_B_name:string;
+    particle_C_name:string;
+    col_id:[int]; // Max 8
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikShapeMatchingDesc.h
+table BonamikShapeMatching
+{
+    // No file uses this, but added struct based on code so should be complete
+    total_particle:int;
+    stiffness:float;
+    particle_ids:[int];
+}
+
+// https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikPossessionDesc.h
+table BonamikPossession
+{
+    // Should be complete as of FFXVI 1.0.1
+    field_1:int;
+    time:float;
+    field_3:int; // enum (verified in code)
+    field_4:int;
+    field_5:float;
+    field_6:float;
+    field_7:float;
+    field_8:float;
+    field_9:float;
+}
+
+table BonamikScene
+{
+    header:BonamikHeader;
+    scene_manager:BonamikSceneManager;
+    solvers:[BonamikSolver];
+    bodies:[BonamikBody];
+    links:[BonamikLink];
+    planes:[BonamikPlane];
+    shape_matchings:[BonamikShapeMatching]; // No file uses this
+    possessions:[BonamikPossession];
+}
+
+//----------------------------------
+// Unknown structures
+//----------------------------------
+
+table BonamikUnk_F5
+{
+    field_1:bool;
+    field_2:bool;
+    field_3:bool;
+    field_4:float;
+    field_5:float;
+    field_6:short;
+    field_7:short;
+}
+
+table BonamikUnk_F6
+{
+    field_1:int;
+    field_2:[string];
+}
+
+table BonamikUnk_F7_F2
+{
+    field_1:float;
+    field_2:int;
+}
+
+table BonamikUnk_F7_F4_F2
+{
+    field_1:float;
+    field_2:float;
+    field_3:float;
+}
+
+table BonamikUnk_F7_F4_F3
+{
+    field_1:bool;
+    field_2:float;
+    field_3:float;
+    field_4:float;
+}
+
+table BonamikUnk_F7_F4_F4
+{
+    field_1:bool;
+    field_2:float;
+}
+
+table BonamikUnk_F7_F4
+{
+    field_1:string;
+    field_2:BonamikUnk_F7_F4_F2;
+    field_3:BonamikUnk_F7_F4_F3;
+    field_4:BonamikUnk_F7_F4_F4;
+    field_5:float;
+}
+
+table BonamikUnk_F7_F7_F2
+{
+    field_1:int; // enum
+    field_2:float;
+}
+
+table BonamikUnk_F7_F7
+{
+    field_1:int;
+    field_2:[BonamikUnk_F7_F7_F2];
+}
+
+table BonamikUnk_F7
+{
+    field_1:int;
+    field_2:BonamikUnk_F7_F2;
+    field_3:int;
+    field_4:[BonamikUnk_F7_F4];
+    field_5:bool;
+    field_6:int; // enum
+    field_7:[BonamikUnk_F7_F7];
+}
+
+table BonamikUnk_F22
+{
+    field_1:bool;
+    field_2:[string];
+    field_3:bool;
+    field_4:[string];
+    field_5:bool;
+}
+
+table BonamikUnk
+{
+    // All these + sub structs checked in code
+    field_1:BonamikBody_F28; // type verified in code
+    field_2:float;
+    field_3:float;
+    field_4:bool;  // no file uses this but data type verified in code
+    field_5:BonamikUnk_F5;
+    field_6:[BonamikUnk_F6];
+    field_7:BonamikUnk_F7;
+    field_8:bool;
+    field_9:bool;
+    field_10:bool;
+    field_11:bool;
+    field_12:bool;
+    field_13:bool;
+    field_14:float;
+    field_15:bool;
+    field_16:float;
+    field_17:bool;
+    field_18:bool;
+    unk_19:byte; // Unknown, game doesn't parse it
+    field_20:bool;
+    field_21:float;
+    field_22:BonamikUnk_F22;
+    unk_23:byte; // Unknown, game doesn't parse it
+    field_24:bool;
+    field_25:bool;
+    field_26:bool;
+    field_27:bool; // game doesn't parse it?
+    field_28:float;
+}
+
+table BonamikBinary (fs_serializer)
+{
+    unk_1:byte; // unknown - does not appear to be used
+    unk_2:byte; // unknown - does not appear to be used
+    scenes:[BonamikScene];
+    struct_4:BonamikUnk;
+}
+
+file_extension "bnmb";
+file_identifier "BNMB";
+root_type BonamikBinary;

@@ -14,6 +14,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<FlatSharpSchema Include="BaseStructs.fbs" />
+		<FlatSharpSchema Include="BNMB_BonamikBinary.fbs" />
 		<FlatSharpSchema Include="KDB_KineDriverBinary.fbs" />
 	</ItemGroup>
 </Project>
