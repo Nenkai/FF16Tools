@@ -15,7 +15,9 @@
 
 	<ItemGroup>
 		<FlatSharpSchema Include="BaseStructs.fbs" />
+		<FlatSharpSchema Include="BDYB_BodyBendingBinary.fbs" />
 		<FlatSharpSchema Include="BNMB_BonamikBinary.fbs" />
+		<FlatSharpSchema Include="HITR_HitReactionBinary.fbs" />
 		<FlatSharpSchema Include="KDB_KineDriverBinary.fbs" />
 	</ItemGroup>
 </Project>

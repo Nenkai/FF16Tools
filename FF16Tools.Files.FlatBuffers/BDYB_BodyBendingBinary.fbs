@@ -1,0 +1,48 @@
+﻿include "BaseStructs.fbs";
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table Field3Struct
+{
+    field_1:uint;
+    field_2:uint;
+    field_3:uint;
+    field_4:int;
+    field_5:bool;
+    field_6:uint;
+    field_7:bool;
+    field_8:float;
+    field_9:uint;
+    field_10:uint;
+    field_11:float;
+}
+
+table Field4Struct
+{
+    field_1:float;
+    field_2:float;
+    field_3:bool;
+    field_4:bool;
+    field_5:bool;
+}
+
+table Field5Struct
+{
+    table1:float;
+}
+
+table BodyBendingBinary (fs_serializer)
+{
+    unk_1:byte; // unknown - does not appear to be used
+    unk_2:byte; // unknown - does not appear to be used
+    field_3:Field3Struct;
+    field_4:Field4Struct;
+    field_5:Field5Struct;
+}
+
+file_extension "ikb";
+file_identifier "BDYB";
+root_type BodyBendingBinary;

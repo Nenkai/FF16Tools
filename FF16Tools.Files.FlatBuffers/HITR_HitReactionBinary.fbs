@@ -1,0 +1,138 @@
+﻿include "BaseStructs.fbs";
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table UnkSharedTableSub
+{
+    field_1:float;
+    field_2:float;
+    field_3:float;
+}
+
+table UnkSharedTable
+{
+    field_1:short; // enum
+    field_2:UnkSharedTableSub;
+}
+
+table SharedStruct2
+{
+    field_1:float;
+    field_2:float;
+    field_3:bool;
+    field_4:short; // enum, default 3
+}
+
+table UnionStruct1
+{
+    field_1:UnkSharedTable;
+    field_2:bool;
+    field_3:float;
+}
+
+table UnionStruct2
+{
+    field_1:UnkSharedTable;
+    field_2:UnkSharedTable;
+}
+
+table UnionStruct3
+{
+    field_1:UnkSharedTable;
+    field_2:bool;
+}
+
+union UnkUnionStruct { UnionStruct1, UnionStruct2, UnionStruct3 }
+
+table Table3_F10
+{
+    field_1:short; // enum
+    field_2:short;
+    field_3:UnkUnionStruct;
+    field_4:bool;
+    field_5:bool;
+    field_6:float;
+    field_7:float;
+    field_8:SharedStruct2;
+    field_9:SharedStruct2;
+    field_10:bool;
+    field_11:[int];
+    field_12:string;
+}
+
+table Table3_F11
+{
+    field_1:uint;
+    field_2:uint;
+}
+
+table Table3
+{
+    field_1:uint;
+    field_2:uint;
+    unk_3:byte;
+    unk_4:byte;
+    unk_5:byte;
+    unk_6:byte;
+    unk_7:byte;
+    unk_8:byte;
+    unk_9:byte;
+    field_10:[Table3_F10];
+    field_11:[Table3_F11];
+}
+
+table Table4_F2
+{
+    field_1:short;
+    field_2:int; // unsure
+}
+
+table Table4
+{
+    field_1:short;
+    field_2:Table4_F2;
+    field_3:float;
+    field_4:float;
+    field_5:[Vec2];
+    field_6:SharedStruct2;
+    field_7:SharedStruct2;
+    field_8:string;
+}
+
+table Table6
+{
+    field_1:bool;
+    field_2:int;
+}
+
+table Table7
+{
+    
+}
+
+table Table8
+{
+    field_1:bool;
+    field_2:float;
+    field_3:UnkSharedIKBTable;
+    field_4:UnkSharedIKBTable;
+}
+
+table HitReactionBinary (fs_serializer)
+{
+    field_1:short;
+    field_2:uint; // Size in kb to allocate somehow. 1 unit = 1kb, defaults to 0x6000 and minimum 0x6000
+    field_3:[Table3];
+    field_4:[Table4];
+    field_5:bool;
+    field_6:Table6;
+    field_7:[Table7];
+    field_8:Table8;
+}
+
+file_extension "ikb";
+file_identifier "HITR";
+root_type HitReactionBinary;

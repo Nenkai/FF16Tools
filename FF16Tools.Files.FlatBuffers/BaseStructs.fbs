@@ -3,8 +3,18 @@ attribute "fs_serializer";
 
 namespace FF16Tools.Files.FlatBuffers;
 
+struct Vec2 {
+	x:float;
+	y:float;
+}
 struct Vec3 {
   x:float;
   y:float;
   z:float;
+}
+
+table UnkSharedIKBTable
+{
+	field_1:short; // enum, 0-5
+	field_2:uint;
 }
