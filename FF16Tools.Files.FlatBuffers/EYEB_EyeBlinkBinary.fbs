@@ -1,0 +1,102 @@
+﻿include "BaseStructs.fbs";
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table EyeBTable3
+{
+    field_1:uint;
+    field_2:short;
+}
+
+table EyeBTable4_F3
+{
+    field_1:float;
+    field_2:float;
+}
+
+table EyeBTable4_F4
+{
+    field_1:float;
+    field_2:float;
+    field_3:float;
+    field_4:float;
+}
+
+table EyeBTable4_F7
+{
+    field_1:UnkSharedIKBTable;
+    field_2:UnkSharedIKBTable;
+    field_3:UnkSharedIKBTable;
+    field_4:UnkSharedIKBTable;
+}
+
+table EyeBTable4
+{
+    field_1:ushort;
+    field_2:float;
+    field_3:EyeBTable4_F3;
+    field_4:EyeBTable4_F4;
+    field_5:float;
+    field_6:float;
+    field_7:EyeBTable4_F7;
+    field_8:bool;
+}
+
+table EyeBTable5_F2
+{
+    field_1:float;
+    field_2:float;
+}
+
+table EyeBTable5_F3
+{
+    field_1:float;
+    field_2:float;
+}
+
+table EyeBTable5_F5
+{
+    field_1:float;
+    field_2:float;
+}
+
+table EyeBTable5
+{
+    field_1:short;
+    field_2:EyeBTable5_F2;
+    field_3:EyeBTable5_F3;
+    field_4:float;
+    field_5:EyeBTable5_F5;
+}
+
+table EyeBTable6
+{
+    field_1:uint;
+    field_2:ushort;
+}
+
+table EyeBTable7
+{
+    field_1:bool;
+    field_2:float;
+    field_3:UnkSharedIKBTable;
+    field_4:UnkSharedIKBTable;
+}
+
+table EyeBlinkBinary (fs_serializer)
+{
+    field_1:short;
+    unk_2:uint; // not used?
+    field_3:[EyeBTable3];
+    field_4:[EyeBTable4];
+    field_5:[EyeBTable5];
+    field_6:[EyeBTable6];
+    field_7:EyeBTable7;
+}
+
+file_extension "ikb";
+file_identifier "EYEB";
+root_type EyeBlinkBinary;
