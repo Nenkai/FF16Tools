@@ -76,7 +76,7 @@ table LODBTable3_F3
 table LODBTable3
 {
     field_1:bool;
-    field_2_bool;
+    field_2:bool;
     field_3:[LODBTable3_F3];
 }
 

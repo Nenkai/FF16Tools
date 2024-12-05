@@ -7,15 +7,15 @@ namespace FF16Tools.Files.FlatBuffers;
 
 table BdyBTable3
 {
-    field_1:uint;
-    field_2:uint;
-    field_3:uint;
+    field_1:uint; // fnv hash
+    field_2:uint; // fnv hash
+    field_3:uint; // fnv hash
     field_4:int;
     field_5:bool;
-    field_6:uint;
+    field_6:uint; // fnv hash
     field_7:bool;
     field_8:float;
-    field_9:uint;
+    field_9:uint; // fnv hash
     field_10:uint;
     field_11:float;
 }
@@ -36,7 +36,7 @@ table BdyBTable5
 
 table BodyBendingBinary (fs_serializer)
 {
-    unk_1:byte; // unknown - does not appear to be used
+    field_1:short; // checked against 1?
     unk_2:byte; // unknown - does not appear to be used
     field_3:BdyBTable3;
     field_4:BdyBTable4;

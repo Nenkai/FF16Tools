@@ -7,7 +7,7 @@ namespace FF16Tools.Files.FlatBuffers;
 
 table EyeBTable3
 {
-    field_1:uint;
+    field_1:uint; // fnv hash
     field_2:short;
 }
 
@@ -74,7 +74,7 @@ table EyeBTable5
 
 table EyeBTable6
 {
-    field_1:uint;
+    field_1:uint; // fnv hash
     field_2:ushort;
 }
 

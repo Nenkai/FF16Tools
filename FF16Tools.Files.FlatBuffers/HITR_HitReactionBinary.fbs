@@ -65,14 +65,14 @@ table HitBTable3_F10
 
 table HitBTable3_F11
 {
-    field_1:uint;
-    field_2:uint;
+    field_1:uint; // fnv hash
+    field_2:uint; // fnv hash
 }
 
 table HitBTable3
 {
-    field_1:uint;
-    field_2:uint;
+    field_1:uint; // fnv hash
+    field_2:uint; // fnv hash
     unk_3:byte;
     unk_4:byte;
     unk_5:byte;
@@ -110,8 +110,8 @@ table HitBTable6
 
 table HitBTable7_F1
 {
-    field_1:uint;
-    field_2:uint;
+    field_1:uint; // fnv hash
+    field_2:uint; // fnv hash
     field_3:HitBSharedStruct2;
 }
 
