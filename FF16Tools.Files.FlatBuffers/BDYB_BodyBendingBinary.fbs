@@ -5,7 +5,7 @@ attribute "fs_serializer";
 
 namespace FF16Tools.Files.FlatBuffers;
 
-table Field3Struct
+table BdyBTable3
 {
     field_1:uint;
     field_2:uint;
@@ -20,7 +20,7 @@ table Field3Struct
     field_11:float;
 }
 
-table Field4Struct
+table BdyBTable4
 {
     field_1:float;
     field_2:float;
@@ -29,7 +29,7 @@ table Field4Struct
     field_5:bool;
 }
 
-table Field5Struct
+table BdyBTable5
 {
     table1:float;
 }
@@ -38,9 +38,9 @@ table BodyBendingBinary (fs_serializer)
 {
     unk_1:byte; // unknown - does not appear to be used
     unk_2:byte; // unknown - does not appear to be used
-    field_3:Field3Struct;
-    field_4:Field4Struct;
-    field_5:Field5Struct;
+    field_3:BdyBTable3;
+    field_4:BdyBTable4;
+    field_5:BdyBTable5;
 }
 
 file_extension "ikb";

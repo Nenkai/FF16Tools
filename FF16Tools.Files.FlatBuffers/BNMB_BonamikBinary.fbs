@@ -52,7 +52,7 @@ table BonamikBody_F28
 {
     field_1:uint;
     field_2:string; // no file uses this, data type verified in code
-    field_3:bool; // data type verified in code
+    field_3:bool = true; // data type verified in code
 }
 
 // https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/BonamikRt/Public/SQEX_BonamikSceneManagerDesc.h
@@ -285,7 +285,7 @@ table BonamikUnk_F6
 
 table BonamikUnk_F7_F2
 {
-    field_1:float;
+    field_1:float = -1.0;
     field_2:int;
 }
 
@@ -348,7 +348,7 @@ table BonamikUnk_F22
     field_2:[string];
     field_3:bool;
     field_4:[string];
-    field_5:bool;
+    field_5:bool = true;
 }
 
 table BonamikUnk
@@ -361,27 +361,27 @@ table BonamikUnk
     field_5:BonamikUnk_F5;
     field_6:[BonamikUnk_F6];
     field_7:BonamikUnk_F7;
-    field_8:bool;
-    field_9:bool;
-    field_10:bool;
+    field_8:bool = true;
+    field_9:bool = true;
+    field_10:bool = true;
     field_11:bool;
-    field_12:bool;
-    field_13:bool;
-    field_14:float;
-    field_15:bool;
-    field_16:float;
+    field_12:bool = true;
+    field_13:bool = true;
+    field_14:float = 1.0;
+    field_15:bool = true;
+    field_16:float = 0.5;
     field_17:bool;
-    field_18:bool;
+    field_18:bool = true;
     unk_19:byte; // Unknown, game doesn't parse it
     field_20:bool;
-    field_21:float;
+    field_21:float = -1.0;
     field_22:BonamikUnk_F22;
     unk_23:byte; // Unknown, game doesn't parse it
     field_24:bool;
-    field_25:bool;
-    field_26:bool;
+    field_25:bool = true;
+    field_26:bool = true;
     field_27:bool; // game doesn't parse it?
-    field_28:float;
+    field_28:float = 0.01;
 }
 
 table BonamikBinary (fs_serializer)

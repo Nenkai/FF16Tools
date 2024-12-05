@@ -1,0 +1,104 @@
+﻿include "BaseStructs.fbs";
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table LODBTable3_F3_F3Type1
+{
+    field_1:bool;
+    field_2:float;
+    field_3:[int];
+    field_4:[int];
+    field_5:bool;
+}
+
+table LODBTable3_F3_F3Type2
+{
+    field_1:bool;
+    field_2:bool;
+    field_3:float;
+    field_4:[string];
+    field_5:float;
+    field_6:[int];
+    field_7:bool;
+}
+
+table LODBTable3_F3_F3Type3 // Bonamik related? see: 'Bonamik [%s: %u] %s: %s' string
+{
+    field_1:bool;
+    field_2:float;
+
+    // FNVHash, expected strings:
+    // - Aim
+    // - AimHead
+    // - ArmReactionLeft
+    // - ArmReactionRight
+    // - DisplaceLegLeft
+    // - DisplaceLegRight
+    // - ShiftBase
+    // - EyeballLeft
+    // - EyeballRight
+    // - ArmFixupLeft
+    // - ArmFixupRight
+    field_3:[uint];
+}
+
+table LODBTable3_F3_F3Type4
+{
+    field_1:bool;
+    field_2:float;
+}
+
+table LODBTable3_F3_F3Type5
+{
+    field_1:bool;
+    field_2:float;
+}
+
+union LODBTable3_F3_F3Union 
+{ 
+    LODBTable3_F3_F3Type1, 
+    LODBTable3_F3_F3Type2, 
+    LODBTable3_F3_F3Type3, 
+    LODBTable3_F3_F3Type4,
+    LODBTable3_F3_F3Type5,
+}
+
+table LODBTable3_F3
+{
+    field_1:ushort; // enum
+    field_2:bool;
+    field_3:LODBTable3_F3_F3Union;
+}
+
+table LODBTable3
+{
+    field_1:bool;
+    field_2_bool;
+    field_3:[LODBTable3_F3];
+}
+
+table LODBTable4
+{
+    field_1:byte; // enum
+    field_2:byte = 30;
+}
+
+table LODBinary (fs_serializer)
+{
+    unk_1:byte; // not used?
+    unk_2:byte; // not used?
+    field_3:[LODBTable3];
+    field_4:[LODBTable4];
+    field_5:bool = true;
+    field_6:bool = true;
+    field_7:bool;
+    field_8:bool = true;
+    field_9:bool = true;
+}
+
+file_extension "ikb";
+file_identifier "LODB";
+root_type LODBinary;

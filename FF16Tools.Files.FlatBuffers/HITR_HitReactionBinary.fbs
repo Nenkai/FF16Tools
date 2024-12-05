@@ -5,71 +5,71 @@ attribute "fs_serializer";
 
 namespace FF16Tools.Files.FlatBuffers;
 
-table UnkSharedTableSub
+table HitBUnkSharedTableSub
 {
     field_1:float;
     field_2:float;
     field_3:float;
 }
 
-table UnkSharedTable
+table HitBUnkSharedTable
 {
     field_1:short; // enum
-    field_2:UnkSharedTableSub;
+    field_2:HitBUnkSharedTableSub;
 }
 
-table SharedStruct2
+table HitBSharedStruct2
 {
     field_1:float;
     field_2:float;
     field_3:bool;
-    field_4:short; // enum, default 3
+    field_4:short = 3; // enum, default 3
 }
 
-table UnionStruct1
+table HitBUnionStruct1
 {
-    field_1:UnkSharedTable;
+    field_1:HitBUnkSharedTable;
     field_2:bool;
-    field_3:float;
+    field_3:float = 1.0;
 }
 
-table UnionStruct2
+table HitBUnionStruct2
 {
-    field_1:UnkSharedTable;
-    field_2:UnkSharedTable;
+    field_1:HitBUnkSharedTable;
+    field_2:HitBUnkSharedTable;
 }
 
-table UnionStruct3
+table HitBUnionStruct3
 {
-    field_1:UnkSharedTable;
+    field_1:HitBUnkSharedTable;
     field_2:bool;
 }
 
-union UnkUnionStruct { UnionStruct1, UnionStruct2, UnionStruct3 }
+union HitBUnkUnionStruct { HitBUnionStruct1, HitBUnionStruct2, HitBUnionStruct3 }
 
-table Table3_F10
+table HitBTable3_F10
 {
     field_1:short; // enum
     field_2:short;
-    field_3:UnkUnionStruct;
+    field_3:HitBUnkUnionStruct;
     field_4:bool;
     field_5:bool;
     field_6:float;
     field_7:float;
-    field_8:SharedStruct2;
-    field_9:SharedStruct2;
-    field_10:bool;
+    field_8:HitBSharedStruct2;
+    field_9:HitBSharedStruct2;
+    field_10:bool = true;
     field_11:[int];
     field_12:string;
 }
 
-table Table3_F11
+table HitBTable3_F11
 {
     field_1:uint;
     field_2:uint;
 }
 
-table Table3
+table HitBTable3
 {
     field_1:uint;
     field_2:uint;
@@ -80,51 +80,51 @@ table Table3
     unk_7:byte;
     unk_8:byte;
     unk_9:byte;
-    field_10:[Table3_F10];
-    field_11:[Table3_F11];
+    field_10:[HitBTable3_F10];
+    field_11:[HitBTable3_F11];
 }
 
-table Table4_F2
+table HitBTable4_F2
 {
     field_1:short;
     field_2:int; // unsure
 }
 
-table Table4
+table HitBTable4
 {
     field_1:short;
-    field_2:Table4_F2;
+    field_2:HitBTable4_F2;
     field_3:float;
     field_4:float;
     field_5:[Vec2];
-    field_6:SharedStruct2;
-    field_7:SharedStruct2;
+    field_6:HitBSharedStruct2;
+    field_7:HitBSharedStruct2;
     field_8:string;
 }
 
-table Table6
+table HitBTable6
 {
     field_1:bool;
     field_2:short;
 }
 
-table Table7_F1
+table HitBTable7_F1
 {
     field_1:uint;
     field_2:uint;
-    field_3:SharedStruct2;
+    field_3:HitBSharedStruct2;
 }
 
-table Table7
+table HitBTable7
 {
-    field_1:[Table7_F1];
+    field_1:[HitBTable7_F1];
     field_2:bool;
-    field_3:bool;
+    field_3:bool = true;
 }
 
-table Table8
+table HitBTable8
 {
-    field_1:bool;
+    field_1:bool = true;
     field_2:float;
     field_3:UnkSharedIKBTable;
     field_4:UnkSharedIKBTable;
@@ -134,12 +134,12 @@ table HitReactionBinary (fs_serializer)
 {
     field_1:short;
     field_2:uint; // Size in kb to allocate somehow. 1 unit = 1kb, defaults to 0x6000 and minimum 0x6000
-    field_3:[Table3];
-    field_4:[Table4];
+    field_3:[HitBTable3];
+    field_4:[HitBTable4];
     field_5:bool;
-    field_6:Table6;
-    field_7:[Table7];
-    field_8:Table8;
+    field_6:HitBTable6;
+    field_7:[HitBTable7];
+    field_8:HitBTable8;
 }
 
 file_extension "ikb";

@@ -13,16 +13,16 @@ table EyeBTable3
 
 table EyeBTable4_F3
 {
-    field_1:float;
-    field_2:float;
+    field_1:float = 0.34;
+    field_2:float = 0.32;
+    field_3:float = 0.34;
+    field_4:float = 0.34;
 }
 
 table EyeBTable4_F4
 {
     field_1:float;
     field_2:float;
-    field_3:float;
-    field_4:float;
 }
 
 table EyeBTable4_F7
@@ -38,9 +38,9 @@ table EyeBTable4
     field_1:ushort;
     field_2:float;
     field_3:EyeBTable4_F3;
-    field_4:EyeBTable4_F4;
+    field_4:EyeBTable4_F4; // Is this even parsed?
     field_5:float;
-    field_6:float;
+    field_6:float = 0.98;
     field_7:EyeBTable4_F7;
     field_8:bool;
 }
@@ -80,7 +80,7 @@ table EyeBTable6
 
 table EyeBTable7
 {
-    field_1:bool;
+    field_1:bool = true;
     field_2:float;
     field_3:UnkSharedIKBTable;
     field_4:UnkSharedIKBTable;

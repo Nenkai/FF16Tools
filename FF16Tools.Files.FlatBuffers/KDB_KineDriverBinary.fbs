@@ -41,7 +41,7 @@ table BoneWeightOffset
     offset:Vec3;
 }
 
-table UnkTypeWithString
+table KDBUnkTypeWithString
 {
     field_1:byte;
     bone_name:HashedString;
@@ -62,7 +62,7 @@ table KineDriverSourceTranslate
 {
     id:HashedString;
     source_bone_array:[BoneWeightOffset];
-    base_space_bone:UnkTypeWithString;
+    base_space_bone:KDBUnkTypeWithString;
     neutral_translate:Vec3;
     neutral_rotate:Vec3;
 }
@@ -72,7 +72,7 @@ table KineDriverSourceRotate
 {
     id:HashedString;
     source_bone_array:[BoneWeightOffset];
-    base_space_bone:UnkTypeWithString;
+    base_space_bone:KDBUnkTypeWithString;
     neutral_rotate:Vec3;
     aim_vector:Vec3;
     up_vector:Vec3;
@@ -94,7 +94,7 @@ table KineDriverTargetTranslate
     translate:Vec3;
     neutral_translate:Vec3;
     neutral_rotate:Vec3;
-    base_space_bone:UnkTypeWithString;
+    base_space_bone:KDBUnkTypeWithString;
 }
 
 // https://github.com/Irastris/ValkyrieUproject/blob/main/VALKYRIE_ELYSIUM/Source/KineDriverRt/Public/SQEX_KineDriverTargetScale.h
@@ -104,7 +104,7 @@ table KineDriverTargetScale
     target_object_bone_name:HashedString;
     scale:Vec3;
     clamp_zero:bool;
-    base_space_bone:UnkTypeWithString;
+    base_space_bone:KDBUnkTypeWithString;
     segment_scale_compensate:bool;
 }
 
@@ -116,7 +116,7 @@ table KineDriverTargetRotate
     hash_str3:HashedString;
     field_4:byte; // Unknown
     field_5:float;
-    field_6:UnkTypeWithString;
+    field_6:KDBUnkTypeWithString;
     field_7:Vec3;
     field_8:byte; // Unknown
     field_9:byte;
@@ -131,7 +131,7 @@ table KineDriverTargetBendRoll
     field_4:byte;
     field_5:Vec3;
     field_6:Vec3;
-    base_space_bone:UnkTypeWithString;
+    base_space_bone:KDBUnkTypeWithString;
     field_8:Vec3;
     field_9:Vec3;
 }
@@ -144,7 +144,7 @@ table KineDriverTargetBendSTRoll
     bendS:float;
     bendT:float;
     roll:float;
-    base_space_bone:UnkTypeWithString;
+    base_space_bone:KDBUnkTypeWithString;
     neutral_rotate:Vec3; // NeutralRotate or CrossVector
     aim_vector:Vec3;
     up_vector:Vec3;
@@ -280,15 +280,15 @@ table OperatorUnion
 // field_5
 //--------------------------
 
-table Table5Entry
+table KDBTable5Entry
 {
     unk_index:uint;
     operators:[HashedString];
 }
 
-table Table5
+table KDBTable5
 {
-    entries:[Table5Entry];
+    entries:[KDBTable5Entry];
 }
 
 //--------------------------
@@ -300,7 +300,7 @@ table KineDriverBinary (fs_serializer)
     field_2:uint; // unknown, not used
     operators:[OperatorUnion];
     field_4:uint; // unknown, not used
-    field_5:Table5;
+    field_5:KDBTable5;
 }
 
 file_extension "kdb";
