@@ -1,0 +1,16 @@
+﻿// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table BonamikUnk_F7_F7_F2
+{
+    field_1:int; // enum
+    field_2:float = 1.0;
+}
+
+table BonamikUnk_F7_F7
+{
+    field_1:int;
+    field_2:[BonamikUnk_F7_F7_F2];
+}

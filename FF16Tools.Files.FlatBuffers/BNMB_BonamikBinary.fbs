@@ -1,4 +1,5 @@
 ﻿include "BaseStructs.fbs";
+include "BonamikSharedStructs.fbs";
 
 //--------------------------------------------------
 // For BNMB Files
@@ -317,18 +318,6 @@ table BonamikUnk_F7_F4
     field_3:BonamikUnk_F7_F4_F3;
     field_4:BonamikUnk_F7_F4_F4;
     field_5:float;
-}
-
-table BonamikUnk_F7_F7_F2
-{
-    field_1:int; // enum
-    field_2:float;
-}
-
-table BonamikUnk_F7_F7
-{
-    field_1:int;
-    field_2:[BonamikUnk_F7_F7_F2];
 }
 
 table BonamikUnk_F7

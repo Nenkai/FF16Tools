@@ -15,9 +15,12 @@
 
 	<ItemGroup>
 		<FlatSharpSchema Include="BaseStructs.fbs" />
+		<FlatSharpSchema Include="BonamikSharedStructs.fbs" />
+		
 		<FlatSharpSchema Include="BDYB_BodyBendingBinary.fbs" />
 		<FlatSharpSchema Include="BNMB_BonamikBinary.fbs" />
-		<FlatSharpSchema Include="DGLK_DialogueLookAt.fbs" />
+		<FlatSharpSchema Include="BNMS_BonamikSharedParamsBinary.fbs" />
+		<FlatSharpSchema Include="DGLK_DialogueLookAtBinary.fbs" />
 		<FlatSharpSchema Include="EYEB_EyeBlinkBinary.fbs" />
 		<FlatSharpSchema Include="HITR_HitReactionBinary.fbs" />
 		<FlatSharpSchema Include="LODB_LodBinary.fbs" />
