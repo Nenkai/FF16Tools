@@ -1,0 +1,63 @@
+﻿attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table LMDTable3
+{
+	field_1:string;
+	field_2:uint;
+}
+
+table LMDSharedKey
+{
+	field_1:uint;
+}
+
+table LMDSharedTable_F18_F2
+{
+	field_1:byte; // enum, <= 5
+	field_2:float;
+}
+
+table LMDSharedTable_F18
+{
+	field_1:LMDSharedKey;
+	field_2:[LMDSharedTable_F18_F2];
+}
+
+table LMDSharedTable
+{
+	field_1:LMDSharedKey;
+	field_2:float;
+	field_3:float;
+	field_4:bool;
+	field_5:bool;
+	field_6:float;
+	field_7:float;
+	field_8:bool;
+	field_9:bool;
+	field_10:bool;
+	field_11:bool;
+	field_12:bool;
+	field_13:bool;
+	field_14:float;
+	field_15:float;
+	field_16:float;
+	field_17:float;
+	field_18:[LMDSharedTable_F18]; // May need to be ordered by key
+}
+
+table LmdBinary (fs_serializer)
+{
+	field_1:short; // checked against 1?
+	unk_2:byte;
+	field_3:LMDTable3;
+	field_4:[LMDSharedTable];
+	field_5:[LMDSharedKey];
+	field_6:LMDSharedTable;
+	field_7:LMDSharedTable;
+}
+
+file_extension "lmb";
+file_identifier "LMDB";
+root_type LmdBinary;

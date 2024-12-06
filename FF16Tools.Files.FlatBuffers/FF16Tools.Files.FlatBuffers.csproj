@@ -18,6 +18,7 @@
 
 		<FlatSharpSchema Include="BNMB_BonamikBinary.fbs" />
 		<FlatSharpSchema Include="KDB_KineDriverBinary.fbs" />
+		<FlatSharpSchema Include="LMDB_LmdBinary.fbs" />
 		
 		<FlatSharpSchema Include="IKB/BonamikSharedStructs.fbs" />
 		<FlatSharpSchema Include="IKB/BDYB_BodyBendingBinary.fbs" />
