@@ -26,3 +26,8 @@ table UnkSharedIKBTable2
     field_3:UnkSharedIKBTable;
     field_4:UnkSharedIKBTable;
 }
+
+table LipsyncSharedKey
+{
+	field_1:uint;
+}

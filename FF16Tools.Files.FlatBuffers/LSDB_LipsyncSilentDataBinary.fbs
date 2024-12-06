@@ -1,0 +1,54 @@
+﻿include "BaseStructs.fbs";
+
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table LSDTable3_F2_F5
+{
+	field_1:LipsyncSharedKey;
+	field_2:int; // index?
+}
+
+table LSDTable3_F2
+{
+	field_1:string;
+	field_2:float;
+	field_3:float;
+	field_4:float;
+	field_5:[LSDTable3_F2_F5];
+}
+
+table LSDTable3_F6
+{
+	field_1:LipsyncSharedKey;
+	field_2:float;
+}
+
+table LSDTable3_F3
+{
+	field_1:float;
+	field_2:float;
+	field_3:float;
+	field_4:float;
+	field_5:[byte];
+	field_6:[LSDTable3_F6];
+}
+
+table LSDTable3
+{
+	field_1:string;
+	field_2:LSDTable3_F2;
+	field_3:[LSDTable3_F3];
+}
+
+table LipsyncSilentDataBinary (fs_serializer)
+{
+	field_1:short; // checked against 1?
+	unk_2:byte;
+	field_3:[LSDTable3];
+}
+
+file_extension "lsb";
+file_identifier "LSDB";
+root_type LipsyncSilentDataBinary;

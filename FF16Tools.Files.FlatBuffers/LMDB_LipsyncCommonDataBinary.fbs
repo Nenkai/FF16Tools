@@ -1,4 +1,6 @@
-﻿attribute "fs_serializer";
+﻿include "BaseStructs.fbs";
+
+attribute "fs_serializer";
 
 namespace FF16Tools.Files.FlatBuffers;
 
@@ -6,11 +8,6 @@ table LMDTable3
 {
 	field_1:string;
 	field_2:uint;
-}
-
-table LMDSharedKey
-{
-	field_1:uint;
 }
 
 table LMDSharedTable_F18_F2
@@ -21,13 +18,13 @@ table LMDSharedTable_F18_F2
 
 table LMDSharedTable_F18
 {
-	field_1:LMDSharedKey;
+	field_1:LipsyncSharedKey;
 	field_2:[LMDSharedTable_F18_F2];
 }
 
 table LMDSharedTable
 {
-	field_1:LMDSharedKey;
+	field_1:LipsyncSharedKey;
 	field_2:float;
 	field_3:float;
 	field_4:bool;
@@ -47,17 +44,17 @@ table LMDSharedTable
 	field_18:[LMDSharedTable_F18]; // May need to be ordered by key
 }
 
-table LmdBinary (fs_serializer)
+table LipsyncCommonDataBinary (fs_serializer)
 {
 	field_1:short; // checked against 1?
 	unk_2:byte;
 	field_3:LMDTable3;
 	field_4:[LMDSharedTable];
-	field_5:[LMDSharedKey];
+	field_5:[LipsyncSharedKey];
 	field_6:LMDSharedTable;
 	field_7:LMDSharedTable;
 }
 
 file_extension "lmb";
 file_identifier "LMDB";
-root_type LmdBinary;
+root_type LipsyncCommonDataBinary;
