@@ -1,9 +1,9 @@
-﻿include "BaseStructs.fbs";
+﻿include "../BaseStructs.fbs";
 
 // all FlatSharp FBS attributes start with the 'fs_' prefix.
 attribute "fs_serializer";
 
-namespace FF16Tools.Files.FlatBuffers;
+namespace FF16Tools.Files.FlatBuffers.IKB;
 
 table DGLKTable3_F6
 {
@@ -25,8 +25,8 @@ table DGLKTable3_F5
 
 table DGLKTable3
 {
-    field_1:uint; // fnv hash
-    field_2:uint; // fnv hash
+    unk_joint_1:uint; // fnv hash
+    unk_joint_2:uint; // fnv hash
     field_3:int;
     field_4:int;
     field_5:DGLKTable3_F5;

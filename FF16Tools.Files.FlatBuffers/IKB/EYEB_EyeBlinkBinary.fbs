@@ -1,13 +1,13 @@
-﻿include "BaseStructs.fbs";
+﻿include "../BaseStructs.fbs";
 
 // all FlatSharp FBS attributes start with the 'fs_' prefix.
 attribute "fs_serializer";
 
-namespace FF16Tools.Files.FlatBuffers;
+namespace FF16Tools.Files.FlatBuffers.IKB;
 
 table EyeBTable3
 {
-    field_1:uint; // fnv hash
+    eye_joint:uint; // fnv hash
     field_2:short;
 }
 
@@ -74,27 +74,19 @@ table EyeBTable5
 
 table EyeBTable6
 {
-    field_1:uint; // fnv hash
+    eye_puru_joint:uint; // fnv hash
     field_2:ushort;
-}
-
-table EyeBTable7
-{
-    field_1:bool = true;
-    field_2:float;
-    field_3:UnkSharedIKBTable;
-    field_4:UnkSharedIKBTable;
 }
 
 table EyeBlinkBinary (fs_serializer)
 {
     field_1:short;
-    unk_2:uint; // not used?
+    unk_2:byte; // not used?
     field_3:[EyeBTable3];
     field_4:[EyeBTable4];
     field_5:[EyeBTable5];
     field_6:[EyeBTable6];
-    field_7:EyeBTable7;
+    field_7:UnkSharedIKBTable2;
 }
 
 file_extension "ikb";

@@ -1,9 +1,9 @@
-﻿include "BaseStructs.fbs";
+﻿include "../BaseStructs.fbs";
 
 // all FlatSharp FBS attributes start with the 'fs_' prefix.
 attribute "fs_serializer";
 
-namespace FF16Tools.Files.FlatBuffers;
+namespace FF16Tools.Files.FlatBuffers.IKB;
 
 table LODBTable3_F3_F3Type1
 {
@@ -42,7 +42,7 @@ table LODBTable3_F3_F3Type3 // Bonamik related? see: 'Bonamik [%s: %u] %s: %s' s
     // - EyeballRight
     // - ArmFixupLeft
     // - ArmFixupRight
-    field_3:[uint];
+    field_3:[uint]; // fnv hash
 }
 
 table LODBTable3_F3_F3Type4

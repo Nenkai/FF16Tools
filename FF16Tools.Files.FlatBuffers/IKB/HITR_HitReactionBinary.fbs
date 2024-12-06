@@ -1,9 +1,9 @@
-﻿include "BaseStructs.fbs";
+﻿include "../BaseStructs.fbs";
 
 // all FlatSharp FBS attributes start with the 'fs_' prefix.
 attribute "fs_serializer";
 
-namespace FF16Tools.Files.FlatBuffers;
+namespace FF16Tools.Files.FlatBuffers.IKB;
 
 table HitBUnkSharedTableSub
 {
@@ -65,14 +65,14 @@ table HitBTable3_F10
 
 table HitBTable3_F11
 {
-    field_1:uint; // fnv hash
-    field_2:uint; // fnv hash
+    unk_joint_1:uint; // fnv hash
+    unk_joint_2:uint; // fnv hash
 }
 
 table HitBTable3
 {
-    field_1:uint; // fnv hash
-    field_2:uint; // fnv hash
+    unk_joint_1:uint; // fnv hash
+    unk_joint_2:uint; // fnv hash
     unk_3:byte;
     unk_4:byte;
     unk_5:byte;
@@ -122,14 +122,6 @@ table HitBTable7
     field_3:bool = true;
 }
 
-table HitBTable8
-{
-    field_1:bool = true;
-    field_2:float;
-    field_3:UnkSharedIKBTable;
-    field_4:UnkSharedIKBTable;
-}
-
 table HitReactionBinary (fs_serializer)
 {
     field_1:short;
@@ -139,7 +131,7 @@ table HitReactionBinary (fs_serializer)
     field_5:bool;
     field_6:HitBTable6;
     field_7:[HitBTable7];
-    field_8:HitBTable8;
+    field_8:UnkSharedIKBTable2;
 }
 
 file_extension "ikb";

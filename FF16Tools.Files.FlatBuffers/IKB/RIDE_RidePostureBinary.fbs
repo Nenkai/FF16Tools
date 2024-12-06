@@ -1,0 +1,51 @@
+﻿include "../BaseStructs.fbs";
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers.IKB;
+
+table RIDETable3
+{
+    field_1:uint;
+    field_2:uint;
+}
+
+table RIDETable4_F2_Sub
+{
+    field_1:float;
+    field_2:float;
+}
+
+table RIDETable4_F2
+{
+    field_1:[RIDETable4_F2_Sub];
+    field_2:[RIDETable4_F2_Sub];
+    field_3:bool;
+}
+
+table RIDETable4
+{
+    field_1:float;
+    field_2:RIDETable4_F2;
+}
+
+table RIDETable6
+{
+    field_1:RIDETable3;
+    field_2:RIDETable4;
+}
+
+table RidePostureBinary (fs_serializer)
+{
+    field_1:short; // checked against 1?
+    unk_2:byte; // not used?
+    field_3:RIDETable3;
+    field_4:RIDETable4;
+    field_5:UnkSharedIKBTable2;
+    field_6:[RIDETable6];
+}
+
+file_extension "ikb";
+file_identifier "RIDE";
+root_type RidePostureBinary;

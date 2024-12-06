@@ -18,3 +18,11 @@ table UnkSharedIKBTable
 	field_1:short; // enum, 0-5
 	field_2:uint;
 }
+
+table UnkSharedIKBTable2
+{
+    field_1:bool = true;
+    field_2:float;
+    field_3:UnkSharedIKBTable;
+    field_4:UnkSharedIKBTable;
+}

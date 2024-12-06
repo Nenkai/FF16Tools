@@ -1,10 +1,10 @@
-﻿include "BaseStructs.fbs";
+﻿include "../BaseStructs.fbs";
 include "BonamikSharedStructs.fbs";
 
 // all FlatSharp FBS attributes start with the 'fs_' prefix.
 attribute "fs_serializer";
 
-namespace FF16Tools.Files.FlatBuffers;
+namespace FF16Tools.Files.FlatBuffers.IKB;
 
 table BonamikSharedParamsBinary (fs_serializer)
 {

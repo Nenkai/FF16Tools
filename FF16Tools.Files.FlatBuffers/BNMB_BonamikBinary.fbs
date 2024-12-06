@@ -1,5 +1,5 @@
 ﻿include "BaseStructs.fbs";
-include "BonamikSharedStructs.fbs";
+include "IKB/BonamikSharedStructs.fbs";
 
 //--------------------------------------------------
 // For BNMB Files

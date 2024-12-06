@@ -1,21 +1,21 @@
-﻿include "BaseStructs.fbs";
+﻿include "../BaseStructs.fbs";
 
 // all FlatSharp FBS attributes start with the 'fs_' prefix.
 attribute "fs_serializer";
 
-namespace FF16Tools.Files.FlatBuffers;
+namespace FF16Tools.Files.FlatBuffers.IKB;
 
 table BdyBTable3
 {
-    field_1:uint; // fnv hash
-    field_2:uint; // fnv hash
-    field_3:uint; // fnv hash
+    unk_joint_1:uint; // fnv hash
+    unk_joint_2:uint; // fnv hash
+    unk_joint_3:uint; // fnv hash
     field_4:int;
     field_5:bool;
-    field_6:uint; // fnv hash
+    unk_joint_6:uint; // fnv hash
     field_7:bool;
     field_8:float;
-    field_9:uint; // fnv hash
+    unk_joint_9:uint; // fnv hash
     field_10:uint;
     field_11:float;
 }

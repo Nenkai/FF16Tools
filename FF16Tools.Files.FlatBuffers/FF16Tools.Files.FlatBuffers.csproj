@@ -15,15 +15,17 @@
 
 	<ItemGroup>
 		<FlatSharpSchema Include="BaseStructs.fbs" />
-		<FlatSharpSchema Include="BonamikSharedStructs.fbs" />
-		
-		<FlatSharpSchema Include="BDYB_BodyBendingBinary.fbs" />
+
 		<FlatSharpSchema Include="BNMB_BonamikBinary.fbs" />
-		<FlatSharpSchema Include="BNMS_BonamikSharedParamsBinary.fbs" />
-		<FlatSharpSchema Include="DGLK_DialogueLookAtBinary.fbs" />
-		<FlatSharpSchema Include="EYEB_EyeBlinkBinary.fbs" />
-		<FlatSharpSchema Include="HITR_HitReactionBinary.fbs" />
-		<FlatSharpSchema Include="LODB_LodBinary.fbs" />
 		<FlatSharpSchema Include="KDB_KineDriverBinary.fbs" />
+		
+		<FlatSharpSchema Include="IKB/BonamikSharedStructs.fbs" />
+		<FlatSharpSchema Include="IKB/BDYB_BodyBendingBinary.fbs" />
+		<FlatSharpSchema Include="IKB/BNMS_BonamikSharedParamsBinary.fbs" />
+		<FlatSharpSchema Include="IKB/DGLK_DialogueLookAtBinary.fbs" />
+		<FlatSharpSchema Include="IKB/EYEB_EyeBlinkBinary.fbs" />
+		<FlatSharpSchema Include="IKB/HITR_HitReactionBinary.fbs" />
+		<FlatSharpSchema Include="IKB/LODB_LodBinary.fbs" />
+		<FlatSharpSchema Include="IKB/RIDE_RidePostureBinary.fbs" />
 	</ItemGroup>
 </Project>
