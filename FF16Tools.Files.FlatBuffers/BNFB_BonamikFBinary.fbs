@@ -1,0 +1,117 @@
+﻿include "BaseStructs.fbs";
+
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers;
+
+table BonamikFTable3_F1_F1
+{
+    field_1:Vec3;
+    field_2:Vec3;
+    field_3:Vec4;
+    field_4:Vec3;
+    field_5:Vec3;
+    field_6:Vec3;
+    field_7:Vec3;
+    field_8:Unk10F;
+    field_9:Unk10F;
+    field_10:Unk10F;
+    field_11:Vec4;
+    field_12:Vec3;
+    field_13:Vec3;
+}
+
+table BonamikFShared
+{
+    field_1:Vec3;
+    field_2:Vec3;
+    field_3:Vec3;
+    field_4:Vec3;
+    field_5:float;
+}
+
+struct HashArray4
+{
+    hashes:[uint:4];
+}
+
+table BonamikFTable3_F1_F8
+{
+    field_1:HashArray4;
+    field_2:uint;
+}
+
+table BonamikFTable3_F1
+{
+    field_1:[BonamikFTable3_F1_F1];
+    field_2:[BonamikFShared];
+    field_3:[BonamikFShared];
+    field_4:[BonamikFShared];
+    field_5:[BonamikFShared];
+    field_6:[BonamikFShared];
+    field_7:[BonamikFShared];
+    field_8:BonamikFTable3_F1_F8;
+}
+
+table BonamikFTable3_F2
+{
+    field_1:Unk10F;
+    field_2:Unk10F;
+    field_3:Unk10F;
+    field_4:Unk10F;
+    field_5:Unk10F;
+    field_6:Unk10F;
+    field_7:Unk10F;
+}
+
+table BonamikFTable3_F3
+{
+    field_1:float;
+    field_2:float;
+    field_3:float;
+    field_4:uint;
+    field_5:uint;
+    field_6:uint;
+    field_7:float;
+    field_8:float;
+    field_9:float;
+}
+
+table BonamikFTable3_F4
+{
+    field_1:float;
+    field_2:float;
+    field_3:Vec3;
+}
+
+table BonamikFTable3_F6
+{
+    field_1:bool;
+    field_2:bool;
+    field_3:bool;
+    field_4:bool;
+    field_5:bool;
+    field_6:bool;
+}
+
+table BonamikFTable3
+{
+    field_1:BonamikFTable3_F1;
+    field_2:BonamikFTable3_F2;
+    field_3:BonamikFTable3_F3;
+    field_4:[BonamikFTable3_F4];
+    field_5:uint;
+    field_6:BonamikFTable3_F6;
+    field_7:[int]; // 48 entries max
+}
+
+table BonamikFBinary (fs_serializer)
+{
+    unk_1:byte; // unknown - does not appear to be used
+    unk_2:byte; // unknown - does not appear to be used
+    field_3:BonamikFTable3;
+}
+
+file_extension "bnfb";
+file_identifier "BNFB";
+root_type BonamikFBinary;

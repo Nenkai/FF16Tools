@@ -7,10 +7,23 @@ struct Vec2 {
 	x:float;
 	y:float;
 }
+
 struct Vec3 {
   x:float;
   y:float;
   z:float;
+}
+
+struct Vec4 {
+  x:float;
+  y:float;
+  z:float;
+  w:float;
+}
+
+struct Unk10F
+{
+	values:[float:10];
 }
 
 table UnkSharedIKBTable
