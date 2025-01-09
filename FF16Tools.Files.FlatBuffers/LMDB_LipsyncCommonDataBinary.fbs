@@ -4,6 +4,9 @@ attribute "fs_serializer";
 
 namespace FF16Tools.Files.FlatBuffers;
 
+// -> This schema should be field-wise matching.
+// Though it won't be 1:1 or file size matching due to compiler changes.
+
 table LMDTable3
 {
 	field_1:string;

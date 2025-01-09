@@ -1,0 +1,87 @@
+﻿include "../BaseStructs.fbs";
+
+// all FlatSharp FBS attributes start with the 'fs_' prefix.
+attribute "fs_serializer";
+
+namespace FF16Tools.Files.FlatBuffers.IKB;
+
+table DGLKTable3_F6
+{
+    field_1:float = 1.0;
+    field_2:float = 1.0;
+}
+
+table DGLKTable3_F5
+{
+    field_1:uint; // fnv hash
+    field_2:uint; // fnv hash
+    field_3:uint; // fnv hash
+    field_4:bool;
+    field_5:float;
+    field_6:bool;
+    field_7:float;
+    field_8:[DGLKTable3_F6];
+}
+
+table DGLKTable3
+{
+    unk_joint_1:uint; // fnv hash
+    unk_joint_2:uint; // fnv hash
+    field_3:int;
+    field_4:int;
+    field_5:DGLKTable3_F5;
+    field_6:[DGLKTable3_F6];
+}
+
+table DGLKTable4_F2
+{
+    field_1:float;
+    field_2:float;
+    field_3:float;
+    field_4:float;
+}
+
+table DGLKTable4_F9
+{
+    field_1:float;
+    field_2:bool;
+    field_3:bool = true;
+    field_4:bool;
+    field_5:uint; // fnv hash
+    field_6:bool;
+    field_7:float = 0.8;
+}
+
+table DGLKTable4
+{
+    field_1:float;
+    field_2:DGLKTable4_F2;
+    field_3:bool; // is this even read?
+    field_4:bool;
+    field_5:bool;
+    field_6:float;
+    field_7:bool;
+    field_8:bool;
+    field_9:DGLKTable4_F9;
+}
+
+table DGLKTable5
+{
+    field_1:float; // is this even read?
+    field_2:float;
+    field_3:UnkSharedIKBTable;
+    field_4:UnkSharedIKBTable;
+}
+
+table DialogueLookAtBinary (fs_serializer)
+{
+    field_1:short; // checked against 1?
+    unk_2:byte; // not used?
+    field_3:DGLKTable3;
+    field_4:DGLKTable4;
+    field_5:DGLKTable5;
+}
+
+file_extension "ikb";
+file_identifier "DGLK";
+root_type PBLookAtBinary;

@@ -154,7 +154,7 @@ table BonamikBody
     field_30:string; // no file uses this but data type verified in code
 
     // BIG WARNING: There's two strings after this array (in the binary) that nothing seems to point to AT ALL
-    // My guess? field_29 and 30 points to them, but the vtable values are 0 aka values are null - were they wiped?
+    // My guess? field_29 and 30 points to them, but the vtable offsets are 0 aka values are null - were their offsets wiped?
     col_id:[int]; 
 
     field_32:bool;
@@ -340,7 +340,7 @@ table BonamikUnk_F22
     field_5:bool = true;
 }
 
-table BonamikUnk
+table BonamikUnk (original_order)
 {
     // All these + sub structs checked in code
     field_1:BonamikBody_F28; // type verified in code
@@ -369,7 +369,7 @@ table BonamikUnk
     field_24:bool;
     field_25:bool = true;
     field_26:bool = true;
-    field_27:bool; // game doesn't parse it?
+    field_27:bool = true; // game doesn't parse it?
     field_28:float = 0.01;
 }
 
