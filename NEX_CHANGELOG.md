@@ -2,6 +2,74 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.8, FF16Tools.Files 1.0.11
+
+#### `dlcflags`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Comment`
+* `Unk3` -> `ItemUnionType`
+* `Unk4` -> `ItemUnionId`
+* `Unk5` -> `EntitlementUnionType`
+* `Unk6` -> `EntitlementUnionId`
+
+#### `dlcitem`
+* `ItemUnionType` -> `int` -> `short`
+* `EntitlementUnionType` -> `int` -> `short`
+
+#### `patchdlcversion`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `IsActive`
+
+#### `dlcflags`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `Name`
+* `Unk3` -> `Description`
+* `Unk4` -> `QuestSequenceId`
+* `Unk5` -> `QuestSequenceIdKey2_1`
+* `Unk6` -> `QuestSequenceIdKey2_2`
+
+#### `replay`
+* `Unk3` -> `QuestId`
+
+#### `dlcflags`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `UserSituationId1`
+* `Unk3` -> `UnkId2`
+* `Unk4` -> `Comment`
+
+#### `skeletonparam`
+* `Unk1` -> `DLCFlags`
+* `Unk2` -> `LodIKBFiles`
+* `Unk3` -> `MotionLayerIds1`
+* `Unk4` -> `MotionLayerIds2`
+* `Unk5` -> `LegIKFile`
+* `Unk6` -> `LookAtIKFile`
+* `Unk7` -> `KineDriverFiles`
+* `Unk8` -> `RagdollParamId`
+* `Unk9` -> `LeanIKBFiles`
+* `Unk10` -> `BonamikSetupFile`
+* `Unk11` -> `ParkourIKBFile`
+* `Unk12` -> `HitReactionIKBFile`
+* `Unk13` -> `EyeBlinkIKBFile`
+* `Unk14` -> `BodyBendingIKBFile`
+* `Unk15` -> `UnkFile15`
+* `Unk16` -> `BonamikSharedParamsIKBFile`
+* `Unk17` -> `DialogueLookAtIKBFile`
+* `Unk18` -> `RiderPostureIKBFile`
+* `Unk19` -> `Comment`
+* `Unk20` -> `SourceCharaIdFolder`
+* `Unk21` -> `int` -> `byte`
+
+#### `weaponbase`
+* `Unk7` -> `HitSoundSmall`
+* `Unk8` -> `HitSoundMed`
+* `Unk9` -> `HitSoundLarge`
+* `Unk10` -> `UnkUnused10`
+* `Unk11` -> `UnkUnused11`
+* `Unk12` -> `Comment1`
+* `Unk13` -> `Comment2`
+* `Unk14` -> `WeaponAttackSheathId`
+
 ## CLI 1.5.7, FF16Tools.Files 1.0.10
 
 #### `attackparam`

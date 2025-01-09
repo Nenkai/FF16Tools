@@ -12,9 +12,9 @@
     <Description>Library for handling various FF16 file formats.</Description>
     <Copyright>Copyright (c) Nenkai 2024</Copyright>
     <RepositoryUrl>https://github.com/Nenkai/FF16Tools</RepositoryUrl>
-    <AssemblyVersion>1.0.10</AssemblyVersion>
-    <FileVersion>1.0.10</FileVersion>
-    <Version>1.0.10</Version>
+    <AssemblyVersion>1.0.11</AssemblyVersion>
+    <FileVersion>1.0.11</FileVersion>
+    <Version>1.0.11</Version>
   </PropertyGroup>
 
   <ItemGroup>
