@@ -7,13 +7,10 @@ use_base_row_id|false
 // ^ ffxvi.exe steam 1.0.1 - 1403FEA57
 
 add_column|DLCFlags|int
-
-// Is this used? saw something.
-// ffxvi.exe steam 1.0.1 - 1403FEB77
 add_column|Comment|string
 
 // If 0 = no show
-add_column|Unk3|int
+add_column|QuestId|int
 add_column|GameMapId|int
 add_column|GameMapIdKey2|int
 add_column|LayoutNamedInstanceId|int

@@ -74,3 +74,6 @@ add_column|Unk40|byte
 add_column|Unk41|byte
 add_column|Unk42|byte
 add_column|Unk43|byte
+
+//set_comment|20003|350099||Garuda Eikon Fight Start Cutscene
+//set_comment|20003|360099||Garuda Eikon Fight End Cutscene

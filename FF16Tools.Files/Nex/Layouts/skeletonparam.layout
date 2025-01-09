@@ -2,23 +2,46 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string[]
-add_column|Unk3|int[]
-add_column|Unk4|int[]
-add_column|Unk5|string
-add_column|Unk6|string
-add_column|Unk7|string[]
-add_column|Unk8|int
-add_column|Unk9|string
-add_column|Unk10|string
-add_column|Unk11|string
-add_column|Unk12|string
-add_column|Unk13|string
-add_column|Unk14|string
-add_column|Unk15|string
-add_column|Unk16|string
-add_column|Unk17|string
-add_column|Unk18|string
-add_column|Unk19|string
-add_column|Unk20|int
+// NOTE: File names must not be longer than 63 characters (buffer = 64 bytes)
+
+// Useful funcs (1.0.1 steam ffxvi.exe)
+// Table data fetcher: 48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 44 24 ? 48 8B 05
+// Loader: 48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 4D 8B E8
+// Dispatcher for each file loader: 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 8B F9 0F B6 F2
+
+add_column|DLCFlags|int
+add_column|LodIKBFiles|string[]
+
+// 12 entries max
+add_column|MotionLayerIds1|int[]
+
+// 12 entries max, id 40 is hardcoded to read a file with identifier PADD?
+add_column|MotionLayerIds2|int[]
+
+add_column|LegIKFile|string
+add_column|LookAtIKFile|string
+
+// 4 entries max
+add_column|KineDriverFiles|string[]
+add_column|RagdollParamId|int
+add_column|LeanIKBFiles|string
+add_column|BonamikSetupFile|string
+add_column|ParkourIKBFile|string
+add_column|HitReactionIKBFile|string
+add_column|EyeBlinkIKBFile|string
+add_column|BodyBendingIKBFile|string
+
+// BonamikSetupFile must be present to load for the next two fields
+// appears unused? Is this also supposed to load a shared params?
+// See: 140087912 (ffxvi.exe 1.0.1 steam)
+add_column|UnkFile15|string
+add_column|BonamikSharedParamsIKBFile|string
+
+add_column|DialogueLookAtIKBFile|string
+add_column|RiderPostureIKBFile|string
+
+add_column|Comment|string
+add_column|SourceCharaIdFolder|ushort
+add_column|Unk21|byte
+// <implicit 1 byte padding>
+
