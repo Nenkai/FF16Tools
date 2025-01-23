@@ -25,5 +25,5 @@ public class PackBuildOptions
     }
 
     public bool Encrypt { get; set; }
-
+    public bool Compress { get; set; }
 }

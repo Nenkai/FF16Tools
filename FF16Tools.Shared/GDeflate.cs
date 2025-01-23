@@ -25,7 +25,7 @@ public class GDeflate
             fixed (byte* buffer = compressedData)
             fixed (byte* buffer2 = decompressedData)
             {
-                _codec.DecompressBuffer((nint)buffer, (int)compressedData.Length, (nint)buffer2, decompressedData.Length, decompressedData.Length);
+                _codec.DecompressBuffer((nint)buffer, compressedData.Length, (nint)buffer2, decompressedData.Length, decompressedData.Length);
             }
         }
     }

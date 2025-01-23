@@ -20,8 +20,8 @@ using Syroot.BinaryData.Memory;
 using Syroot.BinaryData;
 
 using FF16Tools.Hashing;
-using FF16Tools.Crypto;
 using FF16Tools.Shared;
+using FF16Tools.Pack.Crypto;
 
 namespace FF16Tools.Pack.Packing;
 
@@ -153,9 +153,9 @@ public class FF16PackBuilder
     private void BuildSharedChunks()
     {
         int i = 0;
-        foreach (var file in _packFileTasks)
+        foreach (FileTask file in _packFileTasks)
         {
-            if (!IsCompressionForFileSuggested(file.GamePath) || file.PackFile.DecompressedFileSize == 0)
+            if (!_options.Compress || !IsCompressionForFileSuggested(file.GamePath) || file.PackFile.DecompressedFileSize == 0)
                 continue;
 
             if (file.PackFile.DecompressedFileSize >= FF16Pack.MIN_FILE_SIZE_FOR_MULTIPLE_CHUNKS)
@@ -249,7 +249,7 @@ public class FF16PackBuilder
         _lastMultiChunkHeaderOffset = FF16Pack.HEADER_SIZE + (uint)(_packFileTasks.Count * FF16PackFile.GetSize());
 
         // Start writing the files first
-        fs.Position = (long)headerLength;
+        fs.Position = headerLength;
 
         for (int i = 0; i < _sharedChunksTasks.Count; i++)
         {
@@ -274,8 +274,9 @@ public class FF16PackBuilder
     {
         _logger?.LogInformation("PACK: Writing header.");
 
-        if (_options.Encrypt)
-            _logger?.LogInformation("PACK: Header encryption is enabled.");
+        _logger?.LogInformation("PACK: Compression is {compressionEnabledStr}.", _options.Compress ? "enabled" : "disabled");
+        _logger?.LogInformation("PACK: Header encryption is {encryptionEnabledStr}.", _options.Encrypt ? "enabled" : "disabled");
+
         if (!string.IsNullOrEmpty(_options.Name))
             _logger?.LogInformation("PACK: Setting internal pack name to '{name}'.", _options.Name);
 
@@ -426,7 +427,7 @@ public class FF16PackBuilder
                 int thisSize = (int)Math.Min(remBytes, 0x80000);
 
                 Memory<byte> slice = buffer.Memory.Slice(0, thisSize);
-                await fileStream.ReadAsync(slice, ct);
+                await fileStream.ReadExactlyAsync(slice, ct);
                 crc.Append(slice.Span);
 
                 packStream.Position = (long)task.PackFile.ChunkDefOffset + 8 + (i * sizeof(int));
@@ -496,7 +497,7 @@ public class FF16PackBuilder
         {
             int thisSize = (int)Math.Min(len, 0x20000);
             Memory<byte> slice = buffer.Memory.Slice(0, thisSize);
-            await inputFile.ReadAsync(slice, ct);
+            await inputFile.ReadExactlyAsync(slice, ct);
             await output.WriteAsync(slice, ct);
             crc.Append(slice.Span);
             len -= thisSize;

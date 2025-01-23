@@ -18,9 +18,8 @@ using CommunityToolkit.HighPerformance;
 using Syroot.BinaryData;
 
 using FF16Tools.Hashing;
-using FF16Tools.Crypto;
 using FF16Tools.Shared;
-using System.Collections.ObjectModel;
+using FF16Tools.Pack.Crypto;
 
 namespace FF16Tools.Pack;
 
@@ -510,7 +509,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
                 int cnt = Math.Min(size, buffer.Length);
                 Memory<byte> slice = buffer.Memory.Slice(0, cnt);
 
-                await _stream.ReadAsync(slice, ct);
+                await _stream.ReadExactlyAsync(slice, ct);
                 await outputStream.WriteAsync(slice, ct);
 
                 crc.Append(slice.Span);
@@ -547,7 +546,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             _stream.Position = (long)(packFile.DataOffset + chunkOffsets[i]);
             Memory<byte> compSlice = compBuffer.Memory.Slice(0, chunkCompSize);
             Memory<byte> decompSlice = decompBuffer.Memory.Slice(0, chunkDecompSize);
-            await _stream.ReadAsync(compSlice, ct);
+            await _stream.ReadExactlyAsync(compSlice, ct);
 
             GDeflate.Decompress(compSlice.Span, decompSlice.Span);
 
@@ -569,7 +568,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         Memory<byte> compSlice = compBuffer.Memory.Slice(0, (int)packFile.CompressedFileSize);
         Memory<byte> decompSlice = decompBuffer.Memory.Slice(0, (int)packFile.DecompressedFileSize);
 
-        await _stream.ReadAsync(compSlice, ct);
+        await _stream.ReadExactlyAsync(compSlice, ct);
 
         GDeflate.Decompress(compSlice.Span, decompBuffer.Span.Slice(0, (int)packFile.DecompressedFileSize));
 
@@ -583,17 +582,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     private async ValueTask ExtractFileFromSharedChunkAsync(FF16PackFile packFile, Stream outputStream, string gamePath, CancellationToken ct = default)
     {
         FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffset];
-        if (!_cachedChunks.Contains(chunk))
-        {
-            if (_cachedChunks.Count >= 20)
-            {
-                var chunkToRemove = _cachedChunks.First();
-                ArrayPool<byte>.Shared.Return(chunkToRemove.CachedBuffer);
-                chunkToRemove.CachedBuffer = null;
-
-                _cachedChunks.Remove(chunkToRemove);
-            }
-        }
+        CacheSharedChunkIfNeeded(chunk);
 
         _stream.Position = (long)chunk.DataOffset;
 
@@ -606,7 +595,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
             try
             {
-                await _stream.ReadAsync(compSlice, ct);
+                await _stream.ReadExactlyAsync(compSlice, ct);
 
                 GDeflate.Decompress(compSlice.Span,
                     decompressedBuffer.AsSpan(0, (int)chunk.DecompressedSize));
@@ -630,6 +619,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         _cachedChunks.Add(chunk);
     }
+
     #endregion
 
     #region Private Sync
@@ -670,7 +660,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
                 int cnt = Math.Min(size, buffer.Length);
                 Memory<byte> slice = buffer.Memory.Slice(0, cnt);
 
-                _stream.Read(slice.Span);
+                _stream.ReadExactly(slice.Span);
                 outputStream.Write(slice.Span);
 
                 crc.Append(slice.Span);
@@ -705,7 +695,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             _stream.Position = (long)(packFile.DataOffset + chunkOffsets[i]);
             Memory<byte> compSlice = compBuffer.Memory.Slice(0, chunkCompSize);
             Memory<byte> decompSlice = decompBuffer.Memory.Slice(0, chunkDecompSize);
-            _stream.Read(compSlice.Span);
+            _stream.ReadExactly(compSlice.Span);
 
             GDeflate.Decompress(compSlice.Span, decompSlice.Span);
 
@@ -727,7 +717,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         Memory<byte> compSlice = compBuffer.Memory.Slice(0, (int)packFile.CompressedFileSize);
         Memory<byte> decompSlice = decompBuffer.Memory.Slice(0, (int)packFile.DecompressedFileSize);
 
-        _stream.Read(compSlice.Span);
+        _stream.ReadExactly(compSlice.Span);
 
         GDeflate.Decompress(compSlice.Span, decompBuffer.Span.Slice(0, (int)packFile.DecompressedFileSize));
 
@@ -741,17 +731,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     private void ExtractFileFromSharedChunk(FF16PackFile packFile, Stream outputStream, string gamePath)
     {
         FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffset];
-        if (!_cachedChunks.Contains(chunk))
-        {
-            if (_cachedChunks.Count >= 20)
-            {
-                var chunkToRemove = _cachedChunks.First();
-                ArrayPool<byte>.Shared.Return(chunkToRemove.CachedBuffer);
-                chunkToRemove.CachedBuffer = null;
-
-                _cachedChunks.Remove(chunkToRemove);
-            }
-        }
+        CacheSharedChunkIfNeeded(chunk);
 
         _stream.Position = (long)chunk.DataOffset;
 
@@ -764,7 +744,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
             try
             {
-                _stream.Read(compSlice.Span);
+                _stream.ReadExactly(compSlice.Span);
 
                 GDeflate.Decompress(compSlice.Span,
                     decompressedBuffer.AsSpan(0, (int)chunk.DecompressedSize));
@@ -805,13 +785,33 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         throw new InvalidDataException($"Hash for file '{path}' did not match.");
     }
 
-    public void Dispose()
+    private void CacheSharedChunkIfNeeded(FF16PackDStorageChunk chunk)
+    {
+        if (!_cachedChunks.Contains(chunk))
+        {
+            if (_cachedChunks.Count >= 20)
+            {
+                var chunkToRemove = _cachedChunks.First();
+                ArrayPool<byte>.Shared.Return(chunkToRemove.CachedBuffer);
+                chunkToRemove.CachedBuffer = null;
+
+                _cachedChunks.Remove(chunkToRemove);
+            }
+        }
+    }
+
+    private void ReturnCachedChunks()
     {
         foreach (var cachedChunk in _cachedChunks)
         {
             if (cachedChunk.CachedBuffer is not null)
                 ArrayPool<byte>.Shared.Return(cachedChunk.CachedBuffer);
         }
+    }
+
+    public void Dispose()
+    {
+        ReturnCachedChunks();
 
         ((IDisposable)_stream)?.Dispose();
         GC.SuppressFinalize(this);
@@ -819,14 +819,11 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        foreach (var cachedChunk in _cachedChunks)
-        {
-            if (cachedChunk.CachedBuffer is not null)
-                ArrayPool<byte>.Shared.Return(cachedChunk.CachedBuffer);
-        }
+        ReturnCachedChunks();
 
         if (_stream is not null)
             await _stream.DisposeAsync();
         GC.SuppressFinalize(this);
     }
+
 }

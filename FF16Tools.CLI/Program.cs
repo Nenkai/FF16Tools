@@ -256,6 +256,7 @@ public class Program
 
         var builder = new FF16PackBuilder(new PackBuildOptions()
         {
+            Compress = !verbs.NoCompress,
             Encrypt = verbs.Encrypt,
             Name = verbs.Name,
         }, _loggerFactory);
@@ -726,6 +727,9 @@ public class PackVerbs
 
     [Option('n', "name", HelpText = "Optional. This overrides the internal parent path specified by the archive (normally in the .path file).")]
     public string Name { get; set; }
+
+    [Option("no-compress", HelpText = "Optional. Whether to not compress data.")]
+    public bool NoCompress { get; set; }
 
     [Option('e', "encrypt", HelpText = "Optional. Whether to encrypt the header. Defaults to no.")]
     public bool Encrypt { get; set; }
