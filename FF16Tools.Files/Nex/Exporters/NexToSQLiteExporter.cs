@@ -174,8 +174,12 @@ public class NexToSQLiteExporter : IDisposable
                     if (column.Type == NexColumnType.CustomStructArray)
                         sb.Append('\'');
 
-                    string cell = CellToSql(tableName, column.Name, cells[i], columnLayout, column);
-                    sb.Append(cell);
+                    object cell = cells[i];
+                    if (column.Name == "Comment" && columnLayout.RowComments.TryGetValue((row.Key, row.Key2, row.Key3), out string val))
+                        cell = $"(FF16Tools): {val}";
+
+                    string cellStr = CellToSql(tableName, column.Name, cell, columnLayout, column);
+                    sb.Append(cellStr);
 
                     if (column.Type == NexColumnType.CustomStructArray)
                         sb.Append('\'');

@@ -62,3 +62,78 @@ add_column|Unk30|int
 add_column|Unk31|byte
 add_column|Unk32|byte
 // <implicit 2 bytes padding>
+
+//////////////////////////////////////////////////////
+// Comments
+//////////////////////////////////////////////////////
+set_comment|100000|0||Dhalmekian Region
+set_comment|101000|0||Kostnice
+set_comment|102000|0||Drake's Fang	
+set_comment|102100|0||Drake's Fang - Titan battle stage
+set_comment|102200|0||Drake's Fang - Titan Lost battle stage
+set_comment|103000|0||Crystal Road
+set_comment|104000|0||The Crystalline Dominion
+set_comment|104200|0||The Crystalline Dominion - The Remnants (the city messed up by the crystal)
+set_comment|104300|0||The Crystalline Dominion - Boss 1st phase stage (Aerial area around the big crystal; spawned as Ifrit)
+set_comment|104310|0||The Crystalline Dominion - Boss 2nd phase stage (Battle stage inside the crystal)
+set_comment|104400|0||The Crystalline Dominion - Boss 3rd phase stage (Outer space)
+set_comment|106000|0||The Free Cities of Kanver
+set_comment|106100|0||The Ironworks
+set_comment|108000|0||The Naldia Narrow - Ships
+set_comment|108100|0||The Naldia Narrow - Sea floor
+set_comment|190000|0||The Nysa Defile - Map entrance
+set_comment|191000|0||The Nysa Defile - After the flashback/tutorial
+set_comment|200000|0||Sanbreque Region
+set_comment|201000|0||The Greatwood
+set_comment|202000|0||Caer Norvent
+set_comment|203000|0||The Eye of the Tempest
+set_comment|203100|0||The Eye of the Tempest - Eikon battle stage #1
+set_comment|203110|0||The Eye of the Tempest - Eikon battle stage #2
+set_comment|204000|0||The Kingsfall
+set_comment|205000|0||Drake's Head
+set_comment|205100|0||Drake's Head - Typhoon Battle Arena
+set_comment|205110|0||Drake's Head - Typhoon Battle Arena (same as 205100, but spawned as Ifrit)
+set_comment|300000|0||Rosaria Region
+set_comment|301000|0||Phoenix Gate Ruins
+set_comment|301100|0||Phoenix Gate Ruins - Eikon/Fake Clive battle field
+set_comment|301200|0||Phoenix Gate Ruins (The only difference seems in lighting; otherwise same as 301000)
+set_comment|302000|0||Drake's Breath - Outside
+set_comment|302100|0||Drake's Breath - Inside
+set_comment|303000|0||Rosalith - Dungeon
+set_comment|303010|0||Rosalith - Dungeon castle map? (Spawned outside the castle; the game entered in a loop/softlocked, so idk)
+set_comment|304000|0||The Sagespire - Map entrance
+set_comment|304100|0||The Sagespire - Top (Spawned outside of the last boss room)
+set_comment|304200|0||The Sagespire - Boss battle stage (the cool one)
+set_comment|304300|0||The Sagespire - The Lower Ring
+set_comment|304400|0||The Sagespire - The Upper Ring
+set_comment|390000|0||Rosalith Castle (Spawned as young Clive, at the training area)
+set_comment|391000|0||Stillwind
+set_comment|392000|0||Phoenix Gate (Spawned as child Joshua)
+set_comment|393000|0||Phoenix Gate (Spawned stuck in a wall; menu was the Eikon version, so should be for the first Eikon fight)
+set_comment|393010|0||Phoenix Gate - Apodytery
+set_comment|400000|0||Waloed Region
+set_comment|401000|0||Reverie - Map entrance	
+set_comment|401100|0||Reverie - Ascension (Spawned at elevator stage before the boss fight and was stuck there; should be last elevator + top of the tower)
+set_comment|402000|0||Stonhyrr
+set_comment|402100|0||The Interdimensional Rift
+set_comment|403000|0||Origin
+set_comment|403010|0||Origin - The Core
+set_comment|403200|0||Origin - Final boss 1st phase stage
+set_comment|403210|0||Origin - Final boss 2nd phase stage (eikon battle)
+set_comment|403220|0||Origin - Final boss 3rd phase stage
+set_comment|450000|0||Mysidia Region
+set_comment|451000|0||The Surge - Normal (time frozen)
+set_comment|452000|0||The Aire of Hours
+set_comment|453000|0||The Surge - Dungeon
+set_comment|454000|0||The Surge - Eikon battle stage: Water cyclone (the one where you're freefalling)
+set_comment|455000|0||The Surge - Eikon battle stage: Sea surface
+set_comment|500400|0||Castle/fortress part at sunset (Should be the fortress at Nysa Defile)
+set_comment|501100|0||Duke Rosfield's bedroom
+set_comment|501500|0||Duke Rosfield's bedroom (Same as 501100)	
+set_comment|501600|0||Phoenix Gate (Night, after the attack)	
+set_comment|501700|0||Phoenix Gate (Same as 501600)	
+set_comment|501800|0||Phoenix Gate (Same as 501600)	
+set_comment|502700|0||Phoenix Gate (Day/Raining, cutscene where Clive is taken away)		
+set_comment|503300|0||The Nysa Defile (was just a short rocky, canyon-like corridor; the event maps seem more or less ordered, so I think that's it)	
+set_comment|503400|0||Central Storm Deadlands (Rocky path to the 1st hideout, used the 1st time you go there)	
+set_comment|504700|0||Caer Norvent - Interrogation room

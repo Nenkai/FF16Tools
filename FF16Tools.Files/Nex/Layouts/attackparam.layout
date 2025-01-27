@@ -2,7 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 
 // Checked against hardcoded numbers i.e 3
 add_column|UnkType2|int
@@ -16,7 +16,7 @@ add_column|UnkType4|int
 add_column|Unk5|int
 add_column|Unk6|int
 add_column|Unk7|float
-add_column|Unk8|string
+add_column|HitSoundPath|string
 add_column|Unk9|int
 add_column|Unk10|int
 add_column|Unk11|int
@@ -75,7 +75,7 @@ add_column|UnkType51|int
 add_column|Unk52|int
 add_column|Unk53|int
 add_column|Unk54|int
-add_column|Unk55|string
+add_column|Comment|string
 add_column|Unk56|int
 add_column|Unk57|int
 add_column|Unk58|int
@@ -139,3 +139,179 @@ add_column|Unk76_1|byte
 add_column|Unk76_2|byte
 add_column|Unk76_3|byte
 add_column|Unk76_4|byte
+
+//////////////////////////////////////////////////////
+// Comments
+//////////////////////////////////////////////////////
+
+set_comment|112|0||Odin Action ???
+set_comment|113|0||Odin Action ???
+
+set_comment|242|0||Gungnir Upgraded
+set_comment|243|0||Gungnir Upgraded
+set_comment|244|0||Gungnir Upgraded
+set_comment|245|0||Gungnir Upgraded
+set_comment|246|0||Gungnir Upgraded
+set_comment|247|0||Gungnir Upgraded
+set_comment|248|0||Gungnir Upgraded
+set_comment|249|0||Gungnir Launcher/Cancel Upgraded
+set_comment|292|0||Gungnir Launcher/Cancel Basic
+set_comment|293|0||Gungnir Basic
+set_comment|294|0||Gungnir Basic
+set_comment|295|0||Gungnir Basic
+set_comment|296|0||Gungnir Basic
+set_comment|297|0||Gungnir Basic
+set_comment|298|0||Gungnir Basic
+set_comment|299|0||Gungnir Basic
+set_comment|300|0||Flash of Steel
+set_comment|301|0||Flash of Steel
+
+set_comment|406|0||Heaven's Cloud Basic
+set_comment|407|0||Heaven's Cloud Basic
+set_comment|408|0||Heaven's Cloud Basic
+set_comment|409|0||Heaven's Cloud Basic
+set_comment|410|0||Heaven's Cloud Basic
+
+set_comment|412|0||Zantetsuken Lvl 1
+set_comment|413|0||Zantetsuken Lvl 1
+set_comment|414|0||Zantetsuken Lvl 1
+set_comment|415|0||Zantetsuken Lvl 1
+set_comment|416|0||Zantetsuken Lvl 1
+set_comment|418|0||Zantetsuken Lvl 2
+set_comment|419|0||Zantetsuken Lvl 2
+set_comment|420|0||Zantetsuken Lvl 2
+set_comment|421|0||Zantetsuken Lvl 2
+set_comment|422|0||Zantetsuken Lvl 2
+set_comment|423|0||Zantetsuken Lvl 2
+set_comment|425|0||Zantetsuken Lvl 3
+set_comment|426|0||Zantetsuken Lvl 3
+set_comment|427|0||Zantetsuken Lvl 3
+set_comment|428|0||Zantetsuken Lvl 3
+set_comment|429|0||Zantetsuken Lvl 3
+set_comment|430|0||Zantetsuken Lvl 3
+set_comment|431|0||Zantetsuken Lvl 3
+set_comment|432|0||Zantetsuken Lvl 3
+set_comment|433|0||Zantetsuken Lvl 3
+set_comment|434|0||Zantetsuken Lvl 3
+set_comment|435|0||Zantetsuken Lvl 3
+set_comment|437|0||Zantetsuken Lvl 4
+set_comment|438|0||Zantetsuken Lvl 4
+set_comment|439|0||Zantetsuken Lvl 4
+set_comment|440|0||Zantetsuken Lvl 4
+set_comment|441|0||Zantetsuken Lvl 4
+set_comment|442|0||Zantetsuken Lvl 4
+set_comment|443|0||Zantetsuken Lvl 4
+set_comment|444|0||Zantetsuken Lvl 4
+set_comment|445|0||Zantetsuken Lvl 4
+set_comment|446|0||Zantetsuken Lvl 4
+set_comment|447|0||Zantetsuken Lvl 4
+set_comment|448|0||Zantetsuken Lvl 4
+set_comment|450|0||Zantetsuken Lvl 5
+set_comment|451|0||Zantetsuken Lvl 5
+set_comment|452|0||Zantetsuken Lvl 5
+set_comment|453|0||Zantetsuken Lvl 5
+set_comment|454|0||Zantetsuken Lvl 5
+set_comment|455|0||Zantetsuken Lvl 5
+
+set_comment|478|0||Dark Downthrust
+set_comment|479|0||Dark Downthrust
+set_comment|480|0||Dark Downthrust
+set_comment|481|0||Dark Downthrust
+
+set_comment|482|0||Odin Action ???
+set_comment|483|0||Odin Action ???
+
+set_comment|486|0||Odin Ground Combo
+set_comment|487|0||Odin Ground Combo
+set_comment|488|0||Odin Ground Combo
+set_comment|489|0||Odin Ground Combo
+set_comment|490|0||Odin Ground Combo
+set_comment|491|0||Odin Ground Combo
+set_comment|492|0||Odin Ground Combo
+set_comment|493|0||Odin Ground Combo
+set_comment|494|0||Odin Ground Combo
+set_comment|495|0||Odin Ground Combo
+
+set_comment|497|0||Odin Aerial Combo
+set_comment|498|0||Odin Aerial Combo
+
+
+set_comment|648|0||Heaven's Cloud Upgraded
+set_comment|649|0||Heaven's Cloud Upgraded
+set_comment|650|0||Heaven's Cloud Upgraded
+set_comment|651|0||Heaven's Cloud Upgraded
+set_comment|652|0||Heaven's Cloud Upgraded
+
+set_comment|657|0||Odin Action ???
+set_comment|658|0||Odin Action ???
+
+set_comment|703|0||Steel Counter
+set_comment|704|0||Steel Counter
+set_comment|705|0||Steel Counter
+set_comment|706|0||Steel Counter
+set_comment|707|0||Steel Counter
+set_comment|708|0||Steel Counter
+
+
+set_comment|1739|0||Dancing Steel Basic
+set_comment|1740|0||Dancing Steel Basic
+set_comment|1741|0||Dancing Steel Basic
+set_comment|1742|0||Dancing Steel Basic
+set_comment|1743|0||Dancing Steel Basic
+set_comment|1744|0||Dancing Steel Basic
+set_comment|1745|0||Dancing Steel Basic
+set_comment|1746|0||Dancing Steel Basic
+set_comment|1747|0||Dancing Steel Basic
+set_comment|1748|0||Dancing Steel Basic
+set_comment|1749|0||Dancing Steel Basic
+set_comment|1750|0||Dancing Steel Basic
+set_comment|1751|0||Dancing Steel Basic
+set_comment|1752|0||Dancing Steel Basic
+set_comment|1753|0||Dancing Steel Basic
+set_comment|1754|0||Dancing Steel Basic
+
+set_comment|1756|0||Dancing Steel Upgraded
+set_comment|1757|0||Dancing Steel Upgraded
+set_comment|1758|0||Dancing Steel Upgraded
+set_comment|1759|0||Dancing Steel Upgraded
+set_comment|1760|0||Dancing Steel Upgraded
+set_comment|1761|0||Dancing Steel Upgraded
+set_comment|1762|0||Dancing Steel Upgraded
+set_comment|1763|0||Dancing Steel Upgraded
+set_comment|1764|0||Dancing Steel Upgraded
+set_comment|1765|0||Dancing Steel Upgraded
+set_comment|1766|0||Dancing Steel Upgraded
+set_comment|1767|0||Dancing Steel Upgraded
+set_comment|1768|0||Dancing Steel Upgraded
+set_comment|1769|0||Dancing Steel Upgraded
+set_comment|1770|0||Dancing Steel Upgraded
+set_comment|1771|0||Dancing Steel Upgraded
+set_comment|1772|0||Dancing Steel Upgraded
+set_comment|1773|0||Dancing Steel Upgraded
+set_comment|1774|0||Dancing Steel Upgraded
+set_comment|1775|0||Dancing Steel Upgraded
+set_comment|1776|0||Dancing Steel Upgraded
+set_comment|1777|0||Dancing Steel Upgraded
+set_comment|1778|0||Dancing Steel Upgraded
+set_comment|1779|0||Dancing Steel Upgraded
+set_comment|1780|0||Dancing Steel Upgraded
+set_comment|1781|0||Dancing Steel Upgraded
+set_comment|1782|0||Dancing Steel Upgraded
+set_comment|1783|0||Dancing Steel Upgraded
+set_comment|1784|0||Dancing Steel Upgraded
+set_comment|1785|0||Dancing Steel Upgraded
+set_comment|1786|0||Dancing Steel Upgraded
+set_comment|1787|0||Dancing Steel Upgraded
+set_comment|1832|0||Dark Lunge
+set_comment|1833|0||Dark Lunge
+set_comment|1834|0||Dark Lunge
+set_comment|1835|0||Dark Lunge
+set_comment|1836|0||Dark Lunge
+set_comment|1837|0||Dark Lunge
+set_comment|1838|0||Dark Lunge
+set_comment|1839|0||Dark Lunge
+
+// Thanks SoloWan
+
+// - Dark Downthrust (Affect Damage from Mirage - Custom Ability from Logos Unleashed mod)
+//   [17,484]

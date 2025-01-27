@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using FF16Tools.Files.Nex.Entities;
 
-using Vortice.Win32;
-
 namespace FF16Tools.Files.Nex;
 
 /// <summary>
@@ -85,7 +83,6 @@ public class TableMappingReader
 
             var split = line.Split("|");
             var id = split[0];
-
 
             NexStructColumn column = null;
             switch (id)
@@ -227,6 +224,58 @@ public class TableMappingReader
                     tableColumnLayout.CustomStructDefinitions.Add(structName, columns);
 
                     break;
+
+                case "set_comment":
+                    {
+                        if (split.Length < 5)
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - expected 1 arguments (key1, key2, key3, comment)");
+
+                        if (tableColumnLayout.Columns.TryGetValue("Comment", out _))
+                            throw new InvalidDataException($"Metadata error: {debugln} has invalid 'set_comment' - table does not have a 'Comment' column");
+
+                        string k1 = split[1];
+                        uint key1 = 0;
+                        if (!string.IsNullOrEmpty(k1))
+                        {
+                            if (!uint.TryParse(k1, out key1))
+                                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - unable to parse key1");
+                        }
+                        else
+                        {
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - missing key1");
+                        }
+
+                        string k2 = split[2];
+                        uint key2 = 0;
+                        if (!string.IsNullOrEmpty(k2))
+                        {
+                            if (!uint.TryParse(k2, out key2))
+                                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - unable to parse key2");
+                        }
+                        else
+                        {
+                           if (tableColumnLayout.Type == NexTableType.DoubleKeyed || tableColumnLayout.Type == NexTableType.TripleKeyed)
+                                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - missing key2"); 
+                        }
+
+                        string k3 = split[3];
+                        uint key3 = 0;
+                        if (!string.IsNullOrEmpty(k3))
+                        {
+                            if (!uint.TryParse(k3, out key3))
+                                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - unable to parse key3");
+                        }
+                        else
+                        {
+                            if (tableColumnLayout.Type == NexTableType.TripleKeyed)
+                                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - missing key3");
+                        }
+
+                        string comment = split[4];
+                        tableColumnLayout.RowComments.Add((key1, key2, key3), comment);
+                    }
+                    break;
+
             }
         }
 
