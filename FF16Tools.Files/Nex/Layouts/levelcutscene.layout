@@ -2,9 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|string
+add_column|DLCFlags|int
+add_column|LevelCutsceneTimelineId|int
+add_column|Comment|string
 add_column|Unk4|int
 add_column|Unk5|int
 add_column|Unk6|int
@@ -13,12 +13,12 @@ add_column|Unk8|int
 add_column|Unk9|int
 add_column|Unk10|int
 add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
+add_column|UnkTimelineRelated|int
+add_column|UnkTimelineRelated2|int
 add_column|Unk14|int
 add_column|Unk15|int
 add_column|Unk16|int
-add_column|Unk17|int
-add_column|Unk18|int
+add_column|LoreWorldViewNaviStartupTypeId|int
+add_column|CutsceneOptimizeId|int
 add_column|Unk19|int
 

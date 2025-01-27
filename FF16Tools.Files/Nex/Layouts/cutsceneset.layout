@@ -3,10 +3,16 @@ set_table_category|DoubleKeyed
 use_base_row_id|false
 
 add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
+
+// 127 = levelcutscene
+// 260 = scenariocutscene
+// 841 = questcutscene
+// 856 = simpleevent
+add_column|CutsceneUnionType|short
+// <implcit 2 bytes padding>
+add_column|CutsceneUnionId|int
+add_column|GameMapId|int
+add_column|GameMapIdK2|int
 add_column|Unk6|int
 add_column|Unk7|int
 add_column|Unk8|int
@@ -18,5 +24,5 @@ add_column|Unk13|int
 add_column|Unk14|string
 add_column|Unk15|int
 add_column|Unk16|float
-add_column|Unk17|int
+add_column|ReqUserSituationId|int
 add_column|Unk18|int

@@ -4,6 +4,8 @@ use_base_row_id|true
 
 // Has hardcoded row id checks/fetches
 // 1-10
+// 1 = Phoenix
+// 6 = Awaken Ifrit
 
 add_column|Unk1|int
 

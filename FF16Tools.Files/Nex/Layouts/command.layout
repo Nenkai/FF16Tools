@@ -6,13 +6,13 @@ use_base_row_id|false
 define_struct|Unk55_Struct|int|float|int[]|float[]|int
 
 // Some row ids are hardcoded and seems to be mandatory
-// i.e 9, 10, 11, 261, 288, 341, 343, 360, 364, 393
+// i.e 9, 10, 11, 21, 112?, 120, 261, 288, 331, 341, 343, 346, 347, 349, 355, 360, 363, 364, 393, 400, 3003
 
 add_column|DLCFlags|int
-add_column|JPName|string
+add_column|Comment|string
 add_column|Eikon|int
 add_column|LeviathanAmmo|int
-add_column|Unk5|int
+add_column|UnkType5|int
 add_column|UnkType6|int
 // ui/icon
 add_column|IconTexFileId|int
@@ -26,19 +26,21 @@ add_column|Unk14|int
 add_column|Unk15|int
 add_column|Unk16|int
 add_column|Unk17|float
+// Hardcoded enum id checks
 add_column|SummonModeId|int
+// No more than 7 (bitset_out_of_range)
 add_column|UnkBitFlags19|int
 add_column|UnkActionId|int
-add_column|Unk21|int
+add_column|UnkCommandId|int
 add_column|Unk22|int
 add_column|Unk23|float
-add_column|Unk24|int
+add_column|UnkComboId|int
 add_column|Unk25|int
 add_column|Unk26|int
 add_column|Unk27|int
 add_column|Unk28|int
-add_column|Unk29|int
-add_column|Unk30|int
+add_column|PlayerModeIdEnable|int
+add_column|PlayerModeIdDisable|int
 add_column|SkillId|int
 add_column|Unk32|int[]
 
@@ -66,13 +68,13 @@ add_column|Unk46|int
 add_column|Unk47|string
 add_column|Unk48|float
 add_column|Unk49|float
-add_column|UnkType50|int
+add_column|CommandActionSetId|int
 add_column|UnkType51|int
 add_column|Unk52|int
 add_column|Unk53|float
 add_column|Unk54|float
 add_column|Unk55|Unk55_Struct[]
-add_column|Unk56|int
+add_column|ActionLogId|int
 add_column|Unk57|int
 
 // explicitly checked against hardcoded numbers
@@ -84,38 +86,44 @@ add_column|Unk61|float
 add_column|Unk62|float
 add_column|Unk63|short
 // implicit 2 bytes padding
-add_column|Unk64|byte
+add_column|UnkBool64|byte
 add_column|Unk65|byte
-add_column|Unk66|byte
-add_column|Unk67|byte
+// Confirmed used
+// ffxvi.exe steam 1.0.1 - 0F BF 90 ? ? ? ? 41 B0
+add_column|Unk66|short
 add_column|Unk68|byte
 add_column|Unk69|byte
 add_column|Unk70|byte
 add_column|Unk71|byte
-add_column|Unk72|byte
-add_column|Unk73|byte
+add_column|UnkBool72|byte
+add_column|UnkBool73|byte
 add_column|Unk74|byte
 add_column|Unk75|byte
 add_column|Unk76|byte
-add_column|Unk77|byte
-add_column|Unk78|byte
+add_column|UnkBool77|byte
+add_column|CanUseAirborne|byte
 add_column|Unk79|byte
 add_column|Unk80|byte
-add_column|Unk81|byte
-add_column|Unk82|byte
-add_column|Unk83|byte
+add_column|UnkBool81|byte
+add_column|UnkBool82|byte
+add_column|UnkBool83|byte
 add_column|Unk84|byte
-add_column|Unk85|byte
-add_column|Unk86|byte
-add_column|Unk87|byte
-add_column|Unk88|byte
-add_column|Unk89|byte
+add_column|UnkBool85|byte
+add_column|UnkBool86|byte
+add_column|UnkBool87|byte
+// Seems important
+add_column|UnkBool88|byte
+add_column|UnkBool89|byte
 add_column|Unk90|byte
-add_column|Unk91|byte
+add_column|UnkBool91|byte
 add_column|Unk92|byte
 add_column|Unk93|byte
 add_column|Unk94|byte
+
+// Seems to do something random related
+// 80 B8 ? ? ? ? ? 76 ? E8
 add_column|Unk95|byte
+
 add_column|Unk96|byte
 add_column|Unk97|byte
 add_column|Unk98|byte
@@ -124,5 +132,5 @@ add_column|Unk100|byte
 add_column|Unk101|byte
 add_column|Unk102|byte
 add_column|Unk103|byte
-
+add_column|Unk104|byte
 
