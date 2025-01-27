@@ -340,7 +340,7 @@ table BonamikUnk_F22
     field_5:bool = true;
 }
 
-table BonamikUnk (original_order)
+table BonamikUnk
 {
     // All these + sub structs checked in code
     field_1:BonamikBody_F28; // type verified in code

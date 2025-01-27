@@ -16,7 +16,6 @@
 	<ItemGroup>
 		<FlatSharpSchema Include="BaseStructs.fbs" />
 
-		<!--
 		<FlatSharpSchema Include="BNMB_BonamikBinary.fbs" />
 		<FlatSharpSchema Include="BNFB_BonamikFBinary.fbs" />
 		<FlatSharpSchema Include="KDB_KineDriverBinary.fbs" />
@@ -31,6 +30,22 @@
 		<FlatSharpSchema Include="IKB/HITR_HitReactionBinary.fbs" />
 		<FlatSharpSchema Include="IKB/LODB_LodBinary.fbs" />
 		<FlatSharpSchema Include="IKB/RIDE_RidePostureBinary.fbs" />
-		-->
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="*.fbs">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<Link>FlatbufferSchemas\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+	  </None>
+	  <None Update="IKB/*.fbs">
+	  	<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  	<Link>FlatbufferSchemas\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="UnkExecutableHashList.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<Link>FlatbufferSchemas\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+	  </None>
 	</ItemGroup>
 </Project>
