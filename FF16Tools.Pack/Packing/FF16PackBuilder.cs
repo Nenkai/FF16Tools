@@ -367,7 +367,7 @@ public class FF16PackBuilder
 
     private async Task WriteFile(FileStream packStream, FileTask task, CancellationToken ct = default)
     {
-        if (!IsCompressionForFileSuggested(task.GamePath) || task.PackFile.DecompressedFileSize == 0)
+        if (!_options.Compress || !IsCompressionForFileSuggested(task.GamePath) || task.PackFile.DecompressedFileSize == 0)
         {
             _logger?.LogInformation("PACK: Writing raw '{path}'..", task.GamePath);
 
