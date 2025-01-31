@@ -181,7 +181,6 @@ public class FF16PackBuilder
                 file.SharedChunk = _lastSharedChunk;
                 _lastSharedChunk.PackChunk.DecompressedSize += (uint)file.PackFile.DecompressedFileSize;
                 _lastSharedChunk.Files.Add(file);
-
             }
 
             i++;
@@ -346,7 +345,7 @@ public class FF16PackBuilder
         {
             FileTask fileTask = _packFileTasks[i];
             if (fileTask.SharedChunk is not null)
-                fileTask.PackFile.ChunkDefOffset = _sharedChunksToOffsets[fileTask.SharedChunk.PackChunk];
+                fileTask.PackFile.ChunkDefOffsetOrPathLength = _sharedChunksToOffsets[fileTask.SharedChunk.PackChunk];
 
             fileTask.PackFile.Write(bs);
         }
@@ -377,6 +376,12 @@ public class FF16PackBuilder
             uint crc = await CopyToWithChecksumAsync(fileStream, packStream, ct);
             task.PackFile.CRC32Checksum = crc;
             task.PackFile.CompressedFileSize = (uint)task.PackFile.DecompressedFileSize;
+
+            if (task.PackFile.DecompressedFileSize == 0)
+            {
+                task.PackFile.FileEmptyFlag = 1;
+                task.PackFile.ChunkDefOffsetOrPathLength = (ulong)(Encoding.ASCII.GetByteCount(task.GamePath) + 1);
+            }
         }
         else if ((long)task.PackFile.DecompressedFileSize < FF16Pack.MIN_FILE_SIZE_FOR_MULTIPLE_CHUNKS)
         {
@@ -414,7 +419,7 @@ public class FF16PackBuilder
             long lastDataOffset = startDataOffset;
 
             task.PackFile.DataOffset = (ulong)packStream.Position;
-            task.PackFile.ChunkDefOffset = (ulong)_lastMultiChunkHeaderOffset;
+            task.PackFile.ChunkDefOffsetOrPathLength = (ulong)_lastMultiChunkHeaderOffset;
 
             var crc = new Crc32();
             using MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate(0x80000);
@@ -430,7 +435,7 @@ public class FF16PackBuilder
                 await fileStream.ReadExactlyAsync(slice, ct);
                 crc.Append(slice.Span);
 
-                packStream.Position = (long)task.PackFile.ChunkDefOffset + 8 + (i * sizeof(int));
+                packStream.Position = (long)task.PackFile.ChunkDefOffsetOrPathLength + 8 + (i * sizeof(int));
                 task.SplitChunkOffsets[i] = (uint)(lastDataOffset - startDataOffset);
 
                 packStream.Position = lastDataOffset;

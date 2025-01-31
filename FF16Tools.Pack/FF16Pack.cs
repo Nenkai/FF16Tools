@@ -525,7 +525,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     private async ValueTask ExtractFileFromMultipleChunksAsync(FF16PackFile packFile, Stream outputStream, string outputPath, CancellationToken ct = default)
     {
-        _stream.Position = (long)packFile.ChunkDefOffset;
+        _stream.Position = (long)packFile.ChunkDefOffsetOrPathLength;
 
         using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate(0x100000);
         using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate(MAX_DECOMPRESSED_MULTI_CHUNK_SIZE);
@@ -581,7 +581,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     private async ValueTask ExtractFileFromSharedChunkAsync(FF16PackFile packFile, Stream outputStream, string gamePath, CancellationToken ct = default)
     {
-        FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffset];
+        FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffsetOrPathLength];
         CacheSharedChunkIfNeeded(chunk);
 
         _stream.Position = (long)chunk.DataOffset;
@@ -674,7 +674,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     private void ExtractFileFromMultipleChunks(FF16PackFile packFile, Stream outputStream, string outputPath)
     {
-        _stream.Position = (long)packFile.ChunkDefOffset;
+        _stream.Position = (long)packFile.ChunkDefOffsetOrPathLength;
 
         using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate(0x100000);
         using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate(MAX_DECOMPRESSED_MULTI_CHUNK_SIZE);
@@ -730,7 +730,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     private void ExtractFileFromSharedChunk(FF16PackFile packFile, Stream outputStream, string gamePath)
     {
-        FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffset];
+        FF16PackDStorageChunk chunk = _offsetToChunk[(long)packFile.ChunkDefOffsetOrPathLength];
         CacheSharedChunkIfNeeded(chunk);
 
         _stream.Position = (long)chunk.DataOffset;

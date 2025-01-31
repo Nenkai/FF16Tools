@@ -37,10 +37,10 @@ public class FF16PackFile
     public ulong DataOffset { get; set; }
 
     /// <summary>
-    /// Offset to the chunk definition if <see cref="ChunkedCompressionFlags"/> 
-    /// is <see cref="FF16PackChunkCompressionType.UseMultipleChunks"/> or <see cref="FF16PackChunkCompressionType.UseSharedChunk"/>.
+    /// Offset to the chunk definition if <see cref="ChunkedCompressionFlags"/> is <see cref="FF16PackChunkCompressionType.UseMultipleChunks"/> or <see cref="FF16PackChunkCompressionType.UseSharedChunk"/>. <br />
+    /// NOTE: This becomes the file path length instead if <see cref="FileEmptyFlag"/> is 1.
     /// </summary>
-    public ulong ChunkDefOffset { get; set; }
+    public ulong ChunkDefOffsetOrPathLength { get; set; }
 
     /// <summary>
     /// Offset to the game path (zero-terminated).
@@ -62,6 +62,8 @@ public class FF16PackFile
     /// </summary>
     public uint ChunkHeaderSize { get; set; }
 
+    public uint FileEmptyFlag { get; set; }
+
     public void FromStream(BinaryStream bs)
     {
         CompressedFileSize = bs.ReadUInt32();
@@ -70,11 +72,11 @@ public class FF16PackFile
         bs.ReadUInt16();
         DecompressedFileSize = bs.ReadUInt64();
         DataOffset = bs.ReadUInt64();
-        ChunkDefOffset = bs.ReadUInt64();
+        ChunkDefOffsetOrPathLength = bs.ReadUInt64();
         FileNameOffset = bs.ReadUInt64();
         FileNameHash = bs.ReadUInt32();
         CRC32Checksum = bs.ReadUInt32();
-        bs.ReadUInt32(); // Empty
+        FileEmptyFlag = bs.ReadUInt32();
         ChunkHeaderSize = bs.ReadUInt32();
     }
 
@@ -86,11 +88,11 @@ public class FF16PackFile
         bs.WriteInt16(0);
         bs.WriteUInt64(DecompressedFileSize);
         bs.WriteUInt64(DataOffset);
-        bs.WriteUInt64(ChunkDefOffset);
+        bs.WriteUInt64(ChunkDefOffsetOrPathLength);
         bs.WriteUInt64(FileNameOffset);
         bs.WriteUInt32(FileNameHash);
         bs.WriteUInt32(CRC32Checksum);
-        bs.WriteUInt32(0);
+        bs.WriteUInt32(FileEmptyFlag);
         bs.WriteUInt32(ChunkHeaderSize);
     }
 
