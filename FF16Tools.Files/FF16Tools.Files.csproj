@@ -10,11 +10,11 @@
     <Title>FF16Tools.Files</Title>
     <Company>Nenkai</Company>
     <Description>Library for handling various FF16 file formats.</Description>
-    <Copyright>Copyright (c) Nenkai 2024</Copyright>
+    <Copyright>Copyright (c) Nenkai 2025</Copyright>
     <RepositoryUrl>https://github.com/Nenkai/FF16Tools</RepositoryUrl>
-    <AssemblyVersion>1.0.11</AssemblyVersion>
-    <FileVersion>1.0.11</FileVersion>
-    <Version>1.0.11</Version>
+    <AssemblyVersion>1.0.12</AssemblyVersion>
+    <FileVersion>1.0.12</FileVersion>
+    <Version>1.0.12</Version>
   </PropertyGroup>
 
   <ItemGroup>
