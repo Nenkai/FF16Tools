@@ -144,174 +144,1852 @@ add_column|Unk76_4|byte
 // Comments
 //////////////////////////////////////////////////////
 
-set_comment|112|0||Odin Action ???
-set_comment|113|0||Odin Action ???
-
-set_comment|242|0||Gungnir Upgraded
-set_comment|243|0||Gungnir Upgraded
-set_comment|244|0||Gungnir Upgraded
-set_comment|245|0||Gungnir Upgraded
-set_comment|246|0||Gungnir Upgraded
-set_comment|247|0||Gungnir Upgraded
-set_comment|248|0||Gungnir Upgraded
-set_comment|249|0||Gungnir Launcher/Cancel Upgraded
-set_comment|292|0||Gungnir Launcher/Cancel Basic
-set_comment|293|0||Gungnir Basic
-set_comment|294|0||Gungnir Basic
-set_comment|295|0||Gungnir Basic
-set_comment|296|0||Gungnir Basic
-set_comment|297|0||Gungnir Basic
-set_comment|298|0||Gungnir Basic
-set_comment|299|0||Gungnir Basic
-set_comment|300|0||Flash of Steel
-set_comment|301|0||Flash of Steel
-
-set_comment|406|0||Heaven's Cloud Basic
-set_comment|407|0||Heaven's Cloud Basic
-set_comment|408|0||Heaven's Cloud Basic
-set_comment|409|0||Heaven's Cloud Basic
-set_comment|410|0||Heaven's Cloud Basic
-
-set_comment|412|0||Zantetsuken Lvl 1
-set_comment|413|0||Zantetsuken Lvl 1
-set_comment|414|0||Zantetsuken Lvl 1
-set_comment|415|0||Zantetsuken Lvl 1
-set_comment|416|0||Zantetsuken Lvl 1
-set_comment|418|0||Zantetsuken Lvl 2
-set_comment|419|0||Zantetsuken Lvl 2
-set_comment|420|0||Zantetsuken Lvl 2
-set_comment|421|0||Zantetsuken Lvl 2
-set_comment|422|0||Zantetsuken Lvl 2
-set_comment|423|0||Zantetsuken Lvl 2
-set_comment|425|0||Zantetsuken Lvl 3
-set_comment|426|0||Zantetsuken Lvl 3
-set_comment|427|0||Zantetsuken Lvl 3
-set_comment|428|0||Zantetsuken Lvl 3
-set_comment|429|0||Zantetsuken Lvl 3
-set_comment|430|0||Zantetsuken Lvl 3
-set_comment|431|0||Zantetsuken Lvl 3
-set_comment|432|0||Zantetsuken Lvl 3
-set_comment|433|0||Zantetsuken Lvl 3
-set_comment|434|0||Zantetsuken Lvl 3
-set_comment|435|0||Zantetsuken Lvl 3
-set_comment|437|0||Zantetsuken Lvl 4
-set_comment|438|0||Zantetsuken Lvl 4
-set_comment|439|0||Zantetsuken Lvl 4
-set_comment|440|0||Zantetsuken Lvl 4
-set_comment|441|0||Zantetsuken Lvl 4
-set_comment|442|0||Zantetsuken Lvl 4
-set_comment|443|0||Zantetsuken Lvl 4
-set_comment|444|0||Zantetsuken Lvl 4
-set_comment|445|0||Zantetsuken Lvl 4
-set_comment|446|0||Zantetsuken Lvl 4
-set_comment|447|0||Zantetsuken Lvl 4
-set_comment|448|0||Zantetsuken Lvl 4
-set_comment|450|0||Zantetsuken Lvl 5
-set_comment|451|0||Zantetsuken Lvl 5
-set_comment|452|0||Zantetsuken Lvl 5
-set_comment|453|0||Zantetsuken Lvl 5
-set_comment|454|0||Zantetsuken Lvl 5
-set_comment|455|0||Zantetsuken Lvl 5
-
-set_comment|478|0||Dark Downthrust
-set_comment|479|0||Dark Downthrust
-set_comment|480|0||Dark Downthrust
-set_comment|481|0||Dark Downthrust
-
-set_comment|482|0||Odin Action ???
-set_comment|483|0||Odin Action ???
-
-set_comment|486|0||Odin Ground Combo
-set_comment|487|0||Odin Ground Combo
-set_comment|488|0||Odin Ground Combo
-set_comment|489|0||Odin Ground Combo
-set_comment|490|0||Odin Ground Combo
-set_comment|491|0||Odin Ground Combo
-set_comment|492|0||Odin Ground Combo
-set_comment|493|0||Odin Ground Combo
-set_comment|494|0||Odin Ground Combo
-set_comment|495|0||Odin Ground Combo
-
-set_comment|497|0||Odin Aerial Combo
-set_comment|498|0||Odin Aerial Combo
-
-
+set_comment|0|0||attack_combo_a
+set_comment|1|0||ComboA_01
+set_comment|2|0||ComboA_02
+set_comment|3|0||ComboA_03
+set_comment|4|0||ComboA_04
+set_comment|6|0||AircomboA_01
+set_comment|7|0||AircomboA_02
+set_comment|8|0||AircomboA_03
+set_comment|9|0||DropSlash_Air_1st
+set_comment|11|0||ReversalSlash
+set_comment|12|0||RushSlash_Short
+set_comment|14|0||DropSlash_Air_Loop
+set_comment|15|0||DropSlash_Gro_Low
+set_comment|17|0||FatalAttack_Human_A_01
+set_comment|18|0||FatalAttack_Human_A_02
+set_comment|19|0||FatalAttack_Human_B_01
+set_comment|20|0||FatalAttack_Human_B_02
+set_comment|22|0||ChargeSlash_Gro_01
+set_comment|23|0||ChargeSlash_Gro_02
+set_comment|24|0||ChargeSlash_Air
+set_comment|30|0||FatalAttack_Quadruped_A_01
+set_comment|31|0||FatalAttack_Quadruped_A_02
+set_comment|32|0||FatalAttack_Quadruped_B
+set_comment|33|0||FatalAttack_Fly_A
+set_comment|34|0||FatalAttack_Fly_B
+set_comment|35|0||FatalAttack_Fly_C_01
+set_comment|36|0||FatalAttack_Fly_C_02
+set_comment|37|0||FatalAttack_Human_C_01
+set_comment|38|0||FatalAttack_Human_C_02
+set_comment|39|0||FatalAttack_Human_D_01
+set_comment|40|0||FatalAttack_Human_D_02
+set_comment|41|0||FatalAttack_Human_D_03
+set_comment|46|0||ComboA_01
+set_comment|47|0||ComboA_01
+set_comment|48|0||ComboA_01
+set_comment|51|0||ComboA_Melee01
+set_comment|52|0||ComboA_Melee02
+set_comment|53|0||ComboA_Melee03
+set_comment|54|0||ComboA_Melee04 (Final Magic Burst Ground)
+set_comment|55|0||AircomboA_Melee01
+set_comment|56|0||AircomboA_Melee02
+set_comment|57|0||AircomboA_Melee03 (Final Magic Burst Air)
+set_comment|58|0||DropSlash_Low_Melee
+set_comment|59|0||RushSlash_Short_Melee
+set_comment|60|0||RushSlash_Long_Melee
+set_comment|61|0||JustEscapeSlash_Melee
+set_comment|63|0||ReversalSlash_Melee
+set_comment|64|0||DropSlash_High_Melee
+set_comment|65|0||FatalAttack_Quadruped_C_01
+set_comment|66|0||FatalAttack_Quadruped_C_02
+set_comment|67|0||FatalAttack_Quadruped_D_01
+set_comment|68|0||FatalAttack_Quadruped_D_02
+set_comment|71|0||Regular Magic
+set_comment|72|0||Charged Magic (Basic)
+set_comment|73|0||Precision Shot (Counter Magic)
+set_comment|74|0||Charged Magic (Mastered)
+set_comment|75|0||JustEscapeSlash_1st (Precision Strike)
+set_comment|76|0||JustEscapeSlash_2nd
+set_comment|77|0||JustEscapeSlash_3rd
+set_comment|80|0||ShiftAttack_Gro
+set_comment|81|0||ShiftAttack_Air
+set_comment|82|0||ShtftAttack_Gro_Melee
+set_comment|83|0||ShtftAttack_Air_Melee
+set_comment|84|0||ShiftShot_Gro
+set_comment|85|0||ShiftShot_Air
+set_comment|87|0||R02_CrimsonAssault_1st (Rising Flames Upgraded)
+set_comment|88|0||R02_CrimsonAssault_2nd (Rising Flames Upgraded)
+set_comment|89|0||R02_CrimsonAssault_Finish (Rising Flames Upgraded)
+set_comment|93|0||TatanCombination_Gro_01
+set_comment|94|0||TatanCombination_Gro_02
+set_comment|95|0||TatanCombination_Gro_03
+set_comment|96|0||TatanCombination_Gro_04
+set_comment|97|0||TitanBlock_Just_1st
+set_comment|98|0||R12_TatanBlow_Lv01 (Windup)
+set_comment|99|0||R12_TatanBlow_Lv02_1st (Windup)
+set_comment|100|0||R12_TatanBlow_Lv02_2nd (Windup)
+set_comment|101|0||R12_TatanBlow_Lv03_1st (Windup)
+set_comment|102|0||R12_TatanBlow_Lv03_2nd (Windup)
+set_comment|103|0||R12_TatanBlow_Lv03_3rd (Windup)
+set_comment|104|0||TitanBlock_Just_1st
+set_comment|105|0||R01_CrimsonAssault (Rising Flames Upgraded)
+set_comment|106|0||TitanBlock_Just_2nd
+set_comment|107|0||R01_Gekishin_Lv01 (Upheaval)
+set_comment|108|0||R01_Gekishin_Lv02_1st (Upheaval)
+set_comment|109|0||R01_Gekishin_Lv02_2nd (Upheaval)
+set_comment|110|0||TitanBlock_Just_2nd
+set_comment|111|0||R12_ThunderBall_Melee
+set_comment|112|0||R12_ThunderBall_Zantetsuken_1st
+set_comment|113|0||R12_ThunderBall_Zantetsuken_2nd
+set_comment|115|0||R12_LightningClaw_1st (2?)
+set_comment|116|0||R12_LightningClaw_2nd (2?)
+set_comment|117|0||R12_LightningClaw_3rd (2?)
+set_comment|118|0||R12_LightningClaw_Loop_L (2?)
+set_comment|119|0||R12_LightningClaw_Loop_R (2?)
+set_comment|120|0||R12_LightningClaw_Finish (2?)
+set_comment|122|0||R12_LightningClaw_1st (2?)
+set_comment|123|0||R12_LightningClaw_2nd (2?)
+set_comment|124|0||R12_LightningClaw_3rd (2?)
+set_comment|125|0||R12_LightningClaw_Loop_L (2?)
+set_comment|126|0||R12_LightningClaw_Loop_R (2?)
+set_comment|127|0||R12_LightningClaw_Finish (2?)
+set_comment|129|0||AttractJump_1st
+set_comment|130|0||AttractJump_2nd
+set_comment|132|0||R12_LightningClaw_1st
+set_comment|133|0||R12_LightningClaw_2nd
+set_comment|134|0||R12_LightningClaw_3rd
+set_comment|135|0||R12_LightningClaw_Loop_L
+set_comment|136|0||R12_LightningClaw_Loop_R
+set_comment|137|0||R12_LightningClaw_Finish
+set_comment|139|0||R12_LightningClaw_1st
+set_comment|140|0||R12_LightningClaw_2nd
+set_comment|141|0||R12_LightningClaw_3rd
+set_comment|142|0||R12_LightningClaw_Loop_L
+set_comment|143|0||R12_LightningClaw_Loop_R
+set_comment|144|0||R12_LightningClaw_Finish
+set_comment|146|0||R01_Gekishin_Lv03_1st (Upheaval)
+set_comment|147|0||R01_Gekishin_Lv03_2nd (Upheaval)
+set_comment|148|0||R01_Gekishin_Lv03_1st (Upheaval)
+set_comment|149|0||R01_Gekishin_Lv03_2nd (Upheaval)
+set_comment|151|0||RushSlash_Short
+set_comment|152|0||RushSlash_Long
+set_comment|154|0||DropSlash_Air_1st
+set_comment|155|0||DropSlash_Air_Loop
+set_comment|156|0||DropSlash_Gro_Low
+set_comment|157|0||DropSlash_Gro_High
+set_comment|158|0||DropSlash_Gro_High
+set_comment|160|0||ChargeSlash_Gro_01 (2?)
+set_comment|161|0||ChargeSlash_Gro_02 (2?)
+set_comment|167|0||R02_HaniFuriharai_1st
+set_comment|168|0||R02_HaniFuriharai_2nd
+set_comment|169|0||R02_HaniFuriharai_Finish
+set_comment|173|0||Used by c1001\timeline\t0001\common\sm_phoenix\sk04_phoenix_flames_of_rebirth_01.tlb
+set_comment|176|0||R01_SpinupClaw_1st (Wicked Wheel)
+set_comment|177|0||R01_SpinupClaw_2nd (Wicked Wheel)
+set_comment|178|0||R01_SpinupClaw_Finish (Wicked Wheel)
+set_comment|179|0||R12_AerialBlast_1st
+set_comment|180|0||Aerial Blast
+set_comment|181|0||Aerial Blast
+set_comment|183|0||Earthen Fury
+set_comment|184|0||Earthen Fury
+set_comment|186|0||Gigaflare
+set_comment|187|0||Gigaflare
+set_comment|189|0||R12_VanishingSlash_Knock
+set_comment|191|0||Impulse
+set_comment|192|0||Earthen Fury
+set_comment|193|0||Earthen Fury
+set_comment|194|0||Earthen Fury
+set_comment|195|0||R01_HaniFuriharai_1st
+set_comment|196|0||R01_HaniFuriharai_2nd
+set_comment|197|0||R01_HaniFuriharai_Finish
+set_comment|199|0||FatalAttack_Fly_D_01
+set_comment|200|0||FatalAttack_Fly_D_02
+set_comment|201|0||FatalAttack_Fly_D_03
+set_comment|202|0||Flame Breath
+set_comment|203|0||Flame Breath
+set_comment|204|0||Flame Breath
+set_comment|205|0||FatalAttack_Human_A_01
+set_comment|206|0||FatalAttack_Human_A_02
+set_comment|208|0||FatalAttack_Human_D_01
+set_comment|209|0||FatalAttack_Human_D_03
+set_comment|224|0||R01_BahamutEgi
+set_comment|225|0||R02_BahamutEgi
+set_comment|235|0||Aerial Blast
+set_comment|236|0||Aerial Blast
+set_comment|238|0||Gigaflare
+set_comment|239|0||Gigaflare
+set_comment|240|0||EnemyJump_Step
+set_comment|242|0||R12_Makikomikiri_1st (Gungnir Upgraded) (2?)
+set_comment|243|0||R12_Makikomikiri_2nd (Gungnir Upgraded) (2?)
+set_comment|244|0||R12_Makikomikiri_3rd_Loop_L (Gungnir Upgraded) (2?)
+set_comment|245|0||R12_Makikomikiri_3rd_Loop_R (Gungnir Upgraded) (2?)
+set_comment|246|0||R12_Makikomikiri_4th (Gungnir Upgraded) (2?)
+set_comment|247|0||R12_Makikomikiri_5th (Gungnir Upgraded) (2?)
+set_comment|248|0||R12_Makikomikiri_Finish (Gungnir Upgraded) (2?)
+set_comment|249|0||R12_Makikomikiri_Cancel (Gungnir Launcher/Cancel Upgraded) (2?)
+set_comment|251|0||R01_ShortSwingClaw (Rook's Gambit)
+set_comment|252|0||R01_ShortSwingClaw_Just_1st (Rook's Gambit)
+set_comment|253|0||R01_ShortSwingClaw_Just_2nd (Rook's Gambit)
+set_comment|254|0||R02_ShortSwingClaw_Just_1st (Rook's Gambit)
+set_comment|255|0||R02_ShortSwingClaw_Just_2nd (Rook's Gambit)
+set_comment|256|0||R02_SpinupClaw_1st (Wicked Wheel)
+set_comment|257|0||R02_SpinupClaw_2nd (Wicked Wheel)
+set_comment|258|0||R02_SpinupClaw_Loop (Wicked Wheel)
+set_comment|259|0||R02_SpinupClaw_Finish (Wicked Wheel)
+set_comment|281|0||R01_ShockWave (Pile Drive)
+set_comment|282|0||R01_ShockWave (Pile Drive)
+set_comment|283|0||R02_ShockWave_1st (Pile Drive)
+set_comment|284|0||R02_ShockWave_2nd (Pile Drive)
+set_comment|285|0||R02_ShockWave_Finish (Pile Drive)
+set_comment|288|0||Thunderstorm
+set_comment|289|0||Thunderstorm
+set_comment|290|0||R02_ShockWave_Finish (Pile Drive)
+set_comment|291|0||R02_ShockWave_Finish (Pile Drive)
+set_comment|292|0||R12_Makikomikiri_Cancel (Gungnir Launcher/Cancel Basic)
+set_comment|293|0||R12_Makikomikiri_1st(Gungnir Basic)
+set_comment|294|0||R12_Makikomikiri_2nd (Gungnir Basic) 
+set_comment|295|0||R12_Makikomikiri_3rd_Loop_L (Gungnir Basic)
+set_comment|296|0||R12_Makikomikiri_3rd_Loop_R (Gungnir Basic)
+set_comment|297|0||R12_Makikomikiri_4th (Gungnir Basic)
+set_comment|298|0||R12_Makikomikiri_5th (Gungnir Basic)
+set_comment|299|0||R12_Makikomikiri_Finish (Gungnir Basic)
+set_comment|300|0||Odin_EscapeIssen_1st (Flash of Steel)
+set_comment|301|0||Odin_EscapeIssen_Finish (Flash of Steel)
+set_comment|308|0||R01_HaniFuriharai_1st
+set_comment|309|0||R01_HaniFuriharai_2nd
+set_comment|310|0||R01_HaniFuriharai_Finish
+set_comment|312|0||R02_HaniFuriharai_1st
+set_comment|313|0||R02_HaniFuriharai_2nd
+set_comment|314|0||R02_HaniFuriharai_Finish
+set_comment|316|0||Impulse
+set_comment|317|0||Impulse
+set_comment|318|0||Impulse
+set_comment|320|0||Gigaflare
+set_comment|321|0||Gigaflare
+set_comment|323|0||R12_ThunderRain_1st (Thunderstorm)
+set_comment|324|0||R12_ThunderRain_2nd (Thunderstorm)
+set_comment|325|0||R12_ThunderRain_3rd (Thunderstorm)
+set_comment|330|0||Flame Breath
+set_comment|331|0||Flame Breath
+set_comment|332|0||Flame Breath
+set_comment|334|0||Thunderstorm
+set_comment|335|0||Thunderstorm
+set_comment|337|0||Rook's Gambit
+set_comment|338|0||Rook's Gambit
+set_comment|339|0||R12_ThunderBall_Weapon
+set_comment|343|0||LB_ComboA_01
+set_comment|344|0||LB_ComboA_01
+set_comment|345|0||LB_ComboA_02
+set_comment|346|0||LB_ComboA_02
+set_comment|347|0||LB_ComboA_03
+set_comment|348|0||LB_ComboA_03
+set_comment|349|0||LB_ComboA_04
+set_comment|350|0||LB_ComboA_04
+set_comment|351|0||LB_ComboA_05
+set_comment|352|0||LB_ComboA_05
+set_comment|353|0||LB_ComboA_06
+set_comment|354|0||LB_ComboA_06
+set_comment|355|0||LB_ComboA_07
+set_comment|356|0||LB_ComboA_08
+set_comment|358|0||LB_AircomboA_01
+set_comment|359|0||LB_AircomboA_01
+set_comment|360|0||LB_AircomboA_02
+set_comment|361|0||LB_AircomboA_02
+set_comment|362|0||LB_AircomboA_03
+set_comment|363|0||LB_AircomboA_03
+set_comment|364|0||LB_AircomboA_04
+set_comment|365|0||LB_AircomboA_04
+set_comment|366|0||LB_AircomboA_05
+set_comment|367|0||LB_AircomboA_06
+set_comment|369|0||LB_RushSlash_Short_1st
+set_comment|370|0||LB_RushSlash_Short_1st
+set_comment|371|0||LB_RushSlash_Short_2nd
+set_comment|373|0||LB_RushSlash_Long_1st
+set_comment|374|0||LB_RushSlash_Long_1st
+set_comment|375|0||LB_RushSlash_Long_2nd
+set_comment|386|0||Heatwave (Waves Only)
+set_comment|387|0||Heatwave (Waves Only)
+set_comment|388|0||Heatwave (Waves Only)
+set_comment|389|0||Heatwave (Waves Only)
+set_comment|391|0||Judgement Bolt
+set_comment|392|0||Judgement Bolt
+set_comment|394|0||Judgement Bolt
+set_comment|395|0||Judgement Bolt
+set_comment|396|0||Judgement Bolt
+set_comment|397|0||Judgement Bolt
+set_comment|399|0||LB_Activate_1st
+set_comment|400|0||LB_Activate_2nd
+set_comment|402|0||TatanCombination_Air_01
+set_comment|403|0||TatanCombination_Air_02
+set_comment|404|0||TatanCombination_Air_03
+set_comment|405|0||TatanCombination_Air_04
+set_comment|406|0||R12_Rensakiri_1st (Heaven's Cloud Basic)
+set_comment|407|0||R12_Rensakiri_2nd (Heaven's Cloud Basic)
+set_comment|408|0||R12_Rensakiri_Loop_L (Heaven's Cloud Basic)
+set_comment|409|0||R12_Rensakiri_Loop_R (Heaven's Cloud Basic)
+set_comment|410|0||R12_Rensakiri_Finish (Heaven's Cloud Basic)
+set_comment|412|0||Odin_Zantetsuken_LV01_1st
+set_comment|413|0||Odin_Zantetsuken_LV01_Loop_L
+set_comment|414|0||Odin_Zantetsuken_LV01_Loop_R
+set_comment|415|0||Odin_Zantetsuken_LV01_Loop_U
+set_comment|416|0||Odin_Zantetsuken_LV01_Finish
+set_comment|418|0||Odin_Zantetsuken_LV02_1st
+set_comment|419|0||Odin_Zantetsuken_LV02_Loop_L
+set_comment|420|0||Odin_Zantetsuken_LV02_Loop_R
+set_comment|421|0||Odin_Zantetsuken_LV02_Loop_U
+set_comment|422|0||Odin_Zantetsuken_LV02_Loop_D
+set_comment|423|0||Odin_Zantetsuken_LV02_Finish
+set_comment|425|0||Odin_Zantetsuken_LV03_1st
+set_comment|426|0||Odin_Zantetsuken_LV03_Loop_L
+set_comment|427|0||Odin_Zantetsuken_LV03_Loop_R
+set_comment|428|0||Odin_Zantetsuken_LV03_Loop_U
+set_comment|429|0||Odin_Zantetsuken_LV03_Loop_D
+set_comment|430|0||Odin_Zantetsuken_LV03_Kiriage
+set_comment|431|0||Odin_Zantetsuken_LV03_Air_loop_L
+set_comment|432|0||Odin_Zantetsuken_LV03_Air_loop_R
+set_comment|433|0||Odin_Zantetsuken_LV03_Air_loop_U
+set_comment|434|0||Odin_Zantetsuken_LV03_Air_loop_D
+set_comment|435|0||Odin_Zantetsuken_LV03_Finish
+set_comment|437|0||Odin_Zantetsuken_LV04_1st
+set_comment|438|0||Odin_Zantetsuken_LV04_Loop_L
+set_comment|439|0||Odin_Zantetsuken_LV04_Loop_R
+set_comment|440|0||Odin_Zantetsuken_LV04_Loop_U
+set_comment|441|0||Odin_Zantetsuken_LV04_Loop_D
+set_comment|442|0||Odin_Zantetsuken_LV04_Kiriage_1st
+set_comment|443|0||Odin_Zantetsuken_LV04_Air_loop_L
+set_comment|444|0||Odin_Zantetsuken_LV04_Air_loop_R
+set_comment|445|0||Odin_Zantetsuken_LV04_Air_loop_U
+set_comment|446|0||Odin_Zantetsuken_LV04_Air_loop_D
+set_comment|447|0||Odin_Zantetsuken_LV04_Kiriage_2nd
+set_comment|448|0||Odin_Zantetsuken_LV04_Finish
+set_comment|450|0||Odin_Zantetsuken_LV05_1st
+set_comment|451|0||Odin_Zantetsuken_LV05_2nd
+set_comment|452|0||Odin_Zantetsuken_LV05_3rd
+set_comment|453|0||Odin_Zantetsuken_LV05_4th
+set_comment|454|0||Odin_Zantetsuken_LV05_5th
+set_comment|455|0||Odin_Zantetsuken_LV05_6th
+set_comment|456|0||Odin_Zantetsuken_LV05_Finish
+set_comment|457|0||Odin_Zantetsuken_LV05_Finish
+set_comment|458|0||LastElixir_Attack
+set_comment|460|0||LB_DropSlash_Air_1st
+set_comment|461|0||LB_DropSlash_Air_Loop
+set_comment|463|0||LB_DropSlash_Gro_Low_1st
+set_comment|464|0||LB_DropSlash_Gro_Low_2nd
+set_comment|465|0||LB_DropSlash_Gro_Low_Finish
+set_comment|467|0||R02_Gekishin_Lv01
+set_comment|468|0||R02_Gekishin_Lv02_1st
+set_comment|469|0||R02_Gekishin_Lv02_2nd
+set_comment|478|0||Odin_ZencyuRakkagiri_Air_1st
+set_comment|479|0||Odin_ZencyuRakkagiri_Air_Loop
+set_comment|480|0||Odin_ZencyuRakkagiri_Gro_Low
+set_comment|481|0||Odin_ZencyuRakkagiri_Gro_High
+set_comment|482|0||Odin_ZencyuRakkagiri_Gro_High
+set_comment|483|0||Odin_ReversalSlash_1st
+set_comment|484|0||Odin_ReversalSlash_2nd
+set_comment|486|0||Odin_ComboA_01_1st
+set_comment|487|0||Odin_ComboA_01_2nd
+set_comment|488|0||Odin_ComboA_02_1st
+set_comment|489|0||Odin_ComboA_02_2nd
+set_comment|490|0||Odin_ComboA_03_1st
+set_comment|491|0||Odin_ComboA_03_2nd
+set_comment|492|0||Odin_ComboA_04_1st
+set_comment|493|0||Odin_ComboA_04_2nd
+set_comment|494|0||Odin_ComboA_05_1st
+set_comment|495|0||Odin_ComboA_05_2nd
+set_comment|497|0||Odin_AircomboA_01_1st
+set_comment|498|0||Odin_AircomboA_01_2nd
+set_comment|510|0||Mesmerize
+set_comment|511|0||Mesmerize
+set_comment|513|0||Blizzard
+set_comment|518|0||Blizzard
+set_comment|522|0||R01_DiamondStorm_1st
+set_comment|523|0||R02_DiamondStorm_1st
+set_comment|524|0||Diamond Dust
+set_comment|525|0||Diamond Dust
+set_comment|526|0||Diamond Dust
+set_comment|527|0||Diamond Dust
+set_comment|528|0||Diamond Dust
+set_comment|529|0||Diamond Dust
+set_comment|568|0||blank10
+set_comment|581|0||blank30
+set_comment|590|0||Deluge
+set_comment|591|0||Deluge
+set_comment|592|0||Deluge
+set_comment|593|0||Deluge
+set_comment|594|0||Deluge
+set_comment|600|0||blank20
+set_comment|601|0||Cross Swell
+set_comment|602|0||Cross Swell
+set_comment|603|0||Cross Swell
+set_comment|604|0||Cross Swell
+set_comment|605|0||Cross Swell
+set_comment|606|0||Cross Swell
+set_comment|611|0||Abyssal Tear
+set_comment|612|0||Abyssal Tear
+set_comment|613|0||Abyssal Tear
+set_comment|614|0||Abyssal Tear
+set_comment|615|0||Abyssal Tear
+set_comment|629|0||Leviathan_TidalWave
 set_comment|648|0||Heaven's Cloud Upgraded
-set_comment|649|0||Heaven's Cloud Upgraded
-set_comment|650|0||Heaven's Cloud Upgraded
-set_comment|651|0||Heaven's Cloud Upgraded
-set_comment|652|0||Heaven's Cloud Upgraded
-
-set_comment|657|0||Odin Action ???
-set_comment|658|0||Odin Action ???
-
-set_comment|703|0||Steel Counter
-set_comment|704|0||Steel Counter
-set_comment|705|0||Steel Counter
-set_comment|706|0||Steel Counter
-set_comment|707|0||Steel Counter
-set_comment|708|0||Steel Counter
-
-
-set_comment|1739|0||Dancing Steel Basic
-set_comment|1740|0||Dancing Steel Basic
-set_comment|1741|0||Dancing Steel Basic
-set_comment|1742|0||Dancing Steel Basic
-set_comment|1743|0||Dancing Steel Basic
-set_comment|1744|0||Dancing Steel Basic
-set_comment|1745|0||Dancing Steel Basic
-set_comment|1746|0||Dancing Steel Basic
-set_comment|1747|0||Dancing Steel Basic
-set_comment|1748|0||Dancing Steel Basic
-set_comment|1749|0||Dancing Steel Basic
-set_comment|1750|0||Dancing Steel Basic
-set_comment|1751|0||Dancing Steel Basic
-set_comment|1752|0||Dancing Steel Basic
-set_comment|1753|0||Dancing Steel Basic
-set_comment|1754|0||Dancing Steel Basic
-
-set_comment|1756|0||Dancing Steel Upgraded
-set_comment|1757|0||Dancing Steel Upgraded
-set_comment|1758|0||Dancing Steel Upgraded
-set_comment|1759|0||Dancing Steel Upgraded
-set_comment|1760|0||Dancing Steel Upgraded
-set_comment|1761|0||Dancing Steel Upgraded
-set_comment|1762|0||Dancing Steel Upgraded
-set_comment|1763|0||Dancing Steel Upgraded
-set_comment|1764|0||Dancing Steel Upgraded
-set_comment|1765|0||Dancing Steel Upgraded
-set_comment|1766|0||Dancing Steel Upgraded
-set_comment|1767|0||Dancing Steel Upgraded
-set_comment|1768|0||Dancing Steel Upgraded
-set_comment|1769|0||Dancing Steel Upgraded
-set_comment|1770|0||Dancing Steel Upgraded
-set_comment|1771|0||Dancing Steel Upgraded
-set_comment|1772|0||Dancing Steel Upgraded
-set_comment|1773|0||Dancing Steel Upgraded
-set_comment|1774|0||Dancing Steel Upgraded
-set_comment|1775|0||Dancing Steel Upgraded
-set_comment|1776|0||Dancing Steel Upgraded
-set_comment|1777|0||Dancing Steel Upgraded
-set_comment|1778|0||Dancing Steel Upgraded
-set_comment|1779|0||Dancing Steel Upgraded
-set_comment|1780|0||Dancing Steel Upgraded
-set_comment|1781|0||Dancing Steel Upgraded
-set_comment|1782|0||Dancing Steel Upgraded
-set_comment|1783|0||Dancing Steel Upgraded
-set_comment|1784|0||Dancing Steel Upgraded
-set_comment|1785|0||Dancing Steel Upgraded
-set_comment|1786|0||Dancing Steel Upgraded
-set_comment|1787|0||Dancing Steel Upgraded
-set_comment|1832|0||Dark Lunge
-set_comment|1833|0||Dark Lunge
-set_comment|1834|0||Dark Lunge
-set_comment|1835|0||Dark Lunge
-set_comment|1836|0||Dark Lunge
-set_comment|1837|0||Dark Lunge
-set_comment|1838|0||Dark Lunge
-set_comment|1839|0||Dark Lunge
-
-// Thanks SoloWan
-
-// - Dark Downthrust (Affect Damage from Mirage - Custom Ability from Logos Unleashed mod)
-//   [17,484]
+set_comment|649|0||R12_Rensakiri_2nd (Heaven's Cloud Upgraded) (2?)
+set_comment|650|0||R12_Rensakiri_Loop_L (Heaven's Cloud Upgraded) (2?)
+set_comment|651|0||R12_Rensakiri_Loop_R (Heaven's Cloud Upgraded) (2?)
+set_comment|655|0||QuickStanding_Slash
+set_comment|657|0||Odin_QuickStanding_Slash_1st
+set_comment|658|0||Odin_QuickStanding_Slash_2nd
+set_comment|660|0||Lightning Rod
+set_comment|661|0||Lightning Rod
+set_comment|663|0||Lightning Rod
+set_comment|664|0||Lightning Rod
+set_comment|666|0||Lightning Rod
+set_comment|667|0||Lightning Rod
+set_comment|669|0||Lightning Rod
+set_comment|670|0||Lightning Rod
+set_comment|700|0||chocobo_kick
+set_comment|701|0||enemy_jump
+set_comment|703|0||Odin_ParryIssens_1st (Steel Counter)
+set_comment|704|0||Odin_ParryIssens_Loop (Steel Counter)
+set_comment|705|0||Odin_ParryIssens_Loop (Steel Counter)
+set_comment|706|0||Odin_ParryIssens_Loop (Steel Counter)
+set_comment|707|0||Odin_ParryIssens_Loop (Steel Counter)
+set_comment|708|0||Odin_ParryIssens_Finish
+set_comment|800|0||Used by c2007\timeline\t0001\wep_swd_emp\battle\magic_cure.tlb
+set_comment|802|0||MelleMagic
+set_comment|917|0||Used by c1001\timeline\t0001\wep_swd_emp\battle\last_elixir.tlb
+set_comment|918|0||Used by c1001\timeline\t0001\wep_swd_emp\battle\last_elixir.tlb
+set_comment|951|0||torgal_atk_weak_ground_01
+set_comment|952|0||AI_torgal_atk_weak_ground_02
+set_comment|953|0||AI_torgal_atk_weak_ground_02
+set_comment|954|0||AI_torgal_atk_weak_ground_03
+set_comment|955|0||AI_torgal_atk_weak_ground_03
+set_comment|956|0||AI_torgal_atk_weak_ground_03
+set_comment|957|0||AI_torgal_atk_weak_ground_03
+set_comment|958|0||torgal_atk_weak_air_01
+set_comment|959|0||AI_torgal_atk_weak_air_02
+set_comment|960|0||AI_torgal_atk_weak_air_03
+set_comment|961|0||AI_torgal_atk_weak_down
+set_comment|962|0||torgal_atk_strong_ground_02
+set_comment|963|0||torgal_atk_strong_ground_01
+set_comment|964|0||AI_torgal_atk_strong_ground_02_02
+set_comment|965|0||AI_torgal_atk_strong_ground_02
+set_comment|966|0||AI_torgal_atk_strong_ground_03_02
+set_comment|967|0||AI_torgal_atk_strong_ground_03
+set_comment|968|0||torgal_atk_strong_air_01
+set_comment|969|0||torgal_atk_strong_air_01
+set_comment|970|0||AI_torgal_atk_strong_air_02
+set_comment|971|0||AI_torgal_atk_strong_air_02
+set_comment|972|0||AI_torgal_atk_strong_air_03
+set_comment|973|0||AI_torgal_atk_strong_air_03
+set_comment|974|0||AI_torgal_atk_strong_air_03
+set_comment|975|0||AI_torgal_atk_strong_down
+set_comment|978|0||torgal_fenrir_change
+set_comment|980|0||AI_fenrir_atk_weak_04
+set_comment|981|0||AI_fenrir_atk_weak_04_02
+set_comment|982|0||AI_fenrir_atk_weak_04
+set_comment|983|0||AI_fenrir_atk_weak_air_04_02
+set_comment|984|0||AI_torgal_atk_weak_down
+set_comment|985|0||AI_torgal_atk_strong_ground_03_02
+set_comment|986|0||AI_torgal_atk_strong_ground_03
+set_comment|988|0||AI_torgal_atk_strong_air_03
+set_comment|989|0||AI_torgal_atk_strong_air_03
+set_comment|990|0||AI_fenrir_atk_strong_air_03
+set_comment|992|0||AI_torgal_atk_strong_down
+set_comment|1001|0||torgal_atk_weak_ground_01
+set_comment|1002|0||torgal_atk_weak_air_01
+set_comment|1003|0||torgal_atk_weak_rush_01
+set_comment|1005|0||torgal_atk_strong_ground_02
+set_comment|1006|0||torgal_atk_strong_ground_01
+set_comment|1007|0||torgal_atk_strong_air_02
+set_comment|1008|0||torgal_atk_strong_air_01
+set_comment|1009|0||torgal_atk_strong_rush_01
+set_comment|1013|0||torgal_atk_weak_ground_just_01
+set_comment|1014|0||torgal_atk_weak_ground_just_01
+set_comment|1015|0||torgal_atk_weak_ground_just_01
+set_comment|1016|0||torgal_atk_weak_ground_just_01
+set_comment|1017|0||torgal_atk_weak_air_just_01
+set_comment|1018|0||torgal_atk_weak_rush_just_01
+set_comment|1020|0||torgal_atk_strong_ground_just_01
+set_comment|1021|0||torgal_atk_strong_ground_just_02
+set_comment|1022|0||torgal_atk_strong_air_just_01
+set_comment|1023|0||torgal_atk_strong_air_just_03
+set_comment|1024|0||torgal_atk_strong_rush_just_01
+set_comment|1025|0||torgal_atk_strong_rush_just_01
+set_comment|1029|0||fenrir_atk_weak_ground_01
+set_comment|1030|0||fenrir_atk_weak_ground_01
+set_comment|1031|0||fenrir_atk_weak_ground_01
+set_comment|1032|0||fenrir_atk_weak_ground_01
+set_comment|1033|0||fenrir_atk_weak_air_01
+set_comment|1034|0||fenrir_atk_weak_rush_01
+set_comment|1036|0||fenrir_atk_strong_ground_01
+set_comment|1037|0||fenrir_atk_strong_ground_02
+set_comment|1038|0||fenrir_atk_strong_air_01
+set_comment|1039|0||fenrir_atk_strong_air_03
+set_comment|1040|0||fenrir_atk_strong_rush_01
+set_comment|1044|0||fenrir_atk_weak_ground_just_01
+set_comment|1045|0||fenrir_atk_weak_ground_just_02
+set_comment|1046|0||fenrir_atk_weak_air_just_01
+set_comment|1047|0||fenrir_atk_weak_air_just_02
+set_comment|1048|0||fenrir_atk_weak_rush_01
+set_comment|1052|0||fenrir_atk_strong_rush_just_01
+set_comment|1053|0||fenrir_atk_strong_rush_just_01
+set_comment|1099|0||Used by c3010\timeline\t2002\wep_swd_emp\battle\magic_cure.tlb
+set_comment|1101|0||Ally_01_Attack_Front
+set_comment|1102|0||Ally_01_Attack_Front
+set_comment|1103|0||Ally_01_Attack_Front
+set_comment|1104|0||Ally_01_Attack_Front
+set_comment|1105|0||Ally_01_Attack_Front
+set_comment|1106|0||Ally_01_Attack_Front
+set_comment|1107|0||Ally_01_Attack_Front
+set_comment|1108|0||Ally_01_Attack_Front
+set_comment|1109|0||attack
+set_comment|1110|0||attack
+set_comment|1112|0||Used by c3010\timeline\t2002\wep_swd_emp\battle\item_cure.tlb
+set_comment|1113|0||c3010_Buddy_atk_run_slash_a_03_02
+set_comment|1121|0||c3010_2ax_Buddy_atk_a_01
+set_comment|1122|0||c3010_2ax_Buddy_atk_a_02
+set_comment|1123|0||Ally_01_Attack_Front
+set_comment|1126|0||c3010_2ax_Buddy_atk_run_slash_03
+set_comment|1127|0||c3010_2ax_Buddy_atk_high_slash_down
+set_comment|1128|0||Used by c3010\timeline\t2001\wep_2ax_emp\battle\act_war_cry.tlb
+set_comment|1141|0||c3010_individual_gav_atk_01_kick
+set_comment|1142|0||c3010_individual_gav_atk_01_kick
+set_comment|1143|0||c3010_individual_gav_atk_01
+set_comment|1151|0||c3010_individual_byron_atk_01
+set_comment|1152|0||c3010_individual_byron_atk_02
+set_comment|1161|0||c3010_individual_theodore_atk_01_02
+set_comment|1162|0||c3010_individual_theodore_atk_01
+set_comment|1171|0||Tutorial_atk_a_01
+set_comment|1172|0||Used by c3010\timeline\t0101\wep_swd_emp\battle\tutorial_item.tlb
+set_comment|1173|0||Tutorial_atk_b_01
+set_comment|1174|0||Tutorial_atk_longrange_a
+set_comment|1401|0||atk_strong_a_01
+set_comment|1402|0||atk_combo_a_01
+set_comment|1403|0||atk_combo_a_02
+set_comment|1404|0||atk_shift_a_03
+set_comment|1408|0||Used by c2006\timeline\t0001\wep_swd_emp\battle\magic_cure.tlb
+set_comment|1410|0||Used by c2006\timeline\t0001\wep_swd_emp\battle\magic_barrier.tlb
+set_comment|1412|0||atk_backstep_a_01
+set_comment|1413|0||atk_run_slash_b_03
+set_comment|1414|0||atk_run_slash_b_02_lp
+set_comment|1501|0||c2002_Cid_atk_combo_a_01
+set_comment|1502|0||c2002_Cid_atk_combo_a_02
+set_comment|1503|0||c2002_Cid_atk_combo_b_01
+set_comment|1504|0||c2002_Cid_atk_combo_b_02
+set_comment|1505|0||c2002_Cid_atk_combo_c_01
+set_comment|1506|0||c2002_Cid_atk_combo_c_02
+set_comment|1507|0||c2002_Cid_atk_combo_c_03
+set_comment|1508|0||c2002_Cid_Atk_Front
+set_comment|1509|0||c2002_Cid_atk_strong_b_01
+set_comment|1510|0||c2002_Cid_atk_run_slash_a_03
+set_comment|1511|0||c2002_Cid_atk_run_slash_b_03
+set_comment|1515|0||c2002_Cid_magic_blitz
+set_comment|1516|0||c2002_Cid_atk_strong_c_01
+set_comment|1519|0||Used by c2002\timeline\t0001\wep_swd_emp\battle\magic_cure.tlb
+set_comment|1520|0||Used by c2002\timeline\t0001\wep_swd_emp\battle\magic_aura.tlb
+set_comment|1601|0||c2004_Jill_Buddy_atk_a_01
+set_comment|1602|0||c2004_Jill_Buddy_atk_b_01
+set_comment|1603|0||c2004_Jill_Buddy_atk_combo_a_01_01
+set_comment|1604|0||c2004_Jill_Buddy_atk_combo_a_01_02
+set_comment|1605|0||c2004_Jill_Buddy_atk_combo_a_02
+set_comment|1607|0||c2004_Jill_Buddy_atk_combo_b_01
+set_comment|1608|0||c2004_Jill_Buddy_atk_combo_b_02
+set_comment|1609|0||c2004_Jill_Buddy_magic_icicles_around
+set_comment|1610|0||c2004_Jill_Buddy_atk_run_slash_a_03
+set_comment|1611|0||c2004_Jill_Buddy_atk_run_slash_b_03_01
+set_comment|1612|0||c2004_Jill_Buddy_atk_run_slash_b_03_02
+set_comment|1613|0||c2004_Jill_Buddy_atk_run_slash_b_03_03
+set_comment|1621|0||Used by c2004\timeline\t0001\wep_swd_emp\battle\magic_cure.tlb
+set_comment|1622|0||Used by c2004\timeline\t0001\wep_swd_emp\battle\magic_aura.tlb
+set_comment|1657|0||c3010_2ax_Buddy_combo_atk_01
+set_comment|1658|0||c3010_2ax_Buddy_combo_atk_02
+set_comment|1659|0||c3010_2ax_Buddy_swing_start_01
+set_comment|1660|0||c3010_2ax_Buddy_swing_loop
+set_comment|1661|0||c3010_2ax_Buddy_swing_finish
+set_comment|1662|0||c3010_2ax_Buddy_swing_finish_01
+set_comment|1663|0||Used by c3010\timeline\t2007\wep_2ax_emp\battle\magic_cure.tlb
+set_comment|1701|0||R12_HensokuTadan_Loop (Ignition)
+set_comment|1702|0||R12_HensokuTadan_Finish (Ignition)
+set_comment|1703|0||R02_HensokuTadan_1st (Ignition)
+set_comment|1704|0||R02_HensokuTadan_1st (Ignition)
+set_comment|1705|0||R12_HensokuTadan_Loop (Ignition)
+set_comment|1706|0||R12_HensokuTadan_Finish (Ignition)
+set_comment|1708|0||R12_MachinegunBlow_Failure_1st
+set_comment|1709|0||R01_MachinegunBlow_Failure_2nd_Loop
+set_comment|1710|0||R01_MachinegunBlow_Failure_3rd_Loop
+set_comment|1711|0||R01_MachinegunBlow_Failure_4th_Loop
+set_comment|1712|0||R12_MachinegunBlow_Failure_Finish
+set_comment|1713|0||R12_MachinegunBlow_Success_1st
+set_comment|1714|0||R01_MachinegunBlow_Success_2nd_Loop
+set_comment|1715|0||R01_MachinegunBlow_Success_3rd_Loop
+set_comment|1716|0||R01_MachinegunBlow_Success_4th_Loop
+set_comment|1717|0||R01_MachinegunBlow_Success_5th_Loop
+set_comment|1718|0||R12_MachinegunBlow_Success_Finish
+set_comment|1720|0||R12_MachinegunBlow_Failure_1st (2?)
+set_comment|1721|0||R01_MachinegunBlow_Failure_2nd_Loop (2?)
+set_comment|1722|0||R01_MachinegunBlow_Failure_3rd_Loop (2?)
+set_comment|1723|0||R01_MachinegunBlow_Failure_4th_Loop (2?)
+set_comment|1724|0||R02_MachinegunBlow_Failure_2nd_Loop
+set_comment|1725|0||R02_MachinegunBlow_Failure_3rd_Loop
+set_comment|1726|0||R02_MachinegunBlow_Failure_4th_Loop
+set_comment|1727|0||R12_MachinegunBlow_Failure_Finish (2?)
+set_comment|1728|0||R12_MachinegunBlow_Success_1st (2?)
+set_comment|1729|0||R01_MachinegunBlow_Success_2nd_Loop (2?)
+set_comment|1730|0||R01_MachinegunBlow_Success_3rd_Loop (2?)
+set_comment|1731|0||R01_MachinegunBlow_Success_4th_Loop (2?)
+set_comment|1732|0||R01_MachinegunBlow_Success_5th_Loop (2?)
+set_comment|1733|0||R02_MachinegunBlow_Success_2nd_Loop
+set_comment|1734|0||R02_MachinegunBlow_Success_3rd_Loop
+set_comment|1735|0||R02_MachinegunBlow_Success_4th_Loop
+set_comment|1736|0||R02_MachinegunBlow_Success_5th_Loop
+set_comment|1737|0||R12_MachinegunBlow_Success_Finish (2?)
+set_comment|1739|0||R12_CyouzetsuRanbuKiri_1st (Dancing Steel)
+set_comment|1740|0||R12_CyouzetsuRanbuKiri_2nd (Dancing Steel)
+set_comment|1741|0||R12_CyouzetsuRanbuKiri_3rd (Dancing Steel)
+set_comment|1742|0||R12_CyouzetsuRanbuKiri_4th (Dancing Steel)
+set_comment|1743|0||R12_CyouzetsuRanbuKiri_5th (Dancing Steel)
+set_comment|1744|0||R12_CyouzetsuRanbuKiri_6th (Dancing Steel)
+set_comment|1745|0||R12_CyouzetsuRanbuKiri_7th (Dancing Steel)
+set_comment|1746|0||R12_CyouzetsuRanbuKiri_8th (Dancing Steel)
+set_comment|1747|0||R12_CyouzetsuRanbuKiri_9th (Dancing Steel)
+set_comment|1748|0||R12_CyouzetsuRanbuKiri_10th (Dancing Steel)
+set_comment|1749|0||R12_CyouzetsuRanbuKiri_11th (Dancing Steel)
+set_comment|1750|0||R12_CyouzetsuRanbuKiri_12th (Dancing Steel)
+set_comment|1751|0||R12_CyouzetsuRanbuKiri_Finish_1st (Dancing Steel)
+set_comment|1752|0||R12_CyouzetsuRanbuKiri_Finish_2nd (Dancing Steel)
+set_comment|1753|0||R12_CyouzetsuRanbuKiri_Finish_3rd (Dancing Steel)
+set_comment|1754|0||R12_CyouzetsuRanbuKiri_Finish_4th (Dancing Steel)
+set_comment|1756|0||R12_CyouzetsuRanbuKiri_1st (2?)
+set_comment|1757|0||R12_CyouzetsuRanbuKiri_2nd (2?)
+set_comment|1758|0||R12_CyouzetsuRanbuKiri_3rd (2?)
+set_comment|1759|0||R12_CyouzetsuRanbuKiri_4th (2?)
+set_comment|1760|0||R12_CyouzetsuRanbuKiri_5th (2?)
+set_comment|1761|0||R12_CyouzetsuRanbuKiri_6th (2?)
+set_comment|1762|0||R12_CyouzetsuRanbuKiri_7th (2?)
+set_comment|1763|0||R12_CyouzetsuRanbuKiri_8th (2?)
+set_comment|1764|0||R12_CyouzetsuRanbuKiri_9th (2?)
+set_comment|1765|0||R12_CyouzetsuRanbuKiri_10th (2?)
+set_comment|1766|0||R12_CyouzetsuRanbuKiri_11th (2?)
+set_comment|1767|0||R12_CyouzetsuRanbuKiri_12th (2?)
+set_comment|1768|0||R02_CyouzetsuRanbuKiri_13th (Dancing Steel Upgraded)
+set_comment|1769|0||R02_CyouzetsuRanbuKiri_14th (Dancing Steel Upgraded)
+set_comment|1770|0||R02_CyouzetsuRanbuKiri_15th (Dancing Steel Upgraded)
+set_comment|1771|0||R02_CyouzetsuRanbuKiri_16th (Dancing Steel Upgraded)
+set_comment|1772|0||R02_CyouzetsuRanbuKiri_17th (Dancing Steel Upgraded)
+set_comment|1773|0||R02_CyouzetsuRanbuKiri_18th (Dancing Steel Upgraded)
+set_comment|1774|0||R02_CyouzetsuRanbuKiri_19th (Dancing Steel Upgraded)
+set_comment|1775|0||R02_CyouzetsuRanbuKiri_20th (Dancing Steel Upgraded)
+set_comment|1776|0||R02_CyouzetsuRanbuKiri_21th (Dancing Steel Upgraded)
+set_comment|1777|0||R02_CyouzetsuRanbuKiri_22th (Dancing Steel Upgraded)
+set_comment|1778|0||R02_CyouzetsuRanbuKiri_23th (Dancing Steel Upgraded)
+set_comment|1779|0||R02_CyouzetsuRanbuKiri_24th (Dancing Steel Upgraded)
+set_comment|1780|0||R02_CyouzetsuRanbuKiri_25th (Dancing Steel Upgraded)
+set_comment|1781|0||R02_CyouzetsuRanbuKiri_26th (Dancing Steel Upgraded)
+set_comment|1782|0||R02_CyouzetsuRanbuKiri_27th (Dancing Steel Upgraded)
+set_comment|1783|0||R02_CyouzetsuRanbuKiri_28th (Dancing Steel Upgraded)
+set_comment|1784|0||R12_CyouzetsuRanbuKiri_Finish_1st (2?)
+set_comment|1785|0||R12_CyouzetsuRanbuKiri_Finish_2nd (2?)
+set_comment|1786|0||R12_CyouzetsuRanbuKiri_Finish_3rd (2?)
+set_comment|1787|0||R12_CyouzetsuRanbuKiri_Finish_4th (2?)
+set_comment|1789|0||LB_DropSlash_Air_1st (2?)
+set_comment|1790|0||LB_DropSlash_Air_Loop (2?)
+set_comment|1792|0||LB_DropSlash_Gro_Low_1st (2?)
+set_comment|1793|0||LB_DropSlash_Gro_Low_2nd (2?)
+set_comment|1794|0||LB_DropSlash_Gro_Low_Finish (2?)
+set_comment|1796|0||LB_DropSlash_Gro_High_1st
+set_comment|1797|0||LB_DropSlash_Gro_High_2nd
+set_comment|1798|0||LB_DropSlash_Gro_High_ShockWave
+set_comment|1799|0||LB_DropSlash_Gro_High_Finish
+set_comment|1801|0||ReversalSlash
+set_comment|1802|0||ReversalSlash
+set_comment|1804|0||QuickStanding_Slash
+set_comment|1806|0||LB_ComboA_01
+set_comment|1807|0||LB_ComboA_01
+set_comment|1808|0||LB_ComboA_02
+set_comment|1809|0||LB_ComboA_02
+set_comment|1810|0||LB_ComboA_03
+set_comment|1811|0||LB_ComboA_03
+set_comment|1812|0||LB_ComboA_04
+set_comment|1813|0||LB_ComboA_04
+set_comment|1814|0||LB_ComboA_05
+set_comment|1815|0||LB_ComboA_05
+set_comment|1816|0||LB_ComboA_06
+set_comment|1817|0||LB_ComboA_06
+set_comment|1818|0||LB_ComboA_07
+set_comment|1819|0||LB_ComboA_08
+set_comment|1821|0||LB_AircomboA_01
+set_comment|1822|0||LB_AircomboA_01
+set_comment|1823|0||LB_AircomboA_02
+set_comment|1824|0||LB_AircomboA_02
+set_comment|1825|0||LB_AircomboA_03
+set_comment|1826|0||LB_AircomboA_03
+set_comment|1827|0||LB_AircomboA_04
+set_comment|1828|0||LB_AircomboA_04
+set_comment|1829|0||LB_AircomboA_05
+set_comment|1830|0||LB_AircomboA_06
+set_comment|1832|0||Odin_ZenshinHyakuretsu_1st (Dark Lunge)
+set_comment|1833|0||Odin_ZenshinHyakuretsu_1st (Dark Lunge)
+set_comment|1834|0||Odin_ZenshinHyakuretsu_Loop_L (Dark Lunge)
+set_comment|1835|0||Odin_ZenshinHyakuretsu_Loop_L (Dark Lunge)
+set_comment|1836|0||Odin_ZenshinHyakuretsu_Loop_R (Dark Lunge)
+set_comment|1837|0||Odin_ZenshinHyakuretsu_Loop_R (Dark Lunge)
+set_comment|1838|0||Odin_ZenshinHyakuretsu_Finish (Dark Lunge)
+set_comment|1839|0||Odin_ZenshinHyakuretsu_Finish (Dark Lunge)
+set_comment|1841|0||Ultimate_ComboA_Gro_01
+set_comment|1842|0||Ultimate_ComboA_Gro_02
+set_comment|1843|0||Ultimate_ComboA_Gro_03
+set_comment|1844|0||Ultimate_ComboA_Gro_04
+set_comment|1846|0||Ultimate_ComboA_Air_01
+set_comment|1847|0||Ultimate_ComboA_Air_02
+set_comment|1848|0||Ultimate_ComboA_Air_03
+set_comment|1849|0||Ultimate_ComboA_Air_04
+set_comment|1851|0||Ultimate_RushSlash_1st
+set_comment|1852|0||Ultimate_RushSlash_Loop
+set_comment|1853|0||Ultimate_RushSlash_Finish
+set_comment|1855|0||Ultimate_RushSlash_1st (2?)
+set_comment|1859|0||Ultimate_ChargeSlash_Gro_1st
+set_comment|1860|0||Ultimate_ChargeSlash_Gro_2nd
+set_comment|1867|0||Ultimate_ChargeSlash_Air_1st
+set_comment|1868|0||Ultimate_ChargeSlash_Air_2nd
+set_comment|1875|0||Ultimate_JustEscapeSlash_1st
+set_comment|1876|0||Ultimate_JustEscapeSlash_Loop
+set_comment|1877|0||Ultimate_JustEscapeSlash_Finish
+set_comment|1890|0||Ultimate_RushSlash_Braking
+set_comment|1891|0||Ultimate_RushSlash_Braking (2?)
+set_comment|1895|0||Proselytize
+set_comment|1896|0||Proselytize
+set_comment|1898|0||Proselytize
+set_comment|1899|0||Proselytize
+set_comment|1909|0||R12_EtherShinePillar_1st (Dominion)
+set_comment|1910|0||R12_EtherShinePillar_2nd (Dominion)
+set_comment|1911|0||Dominion
+set_comment|1913|0||R12_EtherShinePillar_1st (Dominion)
+set_comment|1914|0||R12_EtherShinePillar_2nd (Dominion)
+set_comment|1915|0||Dominion
+set_comment|1916|0||Dominion
+set_comment|1918|0||R12_LegendaryUltima_Stagger
+set_comment|1923|0||Ultimate Demise
+set_comment|1924|0||Ultimate Demise
+set_comment|1926|0||Ultimate Demise
+set_comment|1927|0||Ultimate Demise
+set_comment|1929|0||Ultimate_QuickStanding_Slash
+set_comment|1931|0||Ultimate_JustEscapeSlash_Air_1st
+set_comment|1932|0||Ultimate_JustEscapeSlash_Air_Loop
+set_comment|1933|0||Ultimate_JustEscapeSlash_Air_Finish
+set_comment|1938|0||Ultimate_Demise
+set_comment|1939|0||Ultimate_Demise
+set_comment|1941|0||R12_EtherMegaLaser_Rise
+set_comment|1944|0||Ultimate_ReversalSlash
+set_comment|2003|0||01_Attack_01
+set_comment|2004|0||02_Attack_02
+set_comment|2005|0||03_Attack_03
+set_comment|2006|0||04_Attack_04
+set_comment|2007|0||05_longrange
+set_comment|2009|0||10_2ax_Attack_01
+set_comment|2010|0||11_2ax_Attack_02
+set_comment|2011|0||12_2ax_Attack_03
+set_comment|2012|0||13_2ax_Attack_04
+set_comment|2013|0||15_2ax_longrange
+set_comment|2014|0||14_2ax_Attack_05_pick
+set_comment|2015|0||20_club_Attack_01
+set_comment|2016|0||21_club_Attack_02
+set_comment|2017|0||22_club_Attack_03
+set_comment|2018|0||23_club_Attack_04_1st
+set_comment|2019|0||23_club_Attack_04_2nd
+set_comment|2020|0||25_club_longrange
+set_comment|2021|0||24_club_Attack_05_sickle
+set_comment|2023|0||06_guard_counter_1st
+set_comment|2024|0||06_guard_counter_2nd
+set_comment|2025|0||16_2ax_guard_counter
+set_comment|2026|0||Used by c3010\timeline\t0001\wep_2ax_emp\battle\war_cry.tlb
+set_comment|2105|0||Used by c3010\timeline\t0001\wep_2st_emp\battle\magic_brave_03.tlb
+set_comment|2106|0||Used by c3010\timeline\t0001\wep_2st_emp\battle\magic_protect_03.tlb
+set_comment|2107|0||Used by c5002\timeline\t0001\wep_stf_emp\battle\magic_thorn_03.tlb
+set_comment|2151|0||01_kesagiri
+set_comment|2152|0||02_Yokogiri
+set_comment|2153|0||03_Tategiri
+set_comment|2154|0||04_FumikomiYokogiri
+set_comment|2155|0||05_Tsuenaguri_1at
+set_comment|2156|0||05_Tsuenaguri_2nd
+set_comment|2158|0||06_GoblinPunch_1st
+set_comment|2159|0||06_GoblinPunch_Fin
+set_comment|2160|0||07_SpinAttack
+set_comment|2161|0||07_SpinAttack_Fin
+set_comment|2162|0||01_kesagiri
+set_comment|2163|0||02_Yokogiri
+set_comment|2164|0||03_Tategiri
+set_comment|2165|0||04_FumikomiYokogiri
+set_comment|2201|0||01_attack_01
+set_comment|2202|0||02_attack_02
+set_comment|2204|0||03_attack_longrange
+set_comment|2208|0||03_attack_longrange
+set_comment|2209|0||03_attack_longrange
+set_comment|2210|0||03_attack_longrange_Fin
+set_comment|2301|0||01_LOM_bash_01
+set_comment|2302|0||02_LOM_jump_atk
+set_comment|2353|0||01_CON_discharge
+set_comment|2401|0||01_FAL_slash
+set_comment|2402|0||02_FAL_cut_off
+set_comment|2403|0||03_FAL_thrust
+set_comment|2451|0||01_BOM_tackle
+set_comment|2454|0||02_BOM_bomb
+set_comment|2463|0||21_SBOM_birth
+set_comment|2464|0||22_SBOM_pop
+set_comment|2465|0||23_SBOM_tackle_1st
+set_comment|2466|0||23_SBOM_tackle_Fin
+set_comment|2501|0||01_BOM_tackle
+set_comment|2505|0||12_GRE_grenade
+set_comment|2551|0||01_attack_01
+set_comment|2552|0||02_attack_longrange
+set_comment|2553|0||03_attack_combo_a_01
+set_comment|2554|0||04_attack_combo_a_02
+set_comment|2555|0||02_attack_longrange
+set_comment|2601|0||01_attack_01
+set_comment|2602|0||02_attack_02
+set_comment|2603|0||03_attack_03_1st
+set_comment|2605|0||03_attack_03_Fin
+set_comment|2651|0||01_attack_01
+set_comment|2652|0||02_attack_02
+set_comment|2653|0||03_attack_heavy
+set_comment|2654|0||04_attack_longrange
+set_comment|2655|0||05_attack_combo_01
+set_comment|2656|0||06_attack_combo_02
+set_comment|2701|0||07_attack_01_stf
+set_comment|2702|0||08_attack_02_stf
+set_comment|2754|0||05_attack_cry
+set_comment|2755|0||01_attack_beak
+set_comment|2757|0||03_attack_stomp
+set_comment|2758|0||03_attack_stomp
+set_comment|2759|0||04_attack_longrange_1st
+set_comment|2760|0||04_attack_longrange_Fin
+set_comment|2761|0||01_attack_beak
+set_comment|2762|0||03_attack_stomp
+set_comment|2801|0||attack_01
+set_comment|2802|0||attack_02
+set_comment|2805|0||01_attack_longrange
+set_comment|2806|0||02_final_spear
+set_comment|2807|0||02_final_spear_finish
+set_comment|2810|0||02_final_spear_finish
+set_comment|2811|0||02_final_spear
+set_comment|2854|0||attack01
+set_comment|2855|0||attack02
+set_comment|2856|0||attack03
+set_comment|3001|0||01_combo_1
+set_comment|3002|0||02_combo_2
+set_comment|3006|0||04_attack_tail
+set_comment|3012|0||03_somersault
+set_comment|3014|0||06_fly_attack
+set_comment|3051|0||01_ULA_SideSlash_01
+set_comment|3052|0||05_ULA_Swing_05
+set_comment|3053|0||05_ULA_Swing_04
+set_comment|3054|0||05_ULA_Swing_06
+set_comment|3055|0||05_ULA_Swing_01
+set_comment|3056|0||05_ULA_Swing_07
+set_comment|3059|0||03_ULA_DashAttack_01
+set_comment|3060|0||02_ULA_MoveWarpB_01
+set_comment|3062|0||05_ULA_Swing_03
+set_comment|3063|0||05_ULA_Swing_02
+set_comment|3069|0||05_ULA_Swing_07
+set_comment|3070|0||05_ULA_Swing_07
+set_comment|3071|0||05_ULA_Swing_07
+set_comment|3072|0||05_ULA_Swing_07
+set_comment|3076|0||06_ULA_Swing_fuuatu
+set_comment|3101|0||01_ULB_StraightPunch_01
+set_comment|3102|0||02_ULB_SwingDown_01
+set_comment|3104|0||06_ULB_Tackle_01
+set_comment|3106|0||03_ULB_StepOn_01
+set_comment|3107|0||04_ULB_TitanPunch_01
+set_comment|3116|0||08_ULB_EtherBunker_02
+set_comment|3117|0||08_ULB_EtherBunker_01
+set_comment|3119|0||06_ULB_Tackle_01
+set_comment|3120|0||09_ULB_wild_breast_fire_shock
+set_comment|3121|0||09_ULB_wild_breast_fire_shock
+set_comment|3122|0||09_ULB_wild_breast_fire_shock
+set_comment|3151|0||101_DOL_right_blade
+set_comment|3152|0||102_DOL_left_blade
+set_comment|3153|0||104_DOL_spin_blade
+set_comment|3154|0||105_DOL_back_blade
+set_comment|3156|0||106_DOL_charge_strike_1st
+set_comment|3158|0||103_DOL_thrust
+set_comment|3159|0||107_ether_spin_shot_r
+set_comment|3160|0||107_ether_spin_shot_l
+set_comment|3161|0||103_DOL_thrust
+set_comment|3162|0||103_DOL_thrust_finish
+set_comment|3163|0||104_DOL_spin_blade
+set_comment|3164|0||104_DOL_spin_blade
+set_comment|3165|0||106_DOL_charge_magic_1st
+set_comment|3166|0||106_DOL_charge_strike_2nd
+set_comment|3167|0||104_DOL_spin_blade_5
+set_comment|3168|0||104_DOL_spin_blade
+set_comment|3169|0||104_DOL_spin_blade
+set_comment|3201|0||02_PUD_slam
+set_comment|3202|0||01_PUD_bite
+set_comment|3203|0||04_PUD_swing_1st
+set_comment|3204|0||03_PUD_sling
+set_comment|3211|0||04_PUD_swing_1st
+set_comment|3217|0||05_PUD_hand_stamp_1st
+set_comment|3218|0||05_PUD_hand_stamp_Fin
+set_comment|3219|0||05_PUD_hand_stamp_Fin
+set_comment|3222|0||03_PUD_sling
+set_comment|3251|0||01_attack_swing_down
+set_comment|3252|0||02_attack_swing_left
+set_comment|3253|0||03_attack_spin
+set_comment|3254|0||03_attack_spin_2
+set_comment|3255|0||04_attack_back
+set_comment|3256|0||05_holy_eruption
+set_comment|3258|0||12_attack_rush
+set_comment|3259|0||06_attack_two_combo_01
+set_comment|3260|0||07_attack_two_combo_02
+set_comment|3261|0||08_attack_four_combo_01
+set_comment|3262|0||09_attack_four_combo_02
+set_comment|3263|0||10_attack_four_combo_03
+set_comment|3264|0||11_attack_four_combo_04
+set_comment|3265|0||13_attack_multi
+set_comment|3267|0||08_attack_four_combo_00
+set_comment|3268|0||11_attack_four_combo_04_finish
+set_comment|3269|0||12_attack_rush_finish
+set_comment|3270|0||08_attack_four_combo_00
+set_comment|3271|0||08_attack_four_combo_01
+set_comment|3272|0||09_attack_four_combo_02
+set_comment|3273|0||10_attack_four_combo_03
+set_comment|3274|0||11_attack_four_combo_04
+set_comment|3275|0||12_attack_rush
+set_comment|3301|0||01_attack_crush
+set_comment|3302|0||02_attack_strike
+set_comment|3303|0||03_dark_explosion
+set_comment|3313|0||01_attack_crush
+set_comment|3314|0||05_dark_shot
+set_comment|3351|0||attack_01
+set_comment|3352|0||maser_eye
+set_comment|3354|0||slow_bomb
+set_comment|3356|0||Used by c5032\timeline\t0001\wep_emp_emp\battle\magic_death.tlb
+set_comment|3400|0||attack_biting
+set_comment|3401|0||attack_claw
+set_comment|3402|0||attack_spiral_rush
+set_comment|3403|0||attack_around_wind_attack
+set_comment|3406|0||attack_griffin_dive
+set_comment|3407|0||attack_griffin_dive
+set_comment|3408|0||attack_griffin_dive
+set_comment|3409|0||attack_griffin_dive_wind
+set_comment|3410|0||attack_around_wind
+set_comment|3413|0||attack_griffin_dive
+set_comment|3450|0||attack_bite
+set_comment|3452|0||turtle_stamp
+set_comment|3453|0||turtle_stamp
+set_comment|3454|0||spin_attack01_finish
+set_comment|3455|0||attack_spin_back_wind
+set_comment|3457|0||spin_attack01
+set_comment|3459|0||attack_spin_wind
+set_comment|3460|0||spin_attack01
+set_comment|3461|0||geyser
+set_comment|3464|0||attack_spin_wind
+set_comment|3500|0||attack_punch_left
+set_comment|3501|0||attack_punch_right
+set_comment|3502|0||attack_punch_right_combo
+set_comment|3503|0||attack_punch_left_combo
+set_comment|3504|0||attack_rush
+set_comment|3508|0||freeze_cry
+set_comment|3515|0||attack_punch_left
+set_comment|3516|0||attack_punch_right
+set_comment|3550|0||attack_horn_l
+set_comment|3551|0||attack_horn_r
+set_comment|3552|0||attack_rush
+set_comment|3553|0||attack_stamp
+set_comment|3554|0||attack_rampage_finish
+set_comment|3555|0||attack_rampage
+set_comment|3556|0||attack_rampage_wind
+set_comment|3557|0||attack_stamp
+set_comment|4001|0||02_RightAttack
+set_comment|4002|0||03_LeftAttack
+set_comment|4003|0||01_Tatakituke
+set_comment|4004|0||04_BackAttack
+set_comment|4008|0||Attack_tentacle
+set_comment|4009|0||08_diving
+set_comment|4010|0||09_Vacuum
+set_comment|4012|0||07_Badbreath_range
+set_comment|4013|0||05_MeleeCombo_01
+set_comment|4014|0||06_MeleeCombo_02
+set_comment|4015|0||11_Abaremakuri_StartLoop
+set_comment|4016|0||12_Abaremakuri_Finish
+set_comment|4017|0||12_Abaremakuri_Finish
+set_comment|4019|0||10_duration_down
+set_comment|4062|0||02_Furioroshi
+set_comment|4063|0||03_ToshinFurioroshi
+set_comment|4064|0||01_Hidarifuri
+set_comment|4065|0||03_ToshinFurioroshi
+set_comment|4066|0||04_BigSwing_1st
+set_comment|4067|0||04_BigSwing_2nd
+set_comment|4068|0||04_BigSwing_Fin
+set_comment|4069|0||11_Mino_rush
+set_comment|4070|0||13_Mino_wild_1st
+set_comment|4071|0||13_Mino_wild_Fin
+set_comment|4072|0||12_Mino_swing_up
+set_comment|4073|0||12_Mino_swing_up
+set_comment|4074|0||13_Mino_wild_Fin
+set_comment|4075|0||13_Mino_wild_2nd
+set_comment|4076|0||13_Mino_wild_3rd
+set_comment|4101|0||09_DRG_Jump
+set_comment|4102|0||09_DRG_Jump
+set_comment|4103|0||07_DRG_Tosshin_START_Loop
+set_comment|4104|0||01_DRG_MeleeComboA_01
+set_comment|4105|0||02_DRG_MeleeComboA_02
+set_comment|4106|0||04_DRG_MeleeComboB_01
+set_comment|4107|0||05_DRG_MeleeComboB_02
+set_comment|4108|0||06_DRG_MeleeComboB_03
+set_comment|4109|0||03_DRG_MeleeSingle_1st
+set_comment|4110|0||03_DRG_MeleeSingle_1st
+set_comment|4111|0||10_DRG_down_rivival
+set_comment|4116|0||11_DRG_mirage_start
+set_comment|4150|0||09_DRG_Jump_windpressure
+set_comment|4152|0||09_DRG_Jump
+set_comment|4161|0||j_head
+set_comment|4162|0||rolling_l
+set_comment|4163|0||jump_attack2
+set_comment|4164|0||j_forehand_r
+set_comment|4165|0||tail
+set_comment|4166|0||rolling
+set_comment|4167|0||jump_attack
+set_comment|4169|0||tail
+set_comment|4170|0||rolling
+set_comment|4174|0||overdrive_r_hand
+set_comment|4175|0||overdrive_rolling
+set_comment|4177|0||overdrive_impact
+set_comment|4179|0||rolling_l_heat
+set_comment|4180|0||roling_l_hand
+set_comment|4182|0||jump_attack_blow
+set_comment|4183|0||overdrive_finish
+set_comment|4184|0||overdrive_tail
+set_comment|4185|0||fire_fever
+set_comment|4203|0||20_NIN_MeleeComboA_01_1st
+set_comment|4204|0||20_NIN_MeleeComboA_01_1st
+set_comment|4205|0||25_NIN_WindAttack_Hit
+set_comment|4206|0||21_NIN_MeleeComboA_02_1st
+set_comment|4207|0||21_NIN_MeleeComboA_02_1st
+set_comment|4208|0||21_NIN_MeleeComboA_02_1st
+set_comment|4209|0||21_NIN_MeleeComboA_02_4th
+set_comment|4210|0||22_NIN_MeleeComboB_01_1st
+set_comment|4211|0||22_NIN_MeleeComboB_01_2nd
+set_comment|4212|0||23_NIN_MeleeComboB_02_kick
+set_comment|4215|0||24_NIN_MeleeComboB_03_Finish
+set_comment|4218|0||30_GARI_AttackGround
+set_comment|4220|0||32_GARI_VerticalRolling
+set_comment|4221|0||31_GARI_HorizontalRolling_1st
+set_comment|4222|0||30_GARI_AttackGround
+set_comment|4223|0||31_GARI_HorizontalRolling_Fin
+set_comment|4254|0||01_BIT_weak
+set_comment|4255|0||01_NEC_rush
+set_comment|4256|0||02_NEC_rush_02
+set_comment|4257|0||death_start
+set_comment|4258|0||change_form_02
+set_comment|4259|0||change_form_02
+set_comment|4261|0||09_NEC_blizzaga_02
+set_comment|4262|0||03_NEC_weak_combo_1st
+set_comment|4263|0||03_NEC_weak_combo_1st
+set_comment|4265|0||03_NEC_weak_combo_3rd
+set_comment|4266|0||04_NEC_strong_combo_a_1st
+set_comment|4267|0||04_NEC_strong_combo_a_1st
+set_comment|4268|0||05_NEC_strong_combo_b
+set_comment|4271|0||06_NEC_cb_combo_c
+set_comment|4272|0||06_NEC_cb_combo_c
+set_comment|4273|0||07_NEC_cb_combo_d_1st
+set_comment|4274|0||07_NEC_cb_combo_d_2nd
+set_comment|4277|0||change_form
+set_comment|4279|0||09_NEC_blizzaga_02
+set_comment|4280|0||03_NEC_weak_combo_3rd
+set_comment|4301|0||03_attack_combo_a01
+set_comment|4302|0||04_attack_combo_a02
+set_comment|4303|0||06_attack_combo_b01
+set_comment|4304|0||07_attack_combo_b02
+set_comment|4305|0||08_attack_combo_b03
+set_comment|4307|0||01_attack_strong_swing
+set_comment|4308|0||02_circle_kick
+set_comment|4310|0||05_attack_rush
+set_comment|4311|0||10_attack_rush3
+set_comment|4312|0||05_attack_rush
+set_comment|4319|0||09_Strengthen
+set_comment|4351|0||2BW_MeleeComboA_01
+set_comment|4352|0||2BW_MeleeComboA_02
+set_comment|4354|0||2BW_MeleeComboA_02
+set_comment|4355|0||2BW_MeleeComboA_03
+set_comment|4357|0||2BW_MeleeComboB_01
+set_comment|4358|0||2BW_MeleeComboB_02
+set_comment|4360|0||2BW_MeleeComboB_02
+set_comment|4361|0||2BW_MeleeComboB_03
+set_comment|4363|0||2BW_Rush
+set_comment|4365|0||2BW_JumpStamp
+set_comment|4366|0||2BW_JumpStamp
+set_comment|4367|0||2BW_BackstepFire
+set_comment|4368|0||2BW_BackstepFire
+set_comment|4373|0||2BW_FlameRadiation
+set_comment|4391|0||12_CMN_wingbreak_l_01
+set_comment|4392|0||07_CMN_drift_attack_l_01
+set_comment|4393|0||03_CMN_tail_whip_01
+set_comment|4396|0||14_ADR_ult_breath
+set_comment|4397|0||15_ADR_ult_breath_sht
+set_comment|4398|0||09_CMN_bite_01
+set_comment|4399|0||10_CMN_kachiage_01
+set_comment|4400|0||11_CMN_dive_attack_01
+set_comment|4402|0||wind
+set_comment|4403|0||wind
+set_comment|4404|0||wind
+set_comment|4411|0||11_CMN_dive_attack_01
+set_comment|4415|0||wind
+set_comment|4418|0||11_WDR_white_slam_01
+set_comment|4419|0||03_CMN_tail_whip_01
+set_comment|4422|0||07_CMN_drift_attack_l_01
+set_comment|4432|0||wind
+set_comment|4433|0||wind
+set_comment|4435|0||09_CMN_bite_01
+set_comment|4436|0||11_CMN_dive_attack_01
+set_comment|4437|0||11_CMN_dive_attack_01
+set_comment|4438|0||12_CMN_wingbreak_l_01
+set_comment|4439|0||10_CMN_kachiage_01
+set_comment|4444|0||12_RED_wind
+set_comment|4451|0||01_GCO_press
+set_comment|4452|0||03_GCO_bite
+set_comment|4453|0||02_GCO_discharge
+set_comment|4459|0||hight_voltage
+set_comment|4462|0||04_GCO_high_voltage_c
+set_comment|4466|0||03_GCO_bite
+set_comment|4474|0||hmn_combo_a_1
+set_comment|4475|0||hmn_combo_a_2
+set_comment|4476|0||hmn_combo_b_1
+set_comment|4477|0||hmn_combo_b_2
+set_comment|4479|0||hmn_punch_explosion
+set_comment|4480|0||spin_attack
+set_comment|4481|0||lightning
+set_comment|4483|0||firebreath_gale
+set_comment|4484|0||firebreath
+set_comment|4485|0||lightning
+set_comment|4486|0||firebreath
+set_comment|4487|0||ult_overheat_explosion_hmn
+set_comment|4489|0||powerup
+set_comment|4509|0||01_MeleeComboA_01_1st
+set_comment|4510|0||01_MeleeComboA_01_1st
+set_comment|4511|0||02_MeleeComboA_02_1st
+set_comment|4512|0||02_MeleeComboA_02_1st
+set_comment|4513|0||02_MeleeComboA_02_1st
+set_comment|4514|0||03_MeleeComboB_01
+set_comment|4515|0||04_MeleeComboB_02_1st
+set_comment|4516|0||04_MeleeComboB_02_1st
+set_comment|4517|0||04_MeleeComboB_02_1st
+set_comment|4518|0||05_MeleeComboC_01_1st
+set_comment|4519|0||05_MeleeComboC_01_1st
+set_comment|4520|0||06_MeleeComboC_02
+set_comment|4521|0||07_MeleeComboC_03_hit_1st
+set_comment|4522|0||07_MeleeComboC_03_hit_2nd
+set_comment|4523|0||07_MeleeComboC_03_hit_Finish
+set_comment|4524|0||08_MeleeComboC_03_Nohit
+set_comment|4526|0||09_reset
+set_comment|4542|0||tume_02_MeleeComboA_01
+set_comment|4543|0||tume_03_MeleeComboA_02
+set_comment|4544|0||tume_04_MeleeComboB_01_1st
+set_comment|4545|0||tume_04_MeleeComboB_01_2nd
+set_comment|4546|0||05_MeleeComboB_02
+set_comment|4547|0||05_MeleeComboB_02
+set_comment|4548|0||05_MeleeComboB_02
+set_comment|4550|0||tume_06_MeleeComboB_03
+set_comment|4552|0||tume_MeleeComboC_01_l
+set_comment|4553|0||tume_MeleeComboC_01_r
+set_comment|4554|0||tume_MeleeComboC_01_l
+set_comment|4555|0||tume_MeleeComboC_03_1st
+set_comment|4556|0||14_MeleeComboC_03
+set_comment|4557|0||tume_MeleeComboC_03_2nd_l
+set_comment|4558|0||tume_MeleeComboC_04
+set_comment|4559|0||15_MeleeComboC_04
+set_comment|4561|0||tume_10_MeleeComboD_01
+set_comment|4563|0||13_MeleeComboD_03_hit_uchiage
+set_comment|4564|0||13_MeleeComboD_03_hit_garigari_ue
+set_comment|4565|0||13_MeleeComboD_03_hit_garigari_sita
+set_comment|4566|0||13_MeleeComboD_03_hit_finish
+set_comment|4567|0||12_MeleeComboD_03_finish
+set_comment|4568|0||12_MeleeComboD_03_finish
+set_comment|4569|0||20_JumpAttack_fuuatsu
+set_comment|4570|0||10_jump_attack
+set_comment|4571|0||01_JumpAttack
+set_comment|4572|0||07_access_attack
+set_comment|4574|0||22_FlyingAttack_fuuatsu
+set_comment|4575|0||22_FlyingAttack_fuuatsu
+set_comment|4576|0||23_FlyingAttack_parry
+set_comment|4578|0||08_concentration_attack
+set_comment|4580|0||concentration_attack_loneliness
+set_comment|4584|0||21_reset_a
+set_comment|4656|0||04_rush
+set_comment|4657|0||05_ambient_icicle
+set_comment|4660|0||01_Melee_combo_01
+set_comment|4661|0||01_Melee_combo_01_2
+set_comment|4663|0||02_Melee_combo_02
+set_comment|4664|0||03_Melee_combo_03
+set_comment|4665|0||06_blowoff
+set_comment|4671|0||30_tiamat_comboA_01
+set_comment|4672|0||31_tiamat_comboA_02
+set_comment|4673|0||32_tiamat_comboB_01_1st
+set_comment|4674|0||32_tiamat_comboB_01_2nd
+set_comment|4675|0||33_tiamat_comboB_02
+set_comment|4676|0||34_tiamat_longrun
+set_comment|4678|0||34_tiamat_guard_repel_1st
+set_comment|4679|0||34_tiamat_guard_repel_2nd
+set_comment|4680|0||32_tiamat_comboB_01_3rd
+set_comment|4710|0||05_shot_slash_1
+set_comment|4711|0||06_shot_slash_2
+set_comment|4720|0||01_ComboA_01
+set_comment|4721|0||02_ComboA_02
+set_comment|4722|0||03_ComboB_01
+set_comment|4723|0||03_ComboB_01
+set_comment|4724|0||04_ComboB_02
+set_comment|4730|0||10_gedan_atk
+set_comment|4731|0||11_tuki_atk
+set_comment|4732|0||11_tuki_atk
+set_comment|4733|0||11_tuki_atk
+set_comment|4740|0||15_kabuto_wari
+set_comment|4741|0||15_iai_issen
+set_comment|4750|0||41_goku_zan_fuuatu
+set_comment|4751|0||40_goku_zan
+set_comment|4752|0||40_goku_zan
+set_comment|4753|0||40_goku_zan
+set_comment|4754|0||42_acacia_fuuatu
+set_comment|4755|0||42_acacia_fuuatu
+set_comment|4756|0||43_zantetsu_start
+set_comment|4760|0||24_longsword_fuuatsu
+set_comment|4761|0||20_longsword_01
+set_comment|4763|0||20_longsword_01
+set_comment|4764|0||21_longsword_02_l
+set_comment|4765|0||22_longsword_02_r
+set_comment|4766|0||23_longsword_03
+set_comment|4767|0||23_longsword_03
+set_comment|4768|0||23_longsword_03
+set_comment|4770|0||30_twosword_spin
+set_comment|4771|0||30_twosword_spin
+set_comment|4772|0||31_twosword_tukisashi
+set_comment|4773|0||32_twosword_finish
+set_comment|4774|0||32_twosword_finish
+set_comment|4775|0||33_twosword_fuuatsu
+set_comment|4780|0||01_atk_harai
+set_comment|4781|0||02_atk_tuki
+set_comment|4782|0||03_atk_harai
+set_comment|4783|0||04_atk_tataki
+set_comment|4784|0||04_atk_tataki
+set_comment|4785|0||05_atk_fuuatsu
+set_comment|4786|0||45_odin_end_fuuatu
+set_comment|4801|0||01_IGT_slash_r_01
+set_comment|4802|0||09_IGT_combo_1_jump_slash
+set_comment|4803|0||21_IGT_base_overrun
+set_comment|4804|0||07_IGT_all_range
+set_comment|4805|0||21_IGT_base_overrun
+set_comment|4806|0||02_IGT_combo_2_slash_r
+set_comment|4807|0||03_IGT_slash_l
+set_comment|4808|0||04_IGT_combo_2_spin_slash
+set_comment|4809|0||01_IGT_slash_r_02
+set_comment|4811|0||08_IGT_combo_2_shield_slam
+set_comment|4812|0||05_IGT_combo_2_spear
+set_comment|4813|0||06_IGT_combo_2_slash_b
+set_comment|4814|0||05_IGT_combo_2_spear
+set_comment|4816|0||22_IGT_base_atomicray
+set_comment|4819|0||10_IGT_large_beam_saber_2
+set_comment|4827|0||20_IGT_base_spin_slash_3
+set_comment|4828|0||21_IGT_base_overrun
+set_comment|4829|0||21_IGT_base_overrun
+set_comment|4830|0||20_IGT_base_spin_slash
+set_comment|4832|0||22_IGT_base_atomicray_impact
+set_comment|4836|0||22_IGT_base_atomicray_knockback
+set_comment|4840|0||01_IGT_slash_r_01
+set_comment|4841|0||09_IGT_combo_1_jump_slash
+set_comment|4842|0||07_IGT_all_range
+set_comment|4843|0||02_IGT_combo_2_slash_r
+set_comment|4844|0||03_IGT_slash_l
+set_comment|4845|0||04_IGT_combo_2_spin_slash
+set_comment|4846|0||01_IGT_slash_r_02
+set_comment|4847|0||08_IGT_combo_2_shield_slam
+set_comment|4848|0||05_IGT_combo_2_spear
+set_comment|4849|0||06_IGT_combo_2_slash_b
+set_comment|4857|0||Used by c5017\timeline\t0001\wep_emp_emp\damage\thunder_plain_down.tlb
+set_comment|4858|0||01_CUL_Attack_Cllaw_l
+set_comment|4859|0||03_CUL_Attack_Spin
+set_comment|4860|0||07_CUL_Attack_Jump
+set_comment|4861|0||04_CUL_Attack_Beard_l
+set_comment|4862|0||06_CUL_Attack_Tackle
+set_comment|4865|0||08_CUL_WildCharge_Body
+set_comment|4866|0||09_CUL_Thunder_plain_04
+set_comment|4867|0||02_CUL_Attack_Cllaw_r
+set_comment|4868|0||09_CUL_Thunder_plain_01
+set_comment|4869|0||05_CUL_Attack_Beard_r
+set_comment|4871|0||01_CUL_Attack_Cllaw_l
+set_comment|4872|0||02_CUL_Attack_Cllaw_r
+set_comment|4873|0||09_CUL_Thunder_plain_01
+set_comment|4881|0||13_Pan_Attack_Cllaw_l
+set_comment|4882|0||11_Pan_Spin_1
+set_comment|4884|0||15_Pan_Attack_Jump
+set_comment|4885|0||10_Pan_Triple_Cllaw_Fin
+set_comment|4886|0||10_Pan_Triple_Cllaw_1st
+set_comment|4887|0||10_Pan_Triple_Cllaw_2nd
+set_comment|4888|0||10_Pan_Triple_Cllaw_3rd
+set_comment|4889|0||14_Pan_Attack_Cllaw_r
+set_comment|4908|0||Attack_strike_st
+set_comment|4909|0||08_diving
+set_comment|4910|0||09_Vacuum
+set_comment|4911|0||Attack_strike
+set_comment|4917|0||13_Abaremakuri_Acrobat_Finish
+set_comment|4921|0||combo_a1_01
+set_comment|4922|0||combo_a1_01
+set_comment|4923|0||combo_a2_01
+set_comment|4924|0||combo_a2_01
+set_comment|4925|0||combo_b
+set_comment|4926|0||combo_b
+set_comment|4927|0||combo_b
+set_comment|4928|0||combo_b
+set_comment|4929|0||combo_b
+set_comment|4930|0||combo_b
+set_comment|4931|0||combo_c1_01
+set_comment|4932|0||combo_c1_02
+set_comment|4933|0||combo_c2_follow_wep
+set_comment|4934|0||combo_c2_02_follow_wep
+set_comment|4935|0||combo_c2_03_follow_wep
+set_comment|4936|0||combo_c2_finish
+set_comment|4937|0||combo_c2_02_finish
+set_comment|4938|0||combo_c2_03_finish
+set_comment|4939|0||combo_c3
+set_comment|4940|0||combo_c3_finish
+set_comment|4941|0||uzoumuzou_magic
+set_comment|4945|0||g_thrust
+set_comment|4951|0||g_slash
+set_comment|4953|0||g_05way
+set_comment|4958|0||g_way_impact
+set_comment|4982|0||body
+set_comment|4983|0||body_range02
+set_comment|4984|0||r_hand
+set_comment|4985|0||r_hand
+set_comment|4986|0||l_hand
+set_comment|4987|0||tail
+set_comment|4988|0||r_leg
+set_comment|4989|0||r_leg
+set_comment|5004|0||Used by c6004\timeline\t0001\wep_emp_emp\battle\attack_reincarnation_f_01.tlb
+set_comment|5201|0||p1_atk_punch_r
+set_comment|5202|0||p1_atk_punch_r
+set_comment|5203|0||p1_atk_swing_r
+set_comment|5204|0||p1_atk_swing_l
+set_comment|5205|0||p1_atk_upper
+set_comment|5206|0||p1_atk_hammer_r
+set_comment|5207|0||p1_atk_hammer_r
+set_comment|5208|0||p1_atk_stamp
+set_comment|5209|0||p1_atk_stamp
+set_comment|5210|0||p1_atk_doublestamp_l
+set_comment|5211|0||p1_atk_doublestamp_l
+set_comment|5212|0||p1_atk_doublestamp_r
+set_comment|5213|0||p1_atk_doublestamp_r
+set_comment|5214|0||p1_atk_kickstamp_kick
+set_comment|5215|0||p1_atk_kickstamp_stamp
+set_comment|5216|0||p1_atk_kickstamp_stamp
+set_comment|5218|0||p1_atk_geocrush_land
+set_comment|5219|0||p1_atk_rush
+set_comment|5220|0||p1_atk_buster
+set_comment|5222|0||p1_atk_earthshaker
+set_comment|5225|0||p1_atk_shout
+set_comment|5230|0||p1_atk_eventland
+set_comment|5241|0||p5_atk_hook_r
+set_comment|5242|0||p5_atk_hook_l
+set_comment|5243|0||p5_atk_upper_r
+set_comment|5245|0||p5_atk_backblow_r
+set_comment|5246|0||p5_atk_backblow_l
+set_comment|5247|0||p5_atk_hummer
+set_comment|5250|0||p5_atk_earthshaker_l
+set_comment|5251|0||p5_atk_earthshaker_r
+set_comment|5252|0||p5_atk_rush
+set_comment|5404|0||atk_punch
+set_comment|5405|0||atk_punch
+set_comment|5406|0||atk_slap_front
+set_comment|5407|0||atk_thrust
+set_comment|5408|0||atk_hammer_sp
+set_comment|5410|0||atk_hammer2
+set_comment|5412|0||atk_punch
+set_comment|5413|0||phase3_fa_atkcol
+set_comment|5415|0||HitPhase3BigStone
+set_comment|5416|0||atk_punch
+set_comment|5417|0||atk_slap_back
+set_comment|5418|0||atk_thrust
+set_comment|5419|0||atk_hammer
+set_comment|5421|0||atk_hammer2
+set_comment|5423|0||atk_punch
+set_comment|5426|0||HitPhase3BigStone
+set_comment|5428|0||atk_punch
+set_comment|5429|0||atk_punch
+set_comment|5430|0||atk_slap_front
+set_comment|5431|0||atk_slap_back
+set_comment|5432|0||atk_thrust
+set_comment|5433|0||atk_hammer
+set_comment|5435|0||atk_hammer2
+set_comment|5437|0||atk_punch
+set_comment|5438|0||attack_c5_st_atk
+set_comment|5446|0||attack1
+set_comment|5451|0||01_attack_f_01
+set_comment|5452|0||01_attack_f_02
+set_comment|5453|0||01_attack_f_02
+set_comment|5454|0||01_attack_f_03
+set_comment|5455|0||01_attack_f_03
+set_comment|5458|0||02_attack_near
+set_comment|5461|0||03_attack_b
+set_comment|5462|0||04_attack_l
+set_comment|5463|0||05_attack_r
+set_comment|5466|0||06_attack_kick
+set_comment|5467|0||06_attack_kick
+set_comment|5468|0||10_sonic_kick
+set_comment|5469|0||10_sonic_kick
+set_comment|5473|0||07_attack_far_f
+set_comment|5474|0||08_attack_far_l_01
+set_comment|5475|0||08_attack_far_l_02
+set_comment|5476|0||09_attack_far_r_01
+set_comment|5477|0||09_attack_far_r_02
+set_comment|5485|0||12_attack_aerial_blast_finish
+set_comment|5486|0||11_attack_aerial_blast_barrier
+set_comment|5501|0||vsC_swing_l
+set_comment|5502|0||vsC_swing_r
+set_comment|5503|0||vsC_stamp_l
+set_comment|5504|0||vsC_stamp_r
+set_comment|5505|0||vsC_tail_l
+set_comment|5506|0||vsC_tail_r
+set_comment|5507|0||vsC_explosion
+set_comment|5508|0||vsC_rush
+set_comment|5509|0||vsC_rush
+set_comment|5513|0||vsC_step
+set_comment|5514|0||vsC_step
+set_comment|5515|0||vsC_step
+set_comment|5550|0||combo_normal_01
+set_comment|5551|0||combo_normal_02
+set_comment|5552|0||combo_normal_03
+set_comment|5553|0||combo_normal_04
+set_comment|5554|0||combo_normal_shot
+set_comment|5555|0||thrust_normal_01
+set_comment|5556|0||thrust_normal_02
+set_comment|5557|0||assault_normal_01
+set_comment|5558|0||assault_normal_shot
+set_comment|5561|0||combo_ifrit_01
+set_comment|5562|0||combo_ifrit_01_2
+set_comment|5563|0||combo_ifrit_02_2
+set_comment|5564|0||combo_ifrit_02
+set_comment|5565|0||combo_ifrit_03
+set_comment|5566|0||combo_ifrit_03_2
+set_comment|5567|0||combo_ifrit_04
+set_comment|5568|0||combo_ifrit_04_2
+set_comment|5569|0||combo_ifrit_shot
+set_comment|5574|0||assault_ifrit_01
+set_comment|5575|0||assault_ifrit_shot
+set_comment|5579|0||sa_cyclone_01
+set_comment|5580|0||sa_divide_01
+set_comment|5582|0||sa_quick_02
+set_comment|5585|0||hellflame_wind
+set_comment|5586|0||hellflame_01
+set_comment|5591|0||assault_ifrit_01
+set_comment|5593|0||hellflame_05
+set_comment|5601|0||vsG_combo_01
+set_comment|5602|0||vsG_combo_02
+set_comment|5603|0||vsG_combo_03
+set_comment|5605|0||vsG_rush
+set_comment|5607|0||vsI_Claw_l
+set_comment|5608|0||vsI_Claw_r
+set_comment|5609|0||vsI_Charge
+set_comment|5613|0||vsI_AerialBlast
+set_comment|5614|0||vsI_AerialBlast
+set_comment|5615|0||vsI_MeteorStart
+set_comment|5616|0||vsI_Charge_to_BattleEvent
+set_comment|5721|0||08_dimensional_slash
+set_comment|5726|0||01_attack_combo_a_01
+set_comment|5727|0||02_attack_combo_a_02b
+set_comment|5728|0||03_attack_frontstep
+set_comment|5729|0||04_attack_backstep
+set_comment|5730|0||05_shot_melee
+set_comment|5731|0||05_shot_melee
+set_comment|5732|0||06_attack_rush_slash
+set_comment|5735|0||10_continuous_fire_1st
+set_comment|5736|0||10_continuous_fire_2nd
+set_comment|5737|0||10_continuous_fire_3rd
+set_comment|5738|0||10_continuous_fire_4th
+set_comment|5739|0||10_continuous_fire_5th
+set_comment|5740|0||11_continuous_fire_uchiage_1
+set_comment|5741|0||11_continuous_fire_uchiage_1
+set_comment|5742|0||12_continuous_fire_finish
+set_comment|5744|0||07_reset
+set_comment|5801|0||01_MeleeComboA_01
+set_comment|5802|0||02_MeleeComboA_02
+set_comment|5803|0||combo_B01
+set_comment|5804|0||04_MeleeComboB_02
+set_comment|5805|0||04_MeleeComboB_02
+set_comment|5806|0||combo_B03_l
+set_comment|5807|0||05_MeleeComboB_03
+set_comment|5810|0||06_Tosshin
+set_comment|5811|0||09_footwork_attack
+set_comment|5813|0||15_dive_attack_start
+set_comment|5814|0||19_dive_attack_start2
+set_comment|5817|0||18_dive_attack_damage
+set_comment|5820|0||07_straight_landslide
+set_comment|5824|0||08_gekishin
+set_comment|5830|0||26_hajiki_tukami_uchiage
+set_comment|5831|0||26_hajiki_tukami_uchiage_hit1
+set_comment|5832|0||26_hajiki_tukami_uchiage_hit2
+set_comment|5833|0||26_hajiki_tukami_uchiage_finish
+set_comment|5835|0||35_hajiki_fan_landslide
+set_comment|5838|0||hajiki_hasami_l
+set_comment|5839|0||hajiki_hasami_l
+set_comment|5840|0||hajiki_hasami_l
+set_comment|5841|0||hajiki_hasami_r
+set_comment|5842|0||hajiki_hasami_r
+set_comment|5843|0||hajiki_hasami_r
+set_comment|5844|0||hajiki_hasami_l
+set_comment|5845|0||hajiki_hasami_l
+set_comment|5846|0||hajiki_hasami_l
+set_comment|5850|0||40_counter_Attack_hajiki
+set_comment|5851|0||counter1_r
+set_comment|5852|0||counter2_l
+set_comment|5853|0||rocket_punch
+set_comment|5854|0||rocket_punch_finish
+set_comment|5860|0||50_sp_attack_C01_fuuatsu
+set_comment|5861|0||sp_attack_C01_l
+set_comment|5862|0||51_sp_attack_C01_1st
+set_comment|5864|0||52_sp_attack_C01_2nd
+set_comment|5867|0||sp_attack_C02_r_1st
+set_comment|5868|0||sp_attack_C02_l_2nd
+set_comment|5869|0||sp_attack_C02_l_3rd
+set_comment|5871|0||sp_attack_C02_rocket_punch
+set_comment|5872|0||sp_attack_C02_rocket_punch_W
+set_comment|5874|0||sp_attack_C02_r_4th
+set_comment|5875|0||sp_attack_C02_l_5th
+set_comment|5911|0||Attack_Dive
+set_comment|5914|0||Attack_Slash_L
+set_comment|5915|0||Attack_Explosion
+set_comment|5922|0||Attack_Charge
+set_comment|5927|0||Attack_TeraFlare
+set_comment|5929|0||Attack_Pressure
+set_comment|5939|0||Attack_Charge
+set_comment|6001|0||atk_combo_01
+set_comment|6002|0||atk_combo_02
+set_comment|6003|0||atk_combo_03_1
+set_comment|6004|0||atk_combo_03_2
+set_comment|6005|0||atk_combo_04_1
+set_comment|6006|0||atk_combo_04_2
+set_comment|6007|0||atk_melee_01
+set_comment|6008|0||atk_melee_01
+set_comment|6009|0||atk_melee_01
+set_comment|6010|0||atk_melee_01
+set_comment|6011|0||atk_melee_sp_01
+set_comment|6012|0||atk_melee_sp_01
+set_comment|6013|0||atk_melee_sp_03
+set_comment|6014|0||atk_melee_sp_03
+set_comment|6015|0||atk_melee_sp_04_1
+set_comment|6016|0||atk_melee_sp_04_2
+set_comment|6017|0||atk_combo_01
+set_comment|6018|0||atk_melee_01
+set_comment|6019|0||atk_melee_sp_01
+set_comment|6021|0||atk_combo_01_air
+set_comment|6022|0||atk_combo_02_air
+set_comment|6023|0||atk_combo_03_air
+set_comment|6024|0||atk_melee_01_air
+set_comment|6025|0||atk_melee_02_air
+set_comment|6026|0||atk_melee_02_air
+set_comment|6027|0||atk_melee_sp_01_air
+set_comment|6028|0||atk_melee_sp_01_air
+set_comment|6029|0||atk_melee_sp_03_air_1
+set_comment|6030|0||atk_melee_sp_03_air_2
+set_comment|6032|0||atk_just_attack_1
+set_comment|6033|0||atk_just_attack_2
+set_comment|6034|0||atk_just_attack_air_1
+set_comment|6035|0||atk_just_attack_air_2
+set_comment|6036|0||atk_melee_01
+set_comment|6037|0||atk_melee_02_air
+set_comment|6038|0||atk_melee_sp_01
+set_comment|6039|0||atk_melee_sp_01_air
+set_comment|6041|0||atk_rush_loop
+set_comment|6042|0||atk_rush_end
+set_comment|6043|0||atk_rush_end
+set_comment|6044|0||atk_rush_end
+set_comment|6045|0||atk_rush_end
+set_comment|6046|0||atk_melee_01
+set_comment|6047|0||atk_melee_01
+set_comment|6048|0||atk_melee_sp_03
+set_comment|6049|0||atk_melee_sp_03
+set_comment|6050|0||atk_melee_sp_03
+set_comment|6051|0||atk_melee_sp_03
+set_comment|6052|0||atk_fall_loop
+set_comment|6053|0||atk_fall_end_lv1
+set_comment|6054|0||atk_fall_end_lv2
+set_comment|6055|0||atk_fall_end_lv2
+set_comment|6056|0||atk_melee_01
+set_comment|6057|0||atk_melee_01
+set_comment|6058|0||atk_melee_sp_fall
+set_comment|6059|0||atk_melee_sp_fall
+set_comment|6060|0||atk_charge_attack
+set_comment|6061|0||atk_charge_attack
+set_comment|6062|0||atk_charge_attack (2?)
+set_comment|6063|0||atk_charge_attack (2?)
+set_comment|6064|0||atk_charge_attack_air
+set_comment|6065|0||atk_charge_attack_air
+set_comment|6066|0||atk_charge_attack_air (2?)
+set_comment|6067|0||atk_charge_attack_air (2?)
+set_comment|6074|0||atk_titan_charge
+set_comment|6075|0||atk_titan_lv1
+set_comment|6076|0||atk_titan_lv2
+set_comment|6077|0||atk_titan_lv2
+set_comment|6078|0||atk_titan_just
+set_comment|6079|0||atk_titan_just
+set_comment|6080|0||atk_titan_just
+set_comment|6081|0||atk_titan_charge
+set_comment|6082|0||atk_titan_lv1_bahamut
+set_comment|6083|0||atk_titan_lv1_bahamut
+set_comment|6084|0||atk_titan_lv2_bahamut
+set_comment|6085|0||atk_titan_lv2_bahamut
+set_comment|6086|0||atk_titan_just_bahamut
+set_comment|6087|0||atk_titan_just_bahamut
+set_comment|6088|0||atk_titan_just_bahamut
+set_comment|6097|0||atk_ifrit_dash
+set_comment|6098|0||enemy_jump
+set_comment|6099|0||atk_attack_titan_p2
+set_comment|6101|0||atk_combo_01_1
+set_comment|6102|0||atk_combo_01_2
+set_comment|6103|0||atk_combo_02_1
+set_comment|6104|0||atk_combo_02_2
+set_comment|6105|0||atk_combo_03_1
+set_comment|6106|0||atk_combo_03_2
+set_comment|6107|0||atk_melee_01
+set_comment|6108|0||atk_melee_02
+set_comment|6109|0||atk_melee_03
+set_comment|6110|0||atk_melee_sp_01_1
+set_comment|6111|0||atk_melee_sp_01_2
+set_comment|6112|0||atk_melee_sp_02_1
+set_comment|6113|0||atk_melee_sp_02_1
+set_comment|6114|0||atk_melee_sp_03_1
+set_comment|6115|0||atk_melee_sp_03_2
+set_comment|6117|0||atk_just_attack_01
+set_comment|6118|0||atk_just_attack_02
+set_comment|6119|0||atk_melee_01
+set_comment|6120|0||atk_melee_sp_01_1
+set_comment|6121|0||atk_melee_sp_01_2
+set_comment|6123|0||atk_rush_slash_loop
+set_comment|6124|0||atk_rush_slash_end
+set_comment|6125|0||atk_rush_slash_end
+set_comment|6126|0||atk_melee_rush
+set_comment|6127|0||atk_melee_rush
+set_comment|6128|0||atk_melee_sp_rush_1
+set_comment|6129|0||atk_melee_sp_rush_2
+set_comment|6131|0||atk_charge_fire_slash
+set_comment|6132|0||atk_charge_fire_slash
+set_comment|6143|0||atk_titan_charge
+set_comment|6144|0||atk_titan_lv1
+set_comment|6145|0||atk_titan_lv2
+set_comment|6146|0||atk_titan_lv2
+set_comment|6147|0||atk_titan_just
+set_comment|6148|0||atk_titan_just
+set_comment|6149|0||atk_titan_just
+set_comment|6155|0||atk_ifrit_dash
+set_comment|6157|0||atk_phoenix_shift_attack
+set_comment|6158|0||atk_melee_01
+set_comment|6159|0||atk_melee_sp_shift_1
+set_comment|6160|0||atk_melee_sp_shift_2
+set_comment|6161|0||atk_phoenix_shift_shot
+set_comment|6201|0||Attack_Breath_A
+set_comment|6202|0||Attack_Breath_A
+set_comment|6203|0||Attack_Breath_A
+set_comment|6204|0||Attack_Breath_B
+set_comment|6205|0||Attack_Breath_B
+set_comment|6206|0||Attack_Assault
+set_comment|6207|0||Attack_Destruct
+set_comment|6208|0||Attack_Vacuum_01
+set_comment|6213|0||Attack_GigaFlare
+set_comment|6214|0||Attack_GigaFlare
+set_comment|6220|0||Attack_Laser_Rotate_Rise
+set_comment|6221|0||Attack_Laser_Rotate_Barrier
+set_comment|6223|0||Attack_WideShot
+set_comment|6224|0||Attack_WideShot
+set_comment|6226|0||Attack_TeraFlare_ChargeFinish
+set_comment|6227|0||Attack_TeraFlare
+set_comment|6228|0||Attack_TeraFlare
+set_comment|6230|0||Attack_Roar
+set_comment|6231|0||Attack_Swiveling
+set_comment|6301|0||atk_combo
+set_comment|6302|0||atk_combo
+set_comment|6303|0||atk_combo_b
+set_comment|6304|0||atk_combo_c
+set_comment|6305|0||atk_hummer
+set_comment|6307|0||attack_laserblade_01
+set_comment|6308|0||attack_laserblade_01
+set_comment|6309|0||attack_laserblade_01
+set_comment|6310|0||attack_laserblade_02
+set_comment|6312|0||attack_upper
+set_comment|6317|0||attack_shout
+set_comment|6401|0||atk_combo
+set_comment|6402|0||atk_combo
+set_comment|6403|0||atk_combo
+set_comment|6404|0||atk_combo
+set_comment|6405|0||atk_combo_sp
+set_comment|6406|0||atk_combo_sp
+set_comment|6407|0||atk_combo_b
+set_comment|6408|0||atk_combo_b
+set_comment|6409|0||atk_combo_b_sp
+set_comment|6410|0||atk_combo_c
+set_comment|6411|0||atk_hummer_sp
+set_comment|6415|0||atk_upper
+set_comment|6417|0||atk_upper_sp
+set_comment|6423|0||atk_rotation
+set_comment|6429|0||atk_biglaser
+set_comment|6432|0||atk_wallshot
+set_comment|6433|0||wall_center
+set_comment|6434|0||wall_center
+set_comment|6435|0||atk_shout
+set_comment|6501|0||melee_shot_combo_a_01
+set_comment|6502|0||melee_shot_combo_a_02
+set_comment|6503|0||melee_shot_combo_a_03
+set_comment|6504|0||melee_shot_combo_a_01
+set_comment|6505|0||melee_shot_combo_a_02
+set_comment|6506|0||melee_shot_combo_a_03
+set_comment|6507|0||melee_shot_combo_a_03_LB_finish
+set_comment|6508|0||melee_shot_combo_b_01
+set_comment|6509|0||melee_shot_combo_b_02
+set_comment|6510|0||melee_shot_combo_b_01
+set_comment|6511|0||melee_shot_combo_b_02
+set_comment|6512|0||melee_shot_combo_b_02_finish
+set_comment|6513|0||melee_shot_combo_c_01
+set_comment|6514|0||melee_shot_combo_c_02
+set_comment|6515|0||melee_shot_combo_c_01
+set_comment|6516|0||melee_shot_combo_c_02
+set_comment|6517|0||melee_shot_combo_c_02_finish
+set_comment|6521|0||jump
+set_comment|6537|0||tume_MeleeComboC_03_2nd_l
+set_comment|6538|0||tume_MeleeComboC_04
+set_comment|6539|0||smn_titan_earthquake_r
+set_comment|6547|0||smn_phoenix_fly_attack_st_all
+set_comment|6548|0||smn_phoenix_fly_attack_st_all
+set_comment|6549|0||smn_phoenix_fly_attack_end
+set_comment|6550|0||smn_phoenix_fly_attack_end
+set_comment|6552|0||smn_phoenix_multi_shot
+set_comment|6553|0||reset
+set_comment|6555|0||around_shinepillar
+set_comment|6556|0||ultima_vacuum
+set_comment|6557|0||ultima_vacuum
+set_comment|6558|0||ultima_pressure
+set_comment|6559|0||melee_shot_combo_b_02_finish
+set_comment|6560|0||melee_shot_combo_b_01_finish
+set_comment|6561|0||jump_finish
+set_comment|6564|0||rush_l
+set_comment|6568|0||melee_shot_combo_a_01_LB_finish
+set_comment|6569|0||melee_shot_combo_a_02_LB_finish
+set_comment|6570|0||melee_shot_combo_b_01_finish
+set_comment|6571|0||melee_shot_combo_c_01
+set_comment|6574|0||smn_phoenix_fly_attack_st_all
+set_comment|6575|0||reset
+set_comment|6576|0||reset
+set_comment|6578|0||smn_phoenix_fly_attack_st_all
+set_comment|6580|0||ultima_pressure
+set_comment|6581|0||ultima_pressure
+set_comment|6591|0||melee_shot_combo_c_02_finish
+set_comment|6601|0||atk_combo_a_01
+set_comment|6602|0||atk_combo_a_01
+set_comment|6603|0||atk_combo_a_02
+set_comment|6604|0||atk_combo_a_02
+set_comment|6605|0||atk_combo_a_03
+set_comment|6606|0||atk_combo_a_03
+set_comment|6607|0||atk_combo_a_04
+set_comment|6608|0||atk_combo_a_04
+set_comment|6609|0||atk_combo_b_01_spin
+set_comment|6610|0||atk_combo_b_01_slash
+set_comment|6611|0||atk_combo_b_01_slash
+set_comment|6612|0||atk_combo_b_02
+set_comment|6613|0||atk_combo_b_02
+set_comment|6614|0||atk_combo_b_03
+set_comment|6615|0||atk_combo_b_03
+set_comment|6616|0||atk_melee_shot_1
+set_comment|6617|0||atk_melee_shot_1
+set_comment|6618|0||atk_rush
+set_comment|6620|0||atk_shock_wave
+set_comment|6623|0||atk_rolling_laser_l
+set_comment|6624|0||atk_split_laser_front
+set_comment|6625|0||atk_split_laser_swing
+set_comment|6627|0||atk_melee_shot_1
+set_comment|6628|0||atk_melee_shot_1
+set_comment|6631|0||atk_rengoku_explosion
+set_comment|6632|0||atk_rengoku_explosion
+set_comment|6633|0||atk_rengoku_pressure
+set_comment|6637|0||atk_rolling_laser_l
+set_comment|6638|0||atk_solid_laser_1
+set_comment|6641|0||atk_shock_wave
+set_comment|6642|0||atk_solid_laser_1
+set_comment|6645|0||atk_rengoku_pressure
+set_comment|6646|0||atk_rolling_laser_r
+set_comment|6647|0||atk_rolling_laser_r
+set_comment|6648|0||atk_solid_laser_2
+set_comment|6649|0||atk_solid_laser_3
+set_comment|6650|0||atk_solid_laser_2
+set_comment|6651|0||atk_solid_laser_3
+set_comment|7501|0||attack_combo_a
+set_comment|7502|0||attack_combo_a
+set_comment|7503|0||attack_combo_b
+set_comment|7504|0||attack_combo_b
+set_comment|7505|0||attack_slash
+set_comment|7506|0||ground_stab
+set_comment|7507|0||ground_stab_shockwave
+set_comment|7508|0||blade_shot_a
+set_comment|7510|0||big_magic_blade
+set_comment|7513|0||shot_slash_pressure
+set_comment|7516|0||shot_slash_blade_01
+set_comment|7517|0||shot_slash_blade_05
+set_comment|7519|0||big_magic_blade_pressure
+set_comment|7521|0||big_magic_blade
+set_comment|7551|0||04_BigSwing_1st
+set_comment|7552|0||04_BigSwing_2nd
+set_comment|7553|0||04_BigSwing_Fin
+set_comment|7554|0||14_Mino_Ancient_hammer_impact
+set_comment|7556|0||12_Mino_swing_up
+set_comment|7557|0||15_Mino_Ancient_swing_down
+set_comment|8001|0||t0101_assult_dive
+set_comment|8002|0||t0101_combo_a_01
+set_comment|8003|0||t0101_combo_a_02_finish
+set_comment|8004|0||t0101_combo_b_01
+set_comment|8005|0||t0101_combo_b_02
+set_comment|8007|0||t0101_punch_sht
+set_comment|8010|0||t0101_explosion_range
+set_comment|8012|0||t0101_ether_storm_center
+set_comment|8013|0||t0101_ether_storm_finish_rolling
+set_comment|8014|0||t0101_ether_storm_plessure_start
+set_comment|8015|0||t0101_ether_storm_plessure_finish
+set_comment|8016|0||t0101_ether_storm_plessure_finish
+set_comment|8017|0||t0101_ether_storm_plessure_finish
+set_comment|8018|0||t0101_rush
+set_comment|8019|0||t0101_combo_a_02
+set_comment|8020|0||t0101_rush
+set_comment|8021|0||t0101_assult_dive
+set_comment|8022|0||t0101_assult_dive
+set_comment|8025|0||t0101_battlestart_plessure
+set_comment|8053|0||t0101_slow_bomb
+set_comment|8055|0||maser_eye
+set_comment|8061|0||t0101_death_roulette_pressure
+set_comment|8065|0||t0101_dummy
+set_comment|8066|0||t0101_dummy
+set_comment|9001|0||01_BOM_tackle
+set_comment|9601|0||10_ORI_Combo_01
+set_comment|9602|0||10_ORI_Combo_02
+set_comment|9603|0||11_ORI_Beard_thrust
+set_comment|9604|0||11_ORI_Beard_thrust
+set_comment|9605|0||12_ORI_blaster
+set_comment|9606|0||12_ORI_blaster
+set_comment|9607|0||10_ORI_Combo_02
+set_comment|10002|0||t0101_body_press
+set_comment|10003|0||t0101_body_press
+set_comment|10004|0||tail
+set_comment|10005|0||tail
+set_comment|10009|0||t0101_swirling_start_pressure
+set_comment|10010|0||rolling
+set_comment|10011|0||t0101_swirling_smash_rolling_attack
+set_comment|10012|0||t0101_swirling_smash_finish_press
+set_comment|10013|0||tail
+set_comment|10015|0||t0101_posoning_pressure
+set_comment|10017|0||t0101_posoning_pressure
+set_comment|10020|0||t0101_bubble_bless_dummy
+set_comment|10201|0||Used by c1001\timeline\t0999\wep_swd_emp\battle\sk02_ifrit_holy_ball_01_01_abyss.tlb
+set_comment|10203|0||spitflare
+set_comment|10204|0||spitflare
+set_comment|10205|0||thorn_pressure
+set_comment|10209|0||combo_ifrit_01
+set_comment|10210|0||combo_ifrit_01_2
+set_comment|10211|0||combo_ifrit_02_2
+set_comment|10212|0||combo_ifrit_02
+set_comment|10213|0||combo_ifrit_03
+set_comment|10214|0||combo_ifrit_03_2
+set_comment|10215|0||combo_ifrit_04
+set_comment|10216|0||combo_ifrit_04_2
+set_comment|10217|0||combo_ifrit_shot
+set_comment|10224|0||thrust_normal_01
+set_comment|10225|0||thrust_normal_02
+set_comment|10230|0||assault_ifrit_01
+set_comment|10231|0||assault_ifrit_01
+set_comment|10232|0||assault_ifrit_shot
+set_comment|10234|0||hellflame_01
+set_comment|10235|0||hellflame_05
+set_comment|19058|0||Used by c5012\timeline\t0001\wep_emp_emp\battle\attack_longrange_b_03.tlb
+set_comment|19061|0||body
+set_comment|19064|0||30_GARI_AttackGround_wind

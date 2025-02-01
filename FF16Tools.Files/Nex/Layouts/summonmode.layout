@@ -13,7 +13,7 @@ add_column|Unk1|int
 // ffxvi.exe steam 1.0.1 - 140201E76
 add_column|CommandId|int
 
-add_column|Unk3|string
+add_column|Comment|string
 add_column|Unk4|int
 add_column|Unk5|int
 add_column|Unk6|int
@@ -21,8 +21,8 @@ add_column|Unk7|int
 add_column|Unk8|int
 add_column|Unk9|int
 add_column|Unk10|int
-add_column|Unk11|string|rel
-add_column|Unk12|string|rel|-4
+add_column|MagicName|string|rel
+add_column|ChargedMagicName|string|rel|-4
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|SummonPartsId|int
@@ -32,10 +32,10 @@ add_column|Unk18|int
 add_column|Unk19|int
 add_column|Unk20|int
 add_column|Unk21|int
-add_column|UnkCommandId1|int
-add_column|UnkCommandId2|int
-add_column|UnkCommandId3|int
-add_column|UnkCommandId4|int
+add_column|AbilityCommandId1|int
+add_column|AbilityCommandId2|int
+add_column|AbilityCommandId3|int
+add_column|AbilityCommandId4|int
 add_column|UnkCommandId5|int
 add_column|UnkCommandId6|int
 add_column|Unk28|int
@@ -44,3 +44,9 @@ add_column|Unk30|int
 add_column|Unk31|int
 add_column|RazerEventId|int
 add_column|Unk33|int
+
+//////////////////////////////////////
+// Comments
+//////////////////////////////////////
+set_comment|1|||Phoenix
+set_comment|6|||Phoenix (before Ifrit awakened at Phoenix Gate)

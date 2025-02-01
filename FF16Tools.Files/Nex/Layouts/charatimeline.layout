@@ -8,8 +8,13 @@ add_column|MotionLayerSetId|int
 add_column|Unk4|int
 add_column|Unk5|int
 add_column|Unk6|int
-add_column|Unk7|int[]
+
+// Game checks id 20 specifically for some unknown reason
+// ffxvi.exe 1.0.1 steam
+// sub_14070719C(a1, void* charaTimeLineRow) - 48 8B C4 48 89 58 ? 55 56 57 41 54 41 55 41 56 41 57 48 81 EC ? ? ? ? C5 F8 29 70 ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 84 24 ? ? ? ? 33 F6
+add_column|UnkMotionLayerSetIds|int[]
+
 add_column|Comment|string
-add_column|Unk9|byte
-add_column|Unk10|byte
+add_column|UnkBool9|byte
+add_column|UnkBool10|byte
 // <implicit 2 byte padding>

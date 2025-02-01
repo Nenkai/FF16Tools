@@ -24,7 +24,13 @@ add_column|Unk20|byte
 add_column|Unk21|byte
 add_column|Unk22|byte
 add_column|Unk23|byte
+
+// 5 added to this if rising tide dlc is unlocked
+// OR 10 added to this if echoes dlc is unlocked
+// ffxvi.exe steam 1.0.1
+// sub_1404530B8 - 48 89 5C 24 ? 57 48 83 EC ? E8 ? ? ? ? 8B F8 33 DB 48 8B 05 ? ? ? ? 48 85 C0 75 ? 48 8B 0D ? ? ? ? 48 85 C9 74 ? BA ? ? ? ? E8 ? ? ? ? 48 89 05 ? ? ? ? 48 85 C0 74 ? 8B D7 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 48 39 18 7C ? 48 8B C8 E8 ? ? ? ? 48 8B D8 EB ? 48 8D 1D ? ? ? ? 0F B6 5B
 add_column|Unk24|byte
+
 add_column|Unk25|byte
 add_column|Unk26|byte
 add_column|Unk27|byte

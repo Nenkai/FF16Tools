@@ -49,7 +49,7 @@ add_column|UnkUnionType2|short
 // indirect 2 bytes padding
 add_column|UnkUnionId2|int
 
-add_column|Unk7|string
+add_column|Comment|string
 add_column|Unk8|int
 
 add_column|UnkUnionType3|short
@@ -71,3 +71,15 @@ add_column|UnkUnionId6|int
 
 add_column|Unk18|string
 add_column|Unk19|int
+
+//////////////////////////////////////
+// Comments
+//////////////////////////////////////
+set_comment|200000|0||To 200180 - Crafting Recipe - Main Story Completion Range
+set_comment|200500|0||To 200530 - Crafting Recipe - Side Quest Completion Range
+set_comment|201000|0||To 201190 - Crafting Recipe - Main Story Completion FF Mode Range
+set_comment|201500|0||To 201530 - Crafting Recipe - Side Quest Completion FF Mode Range
+set_comment|202010|0||To 202030 - Crafting Recipe - EotF DLC Mode Range
+set_comment|203010|0||To 203030 - Crafting Recipe - EotF DLC Mode FF Mode Range
+set_comment|204010|0||To 204060 - Crafting Recipe - TRT Mode Range
+set_comment|205010|0||To 205060 - Crafting Recipe - TRT DLC Mode FF Mode Range

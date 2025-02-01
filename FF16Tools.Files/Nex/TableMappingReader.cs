@@ -230,7 +230,7 @@ public class TableMappingReader
                         if (split.Length < 5)
                             throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_comment' - expected 1 arguments (key1, key2, key3, comment)");
 
-                        if (tableColumnLayout.Columns.TryGetValue("Comment", out _))
+                        if (!tableColumnLayout.Columns.TryGetValue("Comment", out _))
                             throw new InvalidDataException($"Metadata error: {debugln} has invalid 'set_comment' - table does not have a 'Comment' column");
 
                         string k1 = split[1];
