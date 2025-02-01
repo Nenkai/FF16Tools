@@ -2,6 +2,18 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.5.9, FF16Tools.Files 1.0.12
+
+Too many. refer to the following commits:
+* https://github.com/Nenkai/FF16Tools/commit/a42971912a8d072dd93d1761220d5d26236138c0
+* https://github.com/Nenkai/FF16Tools/commit/2f4e92d3ae3bc0fab8b5486e61ade23aaa64166e
+* https://github.com/Nenkai/FF16Tools/commit/8098a187fe3f447b82a2e1d205dcd4e976b56955
+
+##### Contributors
+* Nenkai
+* mThund3R (Discord)
+* SoloWan (Discord)
+
 ## CLI 1.5.8, FF16Tools.Files 1.0.11
 
 #### `dlcflags`
