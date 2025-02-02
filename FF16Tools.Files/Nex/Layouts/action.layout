@@ -134,19 +134,213 @@ add_column|Unk_0x11F|byte
 //////////////////////////////////////
 // Comments
 //////////////////////////////////////
-set_comment|351|||Phoenix - ?
-set_comment|352|||Phoenix - ?
+// Many added from
+// https://pastebin.com/Hk7tQLDM
+
+set_comment|14|||Precision Dodge
+set_comment|15|||Precision Dodge
+set_comment|23|||Berserker Dodge
+set_comment|25|||Grunt
+set_comment|36|||Chocobo Whistle
+set_comment|45|||Chocobo Whistle
+set_comment|46|||Fist Pump Taunt
+set_comment|47|||Wipe Off / Caution Taunt
+set_comment|48|||Open Light Door
+set_comment|49|||Open Heavy Door
+set_comment|50|||Open Really Heavy Door
+set_comment|51|||Press Button / Magic Animation
+set_comment|52|||Open Barred Door
+set_comment|53|||Kick Low Debris
+set_comment|54|||Push High Debris
+set_comment|55|||Rotate South
+set_comment|56|||Rotate South
+set_comment|57|||Cinematic touch in front animation
+set_comment|58|||Kick Chest/Box
+set_comment|59|||Burn Debris / Magic Animation
+set_comment|61|||Wipe off Object
+set_comment|62|||Wipe off Ground
+set_comment|63|||Kick Chest / Box
+set_comment|65|||Step-back
+set_comment|72|||Burn Debris / Magic Animation
+set_comment|80|||R2 Door Start Animation
+set_comment|81|||R2 Door Start Animation
+set_comment|82|||R2 Door Start Animation
+set_comment|83|||R2 Door Start Animation
+set_comment|84|||R2 Door Back Away
+set_comment|85|||R2 Door Open
+set_comment|101|||Cutscene Combat Stance Animation
+set_comment|102|||Cutscene Combat Stance Animation
+set_comment|103|||Low Combat Stance Animation
+set_comment|104|||Low Combat Stance
+set_comment|105|||Stand up and step back Animation
+set_comment|106|||Stand up peak under
+set_comment|108|||Kick debris walk through Animation
+set_comment|109|||Grab in Front
+set_comment|110|||Grab in Front
+set_comment|111|||Push Upper Debris Animation Start
+set_comment|112|||Push Upper Debris Step Away Animation
+set_comment|113|||Push Upper Debris Animation
+set_comment|139|||Combo 1
+set_comment|140|||Combo 1
+set_comment|141|||Combo 1
+set_comment|142|||Combo 1
+set_comment|143|||Combo 1
+set_comment|144|||Combo 1
+set_comment|145|||Combo 1
+set_comment|146|||Recovery Strike
+set_comment|147|||Recovery Strike
+set_comment|154|||Combo 2
+set_comment|155|||Combo 3
+set_comment|156|||Combo 4
+set_comment|157|||Aerial Combo 1
+set_comment|158|||Aerial Combo 2
+set_comment|159|||Aerial Combo 3
+set_comment|160|||Lunge
+set_comment|161|||Lunge No Start
+set_comment|162|||Lunge Stab
+set_comment|163|||Lunge | Upgraded
+set_comment|164|||Lunge No Start | Upgraded
+set_comment|165|||Lunge Stab | Upgraded
+set_comment|166|||Ex Lunge | Upgraded
+set_comment|167|||Downthrust Full
+set_comment|168|||Downthrust Slam with Sword
+set_comment|169|||Downthrust High Slam Only
+set_comment|170|||Downthrust Slam Only
+set_comment|171|||Downthrust Full | Upgraded
+set_comment|172|||Downthrust Sword with Sword | Upgraded
+set_comment|173|||Downthrust Slam Only | Upgraded
+set_comment|174|||Ground Burning Blade
+set_comment|175|||Air Burning Blade
+set_comment|176|||Nothing, Outputs "Combo 1" to Action Log
+set_comment|177|||Nothing, Outputs "Combo 2" to Action Log
+set_comment|178|||Nothing, Outputs "Combo 3" to Action Log
+set_comment|179|||Nothing, Outputs "Combo 4" to Action Log
+set_comment|180|||Nothing, Outputs "Aerial Combo 1" to Action Log
+set_comment|181|||Nothing, Outputs "Aerial Combo 2" to Action Log
+set_comment|182|||Nothing, Outputs "Aerial Combo 3" to Action Log
+set_comment|183|||Precision Strike
+set_comment|184|||Punish
+set_comment|185|||Punish
+set_comment|186|||Punish
+set_comment|187|||Punish
+set_comment|188|||Punish
+set_comment|189|||Punish
+set_comment|190|||Punish
+set_comment|191|||Punish
+set_comment|192|||Punish
+set_comment|193|||Punish
+set_comment|194|||Punish
+set_comment|195|||Punish
+set_comment|196|||Taunt
+set_comment|197|||Ground Stagger and Recover Animation
+set_comment|198|||Air Stagger and Recover Animation
+set_comment|199|||Magic Burst
+set_comment|200|||Magic Burst
+set_comment|201|||Magic Burst
+set_comment|218|||Air Magic
+set_comment|219|||Ground Magic
+set_comment|227|||Ground Charged Magic
+set_comment|228|||Air Charged Magic
+set_comment|259|||Limit Break Start Animation
+set_comment|289|||Air Limit Break Start Animation
+set_comment|301|||LB Lunge Full
+set_comment|302|||LB Lunge Full(No auto target)
+set_comment|303|||LB Lunge Ex Melee Atk Only
+set_comment|304|||LB Lunge Close
+set_comment|305|||LB Downthrust No AOE (Part 1)
+set_comment|306|||LB Downthrust No AOE Stab Only (Part 1.5)
+set_comment|307|||LB Downthrust AOE (Part 2)
+set_comment|308|||LB Downthrust No AOE Stab Only (Part 1.5, No auto target)
+set_comment|309|||LB Ground Burning Blade
+set_comment|310|||LB Air Burning Blade
+set_comment|316|||LB Combo 1
+set_comment|317|||LB Combo 2
+set_comment|318|||LB Combo 3
+set_comment|319|||LB Combo 4
+set_comment|320|||LB Combo 5
+set_comment|321|||LB Combo 6
+set_comment|322|||LB Combo 7
+set_comment|324|||Roll Attack
+set_comment|325|||Roll Attack
+set_comment|334|||Wykes
+set_comment|335|||Wykes Fast
+set_comment|336|||Wykes Animation
+set_comment|338|||Ground Ignition Intro
+set_comment|339|||Air Ignition Intro
+set_comment|340|||Ignition Travel Animation
+set_comment|341|||Ground Ignition Attack
+set_comment|342|||Air Ignition Attack
+set_comment|345|||Ground Ignition Intro | Upgraded
+set_comment|346|||Air Ignition Intro | Upgraded
+set_comment|347|||Ignition Travel Animation | Upgraded
+set_comment|348|||Ground Ignition Attack | Upgraded
+set_comment|349|||Air Ignition Attack | Upgraded
 set_comment|353|||Phoenix - Ground Phoenix Shift
 set_comment|354|||Phoenix - Air Phoenix Shift
-set_comment|355|||Phoenix - ? Phoenix Shift
-set_comment|356|||Phoenix - Ground Default
-set_comment|357|||Phoenix - Air Default
-set_comment|358|||Phoenix - Ground Attack
-set_comment|359|||Phoenix - Air Attack
-set_comment|360|||Phoenix - Ground Magic Attack
-set_comment|361|||Phoenix - Air Magic Attack
-set_comment|362|||Phoenix - ?
+set_comment|355|||Phoenix - Phoenix Shift
+set_comment|356|||Phoenix - Ground Phoenix Shift Exit
+set_comment|357|||Phoenix - Air Phoenix Shift Exit
+set_comment|358|||Phoenix - Perfect Dodge Ground Attack
+set_comment|359|||Phoenix - Perfect Dodge Air Attack
+set_comment|360|||Phoenix - Perfect Dodge Ground Magic Attack
+set_comment|361|||Phoenix - Perfect Dodge Air Magic Attack
 set_comment|363|||Phoenix - Rising Flames
-set_comment|364|||Phoenix - Rising Flames Upgraded
-set_comment|365|||Phoenix - Scarlet Cyclone
-set_comment|366|||Phoenix - Scarlet Cyclone Upgraded
+set_comment|364|||Phoenix - Rising Flames | Upgraded
+set_comment|367|||Scarlet Cyclone
+set_comment|368|||Scarlet Cyclone | Upgraded
+set_comment|369|||After Hit Scarlet Cyclone
+set_comment|370|||After Hit Scarlet Cyclone | Upgraded
+set_comment|375|||Heatwave
+set_comment|376|||Heatwave | Upgraded
+set_comment|377|||Heatwave 1 Blade Throw
+set_comment|378|||Heatwave 3 Blade Throw
+set_comment|379|||Heatwave 2 Blade Throw 
+set_comment|380|||Heatwave 1 Blade Throw No Cinematic
+set_comment|385|||Rebirth
+set_comment|386|||Rebirth | Upgraded
+set_comment|401|||Deadly Embrace
+set_comment|404|||Air Deadly Embrace
+set_comment|419|||Gouge
+set_comment|424|||Air Gouge
+set_comment|439|||Wicked Wheel | Upgraded
+set_comment|440|||Wicked Wheel
+set_comment|441|||Air Wicked Wheel
+set_comment|444|||Air Wicked Wheel | Upgraded
+set_comment|446|||Rooks Gambit
+set_comment|450|||Air Rooks Gambit
+set_comment|454|||Rooks Gambit | Upgraded
+set_comment|460|||Air Rooks Gambit | Upgraded
+set_comment|478|||Aerial Blast
+set_comment|479|||Aerial Blast | Upgraded
+set_comment|520|||Windup Start Animation
+set_comment|522|||Windup Charged Stance
+set_comment|524|||Windup Slam No Animation No Damage
+set_comment|526|||Windup Mid Swing Stance
+set_comment|528|||Windup Low Charge Instant
+set_comment|530|||Windup Charged Instant
+set_comment|532|||Windup Precision Instant
+set_comment|703|||Air Cold Snap
+set_comment|704|||Ground Cold Snap
+set_comment|714|||Frostbite
+set_comment|715|||Air Frostbite
+set_comment|718|||Air Permafrost
+set_comment|719|||Ground Permafrost
+set_comment|871|||Dark Aerial Strike
+set_comment|872|||Dark Aerial Strike (No Action Log; No VFX)
+set_comment|873|||Dark Aerial Strike (No Action Log; No VFX)
+set_comment|877|||Dark Lunge Short
+set_comment|878|||Dark Lunge
+set_comment|879|||Dark Lunge Far
+set_comment|880|||Dark Lunge Far
+set_comment|881|||Dark Lunge End Slam Only
+set_comment|887|||Dark Downthrust Blade Only
+set_comment|888|||Dark Downthrust Blade Only
+set_comment|889|||Dark Downthrust Slam Only
+set_comment|890|||Dark Downthrust Blade Only
+set_comment|898|||Zantetsuken Lvl 1 + Teleport
+set_comment|899|||Zantetsuken Lvl 1
+set_comment|900|||Zantetsuken Lvl 1
+set_comment|901|||Zantetsuken Lvl 2
+set_comment|902|||Zantetsuken Lvl 3
+set_comment|1610|||
+set_comment|1611|||Yell
