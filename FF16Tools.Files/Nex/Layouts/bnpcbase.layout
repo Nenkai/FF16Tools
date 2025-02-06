@@ -26,7 +26,7 @@ add_column|Unk17|int
 add_column|Unk18|int
 add_column|Unk19|int
 add_column|Unk20|int
-add_column|Unk21|int[]
+add_column|MonStatIds|int[]
 add_column|Unk23|int
 add_column|Unk24|int
 add_column|Unk25|int

@@ -2,8 +2,6 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|false
 
-define_struct|Unk_Struct|short|int
-
 // union
 // 46 = defaulttalk
 // 55 = layoutnamedinstance
@@ -45,21 +43,21 @@ add_column|Unk5|int
 // 22 = default talk related
 // 27 = item related
 add_column|UnkType1|int
-add_column|UnkUnionArray1|Unk_Struct[]
+add_column|UnkUnionArray1|union[]
 add_column|UnkType2|int
-add_column|UnkUnionArray2|Unk_Struct[]
+add_column|UnkUnionArray2|union[]
 add_column|UnkType3|int
-add_column|UnkUnionArray3|Unk_Struct[]
+add_column|UnkUnionArray3|union[]
 add_column|UnkType4|int
-add_column|UnkUnionArray4|Unk_Struct[]
+add_column|UnkUnionArray4|union[]
 add_column|UnkType5|int
-add_column|UnkUnionArray5|Unk_Struct[]
+add_column|UnkUnionArray5|union[]
 add_column|UnkType6|int
-add_column|UnkUnionArray6|Unk_Struct[]
+add_column|UnkUnionArray6|union[]
 add_column|UnkType7|int
-add_column|UnkUnionArray7|Unk_Struct[]
+add_column|UnkUnionArray7|union[]
 add_column|UnkType8|int
-add_column|UnkUnionArray8|Unk_Struct[]
+add_column|UnkUnionArray8|union[]
 add_column|Unk30|int
 add_column|Unk31|int
 add_column|UnkLayoutNamedInstanceId|int

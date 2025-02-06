@@ -7,5 +7,4 @@ add_column|DLCFlags|int
 // this is a union(placename, captionfreeword)
 // 147 = placename
 // 664 = captionfreeword
-add_column|NameUnionType|int
-add_column|NameUnionId|int
+add_column|NameUnion|union

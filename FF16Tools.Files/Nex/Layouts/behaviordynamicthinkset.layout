@@ -2,20 +2,17 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|string
+add_column|UnkUnion4|union
+add_column|UnkUnion6|union
+add_column|Comment|string
 add_column|Unk9|float
 add_column|Unk10|float
 add_column|Unk11|float
 add_column|Unk12|float
-add_column|Unk13|int
-add_column|Unk14|int
+add_column|UnkUnion13|union
 add_column|Unk15|float
 add_column|Unk16|float
 

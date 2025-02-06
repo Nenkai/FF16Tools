@@ -7,7 +7,7 @@ use_base_row_id|true
 // See: ffxvi.exe steam 1.0.1
 // 0x14072ECB4 - 48 89 5C 24 ? 57 48 83 EC ? 48 83 61 ? ? 48 8D 41
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
 add_column|Unk4|int

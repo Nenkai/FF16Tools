@@ -2,7 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string|rel
+add_column|DLCFlags|int
+add_column|CaptionMessage|string|rel
 add_column|Unk3|int
 add_column|Unk4|int

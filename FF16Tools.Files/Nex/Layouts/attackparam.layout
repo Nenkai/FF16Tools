@@ -76,7 +76,8 @@ add_column|Unk52|int
 add_column|Unk53|int
 add_column|Unk54|int
 add_column|Comment|string
-add_column|Unk56|int
+// Used by equipitem
+add_column|AtkType|int
 add_column|Unk57|int
 add_column|Unk58|int
 add_column|Unk59_1|byte

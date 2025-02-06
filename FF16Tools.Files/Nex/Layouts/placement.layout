@@ -2,11 +2,9 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|HasUserSituationCondition|int
-add_column|UnkUnused|int
-add_column|ReqUserSituationId|int
-add_column|HasUserSituationCondition2|int
-add_column|UnkUnused2|int
-add_column|ReqUserSituationId2|int
+add_column|DLCFlags|int
+add_column|HasReq1|int
+add_column|ReqUnion1|union
+add_column|HasReq2|int
+add_column|ReqUnion2|union
 add_column|UnusedUnk8|string

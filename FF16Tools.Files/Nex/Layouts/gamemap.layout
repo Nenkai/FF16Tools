@@ -14,13 +14,13 @@ add_column|LevelSequenceId|int
 // i.e 602000 (hideaway 2), if fits usersituation 15020 then 602000 (sub id 1) is selected (pink sky)
 add_column|ReqUserSituationId|int
 
-// union
+// union (but not actually?)
 // 146 = bgmmode
 // 314 = bgmselect
 add_column|BgmUnionType1|short
-add_column|BgmUnionId1|short
+add_column|BgmUnionId1|ushort
 add_column|BgmUnionType2|short
-add_column|BgmUnionId2|short
+add_column|BgmUnionId2|ushort
 
 add_column|Unk10|short
 // Seems correct? Checked in debugger

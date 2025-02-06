@@ -297,11 +297,13 @@ public class TableMappingReader
             case NexColumnType.Int64:
             case NexColumnType.Double:
             case NexColumnType.String:
+            case NexColumnType.Union:
             case NexColumnType.ByteArray:
             case NexColumnType.IntArray:
             case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
+            case NexColumnType.UnionArray:
             case NexColumnType.CustomStructArray:
                 offset = (int)NexUtils.AlignValue((uint)offset, 0x04);
                 break;

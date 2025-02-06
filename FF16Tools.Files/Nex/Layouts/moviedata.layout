@@ -7,7 +7,7 @@ use_base_row_id|false
 
 add_column|DLCFlags|int
 add_column|MovieFilePath|string
-add_column|Unk3|string
+add_column|Comment|string
 add_column|Unk4|string
 add_column|Unk5|int
 

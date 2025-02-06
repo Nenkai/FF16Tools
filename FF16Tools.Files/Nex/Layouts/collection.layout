@@ -2,8 +2,8 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|true
 
-add_column|Unk1|int
-add_column|Unk2|int
+add_column|DLCFlags|int
+add_column|LayoutNamedInstanceId|int
 add_column|Unk3|float
 add_column|Unk4|float
 add_column|Unk5|float
@@ -12,13 +12,13 @@ add_column|Unk7|float
 add_column|Unk8|float
 add_column|Unk9|float
 add_column|Unk10|float
-add_column|Unk11|string|rel
-add_column|Unk12|string|rel|-4
+add_column|Name|string|rel
+add_column|Description|string|rel|-4
 add_column|Unk13|string|rel|-8
 add_column|Unk14|float
 add_column|Unk15|float
 add_column|Unk16|float
 add_column|Unk17|int
 add_column|Unk18|int
-add_column|Unk19|int
+add_column|UserSituationId|int
 add_column|Unk20|int

@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using Microsoft.Data.Sqlite;
 
-using Syroot.BinaryData.Memory;
-using Syroot.BinaryData;
-
-using FF16Tools.Files.Nex.Managers;
+using FF16Tools.Files.Nex;
 using FF16Tools.Files.Nex.Entities;
-using FF16Tools.Files;
-using System.IO;
 using System.Data;
 using Microsoft.Extensions.Logging;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Globalization;
 
-namespace FF16Tools.Files.Nex.Exporters;
+namespace FF16Tools.Nex.Sqlite;
 
 /// <summary>
 /// Game database to sqlite exporter (disposable object).
@@ -34,7 +30,14 @@ public class NexToSQLiteExporter : IDisposable
     private Version _version;
 
     // We don't want byte arrays to be converted to base64.
-    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { Converters = { new JsonByteArrayConverter() } };
+    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions 
+    { 
+        IncludeFields = true, // Required for unions.
+        Converters = 
+        { 
+            new JsonByteArrayConverter() 
+        } 
+    };
 
     /// <summary>
     /// Nex to SQLite exporter.
@@ -73,6 +76,8 @@ public class NexToSQLiteExporter : IDisposable
         _con = new SqliteConnection($"Data Source={sqliteDbFile}");
         _con.Open();
 
+        CreateUnionTable();
+
         foreach (var table in _database.Tables)
         {
             _logger?.LogInformation("Exporting table '{tableName}'", table.Key);
@@ -82,13 +87,73 @@ public class NexToSQLiteExporter : IDisposable
                 continue;
             }
 
+
             List<NexRowInfo> nexRows = table.Value.RowManager.GetAllRowInfos();
 
             NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(table.Key, new Version(1, 0, 0));
+            /*
+            if (tableColumnLayout.TotalInlineSize >= 0x4C)
+            {
+                KeyValuePair<string, NexStructColumn>? col = tableColumnLayout.Columns.FirstOrDefault(e => e.Value.Offset == 0x4C);
+                if (col.Value.Value is null)
+                    continue;
+
+                var cols = tableColumnLayout.Columns.Values.ToList();
+
+                int last = -1;
+                for (int i = 0; i < nexRows.Count; i++)
+                {
+                    var cells = NexUtils.ReadRow(tableColumnLayout, table.Value.Buffer, nexRows[i].RowDataOffset);
+                    var cell = cells[cols.IndexOf(col.Value.Value)];
+                    if (cell is int v)
+                    {
+                        if (v > last)
+                            last = v;
+                    }
+
+                }
+
+                Console.WriteLine($"{table.Key} + {tableColumnLayout.Columns.FirstOrDefault(e => e.Value.Offset == 0x4C).Key} last: {last}");
+
+
+            }
+
+            continue;
+            */
+
             ExportTableToSQLite(table.Key, table.Value, tableColumnLayout, nexRows);
         }
 
         _con.Close();
+    }
+
+
+    private void CreateUnionTable()
+    {
+        _logger.LogInformation("Creating union table...");
+
+        var command = _con.CreateCommand();
+        command.CommandText = $"DROP TABLE IF EXISTS _uniontypes;";
+        _logger?.LogTrace("Running DROP TABLE IF EXISTS for '_uniontypes'.");
+        command.ExecuteNonQuery();
+
+        command = _con.CreateCommand();
+        command.CommandText = $"CREATE TABLE IF NOT EXISTS _uniontypes (id INTEGER PRIMARY KEY, name TEXT)";
+        _logger?.LogTrace("{command}", command.CommandText);
+        command.ExecuteNonQuery();
+
+        command = _con.CreateCommand();
+        command.CommandText = $"INSERT INTO _uniontypes (Id, Name) VALUES (-100, '(FF16Tools) Do not edit/delete this table unless you know what you are doing.')";
+        command.ExecuteNonQuery();
+
+        foreach (NexUnionType val in Enum.GetValues<NexUnionType>())
+        {
+            command = _con.CreateCommand();
+            command.CommandText = $"INSERT INTO _uniontypes (Id, Name) VALUES ({(ushort)val},'{val}')";
+            _logger?.LogTrace("{command}", command.CommandText);
+
+            command.ExecuteNonQuery();
+        }
     }
 
 
@@ -97,7 +162,6 @@ public class NexToSQLiteExporter : IDisposable
         //SQL: DROP TABLE IF EXISTS
         var command = _con.CreateCommand();
         command.CommandText = $"DROP TABLE IF EXISTS \"{tableName}\";";
-
         _logger?.LogTrace("Running DROP TABLE IF EXISTS for '{tableName}'.", tableName);
         command.ExecuteNonQuery();
 
@@ -271,7 +335,7 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.String => string.IsNullOrEmpty((string)cell) ? "NULL" : $"\'{((string)cell).Replace("\'", "\'\'")}\'",
                 NexColumnType.Int => $"{(int)cell}",
                 NexColumnType.UInt => $"{(uint)cell}",
-                NexColumnType.HexUInt => $"'{((uint)cell):X8}'",
+                NexColumnType.HexUInt => $"'{(uint)cell:X8}'",
                 NexColumnType.Float => $"{(float)cell}",
                 NexColumnType.Int64 => $"{(ulong)cell}",
                 NexColumnType.Short => $"{(short)cell}",
@@ -279,6 +343,8 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.Byte => $"{(byte)cell}",
                 NexColumnType.SByte => $"{(sbyte)cell}",
                 NexColumnType.Double => $"{(double)cell}",
+                NexColumnType.Union => $"\"{((NexUnion)cell).Type}:{((NexUnion)cell).Value}\"",
+                NexColumnType.UnionArray => $"\"[{string.Join(',', ((NexUnion[])cell).Select(e => $"{e.Type}:{e.Value}"))}]\"",
                 NexColumnType.ByteArray => $"\"{JsonSerializer.Serialize((byte[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.IntArray => $"\"{JsonSerializer.Serialize((int[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.UIntArray => $"\"{JsonSerializer.Serialize((uint[])cell, _jsonSerializerOptions)}\"",

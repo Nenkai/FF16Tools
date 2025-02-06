@@ -13,9 +13,7 @@ add_column|ReqUserSituationId|int
 // union(placename)?
 // 147 = placename
 // 1138 = fieldmapobelisk
-add_column|IdUnionType|short
-// <implcit 2 bytes padding>
-add_column|IdUnion|int
+add_column|IdUnion|union
 
 add_column|ShopBaseId|int
 add_column|Unk11|int

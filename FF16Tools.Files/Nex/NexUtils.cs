@@ -1,4 +1,5 @@
-﻿using FF16Tools.Files.Nex.Entities;
+﻿using FF16Tools.Files.Nex;
+using FF16Tools.Files.Nex.Entities;
 
 using Syroot.BinaryData.Memory;
 
@@ -11,7 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FF16Tools.Files;
+namespace FF16Tools.Files.Nex;
 
 public class NexUtils
 {
@@ -33,7 +34,7 @@ public class NexUtils
         {
             int rowColumnOffset = rowOffset + (int)column.Offset;
             if (rowColumnOffset + NexUtils.TypeToSize(column.Type) > sr.Length)
-                throw new Exception($"Column {column.Name} out of stream range. Layout outdated or file corrupted?");
+                throw new Exception($"Column {column.Name} out of stream range for table. Layout outdated or file corrupted?");
 
             sr.Position = rowColumnOffset;
 
@@ -68,6 +69,7 @@ public class NexUtils
             case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
+            case NexColumnType.UnionArray:
             case NexColumnType.CustomStructArray:
                 {
                     int currentOffset = sr.Position;
@@ -114,6 +116,20 @@ public class NexUtils
                                 float[] arr = new float[arrayLength];
                                 for (int i = 0; i < arrayLength; i++)
                                     arr[i] = sr.ReadSingle();
+
+                                sr.Position = currentOffset + 8;
+                                return arr;
+                            }
+                        case NexColumnType.UnionArray:
+                            {
+                                NexUnion[] arr = new NexUnion[arrayLength];
+                                for (int i = 0; i < arrayLength; i++)
+                                {
+                                    NexUnionType type = (NexUnionType)sr.ReadUInt16();
+                                    sr.ReadInt16();
+                                    int value = sr.ReadInt32();
+                                    arr[i] = new NexUnion(type, value);
+                                }
 
                                 sr.Position = currentOffset + 8;
                                 return arr;
@@ -181,7 +197,13 @@ public class NexUtils
                 return sr.ReadByte();
             case NexColumnType.UShort:
                 return sr.ReadUInt16();
-
+            case NexColumnType.Union:
+                {
+                    NexUnionType unionType = (NexUnionType)sr.ReadUInt16();
+                    sr.ReadInt16();
+                    int id = sr.ReadInt32();
+                    return (unionType, id);
+                }
             default:
                 throw new NotImplementedException($"ReadCell: Type {column.Type} is invalid or not supported.");
         }
@@ -204,8 +226,10 @@ public class NexUtils
     public static string? TypeToSQLiteTypeIdentifier(NexColumnType type)
     {
         // can't use a switch for types :(
-        if (type == NexColumnType.String || type == NexColumnType.HexUInt ||
-            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray)
+        if (type == NexColumnType.String || type == NexColumnType.HexUInt || type == NexColumnType.Union ||
+            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || 
+            type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray ||
+            type == NexColumnType.UnionArray)
             return "TEXT";
         else if (type == NexColumnType.Byte || type == NexColumnType.Short || type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.Int64 ||
             type == NexColumnType.SByte || type == NexColumnType.UShort)
@@ -224,8 +248,10 @@ public class NexUtils
     public static int TypeToSize(NexColumnType type)
     {
         // can't use a switch for types :(
-        if (type == NexColumnType.Int64 || type == NexColumnType.Double ||
-            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray)
+        if (type == NexColumnType.Int64 || type == NexColumnType.Double || type == NexColumnType.Union ||
+            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || 
+            type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray ||
+            type == NexColumnType.UnionArray)
             return 8;
         else if (type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.HexUInt || type == NexColumnType.Float || type == NexColumnType.HexUInt || type == NexColumnType.String)
             return 4;
@@ -258,11 +284,13 @@ public class NexUtils
             "hex_uint" => NexColumnType.HexUInt,
             "float" => NexColumnType.Float,
             "double" => NexColumnType.Double,
+            "union" => NexColumnType.Union,
             "byte[]" => NexColumnType.ByteArray,
             "int[]" or "int32[]" => NexColumnType.IntArray,
             "uint[]" or "uint32[]" => NexColumnType.UIntArray,
             "float[]" => NexColumnType.FloatArray,
             "string[]" => NexColumnType.StringArray,
+            "union[]" => NexColumnType.UnionArray,
             _ => NexColumnType.Unknown,
         };
 
@@ -286,11 +314,13 @@ public class NexUtils
             NexColumnType.HexUInt => "hex_uint",
             NexColumnType.Float => "float",
             NexColumnType.Double => "double",
+            NexColumnType.Union => "union",
             NexColumnType.ByteArray => "byte[]",
             NexColumnType.IntArray => "int[]",
             NexColumnType.UIntArray => "uint[]",
             NexColumnType.FloatArray => "float[]",
             NexColumnType.StringArray => "string[]",
+            NexColumnType.UnionArray => "union[]",
             NexColumnType.CustomStructArray => throw new ArgumentException("CustomStructArray does not have a fixed identifier."),
             _ => throw new InvalidDataException($"Unknown type {type}"),
         };

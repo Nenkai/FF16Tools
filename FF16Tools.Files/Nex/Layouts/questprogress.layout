@@ -3,7 +3,7 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 // This layout was generated, guessed row length: 0x10
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
+add_column|DLCFlags|int
+add_column|QuestId|int
+add_column|QuestSequenceIdRangeMin|int
+add_column|QuestSequenceIdRangeMax|int

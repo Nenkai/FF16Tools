@@ -5,7 +5,7 @@ use_base_row_id|false
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
-add_column|Unk4|int
+add_column|float|int
 add_column|BattleTalkSequenceId|int
 add_column|Comment|string
 add_column|Unk7|int

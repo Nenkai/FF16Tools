@@ -12,19 +12,14 @@ add_column|Unk6|int
 // union
 // 55 = layoutnamedinstance
 // 273 = worldmapanchor
-add_column|LocationUnionType1|int
-add_column|LocationUnionId1|int
+add_column|LocationUnion|union
 
 // union
 // 146 = bgmmode
 // 314 = bgmselect
-add_column|BgmUnionType|short
-add_column|BgmUnionId|int
-
-add_column|LocationUnionType2|int
-add_column|LocationUnionId2|int
-add_column|LocationUnionType3|int
-add_column|LocationUnionId3|int
+add_column|BgmUnion|union
+add_column|LocationUnion2|union
+add_column|LocationUnion3|union
 
 add_column|Unk15|int
 add_column|Unk16|byte

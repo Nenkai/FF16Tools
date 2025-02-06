@@ -3,14 +3,19 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|string
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
+add_column|Comment|string
+add_column|ShopTalkId1|int
+add_column|ShopTalkId2|int
+add_column|ShopTalkId3|int
+add_column|ShopTalkId4|int
+add_column|ShopTalkId5|int
+add_column|ShopTalkId6|int
+add_column|UiId|int
 
 // Checked against bools in recipe, after IsReinforce?
 add_column|Unk10|int
+
+set_comment|9|||The Black Hammer
+set_comment|10|||The Black Hammer
+set_comment|11|||The Big Hammer
+set_comment|12|||The Hearth

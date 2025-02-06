@@ -2,8 +2,6 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-define_struct|Unk29_Struct|int|int
-
 add_column|Unk1|int
 add_column|Unk2|string
 add_column|Unk3|float
@@ -32,7 +30,7 @@ add_column|Unk25|float
 add_column|Unk26|int
 add_column|Unk27|float
 add_column|Unk28|int
-add_column|Unk29|Unk29_Struct[]
+add_column|UnkUnionArray29|union[]
 add_column|Unk30|int
 add_column|Unk31|byte
 add_column|Unk32|byte

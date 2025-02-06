@@ -6,17 +6,15 @@ add_column|DLCFlags|int
 add_column|Comment|string
 
 // union
-// 23 = questcharalayoutbnpc
-// 50 = questcharalayoutenpc
-add_column|NpcUnionType|int
-add_column|NpcUnionId|int
+// 23 = bnpc
+// 50 = enpc
+add_column|NpcUnion|union
 add_column|Unk5|int
 add_column|Unk6|int
 add_column|Unk7|int
 add_column|Unk8|int
 add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
+add_column|UnkUnion10|union
 add_column|PlacementId|int
 add_column|Unk13|int
 add_column|Unk14|int

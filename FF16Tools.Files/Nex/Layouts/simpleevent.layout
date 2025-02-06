@@ -17,18 +17,13 @@ add_column|UnkType11_1|int
 // union
 // 82
 // 277 - usersituation
-add_column|MinConditionUnionType_1|short
-add_column|MinConditionUnionId_1|int
-add_column|MaxConditionUnionType_1|short
-add_column|MaxConditionUnionId_1|int
+add_column|MinConditionUnion_1|union
+add_column|MaxConditionUnion_1|union
 add_column|UnkType11_2|int
-add_column|MinConditionUnionType_2|short
-add_column|MinConditionUnionId_2|int
-add_column|MaxConditionUnionType_2|short
-add_column|MaxConditionUnionId_2|int
+add_column|MinConditionUnion_2|union
+add_column|MaxConditionUnion_2|union
 
-add_column|Unk21|int
-add_column|Unk22|int
+add_column|UnkUnion|union
 add_column|SimpleEventChoiceSetIds|int[]
 add_column|Unk24|int
 add_column|Unk25|int

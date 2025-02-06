@@ -55,7 +55,7 @@ add_column|UnkType17|int
 
 add_column|BNpcReactionTypeId|int
 add_column|SummonPartsPatternId|int
-add_column|Unk20|int
+add_column|FatalAttackKey2|int
 add_column|LockonCameraParamId|int
 
 // Array of 4 values (types?)

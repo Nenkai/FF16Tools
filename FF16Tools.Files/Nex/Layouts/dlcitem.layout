@@ -8,13 +8,9 @@ add_column|Comment|string
 // union
 // 124 = item
 // 177 = equipitem
-add_column|ItemUnionType|short
-// <implcit 2 bytes padding>
-add_column|ItemUnionId|int
+add_column|ItemUnion|union
 
 // union
 // 1144 = dlcentitlement
 // 1174 = patchdlcversion
-add_column|EntitlementUnionType|short
-// <implcit 2 bytes padding>
-add_column|EntitlementUnionId|int
+add_column|EntitlementUnion|union

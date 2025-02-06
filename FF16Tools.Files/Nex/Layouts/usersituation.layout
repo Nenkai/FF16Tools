@@ -41,33 +41,15 @@ add_column|UnkType|int
 // 989 = icondiscovery
 // 1094 = ?
 // 1162 = ? 
-add_column|UnkUnionType1|short
-// indirect 2 bytes padding
-add_column|UnkUnionId1|int
-
-add_column|UnkUnionType2|short
-// indirect 2 bytes padding
-add_column|UnkUnionId2|int
-
+add_column|UnkUnion1|union
+add_column|UnkUnion2|union
 add_column|Comment|string
 add_column|Unk8|int
-
-add_column|UnkUnionType3|short
-// indirect 2 bytes padding
-add_column|UnkUnionId3|int
-
+add_column|UnkUnion3|union
 add_column|UnkType4|int
-add_column|UnkUnionType4|short
-// indirect 2 bytes padding
-add_column|UnkUnionId4|int
-
-add_column|UnkUnionType5|short
-// indirect 2 bytes padding
-add_column|UnkUnionId5|int
-
-add_column|UnkUnionType6|short
-// indirect 2 bytes padding
-add_column|UnkUnionId6|int
+add_column|UnkUnion4|union
+add_column|UnkUnion5|union
+add_column|UnkUnion6|union
 
 add_column|Unk18|string
 add_column|Unk19|int

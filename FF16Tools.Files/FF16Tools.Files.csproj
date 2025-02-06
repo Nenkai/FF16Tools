@@ -30,7 +30,6 @@
     <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
     <PackageReference Include="Hjg.Pngcs" Version="1.1.4" />
     <PackageReference Include="Iconic.Zlib.Netstandard" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageReference Include="Pfim" Version="0.11.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
@@ -440,9 +439,6 @@
     <None Update="Nex\Layouts\characollisionshape.layout">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Nex\Layouts\characollisiontype.layout">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Nex\Layouts\cartcameraparam.layout">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -642,9 +638,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Nex\Layouts\collisionlayerpreset.layout">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Nex\Layouts\contentpermissiontype.layout">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Nex\Layouts\cutsceneconnectmarkerpoint.layout">

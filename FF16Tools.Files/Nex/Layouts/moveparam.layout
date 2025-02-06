@@ -2,7 +2,7 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|float
 add_column|Unk3|float
 add_column|Unk4|float
@@ -28,7 +28,7 @@ add_column|Unk24|int
 add_column|Unk25|float
 add_column|Unk26|float
 add_column|Unk27|float
-add_column|Unk28|string
+add_column|Comment|string
 add_column|Unk29|float
 add_column|Unk31|float
 add_column|Unk32|float
@@ -57,5 +57,7 @@ add_column|Unk56|float
 add_column|Unk57|float
 add_column|Unk58|float
 add_column|Unk59|float
-add_column|Unk60|int
-add_column|Unk61|int
+add_column|Unk60|float
+add_column|Unk61|byte
+add_column|Unk62|byte
+// <implicit 2 bytes padding>

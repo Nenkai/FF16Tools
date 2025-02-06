@@ -10,8 +10,7 @@ add_column|Unk4|int
 // union
 // 1047 = abysseffect
 // 1249 = abyssboostparam
-add_column|AbyssParamUnionType|int
-add_column|AbyssParamUnionId|int
+add_column|AbyssParamUnion|union
 add_column|Unk7|string|rel
 add_column|Unk8|int
 add_column|Unk9|int

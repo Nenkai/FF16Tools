@@ -11,8 +11,6 @@ using Microsoft.Extensions.Logging;
 using Syroot.BinaryData;
 
 using FF16Tools.Files.Nex.Entities;
-using System.Collections;
-using System.Data.Common;
 
 namespace FF16Tools.Files.Nex;
 
@@ -501,6 +499,14 @@ public class NexDataFileBuilder
                 bs.WriteSingle((float)cellValue);
                 break;
 
+            case NexColumnType.Union:
+                {
+                    NexUnion union = (NexUnion)cellValue;
+                    bs.WriteUInt16((ushort)union.Type);
+                    bs.WriteUInt16(0); // align
+                    bs.WriteInt32(union.Value);
+                }
+                break;
             case NexColumnType.ByteArray: // byte arrays are combined with strings at the end of the file
                 {
                     int relOffset = column.UsesRelativeOffset ? (int)bs.Position + column.RelativeOffsetShift : rowDataOffset;
@@ -523,6 +529,7 @@ public class NexDataFileBuilder
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
             case NexColumnType.CustomStructArray:
+            case NexColumnType.UnionArray:
                 {
                     bs.Position += 8; // Skip (write later)
                 }
@@ -572,6 +579,18 @@ public class NexDataFileBuilder
                     float[] array = (float[])cellValue;
                     for (int i = 0; i < array.Length; i++)
                         bs.WriteSingle(array[i]);
+                    arrayLength = array.Length;
+                    break;
+                }
+            case NexColumnType.UnionArray:
+                {
+                    NexUnion[] array = (NexUnion[])cellValue;
+                    for (int i = 0; i < array.Length; i++)
+                    {
+                        bs.WriteUInt16((ushort)array[i].Type);
+                        bs.WriteUInt16(0);
+                        bs.WriteInt32(array[i].Value);
+                    }
                     arrayLength = array.Length;
                     break;
                 }

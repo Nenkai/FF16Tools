@@ -2,9 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
-add_column|Unk1|int
-add_column|Unk2|string|rel
+add_column|DLCFlags|int
+add_column|Message|string|rel
 add_column|Unk3|int
-add_column|Unk4|string
-add_column|Unk5|string
+add_column|Comment1|string
+add_column|Comment2|string
 add_column|Unk6|int

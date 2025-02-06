@@ -2,7 +2,7 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|ModelId|int
 add_column|ModelIdKey2|int
@@ -19,8 +19,8 @@ add_column|Unk14|int
 add_column|Unk15|int
 add_column|Unk16|int
 add_column|Unk17|float
-add_column|Unk18|string
-add_column|Unk19|string
+add_column|Comment1|string
+add_column|Comment2|string
 add_column|Unk20|int
 add_column|ModelCoordinateId|int
 add_column|ModelCoordinateIdKey2|int

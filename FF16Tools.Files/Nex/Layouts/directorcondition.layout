@@ -2,15 +2,44 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|TableValueCheckUnion|short|int
-
 add_column|DLCFlags|int
 
 // Very hardcoded.
-// Conditions: 1, 2 3, 4, 10, 11, 12, 14, 15, 21, 22, 25, 27, 29, 100, 101, 102, 103, 105, 106, 107, 108, 109, 1000, 2000, 2001, 3000
-// Possibly more ^, see gaps
+// Conditions: 
+// 1, always true? 
+// 2, always false?
+// 3, multi conditions, all true, up to 4
+// 4, multi conditions, all false, up to 3
+// 10, 2 value (directorbankitem, layoutnamedinstance then/or questcharalayoutbnpc or generic)
+// 11, 2 value (directorbankitem, layoutnamedinstance then questcharalayoutbnpc)
+// 12, 2 value (directorbankitem, layoutnamedinstance then questcharalayoutbnpc)
+// 13, 1 value
+// 14, 2 or 3 values (directorbankitem, layoutnamedinstance, questcharalayoutbnpc, directoractorlist, then behaviormovesequence)
+// 15, 2 value (directorbankitem, layoutnamedinstance, questcharalayoutbnpc, directoractorlist, then behaviormovesequence)
+// 21 -> 1 Generic value or directorbankitemid
+// 22, 1 value (union type unchecked) - note: object func handling this type protected by denuvo
+// 25, 1 value (union type uncheched)
+// 27, 2 generic values
+// 28, 1 value (unknown, generic?)
+// 29, 1 value (simpleeventselect)
+// 100, 1 value directorchangebgmparam
+// 101, 1 Generic value or directorbankitemid
+// 102, 1 Generic value
+// 103, 1 Generic value
+// 104, 1 Generic value
+// 105, 1 value (directorbankitem, layoutnamedinstance, questcharalayoutbnpc, directoractorlist)
+// 106, 
+// 107, 2 values (layoutnamedinstance + generic value)
+// 108, 1 value (union type uncheched)
+// 109, 1 value (union type uncheched)
+// 1000, 2 values (quest, questsequence) - checked against save
+// 2000, no values
+// 2001, no values
+// 3000, 1 value (union type uncheched, unknown union)
 add_column|ConditionType|int
 
+// Every condition type expects different union arguments
+// Max 4
 // union
 // 0
 // 23 = questcharalayoutbnpc
@@ -26,5 +55,5 @@ add_column|ConditionType|int
 // 557 = directorcondition
 // 577 = ?
 // 856 = simpleevent
-add_column|TableValueUnionsToCheck|TableValueCheckUnion[]
+add_column|ConditionArgumentsUnionArray|union[]
 add_colun|Comment|string

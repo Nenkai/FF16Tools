@@ -5,7 +5,7 @@ use_base_row_id|false
 define_struct|Unk2_Struct|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int[]|int|int|int|int|int|int|int|int[]|int|int|int|int|int|int|int|int[]|int[]|int[]|int|int
 define_struct|Unk3_Struct|int|byte[]|int
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|Unk2_Struct[]
 add_column|Unk3|Unk3_Struct[]
 add_column|Unk4|int

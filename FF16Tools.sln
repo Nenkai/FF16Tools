@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FF16Tools.Shared", "FF16Too
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FF16Tools.Files.FlatBuffers", "FF16Tools.Files.FlatBuffers\FF16Tools.Files.FlatBuffers.csproj", "{7E3C15F4-7C96-455E-8F4D-8A36D64C0FF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FF16Tools.Nex.Sqlite", "FF16Tools.Nex.Sqlite\FF16Tools.Nex.Sqlite.csproj", "{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,18 @@ Global
 		{7E3C15F4-7C96-455E-8F4D-8A36D64C0FF9}.Release|x64.Build.0 = Release|Any CPU
 		{7E3C15F4-7C96-455E-8F4D-8A36D64C0FF9}.Release|x86.ActiveCfg = Release|Any CPU
 		{7E3C15F4-7C96-455E-8F4D-8A36D64C0FF9}.Release|x86.Build.0 = Release|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Debug|x64.Build.0 = Debug|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Debug|x86.Build.0 = Debug|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Release|x64.ActiveCfg = Release|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Release|x64.Build.0 = Release|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Release|x86.ActiveCfg = Release|Any CPU
+		{4B9EBFCA-2567-4B8F-92A5-124EAAFFCCBB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

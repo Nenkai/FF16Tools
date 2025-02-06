@@ -5,10 +5,8 @@ use_base_row_id|false
 // Pointed to by directorshipswingparameter
 // Mpb entity type 5003?
 
-define_struct|Unk2_struct|int|int
-
 add_column|DLCFlags|int
-add_column|UnkLocationUnions|Unk2_struct[]
+add_column|UnkLocationUnions|union[]
 add_column|LayoutNamedInstanceId|int
 add_column|Unk4|float
 add_column|Unk5|float

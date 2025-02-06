@@ -4,18 +4,16 @@ use_base_row_id|false
 
 define_struct|Unk6_Struct|int|int|int|int
 
-add_column|Unk1|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|string
-add_column|Unk5|string
+add_column|DLCFlags|int
+add_column|UnkUnion2|union
+add_column|Comment1|string
+add_column|Comment2|string
 add_column|Unk6|Unk6_Struct[]
 add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
+add_column|ReferenceUnion|union
+add_column|ReferenceUnionKey2|union
 add_column|Unk12|int
-add_column|Unk13|int
-add_column|Unk14|int
-add_column|Unk15|int
+add_column|UnkUnion13|union
+add_column|Unk15|byte
+add_column|Unk16|byte
+// <implicit 2 byte padding>

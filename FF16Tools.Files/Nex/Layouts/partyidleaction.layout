@@ -2,7 +2,7 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
 add_column|Unk4|int
@@ -34,7 +34,7 @@ add_column|Unk29|int
 add_column|Unk30|int
 add_column|Unk31|float
 add_column|Unk32|float
-add_column|Unk33|string
+add_column|Comment|string
 add_column|Unk34|byte
 add_column|Unk35|byte
 add_column|Unk36|byte

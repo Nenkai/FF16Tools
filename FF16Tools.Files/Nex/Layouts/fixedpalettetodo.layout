@@ -2,12 +2,10 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|true
 
-define_struct|Unk4_Struct|int|int
-
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
-add_column|Unk4|Unk4_Struct[]
+add_column|UnkUnionArray4|union[]
 add_column|Unk5|float
 add_column|Unk6|float
 add_column|Name|string|rel

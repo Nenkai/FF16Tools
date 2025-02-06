@@ -2,9 +2,6 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|DefaultTalkSequenceUnion|short|int
-define_struct|LocationUnion|int|int
-
 add_column|Unk1|int
 add_column|Unk2|int
 add_column|Unk3|int
@@ -13,15 +10,11 @@ add_column|Unk3|int
 // 82 = ?
 // 204 = questprogress
 // 277 = usersituation
-add_column|UnkUnionType1|short
-add_column|UnkUnionId1|int
-add_column|UnkUnionType2|short
-add_column|UnkUnionId2|int
+add_column|UnkUnion1|union
+add_column|UnkUnion2|union
 add_column|Unk8|int
-add_column|UnkUnionType3|short
-add_column|UnkUnionId3|int
-add_column|UnkUnionType4|short
-add_column|UnkUnionId4|int
+add_column|UnkUnion3|union
+add_column|UnkUnion4|union
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
@@ -32,7 +25,7 @@ add_column|TalkSequenceChances|int[]
 // union
 // 845 = maindefaulttalksequence
 // 846 = questdefaulttalksequence
-add_column|DefaultTalkSequenceUnions|DefaultTalkSequenceUnion[]
+add_column|DefaultTalkSequenceUnions|union[]
 
 add_column|Comment|string
 add_column|QuestId1|int
@@ -44,7 +37,7 @@ add_column|Unk26|float
 
 // union
 // 55 = layoutnamedinstance
-add_column|UnkLocationUnions|LocationUnion[]
+add_column|UnkLocationUnions|union[]
 
 add_column|SpeakerId|int
 add_column|Unk29|byte

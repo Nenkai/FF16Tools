@@ -11,8 +11,7 @@ add_column|Comment|string
 // union
 // 146 - bgmmode
 // 314 - bgmselect
-add_column|BgmUnionType|short
-add_column|BgmUnionId|int
+add_column|BgmUnion|union
 
 // Unknown. If true, checks user situation 992050?
 // ffxvi.exe steam 1.0.1 - 140452CF7

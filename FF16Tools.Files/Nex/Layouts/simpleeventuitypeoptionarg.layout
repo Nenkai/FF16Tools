@@ -3,6 +3,6 @@ set_table_category|SingleKeyed
 use_base_row_id|true
 
 // This layout was generated, guessed row length: 0xC
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int

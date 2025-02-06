@@ -4,8 +4,6 @@ use_base_row_id|false
 
 // Row ID 543, 547 are known to have hardcoded checks
 
-define_struct|Unk_0xC8_Struct|int|int
-
 add_column|DLCFlags|int
 add_column|CharaTimelineId|int
 add_column|CharaTimelineId2|int
@@ -83,7 +81,7 @@ add_column|Unk_0xC0|int
 add_column|UnkType0xC4|int
 
 // Second int = phoenix related
-add_column|Unk_0xC8|Unk_0xC8_Struct[]
+add_column|UnkUnionArray_0xC8|union[]
 
 add_column|Unk_0xD0|string
 add_column|Unk_0xD4|int

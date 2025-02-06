@@ -4,17 +4,12 @@ use_base_row_id|true
 
 add_column|DLCFlags|int
 add_column|ResultType|int
-add_column|ResultItemIdType|int
-add_column|ResultItemId|int
+add_column|ResultItemUnion|union
 add_column|ResultItemCount|int
-add_column|ReqItemIdType1|int
-add_column|ReqItemId1|int
-add_column|ReqItemIdType2|int
-add_column|ReqItemId2|int
-add_column|ReqItemIdType3|int
-add_column|ReqItemId3|int
-add_column|ReqItemIdType4|int
-add_column|ReqItemId4|int
+add_column|ReqItemUnion1|union
+add_column|ReqItemUnion2|union
+add_column|ReqItemUnion3|union
+add_column|ReqItemUnion4|union
 add_column|ReqCount1|int
 add_column|ReqCount2|int
 add_column|ReqCount3|int

@@ -2,20 +2,23 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk6_Struct|int|int
-
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
-add_column|Unk3|int
+
+// Hardcoded enum
+// ffxvi.exe steam 1.0.1:
+// 48 89 5C 24 ? 48 89 7C 24 ? 48 89 4C 24 ? 55 48 8B EC 48 83 EC ? 48 8B 05
+add_column|UnkType3|int
+
 add_column|Unk4|float
 add_column|Unk5|int
-add_column|Unk6|Unk6_Struct[]
-add_column|Unk7|int[]
+add_column|UnkUnionArray6|union[]
+add_column|BattleScoreBonusLevel|int[]
 add_column|Unk8|int
-add_column|Unk9|string
+add_column|Comment|string
 add_column|Unk10|int
 add_column|Unk11|int
-add_column|Unk12|int[]
+add_column|ActionIds|int[]
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|byte

@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Globalization;
 using System.Text.Json;
+using System.Diagnostics;
 
-using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
+using Microsoft.Data.Sqlite;
 
+using FF16Tools.Files.Nex;
 using FF16Tools.Files.Nex.Entities;
 
-namespace FF16Tools.Files.Nex.Exporters;
+namespace FF16Tools.Nex.Sqlite;
 
 /// <summary>
 /// Game database to sqlite exporter (disposable object).
@@ -29,6 +31,8 @@ public class SQLiteToNexImporter : IDisposable
     private readonly string _sqliteFile = "<no table>";
 
     private SqliteConnection _con;
+
+    private Dictionary<string, NexUnionType> _unionMap = [];
 
     // We don't want byte arrays to be converted to base64.
     private static JsonSerializerOptions _jsonSerializerOptions = new() { Converters = { new JsonByteArrayConverter() } };
@@ -66,6 +70,7 @@ public class SQLiteToNexImporter : IDisposable
         _con = new SqliteConnection($"Data Source={_sqliteFile}");
         _con.Open();
 
+        ReadUnionTable();
         CreateTables();
         FillTables();
 
@@ -94,11 +99,40 @@ public class SQLiteToNexImporter : IDisposable
         _logger?.LogInformation("Exported to {directory}.", directory);
     }
 
+    private void ReadUnionTable()
+    {
+        var command = _con.CreateCommand();
+        command.CommandText = $"SELECT name FROM sqlite_master WHERE type='table' AND name='_uniontypes';";
+        string tableName = (string)command.ExecuteScalar();
+        if (string.IsNullOrEmpty(tableName))
+        {
+            _logger.LogWarning("Table '_uniontypes' is missing.");
+            return;
+        }
+
+        command = _con.CreateCommand();
+        command.CommandText = $"SELECT * FROM _uniontypes;";
+        _logger?.LogTrace("{command}", command.CommandText);
+
+        var reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            long id = (long)reader["Id"];
+            string name = (string)reader["Name"];
+
+            if (id < 0)
+                continue;
+
+            _unionMap.TryAdd(name, (NexUnionType)id);
+        }
+    }
+
     private void CreateTables()
     {
         var command = _con.CreateCommand();
         command.CommandText = $"SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';";
-        _logger?.LogTrace(command.CommandText);
+        _logger?.LogTrace("{command}", command.CommandText);
 
         var reader = command.ExecuteReader();
 
@@ -132,7 +166,7 @@ public class SQLiteToNexImporter : IDisposable
 
             var command = _con.CreateCommand();
             command.CommandText = $"SELECT * FROM {table.Key};";
-            _logger.LogTrace(command.CommandText);
+            _logger.LogTrace("{command}", command.CommandText);
 
             var reader = command.ExecuteReader();
 
@@ -226,7 +260,7 @@ public class SQLiteToNexImporter : IDisposable
                 {
                     var hexStr = val is not DBNull ? (string)val : "";
                     if (!NexUtils.TryParseHexUint(hexStr, out uint value))
-                        throw new Exception($"Unable to parse hexadecimal uint {column.Name}");
+                        ThrowTableError($"Unable to parse hexadecimal uint '{hexStr}' at {column.Name}");
 
                     return value;
                 }
@@ -238,6 +272,42 @@ public class SQLiteToNexImporter : IDisposable
                 return val is not DBNull ? (double)val : 0d;
             case NexColumnType.String:
                 return val is not DBNull ? (string)val : string.Empty;
+            case NexColumnType.Union:
+                {
+                    string str = (string)val;
+                    return ParseUnion(column, str);
+                }
+            case NexColumnType.UnionArray:
+                {
+                    string str = (string)val;
+                    if (string.IsNullOrWhiteSpace(str))
+                        return Array.Empty<NexUnion>();
+
+                    if (str[0] != '[' || str[^1] != ']')
+                        ThrowTableError($"Union array is malformed at column {column.Name} - expected an array, got '{str}'");
+
+                    ReadOnlySpan<char> contents = str.AsSpan(1, str.Length - 2);
+
+                    int count = 0;
+                    if (contents.Length > 0)
+                    {
+                        foreach (var _ in contents.Split(','))
+                            count++;
+
+                        var arr = new NexUnion[count];
+                        int i = 0;
+                        foreach (Range elemRange in contents.Split(','))
+                        {
+                            ReadOnlySpan<char> elemSpan = contents[elemRange];
+                            arr[i++] = ParseUnion(column, elemSpan);
+                        }
+
+                        return arr;
+                    }
+                    else
+                        return Array.Empty<NexUnion>();
+
+                }
             case NexColumnType.ByteArray:
                 {
                     if (val is DBNull)
@@ -327,7 +397,7 @@ public class SQLiteToNexImporter : IDisposable
                             var structItem = new object[col.Count];
                             int itemsInJson = item.GetArrayLength();
                             if (itemsInJson != col.Count)
-                                throw new Exception($"Error in column {column.Name} - expected {col.Count} fields in struct array index {arrayIndex}, got {itemsInJson} in json.");
+                                ThrowTableError($"Error in column {column.Name} - expected {col.Count} fields in struct array index {arrayIndex}, got {itemsInJson} in json.");
 
                             int fieldIndex = 0;
                             foreach (JsonElement field in item.EnumerateArray())
@@ -367,6 +437,19 @@ public class SQLiteToNexImporter : IDisposable
                                         ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetUInt32();
                                         break;
+                                    case NexColumnType.Union:
+                                        {
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+
+                                            int arrLen = field.GetArrayLength();
+                                            var arr = new int[arrLen];
+
+                                            int j = 0;
+                                            foreach (JsonElement elem in field.EnumerateArray())
+                                                arr[j++] = elem.GetInt32();
+                                            structItem[fieldIndex] = arr;
+                                            break;
+                                        }
                                     case NexColumnType.ByteArray:
                                         {
                                             ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
@@ -419,7 +502,8 @@ public class SQLiteToNexImporter : IDisposable
                                             break;
                                         }
                                     default:
-                                        throw new NotImplementedException($"Nested custom struct field type unsupported yet: {col[fieldIndex].Type}");
+                                        ThrowTableError($"Nested custom struct field type unsupported yet: {col[fieldIndex].Type}");
+                                        break;
                                 }
        
                                 fieldIndex++;
@@ -436,14 +520,71 @@ public class SQLiteToNexImporter : IDisposable
                     }
                 }
             default:
-                throw new NotImplementedException("Could not parse cell - type {column.Type} not supported");
+                ThrowTableError($"Could not parse cell - type {column.Type} not supported");
+                throw new UnreachableException();
         }
+    }
+
+    private NexUnion ParseUnion(NexStructColumn column, ReadOnlySpan<char> val)
+    {
+        int idx = 0;
+
+        NexUnionType? type = null;
+        int id = 0;
+        foreach (Range elemRange in val.Split(':'))
+        {
+            if (idx > 2)
+                ThrowTableError($"Union is malformed at column {column.Name} - too many elements (source of error: {val})");
+
+            ReadOnlySpan<char> elemSpan = val[elemRange];
+            if (idx == 0)
+            {
+                // Check if the database already has mappings
+                if (_unionMap.GetAlternateLookup<ReadOnlySpan<char>>().TryGetValue(elemSpan, out NexUnionType value))
+                    type = value;
+
+                // If not, try to parse our local enum.
+                if (type is null)
+                {
+                    if (Enum.TryParse(elemSpan, out NexUnionType value_))
+                        type = value_;
+                }
+
+                // If not, try to parse it as a number
+                if (type is null)
+                {
+                    if (!ushort.TryParse(elemSpan, out ushort value_))
+                        ThrowTableError($"Union is malformed at column {column.Name} - unable to parse '{elemSpan}' as union type or number");
+
+                    type = (NexUnionType)value_;
+                }
+            }
+            else if (idx == 1)
+            {
+                if (!int.TryParse(elemSpan, out int value))
+                    ThrowTableError($"Union is malformed at column {column.Name} - unable to parse '{elemSpan}' as union id");
+
+                id = value;
+            }
+
+            idx++;
+        }
+
+        if (idx != 2)
+            ThrowTableError($"Union is malformed at column {column.Name} - not enough elements, expected type:id");
+
+        return new NexUnion(type.Value, id);
     }
 
     private void ThrowIfStructElemNotValueKind(JsonElement jsonElement, JsonValueKind expectedKind, NexStructColumn nexColumn, int arrayIndex, int fieldIndex)
     {
         if (jsonElement.ValueKind != expectedKind)
             throw new Exception($"{_lastTable}: Expected '{nexColumn.Type}' type in struct array index {arrayIndex}, struct item {fieldIndex}, got '{jsonElement.ValueKind}' from json.");
+    }
+
+    private void ThrowTableError(string message)
+    {
+        throw new Exception($"{_lastTable}: {message}");
     }
 
     public void Dispose()

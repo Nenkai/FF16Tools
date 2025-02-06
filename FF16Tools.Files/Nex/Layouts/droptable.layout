@@ -2,7 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-add_column|Unk1|int
+add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Exp|int
 add_column|Unk4|int
@@ -14,18 +14,12 @@ add_column|ItemCount5|int
 add_column|ItemCount6|int
 
 // 124 = id from item table
-add_column|RewardType1|int
-add_column|ID1|int
-add_column|RewardType2|int
-add_column|ID2|int
-add_column|RewardType3|int
-add_column|ID3|int
-add_column|RewardType4|int
-add_column|ID4|int
-add_column|RewardType5|int
-add_column|ID5|int
-add_column|RewardType6|int
-add_column|ID6|int
+add_column|RewardUnion1|union
+add_column|RewardUnion2|union
+add_column|RewardUnion3|union
+add_column|RewardUnion4|union
+add_column|RewardUnion5|union
+add_column|RewardUnion6|union
 
 add_column|Chance1|byte
 add_column|Chance2|byte

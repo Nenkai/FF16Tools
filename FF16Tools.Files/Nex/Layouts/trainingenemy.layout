@@ -9,3 +9,43 @@ add_column|BNpcBaseId|int
 add_column|NameUiId|int
 add_column|DescriptionUiId|int
 add_column|Unk7|int
+
+set_comment|1|||Random
+set_comment|2|||Goblin Mugger
+set_comment|3|||Goblin Weaver
+set_comment|4|||Gigas
+set_comment|5|||Wolf
+set_comment|6|||Hornet
+set_comment|7|||Aevis
+set_comment|8|||Royal Tognvaldr
+set_comment|9|||Elemental
+set_comment|10|||Minotaur
+set_comment|11|||Guardian
+set_comment|12|||Iron Giant
+set_comment|13|||Lich
+set_comment|14|||Imperial Champion
+set_comment|15|||Imperial Cannonier
+set_comment|16|||Imperial Lancer
+set_comment|17|||Salamander
+set_comment|18|||Mousse
+set_comment|19|||Ironblood Fanatic
+set_comment|20|||Reaper
+set_comment|21|||Coeurl
+set_comment|22|||Republican Marshal
+set_comment|23|||Orcish Warlord
+set_comment|24|||Undertaker
+set_comment|25|||Royal Sveithvaldr
+set_comment|26|||Bavarois
+set_comment|27|||Defense Node
+set_comment|28|||Aurum Giant
+set_comment|29|||Virtual Domovikha
+set_comment|30|||Virtual Domovoi
+set_comment|31|||Virtual Omicron
+set_comment|32|||Virtual Asterios
+set_comment|33|||Tonberry Creeper
+set_comment|34|||Tonberry Hexer
+set_comment|35|||Master Tonberry 
+set_comment|36|||Wolf Trap
+set_comment|37|||Temple Coeurl
+set_comment|38|||Frost Bomb
+set_comment|39|||Water Egi

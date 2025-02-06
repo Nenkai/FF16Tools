@@ -4,11 +4,10 @@ use_base_row_id|false
 
 // !! This table is heavily hardcoded
 // See ffxvi.exe steam 1.0.1 - 14017737C - ctors for each
-
-define_struct|TableValueCheckUnion|short|int
+// 48 8B C4 48 89 70 ? 48 89 78 ? 4C 89 60 ? 4C 89 70 ? 55 48 8B EC 48 83 EC ? 48 8B 8A
 
 add_column|DLCFlags|int
-add_column|Unk2|int
+add_column|ModuleType|int
 
 // NOTE: Some combinations within the array matters and are explicitly checked for in order, i.e:
 // 55 then 375 then 577
@@ -36,5 +35,5 @@ add_column|Unk2|int
 // 1027
 // 1044
 // 1255
-add_column|UnkUnions|TableValueCheckUnion[]
+add_column|ArgumentsUnionArray|union[]
 add_column|Comment|string

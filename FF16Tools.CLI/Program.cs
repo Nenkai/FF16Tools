@@ -12,15 +12,13 @@ using NLog.Extensions.Logging;
 using FF16Tools.Files;
 using FF16Tools.Files.Save;
 using FF16Tools.Files.Nex;
-using FF16Tools.Files.Nex.Entities;
-using FF16Tools.Files.Nex.Exporters;
 using FF16Tools.Files.Nex.Managers;
+using FF16Tools.Files.Nex.Entities;
+using FF16Tools.Nex.Sqlite;
 using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
-using System.Diagnostics;
 
-using FlatSharp;
 
 namespace FF16Tools.CLI;
 

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Syroot.BinaryData;
 using Syroot.BinaryData.Memory;
 
-using FF16Tools.Files.Nex.Entities;
 using FF16Tools.Files.Nex.Managers;
 
 namespace FF16Tools.Files.Nex;
@@ -83,23 +82,4 @@ public class NexDataFile
 
         RowManager.Read(bs);
     }
-}
-
-public enum NexTableType
-{
-    Unknown = 0,
-    SingleKeyed = 1,
-    DoubleKeyed = 2,
-    TripleKeyed = 3,
-}
-
-public enum NexTableCategory
-{
-    Unknown = 0,
-    SingleKeyed = 1,
-    SingleKeyed_Localized = 2,
-    DoubleKeyed = 3,
-    DoubleKeyed_Localized = 4,
-    TripleKeyed = 5,
-    TripleKeyed_Localized = 6,
 }
