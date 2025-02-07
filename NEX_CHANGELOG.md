@@ -2,6 +2,13 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.6.0, FF16Tools.Files 1.1.0
+
+Too many. Refer to this commit
+https://github.com/Nenkai/FF16Tools/commit/24180b3e866c8171ba9544c504d60533362779b9
+
+---
+
 ## CLI 1.5.9, FF16Tools.Files 1.0.12
 
 Too many. refer to the following commits:
