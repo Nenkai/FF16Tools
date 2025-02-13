@@ -7,7 +7,7 @@ add_column|Comment|string
 add_column|Unk3|int
 add_column|Unk4|int
 add_column|Unk5|int
-add_column|float|int
+add_column|Unk6|float
 add_column|Unk7|byte
 add_column|Unk8|byte
 add_column|Unk9|byte

@@ -5,26 +5,35 @@ use_base_row_id|false
 add_column|DLCFlags|int
 add_column|Comment|string
 add_column|ReqUserSituationId|int
-add_column|Unk4|int
-add_column|Unk5|int
+add_column|GameMapId|int
+add_column|GameMapIdKey2|int
 add_column|LayoutNamedInstanceId|int
-add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
-add_column|Unk14|int
-add_column|Unk15|int
-add_column|Unk16|int
-add_column|Unk17|int
+add_column|QuestId|int
+
+// Used for getting name
+add_column|WorldMapAnchorId|int
+add_column|ScoreAttackPlayerSetId|int
+
+// Grouped
+add_column|RankingId1_1|int
+add_column|RankingId1_2|int
+add_column|RankingId1_3|int
+
+add_column|ListViewIconFileId|int
+add_column|GridViewIconFileId|int
+add_column|ListViewIconFileId2|int
+add_column|GridViewIconFileId2|int
+add_column|Multiplier|int
+
 add_column|Unk18|int
 add_column|Unk19|int
 add_column|Unk20|int
-add_column|Unk21|int
-add_column|Unk22|int
-add_column|Unk23|int
+
+// Grouped #2
+add_column|RankingId2_1|int
+add_column|RankingId2_2|int
+add_column|RankingId2_3|int
+
 add_column|Unk24|int
 add_column|Unk25|int
 add_column|Unk26|int
@@ -34,3 +43,21 @@ add_column|Unk29|int
 add_column|Unk30|int
 add_column|Unk31|int
 add_column|Unk32|int
+
+set_comment|1|||The Greatwood
+set_comment|2|||Caer Norvent
+set_comment|3|||The Eye of the Tempest
+set_comment|4|||The Kingsfall
+set_comment|5|||Phoenix Gate Ruins
+set_comment|6|||Drake's Head
+set_comment|7|||Kostnice
+set_comment|8|||Drake's Breath
+set_comment|9|||Rosalith
+set_comment|10|||Drake's Fang
+set_comment|11|||The Crystalline Dominion
+set_comment|12|||The Free Cities of Kanver
+set_comment|13|||The Ironworks
+set_comment|14|||The Naldia Narrow
+set_comment|15|||Reverie
+set_comment|16|||Drake's Spine
+set_comment|17|||Origin

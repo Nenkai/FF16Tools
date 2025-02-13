@@ -26,7 +26,7 @@ add_column|Unk12|int
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
-add_column|Unk16|int[]
+add_column|ReqCompletedQuestIds|int[]
 
 // 0 = none
 add_column|DropTableId|int
@@ -39,6 +39,7 @@ add_column|Unk24|int
 
 // count of sorts?
 // ffxvi_demo.exe 1.0.0 check at 14028CF96
+// read when getting closer to npc (30 meters?)
 add_column|Unk25|int
 add_column|Unk26|byte
 add_column|Unk27|byte

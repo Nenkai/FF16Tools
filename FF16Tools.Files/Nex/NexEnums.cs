@@ -54,7 +54,9 @@ public enum NexUnionType : ushort
     placename = 147,
     equipitem = 177,
     cutsceneset = 192,
+    transition = 198,
     questprogress = 204,
+    summonmode = 208,
     partymember = 256,
     scenariocutscene = 260,
     icon_file_id = 266, // Not sure
@@ -69,7 +71,7 @@ public enum NexUnionType : ushort
     missionbattledirector = 359,
     normalcameraparam = 366,
     astralprojection = 373,
-    //unk_375 = 375, // mapdirectorsequence
+    mapdirectorsequence = 375,
     directorfaketargetsettings = 382,
     directoractorlist = 399,
     behaviormovesequence = 403, // behaviormovesequence (or behaviormoveset)
@@ -87,13 +89,19 @@ public enum NexUnionType : ushort
     collectionlist = 517,
     shoplore = 523,
     battletalk = 524,
-    //unk_528 = 528,
+    howto = 528,
     tutorialdirector = 530,
     behaviorwaitparam = 539,
     tutorial = 545,
     directorcondition = 557,
-    //unk_577 = 577,
     directoractormonitor = 568,
+
+    // mapdirectorflag (table) seems unused.
+    // This seems to be used as a persistent map 'custom' flag state
+    // i.e enable flag 1, check on it, disable it, etc. see: questsequence
+    // up to 64
+    mapdirectorflag = 577,
+
     behavioreventactionsequence = 639,
     //unk_649 = 649,
     behaviormoverailparam = 653,
@@ -102,6 +110,7 @@ public enum NexUnionType : ushort
     directorforwardmoveparam = 665,
     questcharalayoutbnpc = 668,
     systemassisttimertalkitem = 700,
+    // 702 = related to difficulty? ffxvi.exe steam 1.0.1 -> sub_14065170C
     layoutenpcinstance = 706,
     shopmythril = 719,
     behaviorlinkmovetarget = 722,
@@ -120,12 +129,14 @@ public enum NexUnionType : ushort
     synopsis = 861,
     simpleeventmarkerpoint = 884,
     orchestrionlist = 889,
+    orchestrion = 890,
     simpleeventlightpreset = 917,
     questcharalayoutenpc = 932,
     directorshipswingparameter = 934,
     directormovecustomspeedparam = 935,
     simpleeventselect = 942,
     simpleeventsequencerandomset = 943,
+    cutsceneconnectquestseqarg = 945,
     shopquestcounter = 957,
     shopfixedpaletteaccess = 976,
     shopfixedpalettewarp = 977,

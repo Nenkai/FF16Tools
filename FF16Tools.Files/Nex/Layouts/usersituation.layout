@@ -46,13 +46,16 @@ add_column|UnkUnion2|union
 add_column|Comment|string
 add_column|Unk8|int
 add_column|UnkUnion3|union
-add_column|UnkType4|int
-add_column|UnkUnion4|union
+add_column|UnkType4|union
+add_column|UnkUnion44|int
 add_column|UnkUnion5|union
 add_column|UnkUnion6|union
 
 add_column|Unk18|string
-add_column|Unk19|int
+add_column|Unk19|byte
+add_column|Unk20|byte
+add_column|Unk21|byte
+add_column|Unk22|byte
 
 //////////////////////////////////////
 // Comments

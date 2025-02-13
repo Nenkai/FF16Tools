@@ -37,27 +37,30 @@ add_column|DLCFlags|int
 add_column|Comment|string
 add_column|TaskName|string|rel
 add_column|Unk4|int
-add_column|Unk5|int
+add_column|TaskProgressCount|int
 
 // Types
+// 4 = partytalk (while on the way to next quest marker)
+// 6 = move next sequence
 // 22 = default talk related
 // 27 = item related
-add_column|UnkType1|int
-add_column|UnkUnionArray1|union[]
-add_column|UnkType2|int
-add_column|UnkUnionArray2|union[]
-add_column|UnkType3|int
-add_column|UnkUnionArray3|union[]
-add_column|UnkType4|int
-add_column|UnkUnionArray4|union[]
-add_column|UnkType5|int
-add_column|UnkUnionArray5|union[]
+// 52 = simpleevent discussion
+add_column|Task1Type|int
+add_column|TaskUnions1|union[]
+add_column|Task2Type|int
+add_column|TaskUnions2|union[]
+add_column|Task3Type|int
+add_column|TaskUnions3|union[]
+add_column|Task4Type|int
+add_column|TaskUnions4|union[]
+add_column|Task5Type|int
+add_column|TaskUnions5|union[]
 add_column|UnkType6|int
-add_column|UnkUnionArray6|union[]
-add_column|UnkType7|int
-add_column|UnkUnionArray7|union[]
-add_column|UnkType8|int
-add_column|UnkUnionArray8|union[]
+add_column|TaskUnions6|union[]
+add_column|Task7Type|int
+add_column|TaskUnions7|union[]
+add_column|Task8Type|int
+add_column|TaskUnions8|union[]
 add_column|Unk30|int
 add_column|Unk31|int
 add_column|UnkLayoutNamedInstanceId|int
