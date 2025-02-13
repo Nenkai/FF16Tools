@@ -202,7 +202,7 @@ public class NexUtils
                     NexUnionType unionType = (NexUnionType)sr.ReadUInt16();
                     sr.ReadInt16();
                     int id = sr.ReadInt32();
-                    return (unionType, id);
+                    return new NexUnion(unionType, id);
                 }
             default:
                 throw new NotImplementedException($"ReadCell: Type {column.Type} is invalid or not supported.");
