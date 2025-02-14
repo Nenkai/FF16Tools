@@ -3,6 +3,10 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|int
+add_column|TelemetryEventDefinitionId|int
+
+// 742 - telemetryobjectset
+// 758 - telemetrypropertyvalue
+// 793 - telemetryobject
 add_column|UnkUnions|union[]
 add_column|Comment|string

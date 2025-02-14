@@ -29,9 +29,12 @@ public enum NexUnionType : ushort
 {
     // Avoid renaming them when possible.
     // Names are written into exported sqlite databases.
+    action = 3,
+    result = 15, // Not sure, only telemetryarray uses this, but DLCFlags seem to match
     attackparam = 17,
     bnpcbase = 23,
     directorbankitem = 25,
+    eid = 27,
     //unk_41 = 41,
     command = 42,
     defaulttalk = 46,
@@ -43,6 +46,10 @@ public enum NexUnionType : ushort
     itemshopbase = 99,
     smithshopbase = 100,
     charatimelinevariation = 105,
+    shopbase = 107,
+
+    // not an actual table. maps to EquipmentData in the save file.
+    equipment_index = 112,
     sidequestbattledirector = 114,
     item = 124,
     levelcutscene = 127,
@@ -69,6 +76,8 @@ public enum NexUnionType : ushort
     gamemap = 317,
     //unk_330 = 330,
     missionbattledirector = 359,
+    uicolor = 363,
+    normalcameraparam2 = 344, // Same as 366 apparently, see ffxvi.exe 1.0.1 steam - sub_1405BCB34 and sub_1405D1B98
     normalcameraparam = 366,
     astralprojection = 373,
     mapdirectorsequence = 375,
@@ -79,7 +88,7 @@ public enum NexUnionType : ushort
     battletag = 454,
     usersituationflag = 458,
     shopchronicle = 484,
-    //unk_486 = 486,
+    layoutgroup = 486, // groups from map
     letterlist = 487,
     shoppastsight = 488,
     //unk_491 = 491,
@@ -102,6 +111,7 @@ public enum NexUnionType : ushort
     // up to 64
     mapdirectorflag = 577,
 
+    skill = 632,
     behavioreventactionsequence = 639,
     //unk_649 = 649,
     behaviormoverailparam = 653,
@@ -109,14 +119,19 @@ public enum NexUnionType : ushort
     captionfreeword = 664,
     directorforwardmoveparam = 665,
     questcharalayoutbnpc = 668,
+    smobdirector = 692,
     systemassisttimertalkitem = 700,
     // 702 = related to difficulty? ffxvi.exe steam 1.0.1 -> sub_14065170C
     layoutenpcinstance = 706,
     shopmythril = 719,
     behaviorlinkmovetarget = 722,
+    telemetryobjectset = 742,
+    telemetrypropertyvalue = 758,
+    letter = 791,
     telemetryobject = 793,
     shopfixedpaletteexit = 818,
     cutsceneconnect = 831,
+    cutsceneconnectcamerapreset = 837,
     questcutscene = 841,
     mainpartytalksequence = 843,
     questpartytalksequence = 844,
