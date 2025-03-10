@@ -200,17 +200,17 @@ set_comment|159|||Aerial Combo 3
 set_comment|160|||Lunge
 set_comment|161|||Lunge No Start
 set_comment|162|||Lunge Stab
-set_comment|163|||Lunge | Upgraded
-set_comment|164|||Lunge No Start | Upgraded
-set_comment|165|||Lunge Stab | Upgraded
-set_comment|166|||Ex Lunge | Upgraded
+set_comment|163|||Lunge (Upgraded)
+set_comment|164|||Lunge No Start (Upgraded)
+set_comment|165|||Lunge Stab (Upgraded)
+set_comment|166|||Ex Lunge (Upgraded)
 set_comment|167|||Downthrust Full
 set_comment|168|||Downthrust Slam with Sword
 set_comment|169|||Downthrust High Slam Only
 set_comment|170|||Downthrust Slam Only
-set_comment|171|||Downthrust Full | Upgraded
-set_comment|172|||Downthrust Sword with Sword | Upgraded
-set_comment|173|||Downthrust Slam Only | Upgraded
+set_comment|171|||Downthrust Full (Upgraded)
+set_comment|172|||Downthrust Sword with Sword (Upgraded)
+set_comment|173|||Downthrust Slam Only (Upgraded)
 set_comment|174|||Ground Burning Blade
 set_comment|175|||Air Burning Blade
 set_comment|176|||Nothing, Outputs "Combo 1" to Action Log
@@ -276,14 +276,14 @@ set_comment|341|||Ground Ignition Attack
 set_comment|342|||Air Ignition Attack
 set_comment|343|||Cancel
 set_comment|344|||Cancel - Airborne (Upgraded)
-set_comment|345|||Ground Ignition Intro | Upgraded
+set_comment|345|||Ground Ignition Intro (Upgraded)
 set_comment|345|||Ground Ignition Intro
-set_comment|346|||Air Ignition Intro | Upgraded
+set_comment|346|||Air Ignition Intro (Upgraded)
 set_comment|346|||Air Ignition Intro
-set_comment|347|||Ignition Travel Animation | Upgraded
-set_comment|348|||Ground Ignition Attack | Upgraded
+set_comment|347|||Ignition Travel Animation (Upgraded)
+set_comment|348|||Ground Ignition Attack (Upgraded)
 set_comment|348|||Ground Ignition Attack
-set_comment|349|||Air Ignition Attack | Upgraded
+set_comment|349|||Air Ignition Attack (Upgraded)
 set_comment|349|||Air Ignition Attack
 set_comment|353|||Phoenix - Ground Phoenix Shift
 set_comment|354|||Phoenix - Air Phoenix Shift
@@ -295,42 +295,42 @@ set_comment|359|||Phoenix - Perfect Dodge Air Attack
 set_comment|360|||Phoenix - Perfect Dodge Ground Magic Attack
 set_comment|361|||Phoenix - Perfect Dodge Air Magic Attack
 set_comment|363|||Phoenix - Rising Flames
-set_comment|364|||Phoenix - Rising Flames | Upgraded
+set_comment|364|||Phoenix - Rising Flames (Upgraded)
 set_comment|364|||Phoenix - Rising Flames
 set_comment|367|||Scarlet Cyclone
-set_comment|368|||Scarlet Cyclone | Upgraded
+set_comment|368|||Scarlet Cyclone (Upgraded)
 set_comment|368|||Scarlet Cyclone
 set_comment|369|||After Hit Scarlet Cyclone
-set_comment|370|||After Hit Scarlet Cyclone | Upgraded
+set_comment|370|||After Hit Scarlet Cyclone (Upgraded)
 set_comment|370|||After Hit Scarlet Cyclone
 set_comment|375|||Heatwave
-set_comment|376|||Heatwave | Upgraded
+set_comment|376|||Heatwave (Upgraded)
 set_comment|376|||Heatwave
 set_comment|377|||Heatwave 1 Blade Throw
 set_comment|378|||Heatwave 3 Blade Throw
 set_comment|379|||Heatwave 2 Blade Throw
 set_comment|380|||Heatwave 1 Blade Throw No Cinematic
 set_comment|385|||Rebirth
-set_comment|386|||Rebirth | Upgraded
+set_comment|386|||Rebirth (Upgraded)
 set_comment|386|||Rebirth
 set_comment|401|||Deadly Embrace
 set_comment|404|||Air Deadly Embrace
 set_comment|419|||Gouge
 set_comment|424|||Air Gouge
-set_comment|439|||Wicked Wheel | Upgraded
+set_comment|439|||Wicked Wheel (Upgraded)
 set_comment|439|||Wicked Wheel
 set_comment|440|||Wicked Wheel
 set_comment|441|||Air Wicked Wheel
-set_comment|444|||Air Wicked Wheel | Upgraded
+set_comment|444|||Air Wicked Wheel (Upgraded)
 set_comment|444|||Air Wicked Wheel
 set_comment|446|||Rooks Gambit
 set_comment|450|||Air Rooks Gambit
-set_comment|454|||Rooks Gambit | Upgraded
+set_comment|454|||Rooks Gambit (Upgraded)
 set_comment|454|||Rooks Gambit
-set_comment|460|||Air Rooks Gambit | Upgraded
+set_comment|460|||Air Rooks Gambit (Upgraded)
 set_comment|460|||Air Rooks Gambit
 set_comment|478|||Aerial Blast
-set_comment|479|||Aerial Blast | Upgraded
+set_comment|479|||Aerial Blast (Upgraded)
 set_comment|479|||Aerial Blast
 set_comment|486|||Titanic Block
 set_comment|488|||*[T]Special AC [Titan Block] End
