@@ -221,6 +221,8 @@ public class SQLiteToNexImporter : IDisposable
                         object val = reader[lastColumn.Name];
 
                         object cell = ParseCell(tableLayout, lastColumn, val);
+                        VerifyCellOrThrow(tableLayout, lastColumn, cell);
+
                         cells.Add(cell);
                     }
 
@@ -236,6 +238,35 @@ public class SQLiteToNexImporter : IDisposable
                 message += ")\n";
 
                 throw new Exception(message + ex.Message);
+            }
+        }
+    }
+
+    private static void VerifyCellOrThrow(NexTableLayout tableLayout, NexStructColumn lastColumn, object cell)
+    {
+        // Check for NaNs
+        if (lastColumn.Type == NexColumnType.Float)
+        {
+            if (cell is float f && float.IsNaN(f))
+                throw new InvalidDataException("Float is invalid (NaN)");
+        }
+        else if (lastColumn.Type == NexColumnType.FloatArray)
+        {
+            float[] arr = (float[])cell;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] is float f && float.IsNaN(f))
+                    throw new InvalidDataException($"Float is invalid (NaN) at array index {i}");
+            }
+        }
+        else if (lastColumn.Type == NexColumnType.CustomStructArray)
+        {
+            object[] array = (object[])cell;
+            for (int i = 0; i < array.Length; i++)
+            {
+                object[] elem = (object[])array[i];
+                for (int j = 0; j < elem.Length; j++)
+                    VerifyCellOrThrow(tableLayout, tableLayout.CustomStructDefinitions[lastColumn.StructTypeName][j], elem[j]);
             }
         }
     }

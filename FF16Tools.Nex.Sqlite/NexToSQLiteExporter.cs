@@ -76,6 +76,11 @@ public class NexToSQLiteExporter : IDisposable
         _con = new SqliteConnection($"Data Source={sqliteDbFile}");
         _con.Open();
 
+        // That'll improve performance by not creating the journal file everytime
+        var com = _con.CreateCommand();
+        com.CommandText = "PRAGMA journal_mode = MEMORY;";
+        com.ExecuteNonQuery();
+
         CreateUnionTable();
 
         foreach (var table in _database.Tables)
@@ -91,36 +96,6 @@ public class NexToSQLiteExporter : IDisposable
             List<NexRowInfo> nexRows = table.Value.RowManager.GetAllRowInfos();
 
             NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(table.Key, new Version(1, 0, 0));
-            /*
-            if (tableColumnLayout.TotalInlineSize >= 0x4C)
-            {
-                KeyValuePair<string, NexStructColumn>? col = tableColumnLayout.Columns.FirstOrDefault(e => e.Value.Offset == 0x4C);
-                if (col.Value.Value is null)
-                    continue;
-
-                var cols = tableColumnLayout.Columns.Values.ToList();
-
-                int last = -1;
-                for (int i = 0; i < nexRows.Count; i++)
-                {
-                    var cells = NexUtils.ReadRow(tableColumnLayout, table.Value.Buffer, nexRows[i].RowDataOffset);
-                    var cell = cells[cols.IndexOf(col.Value.Value)];
-                    if (cell is int v)
-                    {
-                        if (v > last)
-                            last = v;
-                    }
-
-                }
-
-                Console.WriteLine($"{table.Key} + {tableColumnLayout.Columns.FirstOrDefault(e => e.Value.Offset == 0x4C).Key} last: {last}");
-
-
-            }
-
-            continue;
-            */
-
             ExportTableToSQLite(table.Key, table.Value, tableColumnLayout, nexRows);
         }
 
@@ -239,6 +214,24 @@ public class NexToSQLiteExporter : IDisposable
                         sb.Append('\'');
 
                     object cell = cells[i];
+                    if (column.Type == NexColumnType.Float && cell is float f && float.IsNaN(f))
+                    {
+                        _logger?.LogWarning("Row [{k1},{k2},{k3}] has invalid float at {column}, defaulting to 0!", row.Key, row.Key2, row.Key3, column.Name);
+                        cell = 0.0f;
+                    }
+                    else if (column.Type == NexColumnType.FloatArray)
+                    {
+                        float[] arr = (float[])cell;
+                        for (int j = 0; j < arr.Length; j++)
+                        {
+                            if (float.IsNaN(arr[j]))
+                            {
+                                _logger?.LogWarning("Row [{k1},{k2},{k3}] has invalid float at {column} array index {index}, defaulting to 0!", row.Key, row.Key2, row.Key3, j, column.Name);
+                                arr[j] = 0.0f;
+                            }
+                        }
+                    }
+
                     if (column.Name == "Comment" && columnLayout.RowComments.TryGetValue((row.Key, row.Key2, row.Key3), out string val))
                         cell = $"(FF16Tools): {val}";
 
