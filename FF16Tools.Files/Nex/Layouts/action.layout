@@ -11,10 +11,12 @@ add_column|MSeqInputId|int
 // Type? Hardcoded id checks
 add_column|Unk_0x10|int
 add_column|UnkFloat0x14|float
-add_column|UnkFloat0x18|float
+// Adds forward movement before the attack, seems to have an upper bound
+add_column|PreForwardMoveDistance|float
 add_column|Unk_0x1C|int
 
 // Has hardcoded checks i.e 12, 1
+// 1 = disables airborne activation
 add_column|MovementType1|int
 // Bitset from 0-15, 0 is none
 add_column|MovementType2|int
@@ -63,7 +65,7 @@ add_column|UnkActionIds0x88|int[]
 add_column|UnkCharaTimelineIds0x90|int[]
 
 // 301 = phoenix/phoenixshiftmove related?
-add_column|Unk_0x98|int
+add_column|SystemMoveId|int
 
 add_column|UnkCharaTimelineId0x9C|int
 add_column|Unk_0xA0|float[]
@@ -94,7 +96,7 @@ add_column|UnkType0xE4|int
 add_column|GraphicsEnvironmentParamId|int
 add_column|UnkCharaTimelineId0xEC|int
 add_column|Unk_0xF0|float[]
-add_column|Unk_0xF8|int
+add_column|ActionLogId|int
 add_column|Unk_0xFC|int
 add_column|Unk_0x100|byte
 add_column|Unk_0x101|byte

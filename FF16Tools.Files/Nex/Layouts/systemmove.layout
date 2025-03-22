@@ -5,11 +5,15 @@ use_base_row_id|false
 add_column|DLCFlags|int
 add_column|Unk2|float
 add_column|Unk3|float
-add_column|Unk4|float
-add_column|Unk5|float
-add_column|Unk6|float
-add_column|Unk7|float
-add_column|Unk8|float
+
+// adds vertical push to the movement of the ability
+add_column|VerticalPush|float
+// not sure, but it kind of like how fast\smooth the Unk4 movement is
+add_column|VerticalInterpolation|float
+// extra gravity after the movment, negative number will make you fall faster, positive numbe actually lets you hover or even fly!
+add_column|FallGravity|float
+add_column|ForwardPush|float
+add_column|ForwardPush2|float
 add_column|Unk9|float
 add_column|Unk10|float
 add_column|Unk11|float

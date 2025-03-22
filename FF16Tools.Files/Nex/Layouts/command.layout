@@ -33,7 +33,9 @@ add_column|UnkBitFlags19|int
 add_column|UnkActionId|int
 add_column|UnkCommandId|int
 add_column|Unk22|int
-add_column|Unk23|float
+// Delay in seconds until the attack automatically releases, if the attack starts due to this auto-release its always the weakest version, 
+// even it the meter is on the red zone
+add_column|GaugeReleaseDelaySecond|float
 add_column|UnkComboId|int
 add_column|Unk25|int
 add_column|Unk26|int
@@ -62,7 +64,11 @@ add_column|Unk40|int
 add_column|Unk41|int
 add_column|Cooldowns|float[]
 add_column|Unk43|int
-add_column|Unk44|float[]
+
+// Responsible for the actual speed and size of the yellow\red zones, but I can't really figure out how this array is functioning. 
+// A big number (like 3 or 4) makes it go very slow, with tiny zones, something like 0.2 goes super fast with a huge red zone. 
+// it also seems to work even with a less/more items in the array
+add_column|GaugeScaleUnk|float[]
 add_column|AutoAttackExecConditionId|int
 add_column|Unk46|int
 add_column|Unk47|string
