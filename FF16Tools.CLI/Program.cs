@@ -24,7 +24,7 @@ namespace FF16Tools.CLI;
 public class Program
 {
     public const string Version = "1.6.2";
-
+    
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
 
@@ -479,6 +479,12 @@ public class Program
 
     public static void SqliteToNxd(SqliteToNxdVerbs verbs)
     {
+        if (Directory.Exists(verbs.InputFile))
+        {
+            _logger.LogError("No, point to a database file (.sqlite) file, not a folder.");
+            return;
+        }
+
         if (!File.Exists(verbs.InputFile))
         {
             _logger.LogError("Sqlite database file '{path}' does not exist", verbs.InputFile);
