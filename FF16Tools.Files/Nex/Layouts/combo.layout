@@ -20,27 +20,30 @@ add_column|GroundMagicBurstActionId|int
 add_column|AirMagicBurstActionId|int
 add_column|GroundBackdraftActionId|int
 add_column|AirBackdraftActionId|int
-add_column|Unk12ActionId|int
-add_column|Unk13ActionId|int
-add_column|Unk14ActionId|int
-add_column|Unk15ActionId|int
-add_column|Unk16ActionId|int
-add_column|Unk17ActionId|int
-add_column|Unk18ActionId|int
+add_column|SheathedActionId|int
+add_column|AirSheathedActionId|int
+add_column|SheathedWalkActionId|int
+add_column|SheathedRunActionId|int
+add_column|CombatStanceWalkActionId|int
+add_column|RecovStrikeActionId1|int
+add_column|RecovStrikeActionId2|int
 add_column|Unk19ActionId|int
 add_column|Unk20ActionId|int
-add_column|Unk21ActionId|int
-add_column|Unk22ActionId|int
+add_column|GroundFinisherActionId|int
+add_column|AirFinisherActionId|int
 add_column|DirectionalComboActionIds1|int[]
 add_column|DirectionalComboActionIds2|int[]
 add_column|AttackCommandId|int
 add_column|Comment|string
-add_column|Unk27ActionId|int
+add_column|ParryAttackActionId|int
 add_column|Unk28ActionId|int
 add_column|Unk29ActionId|int
 add_column|Unk30ActionId|int
 add_column|UnkFloat31|float
-add_column|Unk32|byte
+
+// (TheGodOdin): if 0 you can do combo with attack button, if 1 you can do only the first attack of combo or at max the first burst magic
+add_column|IsHitRequiredToCombo|byte
+
 add_column|Unk33|byte
 add_column|Unk34|byte
 add_column|Unk35|byte
@@ -48,3 +51,20 @@ add_column|Unk36|byte
 add_column|Unk37|byte
 add_column|Unk38|byte
 add_column|Unk39|byte
+
+set_comment|1|0|0|Adult Clive
+set_comment|2|0|0|Arm of Darkness
+set_comment|3|0|0|Teen Clive
+set_comment|8|0|0|Titanic Counter
+set_comment|10|0|0|Ultima
+set_comment|11|0|0|Ifrit
+set_comment|12|0|0|Ifrit
+set_comment|15|0|0|Ifrit
+set_comment|18|0|0|Ifrit
+set_comment|19|0|0|Ifrit
+set_comment|20|0|0|Ifrit
+set_comment|21|0|0|Ifrit
+set_comment|22|0|0|Shift Strike
+set_comment|23|0|0|Shift Shot
+set_comment|24|0|0|Berserker Mode
+set_comment|26|0|0|Ifrit (Risen?)

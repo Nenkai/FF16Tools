@@ -4,12 +4,19 @@ use_base_row_id|true
 
 // This layout was generated, guessed row length: 0x28
 add_column|DLCFlags|int
-add_column|AttackParamId1|int
-add_column|AttackParamId2|int
-add_column|AttackParamId3|int
-add_column|AttackParamId4|int
-add_column|AttackParamId5|int
-add_column|ItemCap1|int
-add_column|ItemCap2|int
-add_column|ItemCap3|int
-add_column|Unk10|int
+
+add_column|DefaultAttackParamId|int
+// If have item 506 - Morganbeard Extract
+add_column|PotencyUpgrade1AttackParamId|int
+// If have item 507 - Invigorated Morganbeard Extract
+add_column|PotencyUpgrade2AttackParamId|int
+
+add_column|VFXAudioId|int
+add_column|BattleVoiceCategoryId|int
+
+add_column|DefaultCapacity|int
+// If have item 508 - Treated Potion Satchel
+add_column|CapacityUpgrade1Capacity|int
+// If have item 509 - Expanded Potion Satchel
+add_column|CapacityUpgrade2Capacity|int
+add_column|RazerEventId|int

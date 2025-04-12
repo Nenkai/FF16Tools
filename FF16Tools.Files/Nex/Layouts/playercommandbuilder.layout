@@ -10,7 +10,7 @@ use_base_row_id|true
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
-add_column|Unk4|int
+add_column|SquareCommandId|int
 add_column|TriangleCommandId|int
 add_column|CrossCommandId|int
 add_column|CircleCommandId|int
@@ -30,9 +30,9 @@ add_column|MagicCommandId|int
 add_column|ChargedMagicCommandId|int
 add_column|JumpCommandId|int
 add_column|ChargedAttackCommandId|int
-add_column|Unk22|int[]
-add_column|Unk23|string
-add_column|Unk24|int
+add_column|PrecisionDodgeActionIds|int[]
+add_column|Comment|string
+add_column|DefaultPrecisionDodgeActionId|int
 add_column|TauntCommandId|int
 
 // overrides consumable item tab when not set to 0
@@ -44,3 +44,31 @@ add_column|Unk29|byte
 add_column|Unk30|byte
 add_column|Unk31|byte
 add_column|Unk32|byte
+
+////////////////////////////////////
+// Comments
+////////////////////////////////////
+set_comment|2|0|0|Joshua (Prologue)
+set_comment|4|0|0|Adult Clive
+set_comment|5|0|0|Teen Clive
+set_comment|6|0|0|Odin (Arm of Darkness)
+set_comment|7|0|0|Berserker Mode (Berserker Ring)
+set_comment|8|0|0|Ifrit (Vs Garuda)
+set_comment|9|0|0|Limit Break
+set_comment|10|0|0|Phoenix
+set_comment|13|0|0|Ifrit
+set_comment|14|0|0|Ifrit (Risen?)
+set_comment|15|0|0|Ultima (Voice of God Cancel?)
+set_comment|16|0|0|Phoenix
+set_comment|19|0|0|Ifrit
+set_comment|20|0|0|Ifrit (Vs Titan)
+set_comment|21|0|0|Ramuh (Blind Justice)
+set_comment|22|0|0|Ifrit (Vs Titan)
+set_comment|23|0|0|Bahamut (Wings of Light)
+set_comment|24|0|0|Ifrit (Vs Titan)
+set_comment|25|0|0|Leviathan (Serpent's Cry)
+set_comment|30|0|0|Leviathan (Abyssal Tear)
+set_comment|31|0|0|Ultima
+set_comment|34|0|0|Ultima
+set_comment|35|0|0|Ifrit
+set_comment|36|0|0|Ifrit (Vs Leviathan)

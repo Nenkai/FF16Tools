@@ -2,6 +2,164 @@
 
 Always try to keep your database table columns up-to-date.
 
+## CLI 1.7.0, FF16Tools.Files 1.2.0
+
+##### `action`
+
+* `Unk_0x28` -> `FollowupParameters`
+* `Unk_0x80` -> `MagicBurstActionId`
+* `UnkCharaTimelineIds0x90` -> `UnkBNpcBaseIds`
+* `Unk_0xA0` -> `FollowupTransitionLengths`
+* `Unk_0x106` -> `IsOnlyUseOnceAirborne`
+
+##### `attackcharge`
+
+* `Unk2` -> `VFXAudioId1`
+* `Unk3` -> `VFXAudioId2`
+* `Unk4` -> `VFXAudioId3`
+
+##### `bnpcbase`
+
+* `Unk14` -> `BattleAiId`
+
+##### `buddycommand`
+
+* `Unk2` -> `ActionId`
+
+##### `buff`
+
+* `Unk5` -> `BuffPercent`
+* `Unk6` -> `UnkSpeedMovement`
+* `Unk7` -> `VFXAudioId`
+* `Unk11` -> `UnkDefense`
+
+##### `combo`
+
+* `Unk12ActionId` -> `SheathedActionId`
+* `Unk13ActionId` -> `AirSheathedActionId`
+* `Unk14ActionId` -> `SheathedWalkActionId`
+* `Unk15ActionId` -> `SheathedRunActionId`
+* `Unk16ActionId` -> `CombatStanceWalkActionId`
+* `Unk17ActionId` -> `RecovStrikeActionId1`
+* `Unk18ActionId` -> `RecovStrikeActionId2`
+* `Unk21ActionId` -> `GroundFinisherActionId`
+* `Unk22ActionId` -> `AirFinisherActionId2`
+* `Unk27ActionId` -> `ParryAttackActionId`
+* `Unk32` -> `IsHitRequiredToCombo`
+
+##### `command`
+
+* `Unk14` -> `GaugeRedZoneActionId`
+* `Unk15` -> `AirCommandId`
+* `UnkActionId` -> `AnyDirectionActionId`
+* `UnkCommandId` -> `GaugeCancelActionId`
+* `GaugeReleaseDelaySecond` -> `GaugeInterruptDelaySecond`
+* `Unk28` -> `GaugeYellowZoneActionId`
+* `Unk35` -> `GaugeFailActionIds`
+* `GaugeScaleUnk` -> `GaugeSpeedRanks`
+* `UnkBool82` -> `IsGaugeVisible`
+
+##### `deadeffect`
+
+* `Unk7` -> `VFXAudioId`
+
+##### `difficultylevel`
+
+* `Unk18` -> `IsIncreaseExpGain`
+* `Unk19` -> `MaxEnemiesAttacking`
+* `Unk33` -> `IsIncreaseEnemyLevel`
+
+##### `envvfxset`
+
+* `Unk8` -> `UnkVFXAudioId1`
+* `Unk9` -> `UnkVFXAudioId2`
+* `Unk10` -> `UnkVFXAudioId3`
+* `Unk11` -> `UnkVFXAudioId4`
+* `Unk12` -> `UnkVFXAudioId5`
+* `Unk13` -> `UnkVFXAudioId6`
+
+##### `hitvfx`
+
+* `Unk4` int -> byte
+
+##### `leviathanrocketlauncher`
+
+* `Unk2` -> `UnkVFXAudioId1`
+* `Unk3` -> `UnkVFXAudioId2`
+
+##### `modelvfx`
+
+* `Unk2` -> `VFXAudioId`
+
+##### `movetype`
+
+* `Unk4` -> `ActorStateSetId`
+* `Unk5` int -> `UnkBool5` byte & `UnkBool6` byte
+
+##### `playercommandbuilder`
+
+* `Unk4` -> `SquareCommandId`
+* `Unk22` -> `PrecisionDodgeActionIds`
+* `Unk23` -> `Comment`
+* `Unk24` -> `DefaultPrecisionDodgeActionId`
+
+##### `playermode`
+
+* `Unk28` -> `VFXAudioId`
+
+##### `shotcharge`
+
+* `AttackParamId1` -> `VFXAudioId1`
+* `AttackParamId2` -> `VFXAudioId2`
+* `AttackParamId3` -> `VFXAudioId3`
+
+##### `summonmode`
+
+* `Unk4` -> `EikonSwitchVFXAudioId`
+* `Unk5` -> `NormalShotMagicId`
+* `Unk6` -> `WeakMagicBurstVFXAudioId`
+* `Unk7` -> `CommandIconTexId`
+* `Unk8` -> `StrongMagicBurstExtraVFXAudioId`
+* `Unk9` -> `UnkVFXAudioId`
+* `Unk9` -> `StrongMagicBurstVFXAudioId`
+* `Unk13` -> `ChargingVFXAudioId`
+* `Unk14` -> `PrecisionShotVFXAudioId`
+* `Unk28` -> `WeakChargedShotMagicId`
+* `Unk29` -> `ChargedShotMagicId`
+
+##### `shotcharge`
+
+* `Unk2` -> `SidewaysMovement`
+* `Unk3` -> `SidewaysDuration`
+* `Unk9` -> `DownwardMomentum`
+* `Unk10` -> `DownwardMomentum2`
+
+##### `trainingenemy`
+
+* `BNpcBaseId` <-> `UserSituationID`
+
+##### `useitem`
+
+* `AttackParamId1` -> `DefaultAttackParamId`
+* `AttackParamId2` -> `PotencyUpgrade1AttackParamId`
+* `AttackParamId3` -> `PotencyUpgrade2AttackParamId`
+* `AttackParamId4` -> `VFXAudioId`
+* `AttackParamId5` -> `BattleVoiceCategoryId`
+* `ItemCap1` -> `DefaultCapacity`
+* `ItemCap2` -> `CapacityUpgrade1Capacity`
+* `ItemCap3` -> `CapacityUpgrade2Capacity`
+* `Unk10` -> `RazerEventId`
+
+##### Contributors
+* mThund3R
+* Recoome
+* SoloWan
+* Nenkai
+* TheGodOdin
+* xeeynamo
+
+---
+
 ## CLI 1.6.0, FF16Tools.Files 1.1.0
 
 Too many. Refer to this commit

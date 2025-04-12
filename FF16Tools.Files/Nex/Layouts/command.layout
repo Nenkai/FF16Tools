@@ -22,25 +22,36 @@ add_column|Unk10|int
 add_column|Name|string|rel
 add_column|Unk12|int
 add_column|Unk13|int
-add_column|Unk14|int
-add_column|Unk15|int
+add_column|GaugeRedZoneActionId|int
+
+// (TheGodOdin): commandIDkey so if you put a command key in this column you can perform another ability while in air even if you set "CanUseInAir" column to 0 (zero);
+add_column|AirCommandId|int
+
 add_column|Unk16|int
 add_column|Unk17|float
+
 // Hardcoded enum id checks
 add_column|SummonModeId|int
+
 // No more than 7 (bitset_out_of_range)
 add_column|UnkBitFlags19|int
-add_column|UnkActionId|int
-add_column|UnkCommandId|int
+
+// (TheGodOdin): refers to an action id that can we use to make an action of any abilities perform when 
+// we use any direction + the ability (like mThund3R make it with his mod that can we make another ability with up or down + the commando of abilities)
+add_column|AnyDirectionActionId|int
+
+add_column|GaugeCancelActionId|int
 add_column|Unk22|int
+
 // Delay in seconds until the attack automatically releases, if the attack starts due to this auto-release its always the weakest version, 
 // even it the meter is on the red zone
-add_column|GaugeReleaseDelaySecond|float
+add_column|GaugeInterruptDelaySecond|float
+
 add_column|UnkComboId|int
 add_column|Unk25|int
 add_column|Unk26|int
 add_column|Unk27|int
-add_column|Unk28|int
+add_column|GaugeYellowZoneActionId|int
 add_column|PlayerModeIdEnable|int
 add_column|PlayerModeIdDisable|int
 add_column|SkillId|int
@@ -54,8 +65,9 @@ add_column|Unk32|int[]
 // I.e. Trying to add Rift Slip properties did not work.
 // ~from Darchiev
 add_column|GroundActionIds|int[]
+
 add_column|AirBorneActionIds|int[]
-add_column|Unk35|int[]
+add_column|GaugeFailActionIds|int[]
 add_column|Unk36|int[]
 add_column|UnkType37|int
 add_column|Unk38|float
@@ -68,7 +80,8 @@ add_column|Unk43|int
 // Responsible for the actual speed and size of the yellow\red zones, but I can't really figure out how this array is functioning. 
 // A big number (like 3 or 4) makes it go very slow, with tiny zones, something like 0.2 goes super fast with a huge red zone. 
 // it also seems to work even with a less/more items in the array
-add_column|GaugeScaleUnk|float[]
+add_column|GaugeSpeedRanks|float[]
+
 add_column|AutoAttackExecConditionId|int
 add_column|Unk46|int
 add_column|Unk47|string
@@ -92,11 +105,14 @@ add_column|Unk61|float
 add_column|Unk62|float
 add_column|Unk63|short
 // implicit 2 bytes padding
+
 add_column|UnkBool64|byte
 add_column|Unk65|byte
+
 // Confirmed used
 // ffxvi.exe steam 1.0.1 - 0F BF 90 ? ? ? ? 41 B0
 add_column|Unk66|short
+
 add_column|Unk68|byte
 add_column|Unk69|byte
 add_column|Unk70|byte
@@ -111,7 +127,7 @@ add_column|CanUseAirborne|byte
 add_column|Unk79|byte
 add_column|Unk80|byte
 add_column|UnkBool81|byte
-add_column|UnkBool82|byte
+add_column|IsGaugeVisible|byte
 add_column|UnkBool83|byte
 add_column|Unk84|byte
 add_column|UnkBool85|byte

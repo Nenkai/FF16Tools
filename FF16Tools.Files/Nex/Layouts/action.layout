@@ -8,20 +8,31 @@ add_column|DLCFlags|int
 add_column|CharaTimelineId|int
 add_column|CharaTimelineId2|int
 add_column|MSeqInputId|int
+
 // Type? Hardcoded id checks
 add_column|Unk_0x10|int
+
 add_column|UnkFloat0x14|float
+
 // Adds forward movement before the attack, seems to have an upper bound
 add_column|PreForwardMoveDistance|float
+
 add_column|Unk_0x1C|int
 
 // Has hardcoded checks i.e 12, 1
 // 1 = disables airborne activation
 add_column|MovementType1|int
+
 // Bitset from 0-15, 0 is none
 add_column|MovementType2|int
 
-add_column|Unk_0x28|float[]
+//Lunge has FollowUpType [61,11,60,10], which means it does different animation depending on how far you are (regular/extreme lunge)
+//In that case Unk_0x28 is [5], which is the distance, so [0.5] would do extreme lunge from a shorter distance
+
+//Airborne Upheval has [33,32,30,1], which means its a different animation depending on the height
+//In that case Unk_0x28 is [1.5,2.5], so 1.5 is the minimum height for the level 2 version, and 2.5 is the minimum height for the level 3 version
+add_column|FollowupParameters|float[]
+
 add_column|ActionMoveTypeId|int
 add_column|Comment|string
 add_column|LayoutNamedInstanceId1|int
@@ -36,14 +47,16 @@ add_column|FollowupActionIds|int[]
 
 // From mThund3R: For now I've been able to identify a few types:
 //  0 and 1 seem to chain the action as soon as possible, which could be very early or the end of the animation depending on the CharaTimelineIds
-//  33, 32 and 30 seem to be related to the player falling to the ground. They supposedly all work the same, executing the followup action as soon as the player hits the ground, except when they're used together. In that case, they each represent a different fall height. It seems that 32 is the lowest, 30 is medium and 33 is highest
 //  5 happens when you successfully use the action to evade / parry the enemy attack. Still need to test whether this is possible for all actions, regardless of CharaTimelineId 
 //  6 happens, like 0 and 1, at a specific point in the animation, which seems to come later than 0 and 1 
+//  30, 32 and 33 seem to be related to the player falling to the ground. They supposedly all work the same, executing the followup action as soon as the player hits the ground, except when they're used together. In that case, they each represent a different fall height. It seems that 30 is medium and 32 is the lowest, 33 is highest
+//  61 and 11 seem to be used when the player hits a target from a bigger distance, while 60 and 10 are used for, say, the Lunge thrust, when Clive is too close to the target to perform the slash
 //  62, 61, 11, 60 and 10 seem to all be used on actions like Lunge.
 //  62 is used to chain from the start anim to the loop anim
 //  
 //  The rest are all used to chain from the loop anim to the end anim. 
-//  61 and 11 seem to be used when the player hits a target from a bigger distance, while 60 and 10 are used for, say, the Lunge thrust, when Clive is too close to the target to perform the slash
+//
+//  (Recoome): 71 transitions asap, 40,42, and 48 transition as soon as you deal damage to an enemy
 //
 // from 0 to 80 (bitset_out_of_range) - check: ffxvi.exe steam 1.0.1
 // 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B D9 E8
@@ -55,20 +68,27 @@ add_column|Unk_0x68|float
 add_column|Unk_0x6C|float
 add_column|Unk_0x70|int
 add_column|UnkActionId|int
+
 // Can also be partytalk? Depends on id?
 // if ( a2 - 20000 <= 9999 || a2 - 3000000 <= 999999 || a2 - 6000000 <= 999999 )
 add_column|BattleOrPartyTalkId|int
+
 add_column|Unk_0x7C|float
-add_column|Unk_0x80|int
+add_column|MagicBurstActionId|int
 add_column|Unk_0x84|float
 add_column|UnkActionIds0x88|int[]
-add_column|UnkCharaTimelineIds0x90|int[]
+add_column|UnkBNpcBaseIds|int[]
 
 // 301 = phoenix/phoenixshiftmove related?
 add_column|SystemMoveId|int
 
 add_column|UnkCharaTimelineId0x9C|int
-add_column|Unk_0xA0|float[]
+
+// (Recoome):
+// Basically if an ability has a FollowUpType [1], you can use this column to set after how long it will transition to the next action
+// For example Dark Lunge has a short version with [0.33] and a far version with [1.19]. You can make a really long one with like [10]
+add_column|FollowupTransitionLengths|float[]
+
 add_column|UnkSkillId|int
 add_column|Unk_0xAC|int
 add_column|Unk_0xB0|int
@@ -80,6 +100,7 @@ add_column|Unk_0xC0|int
 // Checks against very hardcoded number types
 // Seems important overall, directly controls which class to init (as evidenced by a bunch of ctors)
 // ffxvi.exe steam 1.0.1: sub_14046A7AC
+// 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B 05 ? ? ? ? 33 FF 44 8B 31
 add_column|UnkType0xC4|int
 
 // Second int = phoenix related
@@ -90,9 +111,11 @@ add_column|Unk_0xD4|int
 add_column|UnkMoveParamId0xD8|int
 add_column|UnkCharaTimelineId0xDC|int
 add_column|BattleVoiceCategoryId|int
+
 // 1-4 hardcoded enum checks
 // check 83 E9 ? 74 ? 83 E9 ? 74 ? 83 F9 ? 75 ? 48 8B 06	
 add_column|UnkType0xE4|int
+
 add_column|GraphicsEnvironmentParamId|int
 add_column|UnkCharaTimelineId0xEC|int
 add_column|Unk_0xF0|float[]
@@ -104,7 +127,11 @@ add_column|Unk_0x102|byte
 add_column|Unk_0x103|byte
 add_column|Unk_0x104|byte
 add_column|Unk_0x105|byte
-add_column|Unk_0x106|byte
+
+// (Recoome):
+// If its set to 0 (like for most rows), you can perform the action in the air without restriction
+// If its set to 1 (Megaflare dodge, berserker dodge, cold snap, phoenix shift, and a like 20 more) you can only perform the action once in the air, then it resets once you touch the ground again (kind of like a classical double jump) 
+add_column|IsOnlyUseOnceAirborne|byte
 add_column|Unk_0x107|byte
 add_column|Unk_0x108|byte
 add_column|Unk_0x109|byte

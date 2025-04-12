@@ -4,6 +4,6 @@ use_base_row_id|true
 
 // This layout was generated, guessed row length: 0x10
 add_column|DLCFlags|int
-add_column|AttackParamId1|int
-add_column|AttackParamId2|int
-add_column|AttackParamId3|int
+add_column|VFXAudioId1|int
+add_column|VFXAudioId2|int
+add_column|VFXAudioId3|int

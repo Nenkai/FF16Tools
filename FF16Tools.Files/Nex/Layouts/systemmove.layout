@@ -3,8 +3,8 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|float
-add_column|Unk3|float
+add_column|SidewaysMovement|float
+add_column|SidewaysDuration|float
 
 // adds vertical push to the movement of the ability
 add_column|VerticalPush|float
@@ -14,8 +14,8 @@ add_column|VerticalInterpolation|float
 add_column|FallGravity|float
 add_column|ForwardPush|float
 add_column|ForwardPush2|float
-add_column|Unk9|float
-add_column|Unk10|float
+add_column|DownwardMomentum|float
+add_column|DownwardMomentum2|float
 add_column|Unk11|float
 add_column|Unk12|float
 add_column|Unk13|string

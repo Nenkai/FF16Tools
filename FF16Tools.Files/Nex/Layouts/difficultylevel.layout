@@ -18,8 +18,11 @@ add_column|BossStagger|short
 add_column|EnemyFlinch|short
 add_column|BossHp|short
 add_column|EnemyHp|short
-add_column|Unk18|byte
-add_column|Unk19|byte
+add_column|IsIncreaseExpGain|byte
+
+// (Maybri): Enemy Aggression (number of enemies that simultaneously attack Clive)
+add_column|MaxSimultaneousEnemiesAttacking|byte
+
 add_column|Unk20|byte
 add_column|Unk21|byte
 add_column|Unk22|byte
@@ -39,6 +42,6 @@ add_column|Unk29|byte
 add_column|Unk30|byte
 add_column|Unk31|byte
 add_column|Unk32|byte
-add_column|Unk33|byte
+add_column|IsIncreaseEnemyLevel|byte
 add_column|Unk34|int
 

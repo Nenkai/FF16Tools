@@ -19,7 +19,7 @@ add_column|Unk10|int
 add_column|Unk11|float
 add_column|Unk12|float
 add_column|Unk13|float
-add_column|Unk14|int
+add_column|BattleAiId|int
 add_column|PlayerModeId|int
 add_column|MoveTypeId|int
 add_column|Unk17|int

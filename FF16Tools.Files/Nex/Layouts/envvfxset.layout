@@ -9,10 +9,12 @@ add_column|Unk4|float
 add_column|Unk5|float
 add_column|Unk6|float
 add_column|Unk7|float
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
+
+// VFXAudioId = .vatb file entry
+add_column|UnkVFXAudioId1|int
+add_column|UnkVFXAudioId2|int
+add_column|UnkVFXAudioId3|int
+add_column|UnkVFXAudioId4|int
+add_column|UnkVFXAudioId5|int
+add_column|UnkVFXAudioId6|int
 add_column|Unk14|float

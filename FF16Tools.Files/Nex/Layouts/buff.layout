@@ -6,13 +6,14 @@ add_column|DLCFlags|int
 add_column|Comment|string
 add_column|Duration|float
 add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|float
-add_column|Unk7|int
+add_column|BuffPercent|int
+add_column|UnkSpeedMovement|float
+// VFXAudioId = .vatb file entry
+add_column|VFXAudioId|int
 add_column|Unk8|float
 add_column|Unk9|int
 add_column|Unk10|byte
-add_column|Unk11|byte
+add_column|UnkDefense|byte
 add_column|Unk12|byte
 add_column|Unk13|byte
 add_column|Unk14|byte
@@ -31,6 +32,20 @@ add_column|Unk26|byte
 add_column|Unk27|byte
 add_column|Unk28|byte
 add_column|Unk29|byte
+
+set_comment|11|||Freeze
+set_comment|21|||Defense Buff (Jill)
+set_comment|22|||Attack Buff (Cid)
+set_comment|23|||Cure (Regen)
+set_comment|26|||Freeze (Jill)
+set_comment|27|||Phoenix Barrier
+set_comment|28|||Attack Debuff -> Which I called Debrave to stay consistent with FF terminology
+set_comment|51|||War Cry
+set_comment|52|||Bravery
+set_comment|53|||Protect
+set_comment|55|||Hearthflame
+set_comment|56|||Will-o'-the-Wykes?
+set_comment|57|||Will-o'-the-Wykes?c
 
 set_comment|101|||Strength tonic duration
 set_comment|102|||Stoneskin tonic duration

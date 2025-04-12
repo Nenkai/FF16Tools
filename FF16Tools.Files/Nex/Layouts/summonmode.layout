@@ -5,6 +5,7 @@ use_base_row_id|true
 // Has hardcoded row id checks/fetches
 // 1-10
 // 1 = Phoenix
+// 2 = Garuda | Unk4/518 => vfx/chara/pc/summon_act/garuda/ve/pc_summon_act_garuda.vatb
 // 6 = Awaken Ifrit
 
 add_column|Unk1|int
@@ -12,19 +13,20 @@ add_column|Unk1|int
 // has a check as to whether this matches skill's command id
 // ffxvi.exe steam 1.0.1 - 140201E76
 add_column|CommandId|int
-
 add_column|Comment|string
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
+
+// VFXAudioId = .vatb file entry
+add_column|EikonSwitchVFXAudioId|int
+add_column|NormalShotMagicId|int
+add_column|WeakMagicBurstVFXAudioId|int
+add_column|CommandIconTexId|int
+add_column|StrongMagicBurstExtraVFXAudioId|int
+add_column|UnkVFXAudioId|int
+add_column|StrongMagicBurstVFXAudioId|int
 add_column|MagicName|string|rel
 add_column|ChargedMagicName|string|rel|-4
-add_column|Unk13|int
-add_column|Unk14|int
+add_column|ChargingVFXAudioId|int
+add_column|PrecisionShotVFXAudioId|int
 add_column|SummonPartsId|int
 add_column|Unk16|string
 add_column|Unk17|int
@@ -38,8 +40,8 @@ add_column|AbilityCommandId3|int
 add_column|AbilityCommandId4|int
 add_column|UnkCommandId5|int
 add_column|UnkCommandId6|int
-add_column|Unk28|int
-add_column|Unk29|int
+add_column|WeakChargedShotMagicId|int
+add_column|ChargedShotMagicId|int
 add_column|Unk30|int
 add_column|Unk31|int
 add_column|RazerEventId|int
@@ -49,4 +51,5 @@ add_column|Unk33|int
 // Comments
 //////////////////////////////////////
 set_comment|1|||Phoenix
+set_comment|2|||Garuda
 set_comment|6|||Phoenix (before Ifrit awakened at Phoenix Gate)

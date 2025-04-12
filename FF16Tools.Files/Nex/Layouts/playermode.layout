@@ -67,9 +67,9 @@ add_column|PlayerControlId3|int
 add_column|PlayerControlId4|int
 add_column|Comment|string
 add_column|AttackChargeId|int
-// bitset 
+
 // E8 ? ? ? ? 48 8B 5D ? 48 85 DB 74 ? 33 D2 48 8B CB E8 ? ? ? ? 48 8B 03 48 8B CB FF 50 ? 4D 85 E4
-add_column|Unk28|int
+add_column|VFXAudioId|int
 
 // (automatically executed when changing eikon, will only actually exit mode if command is set to do so) (needs more testing)
 add_column|ExitCommandId|int

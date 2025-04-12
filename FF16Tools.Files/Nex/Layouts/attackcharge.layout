@@ -5,9 +5,9 @@ use_base_row_id|true
 // Are any of the uint rows even used?
 
 add_column|DLCFlags|uint
-add_column|Unk2|uint
-add_column|Unk3|uint
-add_column|Unk4|uint
+add_column|VFXAudioId1|uint
+add_column|VFXAudioId2|uint
+add_column|VFXAudioId3|uint
 add_column|SoundFilePath|string
 add_column|Unk6|byte
 add_column|Unk7|byte
