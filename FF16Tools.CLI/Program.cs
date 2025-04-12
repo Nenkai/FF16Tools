@@ -18,6 +18,7 @@ using FF16Tools.Nex.Sqlite;
 using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
+using FF16Tools.Files.VFX;
 
 namespace FF16Tools.CLI;
 
@@ -73,7 +74,8 @@ public class Program
         }
 
         var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, UnpackAllPacksVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, 
-            ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs>(args);
+            ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs,
+            VatbToJsonVerbs, JsonToVatbVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<UnpackAllPacksVerbs>(UnpackAllPacks);
@@ -85,6 +87,8 @@ public class Program
         p.WithParsed<SqliteToNxdVerbs>(SqliteToNxd);
         p.WithParsed<UnpackSaveVerbs>(UnpackSave);
         p.WithParsed<PackSaveVerbs>(PackSave);
+        p.WithParsed<VatbToJsonVerbs>(VatbToJson);
+        p.WithParsed<JsonToVatbVerbs>(JsonToVatb);
     }
 
     static async Task UnpackFile(UnpackFileVerbs verbs)
@@ -152,7 +156,7 @@ public class Program
             return;
         }
 
-        List<string> packsToProcess = new List<string>();
+        List<string> packsToProcess = [];
         foreach (var pack in Directory.GetFiles(verbs.InputFolder, "*.pac"))
         {
             string fileName = Path.GetFileName(pack);
@@ -356,6 +360,9 @@ public class Program
             case ".tex": // tex to dds
                 return true;
 
+            case ".vatb": // vatb to json
+                return true;
+
             // image to .tex
             case ".dds":
             case ".png":
@@ -409,8 +416,8 @@ public class Program
                     fs.Position = 0;
 
                     using var data = textureFile.GetAsDds(0, fs);
-                    using (var outputStream = new FileStream(Path.Combine(outputDir, $"{i}.dds"), FileMode.Create))
-                        outputStream.Write(data.Span);
+                    using var outputStream = new FileStream(Path.Combine(outputDir, $"{i}.dds"), FileMode.Create);
+                    outputStream.Write(data.Span);
                 }
                 catch (Exception ex)
                 {
@@ -424,8 +431,8 @@ public class Program
             {
                 fs.Position = 0;
                 using var data = textureFile.GetAsDds(0, fs);
-                using (var outputStream = new FileStream(Path.ChangeExtension(path, ".dds"), FileMode.Create))
-                    outputStream.Write(data.Span);
+                using var outputStream = new FileStream(Path.ChangeExtension(path, ".dds"), FileMode.Create);
+                outputStream.Write(data.Span);
             }
             catch (Exception ex)
             {
@@ -582,7 +589,7 @@ public class Program
             }
 
             File.WriteAllBytes(verbs.OutputPath, serialized);
-            _logger.LogInformation("Save writen to {path}.", verbs.OutputPath);
+            _logger.LogInformation("Save written to {path}.", verbs.OutputPath);
 
         }
         catch (Exception ex)
@@ -594,6 +601,80 @@ public class Program
         _logger.LogInformation("Done.");
     }
 
+    public static void VatbToJson(VatbToJsonVerbs verbs)
+    {
+        if (!File.Exists(verbs.InputFile))
+        {
+            _logger.LogError("File '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(verbs.OutputPath))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.json");
+        }
+
+        try
+        {
+            VFXAudioTableBinary binary = VFXAudioTableBinary.Open(verbs.InputFile);
+
+            _logger.LogInformation("Table ({numEntries}):", binary.Entries.Count);
+            foreach (var ent in binary.Entries)
+                _logger.LogInformation("- {key} -> {name}", ent.Id, ent.Name);
+
+            string json = binary.ToJson();
+            File.WriteAllText(verbs.OutputPath, json);
+
+            _logger.LogInformation("File written to {path}.", verbs.OutputPath);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to read .vatb file");
+            return;
+        }
+
+        _logger.LogInformation("Done.");
+    }
+
+    public static void JsonToVatb(JsonToVatbVerbs verbs)
+    {
+        if (!File.Exists(verbs.InputFile))
+        {
+            _logger.LogError("File '{path}' does not exist", verbs.InputFile);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(verbs.OutputPath))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.vatb");
+        }
+
+        try
+        {
+            string json = File.ReadAllText(verbs.InputFile);
+            VFXAudioTableBinary binary = VFXAudioTableBinary.FromJson(json);
+
+            _logger.LogInformation("Table ({numEntries}):", binary.Entries.Count);
+            foreach (var ent in binary.Entries)
+                _logger.LogInformation("- {key} -> {name}", ent.Id, ent.Name);
+
+            using (FileStream output = File.Create(verbs.OutputPath))
+                binary.Write(output);
+
+            _logger.LogInformation("File written to {path}.", verbs.OutputPath);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Unable to read .vatb file");
+            return;
+        }
+
+        _logger.LogInformation("Done.");
+    }
 
 #if DEBUG
     // Debug utility for reading and re-serializing tables
@@ -812,4 +893,24 @@ public class PackSaveVerbs
 
     [Option('s', "skip", HelpText = "Skip overwrite prompt.")]
     public bool SkipOverwritePrompt { get; set; }
+}
+
+[Verb("vatb-to-json", HelpText = "Converts .vatb (vfx audio table) to .json")]
+public class VatbToJsonVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input .vatb file.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output .json path.")]
+    public string OutputPath { get; set; }
+}
+
+[Verb("json-to-vatb", HelpText = "Converts .json to .vatb (vfx audio table)")]
+public class JsonToVatbVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input .json file.")]
+    public string InputFile { get; set; }
+
+    [Option('o', "output", HelpText = "Output .vatb path.")]
+    public string OutputPath { get; set; }
 }
