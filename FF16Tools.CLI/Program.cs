@@ -380,14 +380,14 @@ public class Program
     {
         if (Path.GetExtension(file) == ".tex")
             ProcessTexFile(file);
+        else if (Path.GetExtension(file) == ".vatb")
+            VatbToJson(new VatbToJsonVerbs() { InputFile = file });
         else
         {
-            using (var fs = new FileStream(Path.ChangeExtension(file, ".tex"), FileMode.Create))
-            {
-                var builder = new TextureFileBuilder(_loggerFactory);
-                builder.AddImage(file);
-                builder.Build(fs);
-            }
+            using var fs = new FileStream(Path.ChangeExtension(file, ".tex"), FileMode.Create);
+            var builder = new TextureFileBuilder(_loggerFactory);
+            builder.AddImage(file);
+            builder.Build(fs);
         }
     }
 
