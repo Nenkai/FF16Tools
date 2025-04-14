@@ -61,7 +61,7 @@ public class FaithSaveGameData
         if (fileData.Length < 0x10)
             throw new ArgumentException("File must be at least 16 bytes in size.");
 
-        _files.Add(Path.GetFileNameWithoutExtension(file), File.ReadAllBytes(file));
+        _files.Add(Path.GetFileName(file), File.ReadAllBytes(file));
     }
 
     private void ReadSaveData(byte[] saveData)
@@ -137,8 +137,8 @@ public class FaithSaveGameData
             uint strLen = (uint)Encoding.UTF8.GetByteCount(kv.Key) + 1;
             bs.Position = MAIN_HEADER_SIZE + (i * FILE_ENTRY_SIZE);
             bs.WriteUInt32(strLen);
-            bs.WriteUInt32(0);
-            bs.WriteUInt64(lastDataOffset);
+            bs.WriteUInt32(0); // data size write later
+            bs.WriteUInt64(lastDataOffset); // name offset
 
             bs.Position = (long)lastDataOffset;
             byte[] encryptedString = new byte[strLen];
@@ -148,8 +148,10 @@ public class FaithSaveGameData
             bs.Align(0x04, grow: true);
 
             lastDataOffset = (ulong)bs.Position;
+            i++;
         }
 
+        i = 0;
         foreach (KeyValuePair<string, byte[]> kv in Files)
         {
             Span<byte> compressed = CompressEncrypt(kv.Value);
@@ -164,6 +166,7 @@ public class FaithSaveGameData
             bs.WriteByte(0);
 
             lastDataOffset = (ulong)bs.Position;
+            i++;
         }
 
         return ms.ToArray();
@@ -171,8 +174,14 @@ public class FaithSaveGameData
 
     private void FixChecksums()
     {
+        // Game uses this specific bit to determine whether to load as xml or root.
+        // Xmls don't have checksums.
+        var xmlRoot = "<?xml version=\"1.0\"?>"u8;
         foreach (var file in _files)
         {
+            if (file.Value.AsSpan(0, xmlRoot.Length).SequenceEqual(xmlRoot))
+                continue;
+
             Span<byte> toCrc = file.Value.AsSpan(0x10, file.Value.Length - 0x10);
             MemoryMarshal.Cast<byte, uint>(file.Value)[1] = Crc32.HashToUInt32(toCrc);
         }
