@@ -77,7 +77,7 @@ public class Program
             ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs,
             VatbToJsonVerbs, JsonToVatbVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
-        await p.WithParsedAsync<UnpackAllVerbs>(UnpackAll);
+        p.WithParsed<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<UnpackAllPacksVerbs>(UnpackAllPacks);
         await p.WithParsedAsync<PackVerbs>(PackFiles);
         p.WithParsed<ListFilesVerbs>(ListFiles);
@@ -119,7 +119,7 @@ public class Program
         }
     }
 
-    static async Task UnpackAll(UnpackAllVerbs verbs)
+    static void UnpackAll(UnpackAllVerbs verbs)
     {
         if (!File.Exists(verbs.InputFile))
         {
@@ -139,7 +139,7 @@ public class Program
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
-            await pack.ExtractAllAsync(verbs.OutputPath);
+            pack.ExtractAll(verbs.OutputPath);
             _logger.LogInformation("Done.");
         }
         catch (Exception ex)
@@ -357,6 +357,9 @@ public class Program
     {
         switch (Path.GetExtension(file))
         {
+            case ".pac": // Extract pack
+                return true;
+
             case ".tex": // tex to dds
                 return true;
 
@@ -382,6 +385,8 @@ public class Program
             ProcessTexFile(file);
         else if (Path.GetExtension(file) == ".vatb")
             VatbToJson(new VatbToJsonVerbs() { InputFile = file });
+        else if (Path.GetExtension(file) == ".pac")
+            UnpackAll(new UnpackAllVerbs() { InputFile = file });
         else
         {
             using var fs = new FileStream(Path.ChangeExtension(file, ".tex"), FileMode.Create);
