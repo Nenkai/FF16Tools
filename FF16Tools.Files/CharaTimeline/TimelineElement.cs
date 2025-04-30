@@ -1,61 +1,23 @@
-﻿using FF16Tools.Files.CharaTimeline.Elements;
+﻿namespace FF16Tools.Files.CharaTimeline;
 
-using Syroot.BinaryData;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FF16Tools.Files.CharaTimeline;
-
-public class TimelineElement
+public class TimelineElement: BaseStruct
 {
-    public static bool ThrowExceptionOnUnknownElement { get; set; } = false;
+    public override int _totalSize => 0x20;
 
-    public uint Field_0x00 { get; set; }
-    public string Name { get; set; }
-    public uint TimelineElemUnionTypeOrLayerId { get; set; }
-    public uint FrameStart { get; set; }
-    public uint NumFrames { get; set; }
-    public uint Field_0x14 { get; set; }
-    public byte Field_0x18 { get; set; }
-    public byte Field_0x19 { get; set; }
-    public byte Field_0x1A { get; set; }
-    public byte Field_0x1B { get; set; }
-    public TimelineElementDataBase Data { get; set; }
+    int field_0x00;
 
-    public void Read(BinaryStream bs)
-    {
-        long thisPos = bs.Position;
+    [OffsetAttribute("Name")]
+    int UnkNameOffset;
 
-        Field_0x00 = bs.ReadUInt32();
-        int nameOffset = bs.ReadInt32();
-        TimelineElemUnionTypeOrLayerId = bs.ReadUInt32();
-        FrameStart = bs.ReadUInt32();
-        NumFrames = bs.ReadUInt32();
-        Field_0x14 = bs.ReadUInt32();
-        Field_0x18 = bs.Read1Byte();
-        Field_0x19 = bs.Read1Byte();
-        Field_0x1A = bs.Read1Byte();
-        Field_0x1B = bs.Read1Byte();
-        int dataOffset = bs.ReadInt32();
+    int TimelineElemUnionTypeOrLayerId;
+    int FrameStart;
+    int NumFrames;
+    int field_0x14;
+    byte field_0x18;
+    byte field_0x19;
+    byte field_0x1A;
+    byte field_0x1B;
 
-        bs.Position = thisPos + nameOffset;
-        Name = bs.ReadString(StringCoding.ZeroTerminated);
-
-        bs.Position = thisPos + dataOffset;
-        uint type = bs.ReadUInt32();
-        bs.Position -= 4;
-
-        Data = type switch
-        {
-            9 => new TimelineElement9(),
-            1002 => new TimelineElement1002(),
-            1064 => new TimelineElement1064(),
-            _ => ThrowExceptionOnUnknownElement ? throw new NotSupportedException($"Timeline element {type} not yet supported") : null,
-        };
-        Data?.Read(bs);
-    }
+    [OffsetAttribute("DataUnion", typeof(TimelineElementData))]
+    int Offset_0x1C;
 }
