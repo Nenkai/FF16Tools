@@ -3,15 +3,15 @@
 namespace FF16Tools.Files.CharaTimeline;
 public class TimelineElement_5 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "5";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_5;
 
-    byte field_0x00;
-    byte field_0x01;
-    byte field_0x02;
-    byte field_0x03;
-    int field_0x07;
-    int field_0x0B;
-    int field_0x0F;
+    public byte field_0x00;
+    public byte field_0x01;
+    public byte field_0x02;
+    public byte field_0x03;
+    public int field_0x07;
+    public int field_0x0B;
+    public int field_0x0F;
 
 }
 
@@ -20,13 +20,16 @@ public class TimelineElement_8 : TimelineElementDataInner
 {
     public class Sub8Struct : BaseStruct
     {
-        public override int _totalSize => 0x10;
-        int DataOffset;
-        int DataSize;
-        float field_0x08;
-        float field_0x0C;
+        public override int _totalSize => -1;
 
-        byte[] Data;
+        public int DataOffset;
+        public int DataSize;
+        public float field_0x08;
+        public float field_0x0C;
+
+        // Technically relative but always written directly after the parent struct
+        // Leave like that to include the data size in GetNonRelativeSize
+        public byte[] Data;
 
         public override void Read(BinaryStream bs)
         {
@@ -37,360 +40,443 @@ public class TimelineElement_8 : TimelineElementDataInner
             field_0x08 = bs.ReadSingle();
             field_0x0C = bs.ReadSingle();
 
+            long endPos = bs.Position;
+
             bs.Position = startingPos + DataOffset;
             Data = bs.ReadBytes(DataSize);
 
-            bs.Position = startingPos + _totalSize;
+            bs.Position = endPos;
+        }
+
+        public override void Write(BinaryStream bs, Dictionary<(object, string), long> relativeFieldPos, Dictionary<string, long> stringPos)
+        {
+            bs.WriteInt32((int)(relativeFieldPos[(this, "Data")] - bs.Position)); // Data Offset
+            bs.WriteInt32(Data.Length); // Data Size
+            bs.WriteSingle(field_0x08);
+            bs.WriteSingle(field_0x0C);
+
+            // The data array was already written
         }
     }
 
-    public new string _elementTypeName = "CameraAnimationRange";
+    public override TimelineUnionType _elementType => TimelineUnionType.CameraAnimationRange;
 
-    int field_0x00;
-    int field_0x04;
-    byte field_0x08;
-    byte field_0x09;
-    byte field_0x0A;
-    byte field_0x0B;
+    public int field_0x00;
+    public int field_0x04;
+    public byte field_0x08;
+    public byte field_0x09;
+    public byte field_0x0A;
+    public byte field_0x0B;
 
-    Sub8Struct Entry1;
-    Sub8Struct Entry2;
-    Sub8Struct Entry3;
-    Sub8Struct Entry4;
-    Sub8Struct Entry5;
-    Sub8Struct Entry6;
-    Sub8Struct Entry7;
-    Sub8Struct Entry8;
+    public Sub8Struct Entry1;
+    public Sub8Struct Entry2;
+    public Sub8Struct Entry3;
+    public Sub8Struct Entry4;
+    public Sub8Struct Entry5;
+    public Sub8Struct Entry6;
+    public Sub8Struct Entry7;
+    public Sub8Struct Entry8;
 
-    int[] unks = new int[12];
+    public int[] unks = new int[12];
+    public int empty;
+
+    public override void Write(BinaryStream bs, Dictionary<(object, string), long> relativeFieldPos, Dictionary<string, long> stringPos)
+    {
+        long startPos = bs.Position;
+        // Move to end to write the Sub8Structs.Data arrays
+        bs.Position += 8 * 16 + 8 + 4 + 4 + 4 * 12;
+        relativeFieldPos[(Entry1, "Data")] = bs.Position;
+        bs.WriteBytes(Entry1.Data);
+        relativeFieldPos[(Entry2, "Data")] = bs.Position;
+        bs.WriteBytes(Entry2.Data);
+        relativeFieldPos[(Entry2, "Data")] = bs.Position;
+        bs.WriteBytes(Entry3.Data);
+        relativeFieldPos[(Entry3, "Data")] = bs.Position;
+        bs.WriteBytes(Entry4.Data);
+        relativeFieldPos[(Entry4, "Data")] = bs.Position;
+        bs.WriteBytes(Entry5.Data);
+        relativeFieldPos[(Entry5, "Data")] = bs.Position;
+        bs.WriteBytes(Entry6.Data);
+        relativeFieldPos[(Entry6, "Data")] = bs.Position;
+        bs.WriteBytes(Entry7.Data);
+        relativeFieldPos[(Entry7, "Data")] = bs.Position;
+        bs.WriteBytes(Entry8.Data);
+        relativeFieldPos[(Entry8, "Data")] = bs.Position;
+
+        long DataEndPos = bs.Position;
+
+        bs.Position = startPos;
+        bs.WriteInt32(field_0x00);
+        bs.WriteInt32(field_0x04);
+        bs.WriteByte(field_0x08);
+        bs.WriteByte(field_0x09);
+        bs.WriteByte(field_0x0A);
+        bs.WriteByte(field_0x0B);
+
+
+        Entry1.Write(bs, relativeFieldPos, stringPos);
+        Entry2.Write(bs, relativeFieldPos, stringPos);
+        Entry3.Write(bs, relativeFieldPos, stringPos);
+        Entry4.Write(bs, relativeFieldPos, stringPos);
+        Entry5.Write(bs, relativeFieldPos, stringPos);
+        Entry6.Write(bs, relativeFieldPos, stringPos);
+        Entry7.Write(bs, relativeFieldPos, stringPos);
+        Entry8.Write(bs, relativeFieldPos, stringPos);
+
+        foreach (var i in unks)
+        {
+            bs.WriteInt32(i);
+        }
+        bs.WriteInt32(empty);
+
+        bs.Position = DataEndPos;
+    }
 }
 
 public class TimelineElement_10 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "BattleCondition";
+    public override TimelineUnionType _elementType => TimelineUnionType.BattleCondition;
 
-    byte field_0x00;
-    byte field_0x01;
-    byte field_0x02;
-    byte field_0x03;
-    byte field_0x04;
-    byte field_0x05;
-    byte field_0x06;
-    byte field_0x07;
-    byte field_0x08;
-    byte field_0x09;
-    byte field_0x0A;
-    byte field_0x0B;
-    float field_0x0C;
-    int field_0x10;
-    float field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
+    public byte field_0x00;
+    public byte field_0x01;
+    public byte field_0x02;
+    public byte field_0x03;
+    public byte field_0x04;
+    public byte field_0x05;
+    public byte field_0x06;
+    public byte field_0x07;
+    public byte field_0x08;
+    public byte field_0x09;
+    public byte field_0x0A;
+    public byte field_0x0B;
+    public float field_0x0C;
+    public int field_0x10;
+    public float field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
 
 }
 
 
 public class TimelineElement_12 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "BulletTimeRange";
+    public override TimelineUnionType _elementType => TimelineUnionType.BulletTimeRange;
 
-    float field_0x00;
-    float field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
+    public float field_0x00;
+    public float field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
 
 }
 
 
 public class TimelineElement_17 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "ControlPermission";
+    public override TimelineUnionType _elementType => TimelineUnionType.ControlPermission;
 
-    byte field_0x00;
-    byte field_0x01;
-    byte field_0x02;
-    byte field_0x03;
-    byte field_0x04;
-    byte field_0x05;
-    byte field_0x06;
-    byte field_0x07;
-    byte field_0x08;
-    byte field_0x09;
-    byte field_0x0A;
-    byte field_0x0B;
-    byte field_0x0C;
-    byte field_0x0D;
-    byte field_0x0E;
-    byte field_0x0F;
-    byte field_0x10;
-    byte field_0x11;
-    byte field_0x12;
-    byte field_0x13;
-    byte field_0x14;
-    byte field_0x15;
-    byte field_0x16;
-    byte field_0x17;
-    byte field_0x18;
-    byte field_0x19;
-    byte field_0x1A;
-    byte field_0x1B;
-    byte field_0x1C;
-    byte field_0x1D;
-    byte field_0x1E;
-    byte field_0x1F;
+    public byte field_0x00;
+    public byte field_0x01;
+    public byte field_0x02;
+    public byte field_0x03;
+    public byte field_0x04;
+    public byte field_0x05;
+    public byte field_0x06;
+    public byte field_0x07;
+    public byte field_0x08;
+    public byte field_0x09;
+    public byte field_0x0A;
+    public byte field_0x0B;
+    public byte field_0x0C;
+    public byte field_0x0D;
+    public byte field_0x0E;
+    public byte field_0x0F;
+    public byte field_0x10;
+    public byte field_0x11;
+    public byte field_0x12;
+    public byte field_0x13;
+    public byte field_0x14;
+    public byte field_0x15;
+    public byte field_0x16;
+    public byte field_0x17;
+    public byte field_0x18;
+    public byte field_0x19;
+    public byte field_0x1A;
+    public byte field_0x1B;
+    public byte field_0x1C;
+    public byte field_0x1D;
+    public byte field_0x1E;
+    public byte field_0x1F;
 
 }
 
 
 public class TimelineElement_23 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "23";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_23;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
 
 }
 
 
 public class TimelineElement_27 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "27";
+    public override TimelineUnionType _elementType => TimelineUnionType.AdjustRootMoveRange;
 
-    int field_0x00;
-    int field_0x04;
+    public int field_0x00;
+    public int field_0x04;
 
 }
 
 
 public class TimelineElement_30 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "30";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_30;
 
-    int field_0x00;
-    [OffsetAttribute("SoundPath")]
-    int AnimPathOffset;
-    int field_0x08;
-    byte field_0x0C;
-    byte[] pad = new byte[3];
-    int field_0x10;
-    int field_0x14;
-    double field_0x18;
-    double field_0x20;
-    double field_0x28;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
-    float field_0x3C;
-    byte field_0x40;
-    byte[] pad_ = new byte[3];
-    float field_0x44;
-    int field_0x48;
-    int field_0x4C;
-    int[] empty = new int[4];
+    public int field_0x00;
+    public int AnimPathOffset;
+    public int field_0x08;
+    public byte field_0x0C;
+    public byte[] pad = new byte[3];
+    public int field_0x10;
+    public int field_0x14;
+    public double field_0x18;
+    public double field_0x20;
+    public double field_0x28;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+    public float field_0x3C;
+    public byte field_0x40;
+    public byte[] pad_ = new byte[3];
+    public float field_0x44;
+    public int field_0x48;
+    public int field_0x4C;
+    public int[] empty = new int[4];
+
+    [RelativeField("AnimPathOffset")]
+    public string SoundPath;
 }
 
 
 public class TimelineElement_31 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "PlaySoundTrigger";
+    public override TimelineUnionType _elementType => TimelineUnionType.PlaySoundTrigger;
 
-    int field_0x00;
-    [OffsetAttribute("Path")]
-    int SoundPathOffset;
-    int field_0x08;
-    byte field_0x0C;
-    byte[] pad = new byte[3];
-    int field_0x10;
-    int field_0x14;
-    double field_0x18;
-    double field_0x20;
-    double field_0x28;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
-    float field_0x3C;
-    byte field_0x40;
-    byte[] pad_ = new byte[3];
-    float field_0x44;
-    int field_0x48;
-    int field_0x4C;
-    int[] empty = new int[4];
+    public int field_0x00;
+    public int SoundPathOffset;
+    public int field_0x08;
+    public byte field_0x0C;
+    public byte[] pad = new byte[3];
+    public int field_0x10;
+    public int field_0x14;
+    public double field_0x18;
+    public double field_0x20;
+    public double field_0x28;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+    public float field_0x3C;
+    public byte field_0x40;
+    public byte[] pad_ = new byte[3];
+    public float field_0x44;
+    public int field_0x48;
+    public int field_0x4C;
+    public int[] empty = new int[4];
+
+    [RelativeField("SoundPathOffset")]
+    public string Path;
 
 }
 
 
 public class TimelineElement_33 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "AttachWeaponTemporaryRange";
+    public override TimelineUnionType _elementType => TimelineUnionType.AttachWeaponTemporaryRange;
 
-    int field_0x00;
-    int field_0x04;
+    public int field_0x00;
+    public int field_0x04;
 
 }
 
 
 public class TimelineElement_45 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "ModelSE";
+    public override TimelineUnionType _elementType => TimelineUnionType.ModelSE;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    float field_0x34;
-    int field_0x38;
-    float field_0x3C;
-    int field_0x40;
-    int field_0x44;
-    int field_0x48;
-    int field_0x4C;
-    int field_0x50;
-    int field_0x54;
-    double field_0x58;
-    int field_0x60;
-    int field_0x64;
-    double field_0x68;
-    int field_0x70;
-    int field_0x74;
-    int field_0x78;
-    float field_0x7C;
-    int field_0x80;
-    int field_0x84;
-    int field_0x88;
-    int field_0x8C;
-    int field_0x90;
-    int field_0x94;
-    int field_0x98;
-    int field_0x9C;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public float field_0x34;
+    public int field_0x38;
+    public float field_0x3C;
+    public int field_0x40;
+    public int field_0x44;
+    public int field_0x48;
+    public int field_0x4C;
+    public int field_0x50;
+    public int field_0x54;
+    public double field_0x58;
+    public int field_0x60;
+    public int field_0x64;
+    public double field_0x68;
+    public int field_0x70;
+    public int field_0x74;
+    public int field_0x78;
+    public float field_0x7C;
+    public int field_0x80;
+    public int field_0x84;
+    public int field_0x88;
+    public int field_0x8C;
+    public int field_0x90;
+    public int field_0x94;
+    public int field_0x98;
+    public int field_0x9C;
 
 }
 
 
 public class TimelineElement_47 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "BattleMessageRange";
+    public override TimelineUnionType _elementType => TimelineUnionType.BattleMessageRange;
 
-    int BattleMessageId;
-    int[] pad = new int[8];
+    public int BattleMessageId;
+    public int[] pad = new int[8];
 
 }
 
 
 public class TimelineElement_49 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "49";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_49;
 
-    int MSeqInputId;
+    public int MSeqInputId;
 
 }
 
 
 public class TimelineElement_56 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "56";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_56;
 
-    int CameraFCurveId;
-    [OffsetAttribute("Name1", relativeField: "UnionType")]
-    int UnkOffset1;
-    int field_0x08;
-    [OffsetAttribute("Name2", relativeField: "UnionType")]
-    int UnkOffset2;
-    int field_0x10;
-    [OffsetAttribute("Name3", relativeField: "UnionType")]
-    int UnkOffset3;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
+    public int CameraFCurveId;
+    public int UnkOffset1;
+    public int field_0x08;
+    public int UnkOffset2;
+    public int field_0x10;
+    public int UnkOffset3;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+
+    [RelativeField("UnkOffset1", "UnionType")]
+    public string Name1;
+    [RelativeField("UnkOffset2", "UnionType")]
+    public string Name2;
+    [RelativeField("UnkOffset3", "UnionType")]
+    public string Name3;
 }
 
 
 public class TimelineElement_57 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "PadVibration";
+    public override TimelineUnionType _elementType => TimelineUnionType.PadVibration;
 
-    int CameraFCurveId;
-    [OffsetAttribute("Name1", relativeField:"UnionType")]
-    int UnkOffset1;
-    int field_0x08;
-    [OffsetAttribute("Name2", relativeField: "UnionType")]
-    int UnkOffset2;
-    int field_0x10;
-    [OffsetAttribute("Name3", relativeField: "UnionType")]
-    int UnkOffset3;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
+    public int CameraFCurveId;
+    public int UnkOffset1;
+    public int field_0x08;
+    public int UnkOffset2;
+    public int field_0x10;
+    public int UnkOffset3;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+
+    [RelativeField("UnkOffset1", "UnionType")]
+    public string Name1;
+    [RelativeField("UnkOffset2", "UnionType")]
+    public string Name2;
+    [RelativeField("UnkOffset3", "UnionType")]
+    public string Name3;
 
 }
 
 
 public class TimelineElement_51 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "EnableDestructorCollision";
+    public override TimelineUnionType _elementType => TimelineUnionType.EnableDestructorCollision;
 
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int AnimPathOffset;
-    int field_0x04;
+    public int AnimPathOffset;
+    public int field_0x04;
 
+    [RelativeField("AnimPathOffset", "UnionType")]
+    public string Path;
 
 }
 
 
 public class TimelineElement_60 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "60";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_60;
 
-    int field_0x00;
-    [OffsetAttribute("Name1", relativeField: "UnionType")]
-    int UnkName1Offset;
-    int field_0x08;
-    [OffsetAttribute("Name2", relativeField: "UnionType")]
-    int UnkName2Offset;
-    int field_0x10;
-    [OffsetAttribute("Name3", relativeField: "UnionType")]
-    int UnkName3Offset;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
-    int field_0x3C;
+    public int field_0x00;
+    public int UnkName1Offset;
+    public int field_0x08;
+    public int UnkName2Offset;
+    public int field_0x10;
+    public int UnkName3Offset;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+    public int field_0x3C;
+
+
+    [RelativeField("UnkName1Offset", "UnionType")]
+    public string Name1;
+    [RelativeField("UnkName2Offset", "UnionType")]
+    public string Name2;
+    [RelativeField("UnkName3Offset", "UnionType")]
+    public string Name3;
 
 
 }
@@ -398,27 +484,32 @@ public class TimelineElement_60 : TimelineElementDataInner
 
 public class TimelineElement_73 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "73";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_73;
 
-    int field_0x00;
-    [OffsetAttribute("Name1", relativeField: "UnionType")]
-    int UnkName1Offset;
-    int field_0x08;
-    [OffsetAttribute("Name2", relativeField: "UnionType")]
-    int UnkName2Offset;
-    int field_0x10;
-    [OffsetAttribute("Name3", relativeField: "UnionType")]
-    int UnkName3Offset;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
-    int field_0x3C;
+    public int field_0x00;
+    public int UnkName1Offset;
+    public int field_0x08;
+    public int UnkName2Offset;
+    public int field_0x10;
+    public int UnkName3Offset;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+    public int field_0x3C;
+
+
+    [RelativeField("UnkName1Offset", "UnionType")]
+    public string Name1;
+    [RelativeField("UnkName2Offset", "UnionType")]
+    public string Name2;
+    [RelativeField("UnkName3Offset", "UnionType")]
+    public string Name3;
 
 
 }
@@ -428,13 +519,14 @@ public class TimelineElement_84 : TimelineElementDataInner
 {
     public class Sub84Struct : BaseStruct
     {
-        public override int _totalSize => 0x10;
-        int DataOffset;
-        int DataSize;
-        float field_0x08;
-        float field_0x0C;
+        public override int _totalSize => -1;
 
-        byte[] Data;
+        public int DataOffset;
+        public int DataSize;
+        public float field_0x08;
+        public float field_0x0C;
+
+        public byte[] Data;
 
         public override void Read(BinaryStream bs)
         {
@@ -445,70 +537,130 @@ public class TimelineElement_84 : TimelineElementDataInner
             field_0x08 = bs.ReadSingle();
             field_0x0C = bs.ReadSingle();
 
+            long endPos = bs.Position;
+
             bs.Position = startingPos + DataOffset;
             Data = bs.ReadBytes(DataSize);
 
-            bs.Position = startingPos + _totalSize;
+            bs.Position = endPos;
+        }
+
+        public override void Write(BinaryStream bs, Dictionary<(object, string), long> relativeFieldPos, Dictionary<string, long> stringPos)
+        {
+            bs.WriteInt32((int)(relativeFieldPos[(this, "Data")] - bs.Position)); // Data Offset
+            bs.WriteInt32(Data.Length); // Data Size
+            bs.WriteSingle(field_0x08);
+            bs.WriteSingle(field_0x0C);
+
+            // The data array was already written
         }
     }
 
-    public new string _elementTypeName = "84";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_84;
 
-    Sub84Struct Entry1;
-    Sub84Struct Entry2;
-    Sub84Struct Entry3;
-    Sub84Struct Entry4;
-    Sub84Struct Entry5;
-    Sub84Struct Entry6;
-    Sub84Struct Entry7;
-    Sub84Struct Entry8;
-    Sub84Struct Entry9;
+    public Sub84Struct Entry1;
+    public Sub84Struct Entry2;
+    public Sub84Struct Entry3;
+    public Sub84Struct Entry4;
+    public Sub84Struct Entry5;
+    public Sub84Struct Entry6;
+    public Sub84Struct Entry7;
+    public Sub84Struct Entry8;
+    public Sub84Struct Entry9;
 
-    int Unk;
-    int[] unks = new int[4];
+    public int Unk;
+    public int[] unks = new int[4];
+    public override void Write(BinaryStream bs, Dictionary<(object, string), long> relativeFieldPos, Dictionary<string, long> stringPos)
+    {
+        long startPos = bs.Position;
+        // Move to end to write the Sub84Structs.Data arrays
+        bs.Position += 9 * 16 + 4 + 4 * 4;
+        relativeFieldPos[(Entry1, "Data")] = bs.Position;
+        bs.WriteBytes(Entry1.Data);
+        relativeFieldPos[(Entry2, "Data")] = bs.Position;
+        bs.WriteBytes(Entry2.Data);
+        relativeFieldPos[(Entry2, "Data")] = bs.Position;
+        bs.WriteBytes(Entry3.Data);
+        relativeFieldPos[(Entry3, "Data")] = bs.Position;
+        bs.WriteBytes(Entry4.Data);
+        relativeFieldPos[(Entry4, "Data")] = bs.Position;
+        bs.WriteBytes(Entry5.Data);
+        relativeFieldPos[(Entry5, "Data")] = bs.Position;
+        bs.WriteBytes(Entry6.Data);
+        relativeFieldPos[(Entry6, "Data")] = bs.Position;
+        bs.WriteBytes(Entry7.Data);
+        relativeFieldPos[(Entry7, "Data")] = bs.Position;
+        bs.WriteBytes(Entry8.Data);
+        relativeFieldPos[(Entry8, "Data")] = bs.Position;
+        bs.WriteBytes(Entry9.Data);
+        relativeFieldPos[(Entry9, "Data")] = bs.Position;
+        bs.WriteBytes(Entry9.Data);
+
+        long DataEndPos = bs.Position;
+
+        bs.Position = startPos;
+        Entry1.Write(bs, relativeFieldPos, stringPos);
+        Entry2.Write(bs, relativeFieldPos, stringPos);
+        Entry3.Write(bs, relativeFieldPos, stringPos);
+        Entry4.Write(bs, relativeFieldPos, stringPos);
+        Entry5.Write(bs, relativeFieldPos, stringPos);
+        Entry6.Write(bs, relativeFieldPos, stringPos);
+        Entry7.Write(bs, relativeFieldPos, stringPos);
+        Entry8.Write(bs, relativeFieldPos, stringPos);
+        Entry9.Write(bs, relativeFieldPos, stringPos);
+
+        bs.WriteInt32(Unk);
+        foreach (var i in unks)
+        {
+            bs.WriteInt32(i);
+        }
+
+        bs.Position = DataEndPos;
+    }
 
 }
 
 public class TimelineElement_74 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "ControlRejectionRange";
+    public override TimelineUnionType _elementType => TimelineUnionType.ControlRejectionRange;
 
-    int field_0x00;
-    byte field_0x04;
-    byte field_0x05;
-    byte field_0x06;
-    byte field_0x07;
-    byte field_0x08;
-    byte field_0x09;
-    byte field_0x0A;
-    byte field_0x0B;
-    byte field_0x0C;
-    byte field_0x0D;
-    byte field_0x0E;
-    byte field_0x0F;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
+    public int field_0x00;
+    public byte field_0x04;
+    public byte field_0x05;
+    public byte field_0x06;
+    public byte field_0x07;
+    public byte field_0x08;
+    public byte field_0x09;
+    public byte field_0x0A;
+    public byte field_0x0B;
+    public byte field_0x0C;
+    public byte field_0x0D;
+    public byte field_0x0E;
+    public byte field_0x0F;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
 
 }
 
-
 public class TimelineElement_1001 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1001";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1001;
 
-    int field_0x00;
-    [OffsetAttribute("Path")]
-    int AnimPathOffset;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
+    public int field_0x00;
+    public int AnimPathOffset;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+
+    [RelativeField("AnimPathOffset")]
+    public string Path;
 
 
 }
@@ -516,20 +668,23 @@ public class TimelineElement_1001 : TimelineElementDataInner
 
 public class TimelineElement_1002 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1002";
+    public override TimelineUnionType _elementType => TimelineUnionType.Attack;
 
-    int AttackParamId;
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int Name;
-    int field_0x08;
-    int field_0x0C;
-    [OffsetAttribute("Path2", relativeField: "UnionType")]
-    int UnkName2Offset;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
+    public int AttackParamId;
+    public int Name;
+    public int field_0x08;
+    public int field_0x0C;
+    public int UnkName2Offset;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+
+    [RelativeField("Name", "UnionType")]
+    public string Path;
+    [RelativeField("UnkName2Offset", "UnionType")]
+    public string Path2;
 
 
 }
@@ -537,107 +692,109 @@ public class TimelineElement_1002 : TimelineElementDataInner
 
 public class TimelineElement_1004 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1004";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1004;
 
-    int field_0x00;
-    int field_0x04;
-    float field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
+    public int field_0x00;
+    public int field_0x04;
+    public float field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
 
 }
 
 
 public class TimelineElement_1005 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1005";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1005;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
 
 }
 
 
 public class TimelineElement_1007 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1007";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1007;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
 }
 
 
 public class TimelineElement_1009 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1009";
+    public override TimelineUnionType _elementType => TimelineUnionType.ComboEnable;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
 
 }
 
 
 public class TimelineElement_1010 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "TurnToTarget";
+    public override TimelineUnionType _elementType => TimelineUnionType.TurnToTarget;
 
-    int field_0x00;
-    [OffsetAttribute("Path")]
-    int AnimPathOffset;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    float field_0x14;
-    float field_0x18;
-    int field_0x1C;
-    float field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
+    public int field_0x00;
+    public int AnimPathOffset;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public float field_0x14;
+    public float field_0x18;
+    public int field_0x1C;
+    public float field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+
+    [RelativeField("AnimPathOffset")]
+    public string Path;
 
 }
 
 
 public class TimelineElement_1012 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "MagicCreate";
+    public override TimelineUnionType _elementType => TimelineUnionType.MagicCreate;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
-    int field_0x24;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
 
 
 }
@@ -645,37 +802,37 @@ public class TimelineElement_1012 : TimelineElementDataInner
 
 public class TimelineElement_1014 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1014";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1014;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
 
 }
 
 
 public class TimelineElement_1016 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "PrecedeInputUnk";
+    public override TimelineUnionType _elementType => TimelineUnionType.PrecedeInputUnk;
 
-    byte field_0x00;
-    byte field_0x01;
-    byte field_0x02;
-    byte field_0x03;
-    byte field_0x04;
-    byte field_0x05;
-    byte field_0x06;
-    byte field_0x07;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
+    public byte field_0x00;
+    public byte field_0x01;
+    public byte field_0x02;
+    public byte field_0x03;
+    public byte field_0x04;
+    public byte field_0x05;
+    public byte field_0x06;
+    public byte field_0x07;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
 
 }
 
@@ -686,124 +843,51 @@ public class TimelineElement_1023 : TimelineElementDataInner
     {
         public override int _totalSize => 0x58;
 
-        int Active;
-        int UnkIdSlot;
-        int EidId1;
-        int EidId2;
-        double field_0x10;
-        double field_0x18;
-        double field_0x20;
-        double field_0x28;
-        float field_0x30;
-        float field_0x34;
-        int[] pad = new int[8];
+        public int Active;
+        public int UnkIdSlot;
+        public int EidId1;
+        public int EidId2;
+        public double field_0x10;
+        public double field_0x18;
+        public double field_0x20;
+        public double field_0x28;
+        public float field_0x30;
+        public float field_0x34;
+        public int[] pad = new int[8];
     }
 
-    public new string _elementTypeName = "1023";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1023;
 
-    int Offset_0x00;
-    int Count_0x00;
-    int field_0x08;
-    int field_0x0C;
+    public int Offset_0x00;
+    public int Count_0x00;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int VFXFileNameOffset;
+    public int field_0x18;
+    public int UnkNameOffset2;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+    public int field_0x3C;
+    public int field_0x40;
+    public int field_0x44;
+    public int field_0x48;
+    public int field_0x4C;
+    public int field_0x50;
+    //public int field_0x54; - probably added to the definition by mistake
 
-    int field_0x10;
+    [RelativeField("VFXFileNameOffset", "field_0x10")]
+    public string VFXPath;
+    [RelativeField("UnkNameOffset2", "field_0x18")]
+    public string UnkName2;
 
-    [OffsetAttribute("VFXPath", relativeField: nameof(field_0x10))]
-    int VFXFileNameOffset;
-
-    int field_0x18;
-
-    [OffsetAttribute("UnkName2", relativeField: nameof(field_0x18))]
-    int UnkNameOffset2;
-
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
-    int field_0x3C;
-    int field_0x40;
-    int field_0x44;
-    int field_0x48;
-    int field_0x4C;
-    int field_0x50;
-    int field_0x54;
-
-    public override void Read(BinaryStream bs)
-    {
-        // this type is a bit too complex for the generic base method
-        long startingPos = bs.Position;
-
-        foreach (var field in GetAllFields())
-        {
-            field.SetValue(this, bs.ReadInt32());
-        }
-
-        long finalPos = bs.Position;
-
-        bs.Position = startingPos + 0x10 + VFXFileNameOffset;
-        _referencedStrings["VFXPath"] = bs.ReadString(StringCoding.ZeroTerminated);
-        bs.Position = startingPos + 0x18 + UnkNameOffset2;
-        _referencedStrings["UnkName2"] = bs.ReadString(StringCoding.ZeroTerminated);
-
-        _referencedArrays["Sub"] = Timeline.ReadArrayOfStructs<Sub1023Struct>(bs, startingPos + Offset_0x00, Count_0x00).Select(s => (BaseStruct)s).ToList();
-        bs.Position = finalPos;
-    }
-}
-
-public class TimelineElement_1030 : TimelineElementDataInner
-{
-    public class Sub1030Struct : BaseStruct
-    {
-        public override int _totalSize => 0x54;
-
-        int Active;
-        int UnkIdSlot;
-        int EidId1;
-        int EidId2;
-        double field_0x10;
-        double field_0x18;
-        double field_0x20;
-        double field_0x28;
-        float field_0x30;
-        float field_0x34;
-        int[] pad = new int[8];
-    }
-
-    public new string _elementTypeName = "1030";
-
-    int Offset_0x00;
-    int Count_0x00;
-    int Offset_0x08;
-    int Count_0x08;
-
-    int field_0x10;
-    [OffsetAttribute("VFXPath", relativeField: nameof(field_0x10))]
-    int VFXFileNameOffset;
-
-    int field_0x18;
-    [OffsetAttribute("UnkName2", relativeField: nameof(field_0x18))]
-    int UnkNameOffset2;
-
-    int field_0x20;
-    byte field_0x24;
-    byte field_0x25;
-    byte field_0x26;
-    byte field_0x27;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    [OffsetAttribute("UnkName3", relativeField: "UnionType")]
-    int UnkNameOffset3;
-    int field_0x38;
-    int field_0x3C;
-    int field_0x40;
-    int field_0x44;
-    int field_0x48;
-    int field_0x4C;
-    int field_0x50;
+    [RelativeField("Offset_0x00")]
+    public List<Sub1023Struct> Sub;
 
     public override void Read(BinaryStream bs)
     {
@@ -814,115 +898,77 @@ public class TimelineElement_1030 : TimelineElementDataInner
         {
             if (field.FieldType == typeof(int))
                 field.SetValue(this, bs.ReadInt32());
-            else
-                field.SetValue(this, bs.Read1Byte());
         }
 
         long finalPos = bs.Position;
 
         bs.Position = startingPos + 0x10 + VFXFileNameOffset;
-        _referencedStrings["VFXPath"] = bs.ReadString(StringCoding.ZeroTerminated);
+        VFXPath = bs.ReadString(StringCoding.ZeroTerminated);
         bs.Position = startingPos + 0x18 + UnkNameOffset2;
-        _referencedStrings["UnkName2"] = bs.ReadString(StringCoding.ZeroTerminated);
-        bs.Position = startingPos + UnkNameOffset3;
-        _referencedStrings["UnkName3"] = bs.ReadString(StringCoding.ZeroTerminated);
+        UnkName2 = bs.ReadString(StringCoding.ZeroTerminated);
 
-        _referencedArrays["Sub"] = Timeline.ReadArrayOfStructs<Sub1030Struct>(bs, startingPos + Offset_0x00, Count_0x00).Select(s => (BaseStruct)s).ToList();
+        Sub = Timeline.ReadArrayOfStructs<Sub1023Struct>(bs, startingPos + Offset_0x00, Count_0x00);
         bs.Position = finalPos;
     }
 }
 
-public class TimelineElement_1035 : TimelineElementDataInner
+public class TimelineElement_1030 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1035";
-
-    int field_0x00;
-    [OffsetAttribute("Path")]
-    int AnimPathOffset;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-
-
-}
-
-
-public class TimelineElement_1047 : TimelineElementDataInner
-{
-    public new string _elementTypeName = "SummonPartsVisibleRange";
-
-    int SummonPartsPatternId;
-    float field_0x04;
-    float field_0x08;
-    byte field_0x0C;
-    byte field_0x0D;
-    byte field_0x0E;
-    byte field_0x0F;
-    int field_0x10;
-
-}
-
-
-public class TimelineElement_1049 : TimelineElementDataInner
-{
-    public class Sub1049Struct : BaseStruct
+    public class Sub1030Struct : BaseStruct
     {
         public override int _totalSize => 0x58;
-        int Active;
-        int UnkIdSlot;
-        int EidId1;
-        int EidId2;
-        double field_0x10;
-        double field_0x18;
-        double field_0x20;
-        double field_0x28;
-        float field_0x30;
-        float field_0x34;
-        int[] pad = new int[8];
+
+        public int Active;
+        public int UnkIdSlot;
+        public int EidId1;
+        public int EidId2;
+        public double field_0x10;
+        public double field_0x18;
+        public double field_0x20;
+        public double field_0x28;
+        public float field_0x30;
+        public float field_0x34;
+        public int[] pad = new int[8];
     }
 
-    public override int _totalSize => 0x70;
-    public new string _elementTypeName = "1049";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1030;
 
-    int Offset_0x00;
-    int Count_0x00;
-    int Offset_0x08; // 0x1C Stride
-    int Count_0x08; // vfxexternallist
+    public int Offset_0x00;
+    public int Count_0x00;
+    public int Offset_0x08;
+    public int Count_0x08;
+    public int field_0x10;
+    public int VFXFileNameOffset;
+    public int field_0x18;
+    public int UnkNameOffset2;
+    public int field_0x20;
+    public byte field_0x24;
+    public byte field_0x25;
+    public byte field_0x26;
+    public byte field_0x27;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int UnkNameOffset3;
+    public int field_0x38;
+    public int field_0x3C;
+    public int field_0x40;
+    public int field_0x44;
+    public int field_0x48;
+    public int field_0x4C;
+    public int field_0x50;
 
-    int field_0x10;
-    [OffsetAttribute("VFXPath", relativeField: nameof(field_0x10))]
-    int VFXFileNameOffset;
 
-    int field_0x18;
-    [OffsetAttribute("UnkName2", relativeField: nameof(field_0x18))]
-    int UnkNameOffset2;
 
-    int field_0x20;
-    byte field_0x24;
-    byte field_0x25;
-    byte field_0x26;
-    byte field_0x27;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
-    int field_0x3C;
-    int field_0x40;
-    int field_0x44;
-    int field_0x48;
-    int field_0x4C;
-    int field_0x50;
-    int field_0x54;
-    int field_0x58;
-    int field_0x5C;
-    float field_0x60;
-    int field_0x64;
-    int field_0x68;
-    int field_0x6C;
+    [RelativeField("VFXFileNameOffset", "field_0x10")]
+    public string VFXPath;
+    [RelativeField("UnkNameOffset2", "field_0x18")]
+    public string UnkName2;
+    [RelativeField("UnkNameOffset3", "UnionType")]
+    public string UnkName3;
+
+    [RelativeField("Offset_0x00")]
+    public List<Sub1030Struct> Sub;
 
     public override void Read(BinaryStream bs)
     {
@@ -935,18 +981,143 @@ public class TimelineElement_1049 : TimelineElementDataInner
                 field.SetValue(this, bs.ReadInt32());
             else if (field.FieldType == typeof(byte))
                 field.SetValue(this, bs.Read1Byte());
-            else
+        }
+
+        long finalPos = bs.Position;
+
+        bs.Position = startingPos + 0x10 + VFXFileNameOffset;
+        VFXPath = bs.ReadString(StringCoding.ZeroTerminated);
+        bs.Position = startingPos + 0x18 + UnkNameOffset2;
+        UnkName2 = bs.ReadString(StringCoding.ZeroTerminated);
+        bs.Position = startingPos - 16 + UnkNameOffset3;
+        UnkName3 = bs.ReadString(StringCoding.ZeroTerminated);
+
+        Sub = Timeline.ReadArrayOfStructs<Sub1030Struct>(bs, startingPos + Offset_0x00, Count_0x00);
+        bs.Position = finalPos;
+    }
+}
+
+public class TimelineElement_1035 : TimelineElementDataInner
+{
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1035;
+
+    public int field_0x00;
+    public int AnimPathOffset;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+
+
+    [RelativeField("AnimPathOffset")]
+    public string Path;
+
+
+}
+
+
+public class TimelineElement_1047 : TimelineElementDataInner
+{
+    public override TimelineUnionType _elementType => TimelineUnionType.SummonPartsVisibleRange;
+
+    public int SummonPartsPatternId;
+    public float field_0x04;
+    public float field_0x08;
+    public byte field_0x0C;
+    public byte field_0x0D;
+    public byte field_0x0E;
+    public byte field_0x0F;
+    public int field_0x10;
+
+}
+
+
+public class TimelineElement_1049 : TimelineElementDataInner
+{
+    public class Sub1049Struct : BaseStruct
+    {
+        public override int _totalSize => 0x58;
+        public int Active;
+        public int UnkIdSlot;
+        public int EidId1;
+        public int EidId2;
+        public double field_0x10;
+        public double field_0x18;
+        public double field_0x20;
+        public double field_0x28;
+        public float field_0x30;
+        public float field_0x34;
+        public int[] pad = new int[8];
+    }
+
+    public override int _totalSize => 0x70;
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1049;
+
+    public int Offset_0x00;
+    public int Count_0x00;
+    public int Offset_0x08; // 0x1C Stride
+    public int Count_0x08; // vfxexternallist
+    public int field_0x10;
+    public int VFXFileNameOffset;
+    public int field_0x18;
+    public int UnkNameOffset2;
+    public int field_0x20;
+    public byte field_0x24;
+    public byte field_0x25;
+    public byte field_0x26;
+    public byte field_0x27;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+    public int field_0x3C;
+    public int field_0x40;
+    public int field_0x44;
+    public int field_0x48;
+    public int field_0x4C;
+    public int field_0x50;
+    public int field_0x54;
+    public int field_0x58;
+    public int field_0x5C;
+    public float field_0x60;
+    public int field_0x64;
+    public int field_0x68;
+    public int field_0x6C;
+
+    [RelativeField("VFXFileNameOffset", "field_0x10")]
+    public string VFXPath;
+    [RelativeField("UnkNameOffset2", "field_0x18")]
+    public string UnkName2;
+
+    [RelativeField("Offset_0x00")]
+    public List<Sub1049Struct> Sub;
+
+    public override void Read(BinaryStream bs)
+    {
+        // this type is a bit too complex for the generic base method
+        long startingPos = bs.Position;
+
+        foreach (var field in GetAllFields())
+        {
+            if (field.FieldType == typeof(int))
+                field.SetValue(this, bs.ReadInt32());
+            else if (field.FieldType == typeof(byte))
+                field.SetValue(this, bs.Read1Byte());
+            else if (field.FieldType == typeof(float))
                 field.SetValue(this, bs.ReadSingle());
         }
 
         long finalPos = bs.Position;
 
         bs.Position = startingPos + 0x10 + VFXFileNameOffset;
-        _referencedStrings["VFXPath"] = bs.ReadString(StringCoding.ZeroTerminated);
+        VFXPath = bs.ReadString(StringCoding.ZeroTerminated);
         bs.Position = startingPos + 0x18 + UnkNameOffset2;
-        _referencedStrings["UnkName2"] = bs.ReadString(StringCoding.ZeroTerminated);
+        UnkName2 = bs.ReadString(StringCoding.ZeroTerminated);
 
-        _referencedArrays["Sub"] = Timeline.ReadArrayOfStructs<Sub1049Struct>(bs, startingPos + Offset_0x00, Count_0x00).Select(s => (BaseStruct)s).ToList();
+        Sub = Timeline.ReadArrayOfStructs<Sub1049Struct>(bs, startingPos + Offset_0x00, Count_0x00);
         bs.Position = finalPos;
 
         _leftoverData = bs.ReadBytes(_totalSize - (int)(finalPos - startingPos));
@@ -955,53 +1126,59 @@ public class TimelineElement_1049 : TimelineElementDataInner
 
 public class TimelineElement_1053 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "BattleVoiceTrigger";
+    public override TimelineUnionType _elementType => TimelineUnionType.BattleVoiceTrigger;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
 
 }
 
 
 public class TimelineElement_1058 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "DisableReceiver";
+    public override TimelineUnionType _elementType => TimelineUnionType.DisableReceiver;
 
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int NameOffset;
-    int field_0x04;
+    public int NameOffset;
+    public int field_0x04;
+
+    [RelativeField("NameOffset", "UnionType")]
+    public string Path;
 }
 
 
 public class TimelineElement_1059 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1059";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1059;
 
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int NameOffset;
-    float field_0x04;
+    public int NameOffset;
+    public float field_0x04;
+
+    [RelativeField("NameOffset", "UnionType")]
+    public string Path;
 }
 
 
 public class TimelineElement_1064 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1064";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1064;
 
-    int field_0x00;
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int Offset_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
+    public int field_0x00;
+    public int Offset_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+
+    [RelativeField("Offset_0x04", "UnionType")]
+    public string Path;
 
 
 }
@@ -1009,55 +1186,57 @@ public class TimelineElement_1064 : TimelineElementDataInner
 
 public class TimelineElement_1066 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1066";
+    public override TimelineUnionType _elementType => TimelineUnionType.MotionAttribute;
 
-    int field_0x00;
+    public int field_0x00;
 
 }
 
 
 public class TimelineElement_1075 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1075";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1075;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
 
 }
 
 
 public class TimelineElement_1084 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1084";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1084;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
 
 }
 
 
 public class TimelineElement_1097 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "DisableCharaUnk";
+    public override TimelineUnionType _elementType => TimelineUnionType.DisableCharaUnk;
 
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int Offset_0x00;
-    int field_0x04;
-    int field_0x08;
+    public int Offset_0x00;
+    public int field_0x04;
+    public int field_0x08;
+
+    [RelativeField("Offset_0x00", "UnionType")]
+    public string Path;
 
 
 }
@@ -1065,31 +1244,33 @@ public class TimelineElement_1097 : TimelineElementDataInner
 
 public class TimelineElement_1099 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1099";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1099;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    float field_0x14;
-    int field_0x18;
-    float field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public float field_0x14;
+    public int field_0x18;
+    public float field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
 
 }
 
 
 public class TimelineElement_1102 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1102";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1102;
 
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int Offset_0x00;
-    int field_0x04;
+    public int Offset_0x00;
+    public int field_0x04;
+
+    [RelativeField("Offset_0x00", "UnionType")]
+    public string Path;
 
 
 }
@@ -1097,11 +1278,13 @@ public class TimelineElement_1102 : TimelineElementDataInner
 
 public class TimelineElement_1103 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1103";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1103;
 
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int Offset_0x00;
-    int field_0x04;
+    public int Offset_0x00;
+    public int field_0x04;
+
+    [RelativeField("Offset_0x00", "UnionType")]
+    public string Path;
 
 
 }
@@ -1109,75 +1292,75 @@ public class TimelineElement_1103 : TimelineElementDataInner
 
 public class TimelineElement_1107 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1107";
+    public override TimelineUnionType _elementType => TimelineUnionType.StartCooldown; // not offical name
 
-    [OffsetAttribute("Path", relativeField: "UnionType")]
-    int Offset_0x00;
-    int field_0x04;
+    public int Offset_0x00;
+    public int field_0x04;
 
-
+    [RelativeField("Offset_0x00", "UnionType")]
+    public string Path;
 }
 
 
 public class TimelineElement_1115 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1115";
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1115;
 
-    int field_0x00;
-    int field_0x04;
-    float field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    float field_0x14;
-    int field_0x18;
-    float field_0x1C;
-    int field_0x20;
-    int field_0x24;
-    int field_0x28;
-    int field_0x2C;
-    int field_0x30;
-    int field_0x34;
-    int field_0x38;
-    int field_0x3C;
-    int field_0x40;
-    int field_0x44;
-    int field_0x48;
-    int field_0x4C;
-    int field_0x50;
-    int field_0x54;
+    public int field_0x00;
+    public int field_0x04;
+    public float field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public float field_0x14;
+    public int field_0x18;
+    public float field_0x1C;
+    public int field_0x20;
+    public int field_0x24;
+    public int field_0x28;
+    public int field_0x2C;
+    public int field_0x30;
+    public int field_0x34;
+    public int field_0x38;
+    public int field_0x3C;
+    public int field_0x40;
+    public int field_0x44;
+    public int field_0x48;
+    public int field_0x4C;
+    public int field_0x50;
+    public int field_0x54;
 
 }
 
 
 public class TimelineElement_1117 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1117";
+    public override TimelineUnionType _elementType => TimelineUnionType.StartCooldown;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
-    int field_0x20;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
+    public int field_0x20;
 
 }
 
 
 public class TimelineElement_1130 : TimelineElementDataInner
 {
-    public new string _elementTypeName = "1130";
+    public override TimelineUnionType _elementType => TimelineUnionType.JustBuddyCommand;
 
-    int field_0x00;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
-    int field_0x10;
-    int field_0x14;
-    int field_0x18;
-    int field_0x1C;
+    public int field_0x00;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
+    public int field_0x10;
+    public int field_0x14;
+    public int field_0x18;
+    public int field_0x1C;
 
 }
 

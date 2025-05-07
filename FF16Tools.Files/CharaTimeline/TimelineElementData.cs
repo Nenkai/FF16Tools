@@ -24,22 +24,22 @@ public static class DataElementsRegistry
 public abstract class TimelineElementDataInner : BaseStruct
 {
     public override int _totalSize => -1;
-    public string _elementTypeName = null;
+    public abstract TimelineUnionType _elementType { get; }
 }
 
 public class TimelineElementData : BaseStruct
 {
-    public override int _totalSize => 0x20;
+    public override int _totalSize => -1;
 
     public int UnionType;
-    int field_0x04;
-    int field_0x08;
-    int field_0x0C;
+    public int field_0x04;
+    public int field_0x08;
+    public int field_0x0C;
     public TimelineElementDataInner ElementData;
 
     public override void Read(BinaryStream bs)
     {
-        UnionType = bs.ReadInt32(); // go -16 to start from UnionType
+        UnionType = bs.ReadInt32();
         field_0x04 = bs.ReadInt32();
         field_0x08 = bs.ReadInt32();
         field_0x0C = bs.ReadInt32();

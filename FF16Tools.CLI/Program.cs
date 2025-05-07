@@ -1,15 +1,11 @@
-﻿using System.Buffers.Binary;
-using System.IO.Compression;
-using System.Globalization;
+﻿using System.Globalization;
 
 using Microsoft.Extensions.Logging;
 
 using CommandLine;
 
-using NLog;
 using NLog.Extensions.Logging;
 
-using FF16Tools.Files;
 using FF16Tools.Files.Save;
 using FF16Tools.Files.Nex;
 using FF16Tools.Files.Nex.Managers;
@@ -19,8 +15,6 @@ using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
 using FF16Tools.Files.VFX;
-using FF16Tools.Files.CharaTimeline;
-using System.IO;
 
 namespace FF16Tools.CLI;
 
@@ -40,30 +34,6 @@ public class Program
         Console.WriteLine("- https://twitter.com/Nenkaai");
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("");
-
-        List<int> missingTypes = new();
-        var files = Directory.GetFiles(@"C:\Users\Ron\Desktop\ff116mods\timelines\chara\", @"*.tlb", SearchOption.AllDirectories);
-        var counter = 1;
-        foreach (var file in files)
-        {
-            CharaTimelineFile charaTimeline = new CharaTimelineFile();
-            charaTimeline.Read(Path.GetFullPath(file));
-            missingTypes.AddRange(
-                charaTimeline.Timeline.Elements.Where(
-                    e => ((TimelineElementData)e._referencedStructs["DataUnion"]).ElementData == null
-                ).Select(e => ((TimelineElementData)e._referencedStructs["DataUnion"]).UnionType)
-            );
-            Console.Write($"\r{counter}/{files.Length}");
-            counter++;
-        }
-
-        Console.WriteLine("Missing types:");
-        foreach(var type in missingTypes.Distinct().ToList())
-        {
-            Console.WriteLine(type.ToString());
-        }
-        return;
-
 
         _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
         _logger = _loggerFactory.CreateLogger<Program>();

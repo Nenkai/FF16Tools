@@ -1,38 +1,42 @@
 ﻿using System.Reflection;
 using Syroot.BinaryData;
+using System.Collections;
+using System.Runtime.InteropServices;
+
 
 namespace FF16Tools.Files.CharaTimeline
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class OffsetAttribute : Attribute
+    public class RelativeField : Attribute
     {
-        public string TargetFieldName { get; }
-        public Type TargetFieldType { get; }
+        // The name of the field holding the offset to this field
+        public string offsetFieldName;
+        // The base field whose position will be added to the offset (usually the first field in the class)
+        public string relativeToFieldName;
 
-        public string RelativeField { get; }
-
-        public OffsetAttribute(string targetFieldName, Type targetFieldType, string relativeField = null)
+        public RelativeField(string offsetFieldName, string relativeToFieldName)
         {
-            TargetFieldName = targetFieldName;
-            TargetFieldType = targetFieldType;
-            RelativeField = relativeField;
+            this.offsetFieldName = offsetFieldName;
+            this.relativeToFieldName = relativeToFieldName;
         }
 
-        public OffsetAttribute(string targetFieldName, string relativeField=null)
+        public RelativeField(string offsetFieldName)
         {
-            TargetFieldName = targetFieldName;
-            TargetFieldType = typeof(string);
-            RelativeField = relativeField;
+            this.offsetFieldName = offsetFieldName;
+            this.relativeToFieldName = null;
         }
+    }
+
+    public struct RelativeListInfo
+    {
+        public object OwningObject;
+        public string fieldName;
+        public List<BaseStruct> value;
     }
 
     public abstract class BaseStruct
     {
         public abstract int _totalSize { get; }
-
-        public Dictionary<string, string> _referencedStrings = new();
-        public Dictionary<string, BaseStruct> _referencedStructs = new();
-        public Dictionary<string, List<BaseStruct>> _referencedArrays = new();
         public byte[] _leftoverData;
 
         public FieldInfo[] GetAllFields()
@@ -43,12 +47,73 @@ namespace FF16Tools.Files.CharaTimeline
                 .ToArray();
         }
 
-        public virtual void Read(BinaryStream bs) {
+        private static bool IsListOfStructs(FieldInfo field)
+        {
+            return field.FieldType.IsGenericType &&
+                   field.FieldType.GetGenericTypeDefinition() == typeof(List<>) &&
+                   field.FieldType.GetGenericArguments().First().IsSubclassOf(typeof(BaseStruct));
+        }
+
+        public List<string> GetAllStrings()
+        {
+            var x = GetAllFields()
+                .Where(f => f.FieldType == typeof(string))
+                .Select(f => (string)f.GetValue(this)).Concat(
+                    GetAllFields()
+                    .Where(f => f.FieldType.IsSubclassOf(typeof(BaseStruct)))
+                    .SelectMany(f => ((BaseStruct)f.GetValue(this)).GetAllStrings())
+                ).ToList();
+            return x;
+        }
+        public List<RelativeListInfo> GetAllRelativeLists()
+        {
+            // Get all fields that are a list of subclasses of BaseStruct and are a relativeField
+            var x = GetAllFields()
+                .Where(f => IsListOfStructs(f) && f.GetCustomAttribute<RelativeField>() != null)
+                .Select(f => new RelativeListInfo
+                {
+                    OwningObject = this,
+                    fieldName = f.Name,
+                    value = ((IEnumerable)f.GetValue(this))
+                             .Cast<BaseStruct>()
+                             .ToList()
+                })
+                .ToList();
+            return x;
+        }
+
+        private int GetFieldSize(FieldInfo field)
+        {
+            if (field.FieldType.IsSubclassOf(typeof(BaseStruct)))
+            {
+                return ((BaseStruct)field.GetValue(this)).GetNonRelativeSize();
+            }
+            if (field.FieldType.IsArray)
+            {
+                Type elemType = field.FieldType.GetElementType();
+                return Marshal.SizeOf(elemType) * ((Array)field.GetValue(this)).Length;
+            }
+            return Marshal.SizeOf(field.FieldType);
+        }
+
+        public int GetNonRelativeSize()
+        {
+            if (_totalSize != -1)
+                return _totalSize;
+
+            return GetAllFields().
+                Where(f => f.GetCustomAttribute<RelativeField>() == null).
+                Select(GetFieldSize).Sum() + (_leftoverData != null ? _leftoverData.Length : 0);
+        }
+
+        public virtual void Read(BinaryStream bs)
+        {
             long startingPos = bs.Position;
             Dictionary<string, long> fieldPos = new();
-            fieldPos["UnionType"] = startingPos - 16;
+            fieldPos["UnionType"] = startingPos - 16; // For relative fields that are relative to the parent data union
 
-            foreach (FieldInfo field in GetAllFields()) { 
+            foreach (FieldInfo field in GetAllFields())
+            {
                 Type fieldType = field.FieldType;
                 string fieldName = field.Name;
 
@@ -58,20 +123,6 @@ namespace FF16Tools.Files.CharaTimeline
                 {
                     case TypeCode.Int32:
                         field.SetValue(this, bs.ReadInt32());
-                        OffsetAttribute offsetAttr = field.GetCustomAttribute<OffsetAttribute>();
-
-                        if (offsetAttr != null) {
-                            long currentPos = bs.Position;
-                            bs.Position = (int)field.GetValue(this) + (offsetAttr.RelativeField is null ? startingPos : fieldPos[offsetAttr.RelativeField]);
-                            if (offsetAttr.TargetFieldType == typeof(string))
-                                _referencedStrings[offsetAttr.TargetFieldName] = bs.ReadString(StringCoding.ZeroTerminated);
-                            else {
-                                var item = (BaseStruct)Activator.CreateInstance(offsetAttr.TargetFieldType);
-                                item.Read(bs);
-                                _referencedStructs[offsetAttr.TargetFieldName] = item;
-                            }
-                            bs.Position = currentPos;     
-                        }
                         break;
                     case TypeCode.Single:
                         field.SetValue(this, bs.ReadSingle());
@@ -82,8 +133,27 @@ namespace FF16Tools.Files.CharaTimeline
                     case TypeCode.Byte:
                         field.SetValue(this, bs.Read1Byte());
                         break;
+
+                    case TypeCode.String:
+                        RelativeField relativeAttr = field.GetCustomAttribute<RelativeField>();
+                        long currentPos = bs.Position;
+                        bs.Position = (int)this.GetType().GetField(relativeAttr.offsetFieldName).GetValue(this) +
+                            (relativeAttr.relativeToFieldName == null ? startingPos : fieldPos[relativeAttr.relativeToFieldName]);
+
+                        field.SetValue(this, bs.ReadString(StringCoding.ZeroTerminated));
+                        bs.Position = currentPos;
+                        break;
                     case TypeCode.Object:
-                        if (fieldType.IsSubclassOf(typeof(BaseStruct))) {
+                        long currentPos2 = bs.Position;
+                        RelativeField relativeAttr2 = field.GetCustomAttribute<RelativeField>();
+                        if (relativeAttr2 != null)
+                        {
+                            bs.Position = (int)this.GetType().GetField(relativeAttr2.offsetFieldName).GetValue(this) +
+                                (relativeAttr2.relativeToFieldName == null ? startingPos : fieldPos[relativeAttr2.relativeToFieldName]);
+                        }
+
+                        if (fieldType.IsSubclassOf(typeof(BaseStruct)))
+                        {
                             var item = (BaseStruct)Activator.CreateInstance(fieldType);
                             item.Read(bs);
                             field.SetValue(this, item);
@@ -106,11 +176,91 @@ namespace FF16Tools.Files.CharaTimeline
                                     throw new NotImplementedException();
                             }
                         }
+
+                        if (relativeAttr2 != null)
+                            bs.Position = currentPos2;
                         break;
                     default:
                         throw new NotImplementedException();
                 }
             }
+        }
+
+        public virtual void Write(BinaryStream bs, Dictionary<(object, string), long> relativeFieldPos, Dictionary<string, long> stringPos)
+        {
+            long startingPos = bs.Position;
+            Dictionary<string, long> fieldPos = new();
+            fieldPos["UnionType"] = startingPos - 16;
+
+            foreach (FieldInfo field in GetAllFields().Where(f => f.GetCustomAttribute<RelativeField>() == null)) {
+                fieldPos[field.Name] = bs.Position;
+                switch (Type.GetTypeCode(field.FieldType))
+                {
+                    case TypeCode.Int32:
+                        bs.WriteInt32((int)field.GetValue(this));
+                        break;
+                    case TypeCode.Single:
+                        bs.WriteSingle((float)field.GetValue(this));
+                        break;
+                    case TypeCode.Double:
+                        bs.WriteDouble((double)field.GetValue(this));
+                        break;
+                    case TypeCode.Byte:
+                        bs.WriteByte((byte)field.GetValue(this));
+                        break;
+                    case TypeCode.Object:
+                        if (field.FieldType.IsSubclassOf(typeof(BaseStruct)))
+                        {
+                            ((BaseStruct)field.GetValue(this)).Write(bs, relativeFieldPos, stringPos);
+                        }
+                        else if (field.FieldType.IsArray)
+                        {
+                            Type elementType = field.FieldType.GetElementType();
+                            Array array = (Array)field.GetValue(this);
+                            for (int i = 0; i < array.Length; i++)
+                            {
+                                if (elementType == typeof(int))
+                                    bs.WriteInt32((int)array.GetValue(i));
+                                else if (elementType == typeof(float))
+                                    bs.WriteSingle((float)array.GetValue(i));
+                                else if (elementType == typeof(double))
+                                    bs.WriteDouble((double)array.GetValue(i));
+                                else if (elementType == typeof(byte))
+                                    bs.WriteByte((byte)array.GetValue(i));
+                                else
+                                    throw new NotImplementedException();
+                            }
+                        }
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            if (_leftoverData != null)
+            {
+                bs.WriteBytes(_leftoverData);
+            }
+
+            long endPos = bs.Position;
+
+            foreach (FieldInfo field in GetAllFields().Where(f=> f.GetCustomAttribute<RelativeField>() != null))
+            {
+                RelativeField relativeAttr = field.GetCustomAttribute<RelativeField>();
+                // The position of the field that will hold the offset value
+                long offsetFieldPos = fieldPos[relativeAttr.offsetFieldName];
+                // The position of the field that the offset is relative to
+                long offsetRelativeToPos = relativeAttr.relativeToFieldName != null ? fieldPos[relativeAttr.relativeToFieldName] : startingPos;
+                // Where the relative value is actually written
+                long relativeValuePos = field.FieldType == typeof(string) ? stringPos[(string)field.GetValue(this)] : relativeFieldPos[(this, field.Name)];
+                // The offset value to write
+                int offsetToValue = (int)(relativeValuePos - offsetRelativeToPos);
+
+                bs.Position = offsetFieldPos;
+                bs.WriteInt32(offsetToValue);
+            }
+
+            bs.Position = endPos;
         }
     }
 }

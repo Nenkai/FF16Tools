@@ -5,15 +5,16 @@
     {
         public override int _totalSize => 0x28;
 
-        int UnkType;
-        int[] Pad = new int[9];
+        public int UnkType;
+        public int[] Pad = new int[9];
     }
 
     public class FinalStruct : BaseStruct
     {
-        public override int _totalSize => 0x2C;
+        public override int _totalSize => 0x4;        
+        public int DataOffset;
 
-        [OffsetAttribute("Sub", typeof(InternalFinalStruct))]
-        int DataOffset;
+        [RelativeField("DataOffset")]
+        public InternalFinalStruct Sub;
     }
 }
