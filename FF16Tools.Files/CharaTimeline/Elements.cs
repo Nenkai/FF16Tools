@@ -133,6 +133,25 @@ public class TimelineElement_8 : TimelineElementDataInner
     }
 }
 
+public class TimelineElement_9 : TimelineElementDataInner
+{
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_9;
+
+    public int AttackParamId;
+    public int Field_0x04;
+    public int Field_0x08;
+    public int Field_0x0C;
+    public int Field_0x10;
+    public int Field_0x14;
+    public int Field_0x18;
+    public int Field_0x1C;
+    public int Field_0x20;
+    public int Field_0x24;
+    public int Field_0x28;
+    public int Field_0x2C;
+
+}
+
 public class TimelineElement_10 : TimelineElementDataInner
 {
     public override TimelineUnionType _elementType => TimelineUnionType.BattleCondition;
@@ -1169,7 +1188,7 @@ public class TimelineElement_1064 : TimelineElementDataInner
 {
     public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1064;
 
-    public int field_0x00;
+    public int AttackParamId;
     public int Offset_0x04;
     public int field_0x08;
     public int field_0x0C;

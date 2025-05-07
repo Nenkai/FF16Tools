@@ -27,8 +27,8 @@ namespace FF16Tools.Files.CharaTimeline
             bs.ReadInt32(); // empty padding
 
             Elements = ReadArrayOfStructs<TimelineElement>(bs, thisPos + timelineElementsOffset, timelineElementCount);
-            AssetGroups = ReadArrayOfStructs<AssetGroup>(bs, thisPos + assetGroupsOffset, assetGroupCount);
-            FinalStructs = ReadArrayOfStructs<FinalStruct>(bs, thisPos + offset_0x14, count_0x14);
+            //AssetGroups = ReadArrayOfStructs<AssetGroup>(bs, thisPos + assetGroupsOffset, assetGroupCount);
+            //FinalStructs = ReadArrayOfStructs<FinalStruct>(bs, thisPos + offset_0x14, count_0x14);
         }
         public static List<T> ReadArrayOfStructs<T>(BinaryStream bs, long startOffset, int elementCount) where T : BaseStruct, new()
         {

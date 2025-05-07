@@ -4,6 +4,7 @@ public enum  TimelineUnionType
 {
     kTimelineElem_5 = 5,
     CameraAnimationRange = 8,
+    kTimelineElem_9 = 9,
     BattleCondition = 10,
     BulletTimeRange = 12,
     ControlPermission = 17,
