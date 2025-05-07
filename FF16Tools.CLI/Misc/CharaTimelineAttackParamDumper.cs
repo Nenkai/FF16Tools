@@ -14,7 +14,7 @@ public class CharaTimelineAttackParamDumper
     {
         SortedDictionary<int, string> names = [];
 
-        string dir = @"C:\Users\Ron\Desktop\ff116mods\timelines\chara";
+        string dir = @"<chara folder>";
         foreach (var file in Directory.GetFiles(dir, "*.tlb", SearchOption.AllDirectories))
         {
             try
