@@ -251,6 +251,14 @@ public class TimelineElement_23 : TimelineElementDataInner
 
 }
 
+public class TimelineElement_26 : TimelineElementDataInner
+{
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_26;
+
+    // Actual structue is unknown, but its 12 bytes without any reltive fields, so the data will be loaded into _leftoverData
+    public override int _totalSize => 12; 
+}
+
 
 public class TimelineElement_27 : TimelineElementDataInner
 {
@@ -757,6 +765,11 @@ public class TimelineElement_1007 : TimelineElementDataInner
     public int field_0x1C;
 }
 
+public class TimelineElement_1008 : TimelineElementDataInner
+{
+    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1008;
+    // No actual data fields, this struct is empty.
+}
 
 public class TimelineElement_1009 : TimelineElementDataInner
 {

@@ -47,7 +47,7 @@ namespace FF16Tools.Files.CharaTimeline
 
         public List<string> GetAllDistinctStrings()
         {
-            return Elements.SelectMany(e => e.DataUnion.ElementData.GetAllStrings()).Concat(
+            return Elements.SelectMany(e => e.GetAllStrings()).Concat(
                 AssetGroups.Where(a => a.AssetList != null).SelectMany(a => a.AssetList).SelectMany(a => a.GetAllStrings())
             ).Distinct().ToList();
         }
@@ -85,11 +85,14 @@ namespace FF16Tools.Files.CharaTimeline
             int preTimelineDataUnionSize = preTimelineElements.Select(e=>e.DataUnion.GetNonRelativeSize()).Sum();
             int preTimelineListsSize = preTimelineLists.SelectMany(f=>f.value).Select(l => l.GetNonRelativeSize()).Sum();
 
+            // If there is pre-timeline data, there is a 4 byte empty padding after the header
+            int headerPaddingSize = preTimelineDataUnionSize + preTimelineListsSize == 0 ? 0 : 4; 
 
-            // 4 bytes for the timeline position itself and 4 bytes for empty padding
-            int timelinePos = (int)bs.Position + 4 + 4 + preTimelineListsSize + preTimelineDataUnionSize;
+            // 4 bytes for the timeline position itself
+            int timelinePos = (int)bs.Position + 4 + headerPaddingSize + preTimelineListsSize + preTimelineDataUnionSize;
             bs.Write(timelinePos);
-            bs.WriteInt32(0); // empty padding
+            if (headerPaddingSize > 0)
+                bs.WriteInt32(0); // empty padding
 
             // ***** End of header *****
 

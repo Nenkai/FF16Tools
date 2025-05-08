@@ -35,6 +35,7 @@ public class Program
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("");
 
+
         _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
         _logger = _loggerFactory.CreateLogger<Program>();
 

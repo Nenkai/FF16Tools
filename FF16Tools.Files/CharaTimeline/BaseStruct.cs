@@ -61,7 +61,8 @@ namespace FF16Tools.Files.CharaTimeline
                 .Select(f => (string)f.GetValue(this)).Concat(
                     GetAllFields()
                     .Where(f => f.FieldType.IsSubclassOf(typeof(BaseStruct)))
-                    .SelectMany(f => ((BaseStruct)f.GetValue(this)).GetAllStrings())
+                    .Select(f => ((BaseStruct)f.GetValue(this))).Where(f => f != null)
+                    .SelectMany(f => f.GetAllStrings())
                 ).ToList();
             return x;
         }
@@ -184,6 +185,9 @@ namespace FF16Tools.Files.CharaTimeline
                         throw new NotImplementedException();
                 }
             }
+
+            if (_totalSize != -1 && bs.Position - startingPos < _totalSize)
+                _leftoverData = bs.ReadBytes((int)(_totalSize - (bs.Position - startingPos))).ToArray();
         }
 
         public virtual void Write(BinaryStream bs, Dictionary<(object, string), long> relativeFieldPos, Dictionary<string, long> stringPos)
