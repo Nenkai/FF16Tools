@@ -22,15 +22,15 @@ namespace FF16Tools.Nex.Sqlite;
 /// </summary>
 public class NexToSQLiteExporter : IDisposable
 {
-    private readonly ILoggerFactory _loggerFactory;
-    private readonly ILogger _logger;
+    private readonly ILoggerFactory? _loggerFactory;
+    private readonly ILogger? _logger;
 
     private NexDatabase _database;
-    private SqliteConnection _con;
+    private SqliteConnection? _con;
     private Version _version;
 
     // We don't want byte arrays to be converted to base64.
-    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions 
+    private static JsonSerializerOptions _jsonSerializerOptions = new()
     { 
         IncludeFields = true, // Required for unions.
         Converters = 
@@ -45,7 +45,7 @@ public class NexToSQLiteExporter : IDisposable
     /// <param name="database">Nex database. (You can get one with <see cref="NexDatabase.Open(string, ILoggerFactory)>"/>)</param>
     /// <param name="version">Version. Should match game version and be at least 1.0.0.</param>
     /// <param name="loggerFactory">Logger factory, for logging.</param>
-    public NexToSQLiteExporter(NexDatabase database, Version version, ILoggerFactory loggerFactory = null)
+    public NexToSQLiteExporter(NexDatabase database, Version version, ILoggerFactory? loggerFactory = null)
     {
         ArgumentNullException.ThrowIfNull(database, nameof(database));
         ArgumentNullException.ThrowIfNull(version, nameof(version));
@@ -53,7 +53,9 @@ public class NexToSQLiteExporter : IDisposable
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         _database = database;
+        _version = version;
 
+        _loggerFactory = loggerFactory;
         if (loggerFactory is not null)
             _logger = loggerFactory.CreateLogger(GetType().ToString());
     }
@@ -61,7 +63,7 @@ public class NexToSQLiteExporter : IDisposable
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-        _con.Dispose();
+        _con?.Dispose();
     }
 
     /// <summary>
@@ -93,7 +95,7 @@ public class NexToSQLiteExporter : IDisposable
             }
 
 
-            List<NexRowInfo> nexRows = table.Value.RowManager.GetAllRowInfos();
+            List<NexRowInfo> nexRows = table.Value.RowManager!.GetAllRowInfos();
 
             NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(table.Key, new Version(1, 0, 0));
             ExportTableToSQLite(table.Key, table.Value, tableColumnLayout, nexRows);
@@ -105,9 +107,9 @@ public class NexToSQLiteExporter : IDisposable
 
     private void CreateUnionTable()
     {
-        _logger.LogInformation("Creating union table...");
+        _logger?.LogInformation("Creating union table...");
 
-        var command = _con.CreateCommand();
+        var command = _con!.CreateCommand();
         command.CommandText = $"DROP TABLE IF EXISTS _uniontypes;";
         _logger?.LogTrace("Running DROP TABLE IF EXISTS for '_uniontypes'.");
         command.ExecuteNonQuery();
@@ -135,7 +137,7 @@ public class NexToSQLiteExporter : IDisposable
     private void ExportTableToSQLite(string tableName, NexDataFile nexFile, NexTableLayout columnLayout, List<NexRowInfo> rows)
     {
         //SQL: DROP TABLE IF EXISTS
-        var command = _con.CreateCommand();
+        var command = _con!.CreateCommand();
         command.CommandText = $"DROP TABLE IF EXISTS \"{tableName}\";";
         _logger?.LogTrace("Running DROP TABLE IF EXISTS for '{tableName}'.", tableName);
         command.ExecuteNonQuery();
@@ -205,7 +207,7 @@ public class NexToSQLiteExporter : IDisposable
                 if (columnLayout.Columns.Count > 0)
                     sb.Append(", ");
 
-                var cells = NexUtils.ReadRow(columnLayout, nexFile.Buffer, row.RowDataOffset);
+                var cells = NexUtils.ReadRow(columnLayout, nexFile.Buffer!, row.RowDataOffset);
 
                 int i = 0;
                 foreach (NexStructColumn column in columnLayout.Columns.Values)
@@ -232,7 +234,7 @@ public class NexToSQLiteExporter : IDisposable
                         }
                     }
 
-                    if (column.Name == "Comment" && columnLayout.RowComments.TryGetValue((row.Key, row.Key2, row.Key3), out string val))
+                    if (column.Name == "Comment" && columnLayout.RowComments.TryGetValue((row.Key, row.Key2, row.Key3), out string? val))
                         cell = $"(FF16Tools): {val}";
 
                     string cellStr = CellToSql(tableName, column.Name, cell, columnLayout, column);

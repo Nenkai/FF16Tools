@@ -13,6 +13,7 @@ using Microsoft.Data.Sqlite;
 
 using FF16Tools.Files.Nex;
 using FF16Tools.Files.Nex.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FF16Tools.Nex.Sqlite;
 
@@ -21,23 +22,23 @@ namespace FF16Tools.Nex.Sqlite;
 /// </summary>
 public class SQLiteToNexImporter : IDisposable
 {
-    private readonly ILoggerFactory _loggerFactory;
-    private readonly ILogger _logger;
+    private readonly ILoggerFactory? _loggerFactory;
+    private readonly ILogger? _logger;
 
     private readonly Dictionary<string, NexDataFileBuilder> _tableBuilders = [];
     private readonly Dictionary<string, NexTableLayout> _tableLayouts = [];
 
-    private readonly List<string> _tablesToConvert;
+    private readonly List<string>? _tablesToConvert;
     private readonly string _sqliteFile = "<no table>";
 
-    private SqliteConnection _con;
+    private SqliteConnection? _con;
 
     private Dictionary<string, NexUnionType> _unionMap = [];
 
     // We don't want byte arrays to be converted to base64.
     private static JsonSerializerOptions _jsonSerializerOptions = new() { Converters = { new JsonByteArrayConverter() } };
 
-    private string _lastTable;
+    private string? _lastTable;
 
     /// <summary>
     /// SQLite to Nex importer.
@@ -46,7 +47,7 @@ public class SQLiteToNexImporter : IDisposable
     /// <param name="version">Version which should match the game. Should be at least 1.0.0.</param>
     /// <param name="tablesToConvert">Tables to convert. If null is provided, all tables will be converted.</param>
     /// <param name="loggerFactory">Logger factory, for logging.</param>
-    public SQLiteToNexImporter(string sqliteFile, Version version, List<string> tablesToConvert = null, ILoggerFactory loggerFactory = null)
+    public SQLiteToNexImporter(string sqliteFile, Version version, List<string>? tablesToConvert = null, ILoggerFactory? loggerFactory = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sqliteFile, nameof(sqliteFile));
         ArgumentNullException.ThrowIfNull(version, nameof(version));
@@ -54,10 +55,9 @@ public class SQLiteToNexImporter : IDisposable
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         _tablesToConvert = tablesToConvert;
-
-
         _sqliteFile = sqliteFile;
 
+        _loggerFactory = loggerFactory;
         if (loggerFactory is not null)
             _logger = loggerFactory.CreateLogger(GetType().ToString());
     }
@@ -101,12 +101,12 @@ public class SQLiteToNexImporter : IDisposable
 
     private void ReadUnionTable()
     {
-        var command = _con.CreateCommand();
+        var command = _con!.CreateCommand();
         command.CommandText = $"SELECT name FROM sqlite_master WHERE type='table' AND name='_uniontypes';";
-        string tableName = (string)command.ExecuteScalar();
+        string? tableName = command.ExecuteScalar() as string;
         if (string.IsNullOrEmpty(tableName))
         {
-            _logger.LogWarning("Table '_uniontypes' is missing.");
+            _logger?.LogWarning("Table '_uniontypes' is missing.");
             return;
         }
 
@@ -130,7 +130,7 @@ public class SQLiteToNexImporter : IDisposable
 
     private void CreateTables()
     {
-        var command = _con.CreateCommand();
+        var command = _con!.CreateCommand();
         command.CommandText = $"SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';";
         _logger?.LogTrace("{command}", command.CommandText);
 
@@ -145,8 +145,11 @@ public class SQLiteToNexImporter : IDisposable
                 continue;
             }
 
-            if (_tablesToConvert.Count != 0 && !_tablesToConvert.Contains(tableName))
-                continue;
+            if (_tablesToConvert is not null)
+            {
+                if (!_tablesToConvert.Contains(tableName))
+                    continue;
+            }
 
             _logger?.LogInformation("Fetching table {tableName}", tableName);
 
@@ -164,9 +167,9 @@ public class SQLiteToNexImporter : IDisposable
         {
             _lastTable = table.Key;
 
-            var command = _con.CreateCommand();
+            var command = _con!.CreateCommand();
             command.CommandText = $"SELECT * FROM {table.Key};";
-            _logger.LogTrace("{command}", command.CommandText);
+            _logger?.LogTrace("{command}", command.CommandText);
 
             var reader = command.ExecuteReader();
 
@@ -185,7 +188,7 @@ public class SQLiteToNexImporter : IDisposable
                 }
             }
 
-            NexStructColumn lastColumn = null;
+            NexStructColumn? lastColumn = null;
             uint key = 0, key2 = 0, key3 = 0;
 
             try
@@ -266,7 +269,10 @@ public class SQLiteToNexImporter : IDisposable
             {
                 object[] elem = (object[])array[i];
                 for (int j = 0; j < elem.Length; j++)
-                    VerifyCellOrThrow(tableLayout, tableLayout.CustomStructDefinitions[lastColumn.StructTypeName].Columns[j], elem[j]);
+                {
+                    NexTableColumnStruct tableStruct = tableLayout.CustomStructDefinitions[lastColumn.StructTypeName!];
+                    VerifyCellOrThrow(tableLayout, tableStruct.Columns[j], elem[j]);
+                }
             }
         }
     }
@@ -347,7 +353,10 @@ public class SQLiteToNexImporter : IDisposable
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
-                        byte[] arr = JsonSerializer.Deserialize<byte[]>(arrStr, _jsonSerializerOptions);
+                        byte[]? arr = JsonSerializer.Deserialize<byte[]>(arrStr, _jsonSerializerOptions);
+                        if (arr is null)
+                            return Array.Empty<byte>();
+
                         return arr;
                     }
                     else
@@ -361,7 +370,10 @@ public class SQLiteToNexImporter : IDisposable
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
-                        int[] arr = JsonSerializer.Deserialize<int[]>(arrStr);
+                        int[]? arr = JsonSerializer.Deserialize<int[]>(arrStr);
+                        if (arr is null)
+                            return Array.Empty<int>();
+
                         return arr;
                     }
                     else
@@ -375,7 +387,10 @@ public class SQLiteToNexImporter : IDisposable
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
-                        uint[] arr = JsonSerializer.Deserialize<uint[]>(arrStr);
+                        uint[]? arr = JsonSerializer.Deserialize<uint[]>(arrStr);
+                        if (arr is null)
+                            return Array.Empty<uint>();
+
                         return arr;
                     }
                     else
@@ -389,7 +404,10 @@ public class SQLiteToNexImporter : IDisposable
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
-                        float[] arr = JsonSerializer.Deserialize<float[]>(arrStr);
+                        float[]? arr = JsonSerializer.Deserialize<float[]>(arrStr);
+                        if (arr is null)
+                            return Array.Empty<float>();
+
                         return arr;
                     }
                     else
@@ -403,7 +421,10 @@ public class SQLiteToNexImporter : IDisposable
                     string arrStr = (string)val;
                     if (!string.IsNullOrEmpty(arrStr))
                     {
-                        string[] arr = JsonSerializer.Deserialize<string[]>(arrStr);
+                        string[]? arr = JsonSerializer.Deserialize<string[]>(arrStr);
+                        if (arr is null)
+                            return Array.Empty<string>();
+
                         return arr;
                     }
                     else
@@ -415,7 +436,7 @@ public class SQLiteToNexImporter : IDisposable
                         return Array.Empty<object>();
 
                     string arrStr = (string)val;
-                    var customStruct = tableLayout.CustomStructDefinitions[column.StructTypeName];
+                    NexTableColumnStruct customStruct = tableLayout.CustomStructDefinitions[column.StructTypeName!];
 
                     if (!string.IsNullOrEmpty(arrStr))
                     {
@@ -453,7 +474,7 @@ public class SQLiteToNexImporter : IDisposable
                                         break;
                                     case NexColumnType.String:
                                         ThrowIfStructElemNotValueKind(field, JsonValueKind.String, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
-                                        structItem[fieldIndex] = field.GetString();
+                                        structItem[fieldIndex] = field.GetString()!;
                                         break;
                                     case NexColumnType.Float:
                                         ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
@@ -604,7 +625,7 @@ public class SQLiteToNexImporter : IDisposable
         if (idx != 2)
             ThrowTableError($"Union is malformed at column {column.Name} - not enough elements, expected type:id");
 
-        return new NexUnion(type.Value, id);
+        return new NexUnion(type!.Value, id);
     }
 
     private void ThrowIfStructElemNotValueKind(JsonElement jsonElement, JsonValueKind expectedKind, NexStructColumn nexColumn, int arrayIndex, int fieldIndex)
@@ -613,6 +634,7 @@ public class SQLiteToNexImporter : IDisposable
             throw new Exception($"{_lastTable}: Expected '{nexColumn.Type}' type in struct array index {arrayIndex}, struct item {fieldIndex}, got '{jsonElement.ValueKind}' from json.");
     }
 
+    [DoesNotReturn]
     private void ThrowTableError(string message)
     {
         throw new Exception($"{_lastTable}: {message}");
@@ -621,6 +643,6 @@ public class SQLiteToNexImporter : IDisposable
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-        _con.Dispose();
+        _con?.Dispose();
     }
 }
