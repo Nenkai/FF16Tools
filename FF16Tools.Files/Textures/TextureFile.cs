@@ -30,8 +30,8 @@ namespace FF16Tools.Files.Textures;
 /// </summary>
 public class TextureFile
 {
-    private ILoggerFactory _loggerFactory;
-    private ILogger _logger;
+    private ILoggerFactory? _loggerFactory;
+    private ILogger? _logger;
 
     /// <summary>
     /// Magic, 'TEX '
@@ -48,7 +48,7 @@ public class TextureFile
     public List<TextureInfo> Textures { get; set; } = [];
     public List<TextureChunkInfo> TextureChunks { get; set; } = [];
 
-    public TextureFile(ILoggerFactory loggerFactory = null)
+    public TextureFile(ILoggerFactory? loggerFactory = null)
     {
         _loggerFactory = loggerFactory;
 
@@ -101,12 +101,12 @@ public class TextureFile
 
                 if (chunkInfo.CompressedChunkSize == chunkInfo.DecompressedChunkSize) // <- This is how the game checks
                 {
-                    textureFileStream.Read(decompressedBuffer.Span.Slice(offset, (int)chunkInfo.DecompressedChunkSize));
+                    textureFileStream.ReadExactly(decompressedBuffer.Span.Slice(offset, (int)chunkInfo.DecompressedChunkSize));
                 }
                 else
                 {
                     using MemoryOwner<byte> chunkBuffer = MemoryOwner<byte>.Allocate((int)chunkInfo.CompressedChunkSize);
-                    textureFileStream.Read(chunkBuffer.Span);
+                    textureFileStream.ReadExactly(chunkBuffer.Span);
                     GDeflate.Decompress(chunkBuffer.Span, decompressedBuffer.Span.Slice(offset, (int)chunkInfo.DecompressedChunkSize));
                 }
 
@@ -120,7 +120,7 @@ public class TextureFile
             MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate((int)texture.DataSize);
 
             textureFileStream.Position = basePos + texture.DataOffset;
-            textureFileStream.Read(buffer.Span);
+            textureFileStream.ReadExactly(buffer.Span);
 
             return buffer;
         }

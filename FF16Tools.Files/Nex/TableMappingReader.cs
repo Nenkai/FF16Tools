@@ -184,6 +184,9 @@ public class TableMappingReader
                     break;
                 case "end_struct":
                     {
+                        if (currentCustomStruct is null)
+                            throw new InvalidDataException($"Metadata error: {debugln} - end_struct without declared struct");
+
                         currentCustomStruct.TotalInlineSize = (int)NexUtils.AlignValue((uint)currentStructOffset, 0x04);
                         currentCustomStruct = null;
                     }

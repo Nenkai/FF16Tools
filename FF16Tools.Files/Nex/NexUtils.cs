@@ -155,7 +155,7 @@ public class NexUtils
                                 int startOffset = sr.Position;
                                 object[] arr = new object[arrayLength];
 
-                                NexTableColumnStruct customStruct = tableColumnLayout.CustomStructDefinitions[column.StructTypeName];
+                                NexTableColumnStruct customStruct = tableColumnLayout.CustomStructDefinitions[column.StructTypeName!];
                                 for (int i = 0; i < arrayLength; i++)
                                 {
                                     var structFields = new object[customStruct.Columns.Count];

@@ -19,8 +19,8 @@ namespace FF16Tools.Files.Nex;
 /// </summary>
 public class NexDataFileBuilder
 {
-    private ILoggerFactory _loggerFactory;
-    private ILogger _logger;
+    private ILoggerFactory? _loggerFactory;
+    private ILogger? _logger;
 
     public NexTableType Type { get; }
     public NexTableCategory Category { get; }
@@ -39,7 +39,7 @@ public class NexDataFileBuilder
     private long _lastDataEndOffset;
 
     public NexDataFileBuilder(NexTableLayout columnLayout, 
-        ILoggerFactory loggerFactory = null)
+        ILoggerFactory? loggerFactory = null)
     {
         ArgumentNullException.ThrowIfNull(columnLayout, nameof(columnLayout));
 
@@ -615,7 +615,7 @@ public class NexDataFileBuilder
                         int arrayOffset = (int)bs.Position;
                         arrayOffsets.Add(arrayOffset);
                         object[] structFields = (object[])array[i];
-                        NexTableColumnStruct customStruct = _columnLayout.CustomStructDefinitions[column.StructTypeName];
+                        NexTableColumnStruct customStruct = _columnLayout.CustomStructDefinitions[column.StructTypeName!];
 
                         for (int j = 0; j < customStruct.Columns.Count; j++)
                         {
@@ -632,7 +632,7 @@ public class NexDataFileBuilder
                     for (int i = 0; i < array.Length; i++)
                     {
                         object[] structFields = (object[])array[i];
-                        NexTableColumnStruct customStruct = _columnLayout.CustomStructDefinitions[column.StructTypeName];
+                        NexTableColumnStruct customStruct = _columnLayout.CustomStructDefinitions[column.StructTypeName!];
 
                         for (int j = 0; j < customStruct.Columns.Count; j++)
                         {
@@ -676,7 +676,7 @@ public class NexDataFileBuilder
     private void AddByteArray(BinaryStream bs, int rowDataOffset, byte[] byteArr)
     {
         ArrayPointerRef byteArrRef = new(rowDataOffset, (int)bs.Position);
-        if (_byteArrayTable.TryGetValue(byteArr, out List<ArrayPointerRef> byteArrayRefs))
+        if (_byteArrayTable.TryGetValue(byteArr, out List<ArrayPointerRef>? byteArrayRefs))
             byteArrayRefs.Add(byteArrRef);
         else
             _byteArrayTable.Add(byteArr, [byteArrRef]);
@@ -727,7 +727,7 @@ public class NexRowBuild
 
 public class ByteArrayComparer : IEqualityComparer<byte[]>
 {
-    public bool Equals(byte[] left, byte[] right)
+    public bool Equals(byte[]? left, byte[]? right)
     {
         if (left == null || right == null)
         {

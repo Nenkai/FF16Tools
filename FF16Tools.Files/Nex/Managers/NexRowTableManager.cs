@@ -3,6 +3,7 @@ using Syroot.BinaryData;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,13 +41,13 @@ public class NexRowTableManager : INexRowManager
 
     public NexRowInfo GetRowInfo(uint key, uint key2 = 0, uint key3 = 0)
     {
-        if (!_rows.TryGetValue(key, out NexRowInfo rowInfo))
+        if (!_rows.TryGetValue(key, out NexRowInfo? rowInfo))
             throw new Exception($"Row id {key} was not found.");
 
         return rowInfo;
     }
 
-    public bool TryGetRowInfo(out NexRowInfo rowInfo, uint key, uint key2 = 0, uint key3 = 0)
+    public bool TryGetRowInfo([NotNullWhen(true)] out NexRowInfo? rowInfo, uint key, uint key2 = 0, uint key3 = 0)
     {
         if (!_rows.TryGetValue(key, out rowInfo))
             return false;

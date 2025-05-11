@@ -18,7 +18,7 @@ public class NexDataFile
     /// </summary>
     public const uint MAGIC = 0x4644584E;
 
-    public byte[] Buffer { get; set; }
+    public byte[]? Buffer { get; set; }
 
     public uint Version { get; set; }
     public NexTableType Type { get; set; }
@@ -29,7 +29,7 @@ public class NexDataFile
     /// <summary>
     /// Row manager. Allows access to underlying row information.
     /// </summary>
-    public INexRowManager RowManager { get; set; }
+    public INexRowManager? RowManager { get; set; }
 
     public static NexDataFile FromFile(string file)
     {

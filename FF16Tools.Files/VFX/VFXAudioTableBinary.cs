@@ -36,7 +36,7 @@ public class VFXAudioTableBinary
     public static VFXAudioTableBinary FromJson(string json)
     {
         var bin = new VFXAudioTableBinary();
-        bin.Entries = JsonSerializer.Deserialize<List<VFXAudioTableEntry>>(json);
+        bin.Entries = JsonSerializer.Deserialize<List<VFXAudioTableEntry>>(json) ?? [];
         return bin;
     }
 
@@ -82,7 +82,7 @@ public class VFXAudioTableBinary
             bs.Position = entryOffset;
 
             bs.WriteUInt32(entry.Id);
-            WriteStringPointer(bs, entry.Name, entryOffset, ref lastStrOffset);
+            WriteStringPointer(bs, entry.Name ?? string.Empty, entryOffset, ref lastStrOffset);
 
             // Write asset refs first
             uint vfxRefOffset = 0;
@@ -90,7 +90,7 @@ public class VFXAudioTableBinary
             {
                 bs.Position = lastAssetRefOffset;
                 bs.WriteUInt32(entry.VFX.AssetType);
-                WriteStringPointer(bs, entry.VFX.Path, lastAssetRefOffset, ref lastStrOffset);
+                WriteStringPointer(bs, entry.VFX.Path ?? string.Empty, lastAssetRefOffset, ref lastStrOffset);
                 vfxRefOffset = (uint)(lastAssetRefOffset - entryOffset);
 
                 lastAssetRefOffset += AssetReference.GetSize();
@@ -107,7 +107,7 @@ public class VFXAudioTableBinary
             {
                 bs.Position = lastAssetRefOffset;
                 bs.WriteUInt32(entry.Audio.AssetType);
-                WriteStringPointer(bs, entry.Audio.Path, lastAssetRefOffset, ref lastStrOffset);
+                WriteStringPointer(bs, entry.Audio.Path ?? string.Empty, lastAssetRefOffset, ref lastStrOffset);
                 audioRefOffset = (uint)(lastAssetRefOffset - entryOffset);
 
                 lastAssetRefOffset += AssetReference.GetSize();
@@ -135,7 +135,7 @@ public class VFXAudioTableBinary
         bs.Position = cPos + 0x04;
     }
 
-    public string ToJson(JsonSerializerOptions options = null)
+    public string ToJson(JsonSerializerOptions? options = null)
     {
         return JsonSerializer.Serialize(Entries, options: options ?? new JsonSerializerOptions() {  WriteIndented = true });
     }
@@ -144,7 +144,7 @@ public class VFXAudioTableBinary
 public class VFXAudioTableEntry
 {
     public uint Id { get; set; }
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public ulong Flags { get; set; }
     public AssetReference VFX { get; set; } = new();
     public AssetReference Audio { get; set; } = new();
@@ -186,7 +186,7 @@ public class AssetReference
     // 1012 = Audio (.sab)
     // 1019 = VFX (.vfx)
     public uint AssetType { get; set; }
-    public string Path { get; set; }
+    public string? Path { get; set; }
 
     public void Read(BinaryStream bs)
     {

@@ -27,10 +27,10 @@ public class TextureDecompressEmulationTest
 
     public static void Test(string fileName, TextureFile textureFile)
     {
-        if (D3D12GetDebugInterface(out ID3D12Debug debugInterface).Success)
+        if (D3D12GetDebugInterface(out ID3D12Debug? debugInterface).Success)
         {
-            debugInterface.EnableDebugLayer();
-            debugInterface.Dispose();
+            debugInterface?.EnableDebugLayer();
+            debugInterface?.Dispose();
         }
 
         using ID3D12Device device = D3D12CreateDevice<ID3D12Device>(null, FeatureLevel.Level_12_1);
@@ -136,7 +136,7 @@ public class TextureDecompressEmulationTest
         {
             ulong[] rowSizes = new ulong[5];
             PlacedSubresourceFootPrint[] footprints = new PlacedSubresourceFootPrint[1];
-            device.GetCopyableFootprints(bufferResource.Description, 0, 1, 0ul, footprints, null, rowSizes, out ulong totalBytes);
+            device.GetCopyableFootprints(bufferResource.Description, 0, 1, 0ul, footprints, null!, rowSizes, out ulong totalBytes);
 
             //byte[] outBuf = new byte[totalBytes];
             //var res = bufferResource.ReadFromSubresource(outBuf, footprints[0].Footprint.RowPitch, 1, 0, new Box(0, 0, 0, 926, 330, 1));

@@ -16,9 +16,9 @@ public class NexDatabase
     /// </summary>
     public Dictionary<string, NexDataFile> Tables { get; set; } = [];
 
-    public static NexDatabase Open(string directory, ILoggerFactory loggerFactory = null)
+    public static NexDatabase Open(string directory, ILoggerFactory? loggerFactory = null)
     {
-        ILogger logger = null;
+        ILogger? logger = null;
         if (loggerFactory is not null)
             logger = loggerFactory.CreateLogger(typeof(NexDatabase).ToString());
 

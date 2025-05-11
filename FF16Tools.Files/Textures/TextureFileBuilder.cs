@@ -28,11 +28,11 @@ namespace FF16Tools.Files.Textures;
 
 public class TextureFileBuilder
 {
-    private ILoggerFactory _loggerFactory;
-    private ILogger _logger;
+    private readonly ILoggerFactory? _loggerFactory;
+    private readonly ILogger? _logger;
 
     public const int MAX_TEXTURES = 255;
-    private List<TextureBuildTask> _textureBuildTasks = [];
+    private readonly List<TextureBuildTask> _textureBuildTasks = [];
 
     private long _textureInfosOffset;
     private long _chunksOffset;
@@ -40,7 +40,7 @@ public class TextureFileBuilder
 
     private uint _lastChunkIndex;
 
-    public TextureFileBuilder(ILoggerFactory loggerFactory = null)
+    public TextureFileBuilder(ILoggerFactory? loggerFactory = null)
     {
         _loggerFactory = loggerFactory;
 
@@ -48,7 +48,7 @@ public class TextureFileBuilder
             _logger = _loggerFactory.CreateLogger(GetType().ToString());
     }
 
-    public void AddImage(string fileName, TextureOptions options = default)
+    public void AddImage(string fileName, TextureOptions? options = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(fileName, nameof(fileName));
 
@@ -325,7 +325,7 @@ public class TextureFileBuilder
     {
         uint compressedSize = (uint)toCompress.Length;
         Span<byte> outputChunk = toCompress;
-        MemoryOwner<byte> compressedMemOwner = null;
+        MemoryOwner<byte>? compressedMemOwner = null;
         if (useCompression)
         {
             compressedMemOwner = MemoryOwner<byte>.Allocate(toCompress.Length);
@@ -342,6 +342,7 @@ public class TextureFileBuilder
 
         _lastChunkIndex++;
 
+        compressedMemOwner?.Dispose();
         return compressedSize;
     }
 

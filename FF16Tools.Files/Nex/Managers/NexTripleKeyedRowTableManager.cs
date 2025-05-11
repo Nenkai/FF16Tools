@@ -3,6 +3,7 @@ using Syroot.BinaryData;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,26 +89,26 @@ public class NexTripleKeyedRowTableManager : INexRowManager
 
     public NexRowInfo GetRowInfo(uint key, uint key2 = 0, uint key3 = 0)
     {
-        if (!_tkSets.TryGetValue(key, out NexTripleKeyedSet dkSet))
+        if (!_tkSets.TryGetValue(key, out NexTripleKeyedSet? dkSet))
             throw new KeyNotFoundException($"Key {key} does not exist in table.");
 
-        if (!dkSet.SubSets.TryGetValue(key2, out Dictionary<uint, NexRowInfo> subSet))
+        if (!dkSet.SubSets.TryGetValue(key2, out Dictionary<uint, NexRowInfo>? subSet))
             throw new KeyNotFoundException($"Key2 {key2} for Key {key} does not exist in table.");
 
-        if (!subSet.TryGetValue(key3, out NexRowInfo rowInfo))
+        if (!subSet.TryGetValue(key3, out NexRowInfo? rowInfo))
             throw new KeyNotFoundException($"Key 3 {key3} for Keys {key},{key2} does not exist in table.");
 
         return rowInfo;
     }
 
-    public bool TryGetRowInfo(out NexRowInfo rowInfo, uint key, uint key2 = 0, uint key3 = 0)
+    public bool TryGetRowInfo([NotNullWhen(true)] out NexRowInfo? rowInfo, uint key, uint key2 = 0, uint key3 = 0)
     {
         rowInfo = default;
 
-        if (!_tkSets.TryGetValue(key, out NexTripleKeyedSet dkSet))
+        if (!_tkSets.TryGetValue(key, out NexTripleKeyedSet? dkSet))
             return false;
 
-        if (!dkSet.SubSets.TryGetValue(key2, out Dictionary<uint, NexRowInfo> subSet))
+        if (!dkSet.SubSets.TryGetValue(key2, out Dictionary<uint, NexRowInfo>? subSet))
             return false;
 
         if (!subSet.TryGetValue(key3, out rowInfo))
