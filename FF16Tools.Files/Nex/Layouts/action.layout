@@ -76,8 +76,8 @@ add_column|BattleOrPartyTalkId|int
 add_column|Unk_0x7C|float
 add_column|MagicBurstActionId|int
 add_column|Unk_0x84|float
-add_column|UnkActionIds0x88|int[]
-add_column|UnkBNpcBaseIds|int[]
+add_column|BNpcParallelActionIds|int[]
+add_column|BNpcIdsForParallelActions|int[]
 
 // 301 = phoenix/phoenixshiftmove related?
 add_column|SystemMoveId|int

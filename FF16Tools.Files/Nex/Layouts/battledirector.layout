@@ -2,15 +2,72 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk2_Struct|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int|int[]|int|int|int|int|int|int|int|int[]|int|int|int|int|int|int|int|int[]|int[]|int[]|int|int
-define_struct|Unk3_Struct|int|byte[]|int
+define_struct|Unk2_Struct
+add_struct_column|Type|int
+add_struct_column|field_0x04|int
+
+// When type is 18, this is difficulty or xp related?
+add_struct_column|TypeData|int
+add_struct_column|field_0x0C|int
+add_struct_column|field_0x10|int
+add_struct_column|LevelSequenceId1|int
+add_struct_column|LevelSequenceId2|int
+add_struct_column|ActorDirectorListId1|int
+add_struct_column|ActorDirectorListId2|int
+add_struct_column|ActorDirectorListId3|int
+add_struct_column|ActorDirectorListId4|int
+add_struct_column|ActorDirectorListId5|int
+add_struct_column|ActorDirectorListId6|int
+add_struct_column|ActorDirectorListId7|int
+add_struct_column|ActorDirectorListId8|int
+// DirectorActorPhaseParam->Unk2 or DirectorStageSetPhaseParam->Unk3
+add_struct_column|PhaseParam|int
+add_struct_column|field_0x40|int
+add_struct_column|field_0x44|int
+add_struct_column|field_0x48|int
+add_struct_column|field_0x4C|int[]
+add_struct_column|ItemIdMaybe|int
+add_struct_column|field_0x58|int
+add_struct_column|field_0x5C|int
+add_struct_column|field_0x60|int
+add_struct_column|field_0x64|int
+add_struct_column|UnkBool0x68|byte
+add_struct_column|UnkBool0x69|byte
+add_struct_column|UnkByte0x6A|byte
+add_struct_column|field_0x6C|int
+add_struct_column|field_0x70|int[]
+add_struct_column|UnkBool0x78|byte
+add_struct_column|DirectorChangeBgmParamId|int
+add_struct_column|LockonCameraParamId|int
+add_struct_column|field_0x84|int
+add_struct_column|field_0x88|int
+add_struct_column|field_0x8C|int
+add_struct_column|field_0x90|int
+add_struct_column|field_0x94|int[]
+add_struct_column|field_0x9C|int[]
+add_struct_column|field_0xA4|int[]
+add_struct_column|field_0xAC|int
+add_struct_column|field_0xB0|int
+end_struct|
+
+define_struct|Unk3_Struct
+add_struct_column|field_0x00|int
+add_struct_column|field_0x04|byte[]
+add_struct_column|field_0x0C|int
+end_struct|
+
+/////////////////////////////////////////////////
 
 add_column|DLCFlags|int
+
+// Fetched from
+// 48 83 EC ? 45 33 C0 4C 63 D2 85 D2 78 ? 4C 8B 09 4D 85 C9 75 ? 41 8B C0 EB ? 4D 39 01 7C ? 49 8B C9 E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? 44 3B 50 ? 7D ? 4D 85 C9 74 ? 4D 39 01 7C ? 49 8B C9 E8 ? ? ? ? 4C 8B C0 EB ? 4C 8D 05 ? ? ? ? 49 63 40
 add_column|Unk2|Unk2_Struct[]
+
 add_column|Unk3|Unk3_Struct[]
 add_column|Unk4|int
 add_column|Unk5|int
-add_column|Unk6|int
+add_column|BattleTagId|int
 add_column|Unk7|string
 add_column|Unk8|string
 add_column|Unk9|int[]

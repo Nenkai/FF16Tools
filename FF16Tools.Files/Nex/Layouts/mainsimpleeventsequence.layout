@@ -2,7 +2,10 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-define_struct|Unk_Struct|int|int
+define_struct|Unk_Struct
+add_struct_column|Unk1|int
+add_struct_column|Unk2|int
+end_struct|
 
 // 10020 = /dlc2
 // 10030 = /dlc3

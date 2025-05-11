@@ -266,7 +266,7 @@ public class SQLiteToNexImporter : IDisposable
             {
                 object[] elem = (object[])array[i];
                 for (int j = 0; j < elem.Length; j++)
-                    VerifyCellOrThrow(tableLayout, tableLayout.CustomStructDefinitions[lastColumn.StructTypeName][j], elem[j]);
+                    VerifyCellOrThrow(tableLayout, tableLayout.CustomStructDefinitions[lastColumn.StructTypeName].Columns[j], elem[j]);
             }
         }
     }
@@ -415,7 +415,7 @@ public class SQLiteToNexImporter : IDisposable
                         return Array.Empty<object>();
 
                     string arrStr = (string)val;
-                    var col = tableLayout.CustomStructDefinitions[column.StructTypeName];
+                    var customStruct = tableLayout.CustomStructDefinitions[column.StructTypeName];
 
                     if (!string.IsNullOrEmpty(arrStr))
                     {
@@ -425,52 +425,52 @@ public class SQLiteToNexImporter : IDisposable
                         int arrayIndex = 0;
                         foreach (JsonElement item in obj.EnumerateArray())
                         {
-                            var structItem = new object[col.Count];
+                            var structItem = new object[customStruct.Columns.Count];
                             int itemsInJson = item.GetArrayLength();
-                            if (itemsInJson != col.Count)
-                                ThrowTableError($"Error in column {column.Name} - expected {col.Count} fields in struct array index {arrayIndex}, got {itemsInJson} in json.");
+                            if (itemsInJson != customStruct.Columns.Count)
+                                ThrowTableError($"Error in column {column.Name} - expected {customStruct.Columns.Count} fields in struct array index {arrayIndex}, got {itemsInJson} in json.");
 
                             int fieldIndex = 0;
                             foreach (JsonElement field in item.EnumerateArray())
                             {
-                                switch (col[fieldIndex].Type)
+                                switch (customStruct.Columns[fieldIndex].Type)
                                 {
                                     case NexColumnType.Byte:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetByte();
                                         break;
                                     case NexColumnType.SByte:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetSByte();
                                         break;
                                     case NexColumnType.Short:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetInt16();
                                         break;
                                     case NexColumnType.UShort:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetUInt16();
                                         break;
                                     case NexColumnType.String:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.String, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.String, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetString();
                                         break;
                                     case NexColumnType.Float:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetSingle();
                                         break;
                                     case NexColumnType.Int:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetInt32();
                                         break;
                                     case NexColumnType.UInt:
                                     case NexColumnType.HexUInt:
-                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, col[fieldIndex], arrayIndex, fieldIndex);
+                                        ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetUInt32();
                                         break;
                                     case NexColumnType.Union:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
 
                                             int arrLen = field.GetArrayLength();
                                             var arr = new int[arrLen];
@@ -483,7 +483,7 @@ public class SQLiteToNexImporter : IDisposable
                                         }
                                     case NexColumnType.ByteArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                             int arrLen = field.GetArrayLength();
                                             var arr = new byte[arrLen];
 
@@ -495,7 +495,7 @@ public class SQLiteToNexImporter : IDisposable
                                         }
                                     case NexColumnType.IntArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
 
                                             int arrLen = field.GetArrayLength();
                                             var arr = new int[arrLen];
@@ -508,7 +508,7 @@ public class SQLiteToNexImporter : IDisposable
                                         }
                                     case NexColumnType.UIntArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
 
                                             int arrLen = field.GetArrayLength();
                                             var arr = new uint[arrLen];
@@ -521,7 +521,7 @@ public class SQLiteToNexImporter : IDisposable
                                         }
                                     case NexColumnType.FloatArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, col[fieldIndex], arrayIndex, fieldIndex);
+                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
 
                                             int arrLen = field.GetArrayLength();
                                             var arr = new float[arrLen];
@@ -533,7 +533,7 @@ public class SQLiteToNexImporter : IDisposable
                                             break;
                                         }
                                     default:
-                                        ThrowTableError($"Nested custom struct field type unsupported yet: {col[fieldIndex].Type}");
+                                        ThrowTableError($"Nested custom struct field type unsupported yet: {customStruct.Columns[fieldIndex].Type}");
                                         break;
                                 }
        

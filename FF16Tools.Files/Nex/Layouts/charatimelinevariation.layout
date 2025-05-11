@@ -3,9 +3,15 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|int
-add_column|Unk3|int
+add_column|MotionParamId|int
+add_column|OptionalFacialMotionId|int
 add_column|Unk4|int
 add_column|MoveParamId|int
 add_column|Comment|string
-add_column|Unk7|int
+
+// chara/c%04u/pack/timeline/t%04u/ <--
+// Also used as an id into charatimelinepaccommonexist, charatimelinepacweaponexist
+add_column|TimelineFileId|short
+
+add_column|UnkByte8|byte
+// <implicit 1 byte padding>

@@ -3,7 +3,16 @@ set_table_category|SingleKeyed
 use_base_row_id|true
 
 // Size: 0x1C
-define_struct|Unk2_Struct|int|int|int|int|int[]|int
+define_struct|Unk2_Struct
+add_struct_column|Unk1|int
+add_struct_column|Unk2|int
+add_struct_column|Unk3|int
+add_struct_column|Unk4|int
+add_struct_column|Unk5|int[]
+add_struct_column|Unk6|int
+end_struct|
+
+////////////////////////////////////////////////////////
 
 add_column|Unk1|int
 add_column|Unk2|Unk2_Struct[]

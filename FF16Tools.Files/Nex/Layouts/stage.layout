@@ -2,7 +2,15 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk4_struct|string|byte|byte|byte
+define_struct|Unk4_struct
+add_struct_column|Unk1|string
+add_struct_column|Unk2|byte
+add_struct_column|Unk3|byte
+add_struct_column|Unk4|byte
+// <implcit 1 byte padding>
+end_struct|
+
+///////////////////////////////////////////////
 
 add_column|DLCFlags|int
 add_column|Comment|string

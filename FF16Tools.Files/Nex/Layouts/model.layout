@@ -6,11 +6,13 @@ add_column|DLCFlags|int
 add_column|ModelCoordinateId|int
 add_column|Unk3|int
 add_column|Unk4|float
-add_column|Unk5|string[]
+
+// 48 03 C8 74 ? 44 38 11
+add_column|CharaCollisionFiles|string[]
 add_column|Comment|string
 add_column|MoveParamId|int
 add_column|Unk8|int
-add_column|Unk9|int
+add_column|CharaTimelineVariationId|int
 add_column|Unk10|string[]
 add_column|EnvVfxSetId|int
 add_column|FootgroundId|int
@@ -20,7 +22,11 @@ add_column|Unk15|float
 add_column|Unk16|int[]
 add_column|Unk17|string
 add_column|Unk18|float
-add_column|Unk19|string
+
+// Note: This path also determines the .dep file that gets loaded under
+// system/game/magic/depend_resource_info.pac
+add_column|MagicFilePath|string
+
 add_column|HitSeIdMaybe|int
 add_column|Unk21|int
 add_column|Unk21_1|int

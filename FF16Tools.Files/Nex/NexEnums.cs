@@ -38,6 +38,24 @@ public enum NexUnionType : ushort
     //unk_41 = 41,
     command = 42,
     defaulttalk = 46,
+
+    // Not an actual table.
+    // Guessed. Engine/executable creates factories for each director, each factory has an id which goes up to 14, matches directorchangebgmparam.
+    // mapdirector = 1,
+    // tutorialdirector = 2
+    // systemassistdirector = 3
+    // fieldeventdirector = 4
+    // smobdirector = 5
+    // sirequestbattledirector = 6
+    // missionbattledirector = 7
+    // battledirector = 8
+    // behavioreventdirector = 9
+    // battleblockdirector = 10
+    // fixedpalettedirector = 11
+    // 12 & 13 are used but unknown
+    // abyssgatedirector = 14
+    directortype = 48,
+
     enpcbase = 50,
     layoutnamedinstance = 55,
     attackparam_atktype = 58, // customaction (?)

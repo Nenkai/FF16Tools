@@ -3,6 +3,13 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 define_struct|Unk6_Struct|int|int|int|int
+add_struct_column|Unk1|int
+add_struct_column|Unk2|int
+add_struct_column|Unk3|int
+add_struct_column|Unk4|int
+end_struct|
+
+//////////////////////////////////////////////////
 
 add_column|DLCFlags|int
 add_column|UnkUnion2|union

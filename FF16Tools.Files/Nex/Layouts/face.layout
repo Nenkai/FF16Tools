@@ -2,10 +2,27 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Parsing func: 48 89 5C 24 ? 44 88 44 24 ? 88 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC
+
 add_column|DLCFlags|int
 add_column|SkeletonParamId|int
 add_column|Unk3|string
 add_column|Unk4|string
 add_column|Unk5|string
-add_column|Unk6|int
-add_column|Unk7|int
+
+// - animation/chara/c%04u/skeleton/face/f%04u/face.skl
+//
+// Also used for indexing into animpacexistface
+// - animation/chara/c%04u/pack/animation/face/f%04u/animation.pac
+//
+// [Following only used if Unk3 is not '0']
+// -> animation/chara/c%04u/skeleton/face/f%04u/%s.lmb
+add_column|FaceAnimFileId|short
+
+// chara/c%04u/model/face/f%04u/%s.mdl
+add_column|FaceModelFileId|short
+
+// chara/c%04u/model/option/o%04u/option.mdl
+add_column|OptionModelFileId|short
+
+// <implcit 2 bytes padding>

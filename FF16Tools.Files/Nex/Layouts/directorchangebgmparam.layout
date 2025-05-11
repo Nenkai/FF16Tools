@@ -3,10 +3,15 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
+add_column|BgmModeId|int
+add_column|BgmId|int
+
+// Hardcoded checks
+// i.e 6 here: 83 78 ? ? 75 ? 48 83 64 24
+add_column|UnkType4|int
+
 add_column|Unk5|union[]
 add_column|Comment|string
-add_column|Unk8|int
-add_column|Unk9|int
+add_column|BgmMagiParamId|int
+add_column|UnkBool9|byte
+// <implicit 3 bytes padding>

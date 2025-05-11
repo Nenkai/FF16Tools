@@ -152,22 +152,24 @@ public class NexUtils
                             }
                         case NexColumnType.CustomStructArray:
                             {
+                                int startOffset = sr.Position;
                                 object[] arr = new object[arrayLength];
-                                
-                                List<NexStructColumn> structFieldColumns = tableColumnLayout.CustomStructDefinitions[column.StructTypeName];
+
+                                NexTableColumnStruct customStruct = tableColumnLayout.CustomStructDefinitions[column.StructTypeName];
                                 for (int i = 0; i < arrayLength; i++)
                                 {
-                                    var structFields = new object[structFieldColumns.Count];
-                                    int startStructOffset = sr.Position;
-                                    for (int j = 0; j < structFieldColumns.Count; j++)
+                                    var structFields = new object[customStruct.Columns.Count];
+                                    int startStructOffset = startOffset + (customStruct.TotalInlineSize * i);
+
+                                    for (int j = 0; j < customStruct.Columns.Count; j++)
                                     {
-                                        sr.Position = (int)(startStructOffset + structFieldColumns[j].Offset);
-                                        var cell = ReadCell(ref sr, tableColumnLayout, structFieldColumns[j], startStructOffset);
+                                        NexStructColumn field = customStruct.Columns[j];
+                                        sr.Position = (int)(startStructOffset + field.Offset);
+                                        var cell = ReadCell(ref sr, tableColumnLayout, field, startStructOffset);
                                         structFields[j] = cell;
                                     }
 
                                     arr[i] = structFields;
-                                    sr.Align(0x04);
                                 }
 
                                 sr.Position = currentOffset + 8;

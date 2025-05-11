@@ -2,7 +2,12 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk19_Struct|int|int
+define_struct|Unk19_Struct
+add_struct_column|Unk1|int
+add_struct_column|Unk2|int
+end_struct|
+
+////////////////////////////////////////////////
 
 add_column|DLCFlags|int
 

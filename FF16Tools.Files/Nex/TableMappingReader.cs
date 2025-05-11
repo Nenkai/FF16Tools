@@ -27,7 +27,7 @@ public class TableMappingReader
 
     public static bool LayoutExists(string tableName)
     {
-        string path = GetHeadersFilePath(tableName);
+        string? path = GetHeadersFilePath(tableName);
         return !string.IsNullOrEmpty(path);
     }
 
@@ -55,9 +55,9 @@ public class TableMappingReader
         return null;
     }
 
-    private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int offset, Version inputVersion)
+    private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int currentRowOffset, Version inputVersion)
     {
-        string path = GetHeadersFilePath(filename);
+        string? path = GetHeadersFilePath(filename);
         if (string.IsNullOrEmpty(path))
             throw new FileNotFoundException($"Layout file '{filename}' not found. Does it exist in the Nex/Layouts folder?");
 
@@ -67,8 +67,11 @@ public class TableMappingReader
         var fn = Path.GetFileNameWithoutExtension(Path.GetFileName(filename));
         int lineNumber = 0;
 
-        Version max_version = null;
+        Version? max_version = null;
         Version min_version = new Version(1, 0, 0);
+
+        NexTableColumnStruct? currentCustomStruct = null;
+        int currentStructOffset = 0;
 
         while (!sr.EndOfStream)
         {
@@ -84,7 +87,6 @@ public class TableMappingReader
             var split = line.Split("|");
             var id = split[0];
 
-            NexStructColumn column = null;
             switch (id)
             {
                 case "add_column":
@@ -92,47 +94,11 @@ public class TableMappingReader
                         if (split.Length < 3)
                             throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - expected 2 or 3 arguments (name, type, offset?)");
 
-                        string columnName = split[1];
-                        string columnTypeStr = split[2];
-
-                        if (columnTypeStr.EndsWith("[]") &&
-                            tableColumnLayout.CustomStructDefinitions.ContainsKey(columnTypeStr.Replace("[]", "")))
-                        {
-                            column = new NexStructColumn()
-                            {
-                                Name = columnName,
-                                Type = NexColumnType.CustomStructArray,
-                                StructTypeName = columnTypeStr.Replace("[]", ""),
-                            };
-                        }
-                        else
-                        {
-                            NexColumnType columnType = NexUtils.ColumnIdentifierToColumnType(columnTypeStr);
-                            if (columnType == NexColumnType.Unknown)
-                                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - type '{columnTypeStr}' is invalid\n");
-
-                            column = new NexStructColumn
-                            {
-                                Name = columnName,
-                                Type = columnType
-                            };
-                        }
-
-
                         if (inputVersion < min_version || (max_version != null && inputVersion > max_version))
                             continue;
 
-                        // Implicit padding. i.e current offset = 2, next type is int. align to 4 first.
-                        column.Offset = ImplicitPadType(column.Type, offset);
-
-                        if (split.Length >= 4 && split[3] == "rel")
-                        {
-                            column.UsesRelativeOffset = true;
-                            if (split.Length >= 5)
-                                column.RelativeOffsetShift = int.Parse(split[4]);
-                        }
-
-                        offset = (int)(column.Offset + NexUtils.TypeToSize(column.Type));
+                        NexStructColumn column = ParseColumn(tableColumnLayout, currentRowOffset, debugln, split);
+                        currentRowOffset = (int)(column.Offset + NexUtils.TypeToSize(column.Type));
 
                         if (!tableColumnLayout.Columns.TryAdd(column.Name, column))
                             throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - duplicate {column.Name} column\n");
@@ -177,7 +143,7 @@ public class TableMappingReader
                         if (split.Length < 2)
                             throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_min_version' - expected 1 arguments (version)");
 
-                        if (!Version.TryParse(split[1], out Version ver))
+                        if (!Version.TryParse(split[1], out Version? ver))
                             throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_min_version' - version is invalid");
 
                         min_version = ver;
@@ -189,7 +155,7 @@ public class TableMappingReader
                         if (split.Length < 2)
                             throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_max_version' - expected 1 arguments (version)");
 
-                        if (!Version.TryParse(split[1], out Version ver))
+                        if (!Version.TryParse(split[1], out Version? ver))
                             throw new InvalidDataException($"Metadata error: {debugln} has malformed 'set_max_version' - version is invalid");
 
                         max_version = ver;
@@ -203,28 +169,44 @@ public class TableMappingReader
                     max_version = null;
                     break;
 
+                // Custom structs
                 case "define_struct":
-                    string structName = split[1];
-
-                    int fieldOffset = 0;
-                    List<NexStructColumn> columns = [];
-                    for (int i = 2; i < split.Length; i++)
                     {
-                        NexColumnType type = NexUtils.ColumnIdentifierToColumnType(split[i]);
-                        fieldOffset = ImplicitPadType(type, fieldOffset);
-                        columns.Add(new NexStructColumn()
-                        {
-                            Name = split[i],
-                            Type = type,
-                            Offset = fieldOffset,
-                        });
+                        string structName = split[1];
 
-                        fieldOffset += NexUtils.TypeToSize(type);
+                        var customStruct = new NexTableColumnStruct(structName);
+                        if (!tableColumnLayout.CustomStructDefinitions.TryAdd(structName, customStruct))
+                            throw new InvalidDataException($"Metadata error: {debugln} - {structName} is already defined");
+
+                        currentCustomStruct = customStruct;
+                        currentStructOffset = 0;
                     }
-                    tableColumnLayout.CustomStructDefinitions.Add(structName, columns);
+                    break;
+                case "end_struct":
+                    {
+                        currentCustomStruct.TotalInlineSize = (int)NexUtils.AlignValue((uint)currentStructOffset, 0x04);
+                        currentCustomStruct = null;
+                    }
+                    break;
+                case "add_struct_column":
+                    {
+                        if (currentCustomStruct is null)
+                            throw new InvalidDataException($"Metadata error: {debugln} - no custom struct was defined");
 
+                        if (split.Length < 3)
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - expected 2 or 3 arguments (name, type, offset?)");
+
+                        if (inputVersion < min_version || (max_version != null && inputVersion > max_version))
+                            continue;
+
+                        NexStructColumn column = ParseColumn(tableColumnLayout, currentStructOffset, debugln, split);
+                        currentStructOffset = (int)(column.Offset + NexUtils.TypeToSize(column.Type));
+
+                        currentCustomStruct.Columns.Add(column);
+                    }
                     break;
 
+                // Miscellaneous
                 case "set_comment":
                     {
                         if (split.Length < 5)
@@ -283,7 +265,49 @@ public class TableMappingReader
             throw new InvalidDataException("Layout validation error: type or category is unknown.");
 
         // pad whole row
-        offset = (int)NexUtils.AlignValue((uint)offset, 0x04);
+        currentRowOffset = (int)NexUtils.AlignValue((uint)currentRowOffset, 0x04);
+    }
+
+    private static NexStructColumn ParseColumn(NexTableLayout tableColumnLayout, int currentOffset, string debugln, string[] split)
+    {
+        NexStructColumn column;
+        string columnName = split[1];
+        string columnTypeStr = split[2];
+
+        if (columnTypeStr.EndsWith("[]") &&
+            tableColumnLayout.CustomStructDefinitions.ContainsKey(columnTypeStr.Replace("[]", "")))
+        {
+            column = new NexStructColumn()
+            {
+                Name = columnName,
+                Type = NexColumnType.CustomStructArray,
+                StructTypeName = columnTypeStr.Replace("[]", ""),
+            };
+        }
+        else
+        {
+            NexColumnType columnType = NexUtils.ColumnIdentifierToColumnType(columnTypeStr);
+            if (columnType == NexColumnType.Unknown)
+                throw new InvalidDataException($"Metadata error: {debugln} has malformed 'add_column' - type '{columnTypeStr}' is invalid\n");
+
+            column = new NexStructColumn
+            {
+                Name = columnName,
+                Type = columnType
+            };
+        }
+
+        // Implicit padding. i.e current offset = 2, next type is int. align to 4 first.
+        column.Offset = ImplicitPadType(column.Type, currentOffset);
+
+        if (split.Length >= 4 && split[3] == "rel")
+        {
+            column.UsesRelativeOffset = true;
+            if (split.Length >= 5)
+                column.RelativeOffsetShift = int.Parse(split[4]);
+        }
+
+        return column;
     }
 
     private static int ImplicitPadType(NexColumnType type, int offset)

@@ -11,27 +11,27 @@ public class NexStructColumn
     /// <summary>
     /// Name of the column.
     /// </summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>
     /// Type of the column.
     /// </summary>
-    public NexColumnType Type { get; set; }
+    public required NexColumnType Type { get; set; }
 
     /// <summary>
     /// Name of the struct, if the type is a struct array.
     /// </summary>
-    public string StructTypeName { get; set; }
+    public string? StructTypeName { get; set; }
 
     /// <summary>
     /// Min version which this column applies.
     /// </summary>
-    public Version MinVersion { get; set; }
+    public Version? MinVersion { get; set; }
 
     /// <summary>
     /// Max version which this column applies.
     /// </summary>
-    public Version MaxVersion { get; set; }
+    public Version? MaxVersion { get; set; }
 
     public bool UsesRelativeOffset { get; set; }
     public int RelativeOffsetShift { get; set; }

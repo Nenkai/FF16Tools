@@ -40,11 +40,40 @@ add_column|Unk4|int
 add_column|TaskProgressCount|int
 
 // Types
+// (handled in 48 8B C4 48 89 58 ? 48 89 70 ? 55 57 41 54 41 56 41 57 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? C5 F8 29 70 ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 8B 41)
+// 2
 // 4 = partytalk (while on the way to next quest marker)
 // 6 = move next sequence
+// 7
+// 8
+// 11
+// 12
+// 13
+// 14
+// 15
+// 16
+// 17
+// 18 - Unknown, but uses union 702, which is the same value as cutsceneset->UnkType12
+// 19
+// 20
+// 21
 // 22 = default talk related
+// 23
+// 24
 // 27 = item related
+// 28
+// 29
+// 50
+// 51
 // 52 = simpleevent discussion
+// 54
+// 55
+// 56
+// 57
+// 58
+// 59
+// 60
+// 100
 add_column|Task1Type|int
 add_column|TaskUnions1|union[]
 add_column|Task2Type|int

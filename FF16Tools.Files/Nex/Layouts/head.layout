@@ -2,9 +2,16 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Parsing func: 48 89 5C 24 ? 44 88 44 24 ? 88 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC
+
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
 add_column|Unk4|string
 add_column|Comment|string
-add_column|Unk6|int
+
+// - animation/chara/c%04u/pack/animation/head/h%04u/animation.pac
+// Also used for indexing into animpacexisthead
+add_column|HeadAnimationFileId|short
+
+add_column|HeadModelFileId|short

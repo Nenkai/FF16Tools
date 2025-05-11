@@ -615,11 +615,13 @@ public class NexDataFileBuilder
                         int arrayOffset = (int)bs.Position;
                         arrayOffsets.Add(arrayOffset);
                         object[] structFields = (object[])array[i];
-                        List<NexStructColumn> structColumns = _columnLayout.CustomStructDefinitions[column.StructTypeName];
-                        for (int j = 0; j < structFields.Length; j++)
+                        NexTableColumnStruct customStruct = _columnLayout.CustomStructDefinitions[column.StructTypeName];
+
+                        for (int j = 0; j < customStruct.Columns.Count; j++)
                         {
-                            bs.Position = arrayOffset + structColumns[j].Offset;
-                            WriteCell(bs, arrayOffset, structFields[j], structColumns[j]);
+                            NexStructColumn field = customStruct.Columns[j];
+                            bs.Position = arrayOffset + field.Offset;
+                            WriteCell(bs, arrayOffset, structFields[j], field);
                         }
 
                         // Important to explicitly pad the struct.
@@ -630,14 +632,16 @@ public class NexDataFileBuilder
                     for (int i = 0; i < array.Length; i++)
                     {
                         object[] structFields = (object[])array[i];
-                        List<NexStructColumn> structColumns = _columnLayout.CustomStructDefinitions[column.StructTypeName];
-                        for (int j = 0; j < structFields.Length; j++)
+                        NexTableColumnStruct customStruct = _columnLayout.CustomStructDefinitions[column.StructTypeName];
+
+                        for (int j = 0; j < customStruct.Columns.Count; j++)
                         {
+                            NexStructColumn field = customStruct.Columns[j];
                             object obj = structFields[j];
                             if (obj is not Array)
                                 continue;
 
-                            WriteArray(bs, arrayOffsets[i], arrayOffsets[i] + (int)structColumns[j].Offset, obj, structColumns[j]);
+                            WriteArray(bs, arrayOffsets[i], arrayOffsets[i] + (int)field.Offset, obj, field);
                         }
                     }
                     arrayLength = array.Length;

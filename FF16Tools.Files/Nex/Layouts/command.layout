@@ -2,8 +2,15 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
-// unk, unk, unk, unk, chance
-define_struct|Unk55_Struct|int|float|int[]|float[]|int
+define_struct|Unk55_Struct
+add_struct_column|Unk1|int
+add_struct_column|Unk2|float
+add_struct_column|Unk3|int[]
+add_struct_column|Unk4|float[]
+add_struct_column|Chance|int
+end_struct|
+
+////////////////////////////////////////////////////////
 
 // Some row ids are hardcoded and seems to be mandatory
 // i.e 9, 10, 11, 21, 112?, 120, 261, 288, 331, 341, 343, 346, 347, 349, 355, 360, 363, 364, 393, 400, 3003
@@ -88,7 +95,7 @@ add_column|Unk47|string
 add_column|Unk48|float
 add_column|Unk49|float
 add_column|CommandActionSetId|int
-add_column|UnkType51|int
+add_column|FirelightItemCap|int
 add_column|Unk52|int
 add_column|Unk53|float
 add_column|Unk54|float
@@ -119,16 +126,16 @@ add_column|Unk70|byte
 add_column|Unk71|byte
 add_column|UnkBool72|byte
 add_column|UnkBool73|byte
-add_column|Unk74|byte
+add_column|IsAvailable|byte
 add_column|Unk75|byte
 add_column|Unk76|byte
-add_column|UnkBool77|byte
+add_column|UnkGaugeRelated|byte
 add_column|CanUseAirborne|byte
 add_column|Unk79|byte
 add_column|Unk80|byte
 add_column|UnkBool81|byte
 add_column|IsGaugeVisible|byte
-add_column|UnkBool83|byte
+add_column|IsGaugeVisibleInAir|byte
 add_column|Unk84|byte
 add_column|UnkBool85|byte
 add_column|UnkBool86|byte

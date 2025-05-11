@@ -2,6 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Has some hardcoded checks on some ids
+// 48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8B EC 48 83 EC ? 83 65
+
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|float

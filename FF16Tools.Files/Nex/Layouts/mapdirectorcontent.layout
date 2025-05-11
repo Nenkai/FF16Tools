@@ -2,7 +2,12 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-define_struct|Unk7_struct|int|int
+define_struct|Unk7_struct
+add_struct_column|Unk1|int
+add_struct_column|Unk2|int
+end_struct|
+
+//////////////////////////////////////////////////
 
 add_column|DLCFlags|int
 add_column|MapDirectorModuleIds|int[]

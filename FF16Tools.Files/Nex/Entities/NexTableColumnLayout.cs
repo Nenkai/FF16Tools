@@ -13,7 +13,7 @@ public class NexTableLayout
     public bool UsesBaseRowId { get; set; }
     public int TotalInlineSize { get; set; }
     public Dictionary<string, NexStructColumn> Columns { get; set; } = [];
-    public Dictionary<string, List<NexStructColumn>> CustomStructDefinitions { get; set; } = [];
+    public Dictionary<string, NexTableColumnStruct> CustomStructDefinitions { get; set; } = [];
 
     public Dictionary<(uint, uint, uint), string> RowComments { get; set; } = [];
 }

@@ -4,3 +4,5 @@ use_base_row_id|false
 
 add_column|DLCFlags|int
 add_column|UnkUnionArray|union[]
+
+// mThunde3R: 1030 controls which commands use their summonmode's icon instead of their own. Vanilla eikonic feats seem to not be included (only stuff like cancel moves, summon moves), but you can add any command to it and it seems to work fine

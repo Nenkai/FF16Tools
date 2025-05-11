@@ -2,7 +2,12 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-define_struct|Unk28_struct|short|short
+define_struct|Unk28_struct
+add_struct_column|UnkShort1|short
+add_struct_column|UnkShort2|short
+end_struct|
+
+///////////////////////////////////////////////////////
 
 add_column|DLCFlags|int
 add_column|Unk2|int
