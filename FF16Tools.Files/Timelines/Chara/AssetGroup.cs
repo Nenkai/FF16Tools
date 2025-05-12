@@ -1,10 +1,10 @@
 ﻿using Syroot.BinaryData;
 
-namespace FF16Tools.Files.CharaTimeline
+namespace FF16Tools.Files.Timelines.Chara
 {
     public class Asset : BaseStruct
     {
-        public override int _totalSize => 0x1C;
+        public override int TotalSize => 0x1C;
 
         public int field_0x00;
         public int field_0x04;
@@ -23,7 +23,7 @@ namespace FF16Tools.Files.CharaTimeline
 
     public class AssetGroup : BaseStruct
     {
-        public override int _totalSize => 0xC;
+        public override int TotalSize => 0xC;
 
         public int Index;
         // In the asset groups after the 3rd one (which actually has assets), this value is some weird large number

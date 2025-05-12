@@ -1,8 +1,9 @@
-﻿using Syroot.BinaryData;
+﻿using FF16Tools.Files.Timelines;
+using Syroot.BinaryData;
 
 using System.Reflection;
 
-namespace FF16Tools.Files.CharaTimeline;
+namespace FF16Tools.Files.Timelines.Chara;
 
 public static class DataElementsRegistry
 {
@@ -23,13 +24,13 @@ public static class DataElementsRegistry
 
 public abstract class TimelineElementDataInner : BaseStruct
 {
-    public override int _totalSize => -1;
-    public abstract TimelineUnionType _elementType { get; }
+    public override int TotalSize => -1;
+    public abstract TimelineElementType ElementType { get; }
 }
 
 public class TimelineElementData : BaseStruct
 {
-    public override int _totalSize => -1;
+    public override int TotalSize => -1;
 
     public int UnionType;
     public int field_0x04;

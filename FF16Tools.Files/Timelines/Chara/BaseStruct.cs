@@ -4,7 +4,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 
 
-namespace FF16Tools.Files.CharaTimeline
+namespace FF16Tools.Files.Timelines.Chara
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class RelativeField : Attribute
@@ -23,7 +23,7 @@ namespace FF16Tools.Files.CharaTimeline
         public RelativeField(string offsetFieldName)
         {
             this.offsetFieldName = offsetFieldName;
-            this.relativeToFieldName = null;
+            relativeToFieldName = null;
         }
     }
 
@@ -36,14 +36,15 @@ namespace FF16Tools.Files.CharaTimeline
 
     public abstract class BaseStruct
     {
-        public abstract int _totalSize { get; }
-        public byte[] _leftoverData;
+        public abstract int TotalSize { get; }
+        public byte[] LeftoverData;
 
         public FieldInfo[] GetAllFields()
         {
-            return this.GetType()
+            HashSet<string> fieldToExclude = new() { "TotalSize", "LeftoverData", "ElementType" };
+            return GetType()
                 .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
-                .Where(f => !f.Name.StartsWith("_"))
+                .Where(f => !fieldToExclude.Contains(f.Name))
                 .ToArray();
         }
 
@@ -61,7 +62,7 @@ namespace FF16Tools.Files.CharaTimeline
                 .Select(f => (string)f.GetValue(this)).Concat(
                     GetAllFields()
                     .Where(f => f.FieldType.IsSubclassOf(typeof(BaseStruct)))
-                    .Select(f => ((BaseStruct)f.GetValue(this))).Where(f => f != null)
+                    .Select(f => (BaseStruct)f.GetValue(this)).Where(f => f != null)
                     .SelectMany(f => f.GetAllStrings())
                 ).ToList();
             return x;
@@ -99,12 +100,12 @@ namespace FF16Tools.Files.CharaTimeline
 
         public int GetNonRelativeSize()
         {
-            if (_totalSize != -1)
-                return _totalSize;
+            if (TotalSize != -1)
+                return TotalSize;
 
             return GetAllFields().
                 Where(f => f.GetCustomAttribute<RelativeField>() == null).
-                Select(GetFieldSize).Sum() + (_leftoverData != null ? _leftoverData.Length : 0);
+                Select(GetFieldSize).Sum() + (LeftoverData != null ? LeftoverData.Length : 0);
         }
 
         public virtual void Read(BinaryStream bs)
@@ -138,7 +139,7 @@ namespace FF16Tools.Files.CharaTimeline
                     case TypeCode.String:
                         RelativeField relativeAttr = field.GetCustomAttribute<RelativeField>();
                         long currentPos = bs.Position;
-                        bs.Position = (int)this.GetType().GetField(relativeAttr.offsetFieldName).GetValue(this) +
+                        bs.Position = (int)GetType().GetField(relativeAttr.offsetFieldName).GetValue(this) +
                             (relativeAttr.relativeToFieldName == null ? startingPos : fieldPos[relativeAttr.relativeToFieldName]);
 
                         field.SetValue(this, bs.ReadString(StringCoding.ZeroTerminated));
@@ -149,7 +150,7 @@ namespace FF16Tools.Files.CharaTimeline
                         RelativeField relativeAttr2 = field.GetCustomAttribute<RelativeField>();
                         if (relativeAttr2 != null)
                         {
-                            bs.Position = (int)this.GetType().GetField(relativeAttr2.offsetFieldName).GetValue(this) +
+                            bs.Position = (int)GetType().GetField(relativeAttr2.offsetFieldName).GetValue(this) +
                                 (relativeAttr2.relativeToFieldName == null ? startingPos : fieldPos[relativeAttr2.relativeToFieldName]);
                         }
 
@@ -186,8 +187,8 @@ namespace FF16Tools.Files.CharaTimeline
                 }
             }
 
-            if (_totalSize != -1 && bs.Position - startingPos < _totalSize)
-                _leftoverData = bs.ReadBytes((int)(_totalSize - (bs.Position - startingPos))).ToArray();
+            if (TotalSize != -1 && bs.Position - startingPos < TotalSize)
+                LeftoverData = bs.ReadBytes((int)(TotalSize - (bs.Position - startingPos))).ToArray();
         }
 
         public virtual void Write(BinaryStream bs, Dictionary<(object, string), long> relativeFieldPos, Dictionary<string, long> stringPos)
@@ -241,9 +242,9 @@ namespace FF16Tools.Files.CharaTimeline
                 }
             }
 
-            if (_leftoverData != null)
+            if (LeftoverData != null)
             {
-                bs.WriteBytes(_leftoverData);
+                bs.WriteBytes(LeftoverData);
             }
 
             long endPos = bs.Position;

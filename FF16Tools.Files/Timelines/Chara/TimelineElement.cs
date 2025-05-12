@@ -1,8 +1,8 @@
-﻿namespace FF16Tools.Files.CharaTimeline;
+﻿namespace FF16Tools.Files.Timelines.Chara;
 
 public class TimelineElement: BaseStruct
 {
-    public override int _totalSize => 0x20;
+    public override int TotalSize => 0x20;
 
     public int field_0x00;
     public int UnkNameOffset;

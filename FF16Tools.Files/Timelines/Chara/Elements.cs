@@ -1,9 +1,10 @@
-﻿using Syroot.BinaryData;
+﻿using FF16Tools.Files.Timelines;
+using Syroot.BinaryData;
 
-namespace FF16Tools.Files.CharaTimeline;
+namespace FF16Tools.Files.Timelines.Chara;
 public class TimelineElement_5 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_5;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_5;
 
     public byte field_0x00;
     public byte field_0x01;
@@ -20,7 +21,7 @@ public class TimelineElement_8 : TimelineElementDataInner
 {
     public class Sub8Struct : BaseStruct
     {
-        public override int _totalSize => -1;
+        public override int TotalSize => -1;
 
         public int DataOffset;
         public int DataSize;
@@ -59,7 +60,7 @@ public class TimelineElement_8 : TimelineElementDataInner
         }
     }
 
-    public override TimelineUnionType _elementType => TimelineUnionType.CameraAnimationRange;
+    public override TimelineElementType ElementType => TimelineElementType.CameraAnimationRange;
 
     public int field_0x00;
     public int field_0x04;
@@ -135,7 +136,7 @@ public class TimelineElement_8 : TimelineElementDataInner
 
 public class TimelineElement_9 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_9;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_9;
 
     public int AttackParamId;
     public int Field_0x04;
@@ -154,7 +155,7 @@ public class TimelineElement_9 : TimelineElementDataInner
 
 public class TimelineElement_10 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.BattleCondition;
+    public override TimelineElementType ElementType => TimelineElementType.BattleCondition;
 
     public byte field_0x00;
     public byte field_0x01;
@@ -180,7 +181,7 @@ public class TimelineElement_10 : TimelineElementDataInner
 
 public class TimelineElement_12 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.BulletTimeRange;
+    public override TimelineElementType ElementType => TimelineElementType.BulletTimeRange;
 
     public float field_0x00;
     public float field_0x04;
@@ -198,7 +199,7 @@ public class TimelineElement_12 : TimelineElementDataInner
 
 public class TimelineElement_17 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.ControlPermission;
+    public override TimelineElementType ElementType => TimelineElementType.ControlPermission;
 
     public byte field_0x00;
     public byte field_0x01;
@@ -238,7 +239,7 @@ public class TimelineElement_17 : TimelineElementDataInner
 
 public class TimelineElement_23 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_23;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_23;
 
     public int field_0x00;
     public int field_0x04;
@@ -253,16 +254,16 @@ public class TimelineElement_23 : TimelineElementDataInner
 
 public class TimelineElement_26 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_26;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_26;
 
     // Actual structue is unknown, but its 12 bytes without any reltive fields, so the data will be loaded into _leftoverData
-    public override int _totalSize => 12; 
+    public override int TotalSize => 12; 
 }
 
 
 public class TimelineElement_27 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.AdjustRootMoveRange;
+    public override TimelineElementType ElementType => TimelineElementType.AdjustRootMoveRange;
 
     public int field_0x00;
     public int field_0x04;
@@ -272,7 +273,7 @@ public class TimelineElement_27 : TimelineElementDataInner
 
 public class TimelineElement_30 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_30;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_30;
 
     public int field_0x00;
     public int AnimPathOffset;
@@ -302,7 +303,7 @@ public class TimelineElement_30 : TimelineElementDataInner
 
 public class TimelineElement_31 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.PlaySoundTrigger;
+    public override TimelineElementType ElementType => TimelineElementType.PlaySoundTrigger;
 
     public int field_0x00;
     public int SoundPathOffset;
@@ -333,7 +334,7 @@ public class TimelineElement_31 : TimelineElementDataInner
 
 public class TimelineElement_33 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.AttachWeaponTemporaryRange;
+    public override TimelineElementType ElementType => TimelineElementType.AttachWeaponTemporaryRange;
 
     public int field_0x00;
     public int field_0x04;
@@ -343,7 +344,7 @@ public class TimelineElement_33 : TimelineElementDataInner
 
 public class TimelineElement_45 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.ModelSE;
+    public override TimelineElementType ElementType => TimelineElementType.ModelSE;
 
     public int field_0x00;
     public int field_0x04;
@@ -389,7 +390,7 @@ public class TimelineElement_45 : TimelineElementDataInner
 
 public class TimelineElement_47 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.BattleMessageRange;
+    public override TimelineElementType ElementType => TimelineElementType.BattleMessageRange;
 
     public int BattleMessageId;
     public int[] pad = new int[8];
@@ -399,7 +400,7 @@ public class TimelineElement_47 : TimelineElementDataInner
 
 public class TimelineElement_49 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_49;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_49;
 
     public int MSeqInputId;
 
@@ -408,7 +409,7 @@ public class TimelineElement_49 : TimelineElementDataInner
 
 public class TimelineElement_56 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_56;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_56;
 
     public int CameraFCurveId;
     public int UnkOffset1;
@@ -436,7 +437,7 @@ public class TimelineElement_56 : TimelineElementDataInner
 
 public class TimelineElement_57 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.PadVibration;
+    public override TimelineElementType ElementType => TimelineElementType.PadVibration;
 
     public int CameraFCurveId;
     public int UnkOffset1;
@@ -465,7 +466,7 @@ public class TimelineElement_57 : TimelineElementDataInner
 
 public class TimelineElement_51 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.EnableDestructorCollision;
+    public override TimelineElementType ElementType => TimelineElementType.EnableDestructorCollision;
 
     public int AnimPathOffset;
     public int field_0x04;
@@ -478,7 +479,7 @@ public class TimelineElement_51 : TimelineElementDataInner
 
 public class TimelineElement_60 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_60;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_60;
 
     public int field_0x00;
     public int UnkName1Offset;
@@ -511,7 +512,7 @@ public class TimelineElement_60 : TimelineElementDataInner
 
 public class TimelineElement_73 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_73;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_73;
 
     public int field_0x00;
     public int UnkName1Offset;
@@ -546,7 +547,7 @@ public class TimelineElement_84 : TimelineElementDataInner
 {
     public class Sub84Struct : BaseStruct
     {
-        public override int _totalSize => -1;
+        public override int TotalSize => -1;
 
         public int DataOffset;
         public int DataSize;
@@ -583,7 +584,7 @@ public class TimelineElement_84 : TimelineElementDataInner
         }
     }
 
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_84;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_84;
 
     public Sub84Struct Entry1;
     public Sub84Struct Entry2;
@@ -649,7 +650,7 @@ public class TimelineElement_84 : TimelineElementDataInner
 
 public class TimelineElement_74 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.ControlRejectionRange;
+    public override TimelineElementType ElementType => TimelineElementType.ControlRejectionRange;
 
     public int field_0x00;
     public byte field_0x04;
@@ -672,7 +673,7 @@ public class TimelineElement_74 : TimelineElementDataInner
 
 public class TimelineElement_1001 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1001;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1001;
 
     public int field_0x00;
     public int AnimPathOffset;
@@ -695,7 +696,7 @@ public class TimelineElement_1001 : TimelineElementDataInner
 
 public class TimelineElement_1002 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.Attack;
+    public override TimelineElementType ElementType => TimelineElementType.Attack;
 
     public int AttackParamId;
     public int Name;
@@ -719,7 +720,7 @@ public class TimelineElement_1002 : TimelineElementDataInner
 
 public class TimelineElement_1004 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1004;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1004;
 
     public int field_0x00;
     public int field_0x04;
@@ -736,7 +737,7 @@ public class TimelineElement_1004 : TimelineElementDataInner
 
 public class TimelineElement_1005 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1005;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1005;
 
     public int field_0x00;
     public int field_0x04;
@@ -753,7 +754,7 @@ public class TimelineElement_1005 : TimelineElementDataInner
 
 public class TimelineElement_1007 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1007;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1007;
 
     public int field_0x00;
     public int field_0x04;
@@ -767,13 +768,13 @@ public class TimelineElement_1007 : TimelineElementDataInner
 
 public class TimelineElement_1008 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1008;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1008;
     // No actual data fields, this struct is empty.
 }
 
 public class TimelineElement_1009 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.ComboEnable;
+    public override TimelineElementType ElementType => TimelineElementType.ComboEnable;
 
     public int field_0x00;
     public int field_0x04;
@@ -789,7 +790,7 @@ public class TimelineElement_1009 : TimelineElementDataInner
 
 public class TimelineElement_1010 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.TurnToTarget;
+    public override TimelineElementType ElementType => TimelineElementType.TurnToTarget;
 
     public int field_0x00;
     public int AnimPathOffset;
@@ -815,7 +816,7 @@ public class TimelineElement_1010 : TimelineElementDataInner
 
 public class TimelineElement_1012 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.MagicCreate;
+    public override TimelineElementType ElementType => TimelineElementType.MagicCreate;
 
     public int field_0x00;
     public int field_0x04;
@@ -834,7 +835,7 @@ public class TimelineElement_1012 : TimelineElementDataInner
 
 public class TimelineElement_1014 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1014;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1014;
 
     public int field_0x00;
     public int field_0x04;
@@ -850,7 +851,7 @@ public class TimelineElement_1014 : TimelineElementDataInner
 
 public class TimelineElement_1016 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.PrecedeInputUnk;
+    public override TimelineElementType ElementType => TimelineElementType.PrecedeInputUnk;
 
     public byte field_0x00;
     public byte field_0x01;
@@ -873,7 +874,7 @@ public class TimelineElement_1023 : TimelineElementDataInner
 {
     public class Sub1023Struct : BaseStruct
     {
-        public override int _totalSize => 0x58;
+        public override int TotalSize => 0x58;
 
         public int Active;
         public int UnkIdSlot;
@@ -888,7 +889,7 @@ public class TimelineElement_1023 : TimelineElementDataInner
         public int[] pad = new int[8];
     }
 
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1023;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1023;
 
     public int Offset_0x00;
     public int Count_0x00;
@@ -948,7 +949,7 @@ public class TimelineElement_1030 : TimelineElementDataInner
 {
     public class Sub1030Struct : BaseStruct
     {
-        public override int _totalSize => 0x58;
+        public override int TotalSize => 0x58;
 
         public int Active;
         public int UnkIdSlot;
@@ -963,7 +964,7 @@ public class TimelineElement_1030 : TimelineElementDataInner
         public int[] pad = new int[8];
     }
 
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1030;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1030;
 
     public int Offset_0x00;
     public int Count_0x00;
@@ -1031,7 +1032,7 @@ public class TimelineElement_1030 : TimelineElementDataInner
 
 public class TimelineElement_1035 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1035;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1035;
 
     public int field_0x00;
     public int AnimPathOffset;
@@ -1052,7 +1053,7 @@ public class TimelineElement_1035 : TimelineElementDataInner
 
 public class TimelineElement_1047 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.SummonPartsVisibleRange;
+    public override TimelineElementType ElementType => TimelineElementType.SummonPartsVisibleRange;
 
     public int SummonPartsPatternId;
     public float field_0x04;
@@ -1070,7 +1071,7 @@ public class TimelineElement_1049 : TimelineElementDataInner
 {
     public class Sub1049Struct : BaseStruct
     {
-        public override int _totalSize => 0x58;
+        public override int TotalSize => 0x58;
         public int Active;
         public int UnkIdSlot;
         public int EidId1;
@@ -1084,8 +1085,8 @@ public class TimelineElement_1049 : TimelineElementDataInner
         public int[] pad = new int[8];
     }
 
-    public override int _totalSize => 0x70;
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1049;
+    public override int TotalSize => 0x70;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1049;
 
     public int Offset_0x00;
     public int Count_0x00;
@@ -1152,13 +1153,13 @@ public class TimelineElement_1049 : TimelineElementDataInner
         Sub = Timeline.ReadArrayOfStructs<Sub1049Struct>(bs, startingPos + Offset_0x00, Count_0x00);
         bs.Position = finalPos;
 
-        _leftoverData = bs.ReadBytes(_totalSize - (int)(finalPos - startingPos));
+        LeftoverData = bs.ReadBytes(TotalSize - (int)(finalPos - startingPos));
     }
 }
 
 public class TimelineElement_1053 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.BattleVoiceTrigger;
+    public override TimelineElementType ElementType => TimelineElementType.BattleVoiceTrigger;
 
     public int field_0x00;
     public int field_0x04;
@@ -1175,7 +1176,7 @@ public class TimelineElement_1053 : TimelineElementDataInner
 
 public class TimelineElement_1058 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.DisableReceiver;
+    public override TimelineElementType ElementType => TimelineElementType.DisableReceiver;
 
     public int NameOffset;
     public int field_0x04;
@@ -1187,7 +1188,7 @@ public class TimelineElement_1058 : TimelineElementDataInner
 
 public class TimelineElement_1059 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1059;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1059;
 
     public int NameOffset;
     public float field_0x04;
@@ -1199,7 +1200,7 @@ public class TimelineElement_1059 : TimelineElementDataInner
 
 public class TimelineElement_1064 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1064;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1064;
 
     public int AttackParamId;
     public int Offset_0x04;
@@ -1218,7 +1219,7 @@ public class TimelineElement_1064 : TimelineElementDataInner
 
 public class TimelineElement_1066 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.MotionAttribute;
+    public override TimelineElementType ElementType => TimelineElementType.MotionAttribute;
 
     public int field_0x00;
 
@@ -1227,7 +1228,7 @@ public class TimelineElement_1066 : TimelineElementDataInner
 
 public class TimelineElement_1075 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1075;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1075;
 
     public int field_0x00;
     public int field_0x04;
@@ -1244,7 +1245,7 @@ public class TimelineElement_1075 : TimelineElementDataInner
 
 public class TimelineElement_1084 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1084;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1084;
 
     public int field_0x00;
     public int field_0x04;
@@ -1261,7 +1262,7 @@ public class TimelineElement_1084 : TimelineElementDataInner
 
 public class TimelineElement_1097 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.DisableCharaUnk;
+    public override TimelineElementType ElementType => TimelineElementType.DisableCharaUnk;
 
     public int Offset_0x00;
     public int field_0x04;
@@ -1276,7 +1277,7 @@ public class TimelineElement_1097 : TimelineElementDataInner
 
 public class TimelineElement_1099 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1099;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1099;
 
     public int field_0x00;
     public int field_0x04;
@@ -1296,7 +1297,7 @@ public class TimelineElement_1099 : TimelineElementDataInner
 
 public class TimelineElement_1102 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1102;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1102;
 
     public int Offset_0x00;
     public int field_0x04;
@@ -1310,7 +1311,7 @@ public class TimelineElement_1102 : TimelineElementDataInner
 
 public class TimelineElement_1103 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1103;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1103;
 
     public int Offset_0x00;
     public int field_0x04;
@@ -1324,7 +1325,7 @@ public class TimelineElement_1103 : TimelineElementDataInner
 
 public class TimelineElement_1107 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.StartCooldown; // not offical name
+    public override TimelineElementType ElementType => TimelineElementType.StartCooldown; // not offical name
 
     public int Offset_0x00;
     public int field_0x04;
@@ -1336,7 +1337,7 @@ public class TimelineElement_1107 : TimelineElementDataInner
 
 public class TimelineElement_1115 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.kTimelineElem_1115;
+    public override TimelineElementType ElementType => TimelineElementType.kTimelineElem_1115;
 
     public int field_0x00;
     public int field_0x04;
@@ -1366,7 +1367,7 @@ public class TimelineElement_1115 : TimelineElementDataInner
 
 public class TimelineElement_1117 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.StartCooldown;
+    public override TimelineElementType ElementType => TimelineElementType.StartCooldown;
 
     public int field_0x00;
     public int field_0x04;
@@ -1383,7 +1384,7 @@ public class TimelineElement_1117 : TimelineElementDataInner
 
 public class TimelineElement_1130 : TimelineElementDataInner
 {
-    public override TimelineUnionType _elementType => TimelineUnionType.JustBuddyCommand;
+    public override TimelineElementType ElementType => TimelineElementType.JustBuddyCommand;
 
     public int field_0x00;
     public int field_0x04;

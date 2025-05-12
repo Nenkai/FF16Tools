@@ -1,10 +1,10 @@
 ﻿using Syroot.BinaryData;
 
-namespace FF16Tools.Files.CharaTimeline;
+namespace FF16Tools.Files.Timelines.Chara;
 
 public class CharaTimelineFile
 {
-    public const int magic = 0x4C544346;
+    public const int MAGIC = 0x4C544346;
     public uint Version { get; set; }
     public Timeline Timeline { get; set; }
 
@@ -18,7 +18,7 @@ public class CharaTimelineFile
     {
         var bs = new BinaryStream(stream);
 
-        if (bs.ReadUInt32() != magic)
+        if (bs.ReadUInt32() != MAGIC)
             throw new InvalidDataException("Not a chara timeline (.tlb) file. Magic did not match.");
 
         Version = bs.ReadUInt32();
@@ -57,7 +57,7 @@ public class CharaTimelineFile
         // */
 
         // Write Header
-        bs.WriteInt32(magic);
+        bs.WriteInt32(MAGIC);
         bs.WriteUInt32(Version + 1);
         bs.WriteInt32(0); // c
         bs.WriteInt32(0); // d

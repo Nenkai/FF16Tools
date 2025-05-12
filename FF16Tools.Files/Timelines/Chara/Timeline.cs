@@ -1,13 +1,13 @@
 ﻿using Syroot.BinaryData;
 
-namespace FF16Tools.Files.CharaTimeline
+namespace FF16Tools.Files.Timelines.Chara
 {
     public class Timeline
     {
         public int TotalFrames { get; set; }
-        public List<TimelineElement> Elements;
-        public List<AssetGroup> AssetGroups;
-        public List<FinalStruct> FinalStructs;
+        public List<TimelineElement> Elements { get; set; }
+        public List<AssetGroup> AssetGroups { get; set; }
+        public List<FinalStruct> FinalStructs { get; set; }
 
         int field_0x00;
         int timelineElementsOffset;
@@ -37,7 +37,7 @@ namespace FF16Tools.Files.CharaTimeline
             for (int i = 0; i < elementCount; i++)
             {
                 T elem = new T();
-                bs.Position = startOffset + (i * elem._totalSize);
+                bs.Position = startOffset + i * elem.TotalSize;
                 elem.Read(bs);
                 elements.Add(elem);
             }
@@ -56,7 +56,7 @@ namespace FF16Tools.Files.CharaTimeline
         {
             HashSet<int> unknownElements = Elements.Where(e=>e.DataUnion.ElementData == null).Select(e => e.DataUnion.UnionType).ToHashSet();
             if (unknownElements.Count > 0) { 
-                throw new Exception($"The timeline cannot be written since it contains unknow union types: ({String.Join(", ", unknownElements)})");
+                throw new Exception($"The timeline cannot be written since it contains unknow union types: ({string.Join(", ", unknownElements)})");
             }
 
             // We first need to write the absolute timeline position, then 4 empty bytes
@@ -196,7 +196,7 @@ namespace FF16Tools.Files.CharaTimeline
             // Write the asset entry offsets
             List<Asset> allAssets = AssetGroups.Where(ag=>ag.AssetList != null).SelectMany(ag => ag.AssetList).ToList();
             for (int i = 0; i<allAssets.Count; i++) {
-                var offsetToAsset = assetEntryOffsetsSize + (allAssets[0]._totalSize * i);
+                var offsetToAsset = assetEntryOffsetsSize + allAssets[0].TotalSize * i;
                 bs.WriteInt32(offsetToAsset);
             }
             // Write the assets
@@ -212,7 +212,7 @@ namespace FF16Tools.Files.CharaTimeline
             int finalStructIndex = 0;
             foreach (var finalStruct in FinalStructs)
             {
-                relativeFieldPos[(finalStruct, "Sub")] = finalSubStructPos + FinalStructs[0].Sub._totalSize * finalStructIndex;
+                relativeFieldPos[(finalStruct, "Sub")] = finalSubStructPos + FinalStructs[0].Sub.TotalSize * finalStructIndex;
                 finalStruct.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
                 finalStructIndex++;
             }
