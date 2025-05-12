@@ -1,15 +1,11 @@
-﻿using System.Buffers.Binary;
-using System.IO.Compression;
-using System.Globalization;
+﻿using System.Globalization;
 
 using Microsoft.Extensions.Logging;
 
 using CommandLine;
 
-using NLog;
 using NLog.Extensions.Logging;
 
-using FF16Tools.Files;
 using FF16Tools.Files.Save;
 using FF16Tools.Files.Nex;
 using FF16Tools.Files.Nex.Managers;
@@ -25,7 +21,7 @@ namespace FF16Tools.CLI;
 public class Program
 {
     public const string Version = "1.7.1";
-    
+
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
 
@@ -73,7 +69,7 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, UnpackAllPacksVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs, 
+        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, UnpackAllPacksVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs,
             ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs,
             VatbToJsonVerbs, JsonToVatbVerbs>(args);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
