@@ -1,6 +1,6 @@
 ﻿namespace FF16Tools.Files.Timelines;
 
-public enum  TimelineElementType
+public enum TimelineElementType
 {
     kTimelineElem_5 = 5,
     CameraAnimationRange = 8,
@@ -18,7 +18,11 @@ public enum  TimelineElementType
     BattleMessageRange = 47,
     kTimelineElem_49 = 49,
     EnableDestructorCollision = 51,
-    kTimelineElem_56 = 56,
+
+    /// <summary>
+    /// (Not the actual offical name) - does something with vibration, but known
+    /// </summary>
+    PadVibrationUnk = 56,
     PadVibration = 57,
     kTimelineElem_60 = 60,
     kTimelineElem_73 = 73,
@@ -54,7 +58,11 @@ public enum  TimelineElementType
     kTimelineElem_1107 = 1107,
     ExtrudeLayerRange = 1108, // Actual data layout is unknown
     kTimelineElem_1115 = 1115,
-    StartCooldown = 1117, // Not the actual offical name, but this is what it does
+
+    /// <summary>
+    /// (Not the actual offical name)
+    /// </summary>
+    StartCooldown = 1117,
     JustBuddyCommand = 1130
 }
 

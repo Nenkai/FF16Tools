@@ -42,7 +42,7 @@ public class VFXAudioTableBinary
 
     public void Read(Stream stream)
     {
-        BinaryStream bs = new BinaryStream(stream, ByteConverter.Little);
+        SmartBinaryStream bs = new SmartBinaryStream(stream, ByteConverter.Little);
 
         uint headerSize = bs.ReadUInt32();
         uint entryCount = bs.ReadUInt32();
@@ -59,7 +59,7 @@ public class VFXAudioTableBinary
 
     public void Write(Stream outputStream)
     {
-        BinaryStream bs = new BinaryStream(outputStream);
+        SmartBinaryStream bs = new SmartBinaryStream(outputStream);
         bs.WriteUInt32(0x08);
         bs.WriteUInt32((uint)Entries.Count);
 
@@ -89,11 +89,11 @@ public class VFXAudioTableBinary
             if (entry.VFX is not null)
             {
                 bs.Position = lastAssetRefOffset;
-                bs.WriteUInt32(entry.VFX.AssetType);
+                bs.WriteUInt32((uint)entry.VFX.AssetType);
                 WriteStringPointer(bs, entry.VFX.Path ?? string.Empty, lastAssetRefOffset, ref lastStrOffset);
                 vfxRefOffset = (uint)(lastAssetRefOffset - entryOffset);
 
-                lastAssetRefOffset += AssetReference.GetSize();
+                lastAssetRefOffset += entry.VFX.GetSize();
                 bs.Position = entryOffset + 0x08;
             }
             bs.WriteUInt32(vfxRefOffset);
@@ -106,11 +106,11 @@ public class VFXAudioTableBinary
             if (entry.Audio is not null)
             {
                 bs.Position = lastAssetRefOffset;
-                bs.WriteUInt32(entry.Audio.AssetType);
+                bs.WriteUInt32((uint)entry.Audio.AssetType);
                 WriteStringPointer(bs, entry.Audio.Path ?? string.Empty, lastAssetRefOffset, ref lastStrOffset);
                 audioRefOffset = (uint)(lastAssetRefOffset - entryOffset);
 
-                lastAssetRefOffset += AssetReference.GetSize();
+                lastAssetRefOffset += entry.Audio.GetSize();
                 bs.Position = entryOffset + 0x18;
             }
             bs.WriteUInt32(audioRefOffset);
@@ -122,7 +122,7 @@ public class VFXAudioTableBinary
         
     }
 
-    private void WriteStringPointer(BinaryStream bs, string name, long relativeOffset, ref long lastOffset)
+    private void WriteStringPointer(SmartBinaryStream bs, string name, long relativeOffset, ref long lastOffset)
     {
         long cPos = bs.Position;
         int thisStrOffset = (int)(lastOffset - relativeOffset);
@@ -149,7 +149,7 @@ public class VFXAudioTableEntry
     public AssetReference VFX { get; set; } = new();
     public AssetReference Audio { get; set; } = new();
 
-    public void Read(BinaryStream bs)
+    public void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
 
@@ -178,29 +178,5 @@ public class VFXAudioTableEntry
     public static uint GetSize()
     {
         return 0x20;
-    }
-}
-
-public class AssetReference
-{
-    // 1012 = Audio (.sab)
-    // 1019 = VFX (.vfx)
-    public uint AssetType { get; set; }
-    public string? Path { get; set; }
-
-    public void Read(BinaryStream bs)
-    {
-        long basePos = bs.Position;
-
-        AssetType = bs.ReadUInt32();
-        uint pathOffset = bs.ReadUInt32();
-
-        bs.Position = basePos + pathOffset;
-        Path = bs.ReadString(StringCoding.ZeroTerminated);
-    }
-
-    public static uint GetSize()
-    {
-        return 0x08;
     }
 }

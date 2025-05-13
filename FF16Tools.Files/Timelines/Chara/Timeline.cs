@@ -1,234 +1,295 @@
-﻿using Syroot.BinaryData;
+﻿using FF16Tools.Files.Timelines.Elements.Battle;
 
-namespace FF16Tools.Files.Timelines.Chara
+using Syroot.BinaryData;
+
+namespace FF16Tools.Files.Timelines.Chara;
+
+public class Timeline
 {
-    public class Timeline
+    public int Field_0x00 { get; set; }
+    public int TotalFrames { get; set; }
+    public List<TimelineElement> Elements { get; set; } = [];
+    public List<AssetGroup> AssetGroups { get; set; } = [];
+    public List<FinalStruct> FinalStructs { get; set; } = [];
+    public int Field_0x28 { get; set; }
+    public void Read(SmartBinaryStream bs)
     {
-        public int TotalFrames { get; set; }
-        public List<TimelineElement> Elements { get; set; }
-        public List<AssetGroup> AssetGroups { get; set; }
-        public List<FinalStruct> FinalStructs { get; set; }
+        long thisPos = bs.Position;
 
-        int field_0x00;
-        int timelineElementsOffset;
+        Field_0x00 = bs.ReadInt32();
+        int timelineElementsOffset = bs.ReadInt32();
+        int timelineElementCount = bs.ReadInt32();
+        int assetGroupsOffset = bs.ReadInt32();
+        int assetGroupCount = bs.ReadInt32();
+        int offset_0x14 = bs.ReadInt32();
+        int count_0x14 = bs.ReadInt32();
+        TotalFrames = bs.ReadInt32();
+        Field_0x28 = bs.ReadInt32();
 
-        public void Read(BinaryStream bs)
+        Elements = bs.ReadArrayOfStructs<TimelineElement>(thisPos + timelineElementsOffset, timelineElementCount);
+        AssetGroups = bs.ReadArrayOfStructs<AssetGroup>(thisPos + assetGroupsOffset, assetGroupCount);
+        FinalStructs = bs.ReadArrayOfStructs<FinalStruct>(thisPos + offset_0x14, count_0x14);
+    }
+
+    public int Write(SmartBinaryStream bs)
+    {
+        // We aim to write the data 1:1.
+
+        // The timeline header can appear after some element data, which is weird, I wonder why they do this.
+        // Write said data first.
+        WritePreTimelineElements(bs);
+
+        long timelineHeaderOffset = bs.Position;
+        bs.Position += 0x24;
+
+        // We should be writing the element infos here. For now, skip them.
+        // We need the data offsets of other timeline elements.
+        long timelineElementsOffset = bs.Position;
+        WriteTimelineElements(bs);
+
+        // Done with timeline elements. Write asset groups.
+        long assetGroupsOffset = bs.Position;
+        WriteAssetGroups(bs);
+
+        // Write whatever this is.
+        long finalStructsOffset = bs.Position;
+        WriteFinalStruct(bs);
+
+        // String table.
+        bs.WriteStringTable();
+
+        long endPos = bs.Position;
+
+        // Finalize timeline header
+        bs.Position = timelineHeaderOffset;
+        bs.WriteInt32(Field_0x00);
+        bs.WriteInt32((int)(timelineElementsOffset - timelineHeaderOffset));
+        bs.WriteInt32(Elements.Count);
+        bs.WriteInt32((int)(assetGroupsOffset - timelineHeaderOffset));
+        bs.WriteInt32(AssetGroups.Count);
+        bs.WriteInt32((int)(finalStructsOffset - timelineHeaderOffset));
+        bs.WriteInt32(FinalStructs.Count);
+        bs.WriteInt32(TotalFrames);
+        bs.WriteInt32(Field_0x28);
+
+        bs.Position = endPos;
+
+        return (int)timelineHeaderOffset;
+    }
+
+    private void WriteFinalStruct(SmartBinaryStream bs)
+    {
+        // Skip toc for now.
+        long finalStructToc = bs.Position;
+        bs.Position += FinalStructs.Count * sizeof(int);
+
+        // Got the start data offset to final structs. Begin to write
+        for (int i = 0; i < FinalStructs.Count; i++)
         {
-            long thisPos = bs.Position;
-
-            field_0x00 = bs.ReadInt32();
-            timelineElementsOffset = bs.ReadInt32();
-            int timelineElementCount = bs.ReadInt32();
-            int assetGroupsOffset = bs.ReadInt32();
-            int assetGroupCount = bs.ReadInt32();
-            int offset_0x14 = bs.ReadInt32();
-            int count_0x14 = bs.ReadInt32();
-            int TotalFrames = bs.ReadInt32();
-            bs.ReadInt32(); // empty padding
-
-            Elements = ReadArrayOfStructs<TimelineElement>(bs, thisPos + timelineElementsOffset, timelineElementCount);
-            AssetGroups = ReadArrayOfStructs<AssetGroup>(bs, thisPos + assetGroupsOffset, assetGroupCount);
-            FinalStructs = ReadArrayOfStructs<FinalStruct>(bs, thisPos + offset_0x14, count_0x14);
+            FinalStruct finalStruct = FinalStructs[i];
+            bs.AddObjectPointer(finalStruct.InternalFinalStruct);
+            finalStruct.InternalFinalStruct.Write(bs);
         }
-        public static List<T> ReadArrayOfStructs<T>(BinaryStream bs, long startOffset, int elementCount) where T : BaseStruct, new()
+        long lastOffset = bs.Position;
+
+        // Write asset group pointers.
+        bs.Position = finalStructToc;
+        for (int i = 0; i < FinalStructs.Count; i++)
         {
-            List<T> elements = new();
+            long finalGroupOffset = bs.Position;
 
-            for (int i = 0; i < elementCount; i++)
-            {
-                T elem = new T();
-                bs.Position = startOffset + i * elem.TotalSize;
-                elem.Read(bs);
-                elements.Add(elem);
-            }
-
-            return elements;
+            FinalStruct finalStruct = FinalStructs[i];
+            bs.WriteObjectPointer(finalStruct.InternalFinalStruct, finalGroupOffset);
         }
 
-        public List<string> GetAllDistinctStrings()
+        // Done with asset groups.
+        bs.Position = lastOffset;
+    }
+
+    private void WriteTimelineElements(SmartBinaryStream bs)
+    {
+        long elementsInfoOffset = bs.Position;
+        bs.Position += Elements.Count * 0x20;
+
+        // Write all other elements.
+        WriteMainTimelineElementData(bs);
+
+        long lastOffset = bs.Position;
+        bs.Position = elementsInfoOffset;
+
+        // Now we can write the element toc.
+        for (int i = 0; i < Elements.Count; i++)
         {
-            return Elements.SelectMany(e => e.GetAllStrings()).Concat(
-                AssetGroups.Where(a => a.AssetList != null).SelectMany(a => a.AssetList).SelectMany(a => a.GetAllStrings())
-            ).Distinct().ToList();
+            TimelineElement element = Elements[i];
+            element.Write(bs);
         }
 
-        public void Write(BinaryStream bs)
+        bs.Position = lastOffset;
+    }
+
+    // These timeline elements are written before the timeline header
+    private readonly HashSet<TimelineElementType> _preTimelineTypes =
+    [
+        TimelineElementType.kTimelineElem_30,
+        TimelineElementType.PlaySoundTrigger,
+        TimelineElementType.ModelSE,
+        (TimelineElementType)1029,
+        (TimelineElementType)1042,
+    ];
+
+    private void WritePreTimelineElements(SmartBinaryStream bs)
+    {
+        bool aligned = false;
+        foreach (TimelineElement element in Elements)
         {
-            HashSet<int> unknownElements = Elements.Where(e=>e.DataUnion.ElementData == null).Select(e => e.DataUnion.UnionType).ToHashSet();
-            if (unknownElements.Count > 0) { 
-                throw new Exception($"The timeline cannot be written since it contains unknow union types: ({string.Join(", ", unknownElements)})");
-            }
-
-            // We first need to write the absolute timeline position, then 4 empty bytes
-            // Then we need to write the "pre-timeline" data, which is any DataUnion of type {30,31,45,1029,1042},
-            // Or any list of structs that are referenced by the timeline elements.
-            // To do this we need to calculate a bunch of data sizes and offsets, and write them in the correct order.
-
-            // Holds a mapping between each relative object and its position in the file (key is the owning object and the field name)
-            Dictionary<(object, string), long> relativeFieldPos = new();
-
-            HashSet<int> preTimelineTypes = new() { 30, 31, 45, 1029, 1042 };
-            List<TimelineElement> preTimelineElements = new();
-            List<TimelineElement> postTimelineElements = new();
-
-            foreach (var elem in Elements)
+            if (_preTimelineTypes.Contains(element.DataUnion.UnionType))
             {
-                if (preTimelineTypes.Contains(elem.DataUnion.UnionType))
-                    preTimelineElements.Add(elem);
-                else
-                    postTimelineElements.Add(elem);
-            }
-
-            List<RelativeListInfo> preTimelineLists = Elements.SelectMany(e=>e.DataUnion.ElementData.GetAllRelativeLists()).ToList();
-
-            // Figure out the size of the pre-timeline data to calculate where the timeline will be
-            int preTimelineDataUnionSize = preTimelineElements.Select(e=>e.DataUnion.GetNonRelativeSize()).Sum();
-            int preTimelineListsSize = preTimelineLists.SelectMany(f=>f.value).Select(l => l.GetNonRelativeSize()).Sum();
-
-            // If there is pre-timeline data, there is a 4 byte empty padding after the header
-            int headerPaddingSize = preTimelineDataUnionSize + preTimelineListsSize == 0 ? 0 : 4; 
-
-            // 4 bytes for the timeline position itself
-            int timelinePos = (int)bs.Position + 4 + headerPaddingSize + preTimelineListsSize + preTimelineDataUnionSize;
-            bs.Write(timelinePos);
-            if (headerPaddingSize > 0)
-                bs.WriteInt32(0); // empty padding
-
-            // ***** End of header *****
-
-            // Offset calculations:
-
-            // Calculate AssetGroup offset, which is at the position of metadata + all elements + all post-timeline data unions
-            var elementsSize = Elements.Select(e => e.GetNonRelativeSize()).Sum();
-            // Ignore the size of the elements that came before the timeline
-            var dataUnionSize = postTimelineElements.Select(e => e.DataUnion.GetNonRelativeSize()).Sum();
-
-            var assetGroupOffset = timelineElementsOffset + elementsSize + dataUnionSize;
-
-            // Calculate FinalStruct offset, which is at the position of metadata + all elements + all data unions + all asset groups + all asset
-            var assetGroupSize = AssetGroups.Select(a => a.GetNonRelativeSize()).Sum();
-            var assetEntryOffsetsSize = AssetGroups.Where(a=>a.AssetList != null).Select(a => a.AssetList.Count).Sum() * 4; // 4 since its a list of ints
-            var assetsSize = AssetGroups.Where(a=>a.AssetList != null).SelectMany(a => a.AssetList).Select(a => a.GetNonRelativeSize()).Sum();
-            var finalStructOffset = assetGroupOffset + assetGroupSize + assetEntryOffsetsSize + assetsSize;
-
-            // Calculate strings absolute position, which is after everything else
-            var finalStructsSize = FinalStructs.Select(f => f.GetNonRelativeSize()).Sum();
-            var finalStructSubStructsSize = FinalStructs.Select(f => f.Sub.GetNonRelativeSize()).Sum();
-            var stringsStartingPos = timelinePos + finalStructOffset + finalStructsSize + finalStructSubStructsSize;
-
-            // Write all strings to a temp buffer, and save their would-be position
-            using MemoryStream stringBuffer = new();
-            List<string> distStrings = GetAllDistinctStrings();
-            Dictionary<string, long> stringPos = new();
-            foreach (var str in distStrings)
-            {
-                stringPos[str] = stringBuffer.Position + stringsStartingPos;
-                stringBuffer.WriteString(str, StringCoding.ZeroTerminated, encoding: System.Text.Encoding.UTF8);
-            }
-
-
-            // ** Write pre-timeline data **
-            // Write all relative lists and save their positions
-            foreach (var lst in preTimelineLists)
-            {
-                relativeFieldPos[(lst.OwningObject, lst.fieldName)] = bs.Position;
-                foreach (var item in lst.value)
+                if (!aligned)
                 {
-                    // The relative lists dont refer to other internal relative elements
-                    item.Write(bs, relativeFieldPos: null, stringPos: stringPos);
+                    bs.Align(0x10, grow: true);
+                    aligned = true;
                 }
+
+                bs.AddObjectPointer(element.DataUnion);
+
+                // We don't write them right away. Why, you ask?
+                // String table order. It seems the strings are correctly ordered according to the order of elements
+                // And even though this is written before the timeline header, the strings are still in the right order.
+                // So we can't write the data early just yet. We pre-allocate pretty much.
+                bs.Position += ((ISerializableStruct)element.DataUnion).GetSize();
             }
 
-            // Write all pre-timeline data unions and save their positions
-            foreach (var elem in preTimelineElements)
+            // These sub-structures are also written before. These ones we can actually write, they don't have strings so order doesn't matter.
+            switch (element.DataUnion.UnionType)
             {
-                relativeFieldPos[(elem, "DataUnion")] = bs.Position;
-                elem.DataUnion.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
+                case TimelineElementType.kTimelineElem_1023:
+                    {
+                        var elem = (TimelineElement_1023)element.DataUnion;
+
+                        // Aligned regardless if count is 0
+                        if (!aligned)
+                        {
+                            bs.Align(0x10, grow: true);
+                            aligned = true;
+                        }
+
+                        bs.AddObjectPointer(elem.SubStructs);
+                        for (int i = 0; i < elem.SubStructs.Count; i++)
+                            elem.SubStructs[i].Write(bs);
+                    }
+                    break;
+
+                case TimelineElementType.kTimelineElem_1030:
+                    {
+                        var elem = (TimelineElement_1030)element.DataUnion;
+
+                        // Aligned regardless if count is 0
+                        if (!aligned)
+                        {
+                            bs.Align(0x10, grow: true);
+                            aligned = true;
+                        }
+
+                        bs.AddObjectPointer(elem.SubStructs);
+                        for (int i = 0; i < elem.SubStructs.Count; i++)
+                            elem.SubStructs[i].Write(bs);
+                    }
+                    break;
+
+                case TimelineElementType.kTimelineElem_1049:
+                    {
+                        var elem = (TimelineElement_1049)element.DataUnion;
+
+                        // Aligned regardless if count is 0
+                        if (!aligned)
+                        {
+                            bs.Align(0x10, grow: true);
+                            aligned = true;
+                        }
+
+                        bs.AddObjectPointer(elem.SubStructs);
+                        for (int i = 0; i < elem.SubStructs.Count; i++)
+                            elem.SubStructs[i].Write(bs);
+                    }
+                    break;
             }
-
-            // ***** End of pre-timeline data ****
-
-            // ** Write timeline **
-
-            bs.WriteInt32(field_0x00);
-            bs.WriteInt32(timelineElementsOffset); // always 36
-            bs.WriteInt32(Elements.Count);
-            bs.WriteInt32(assetGroupOffset); // assetGroupsOffset
-            bs.WriteInt32(AssetGroups.Count);
-            bs.WriteInt32(finalStructOffset); // offset_0x14
-            bs.WriteInt32(FinalStructs.Count);
-            bs.WriteInt32(Elements.Select(e => e.FrameStart + e.NumFrames).Max()); // TotalFrames
-            bs.WriteInt32(0); // empty padding
-
-            // Calculate the timeline elements positions without actually writing them, since they are needed when writing the elements
-            var elemDataUnionPos = bs.Position + elementsSize;
-            foreach (var elem in postTimelineElements) {
-                relativeFieldPos[(elem, "DataUnion")] = elemDataUnionPos;
-                elemDataUnionPos += elem.DataUnion.GetNonRelativeSize();
-            }
-
-            // Now actually write the elements
-            foreach (var elem in Elements)
-            {
-                elem.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
-            }
-
-            // Write all data unions
-            foreach (var elem in postTimelineElements)
-            {
-                elem.DataUnion.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
-            }
-
-            // ***** End of data elements *****
-
-            // ** Write asset groups **
-
-            // Calculate the positions of the relative asset stuff without actually writing them, since they are needed when writing the assets
-            var assetEntryOffsetPos = bs.Position + assetGroupSize;
-            // The asset entry offset, and all the assets are only ever written in the 3rd AssetGroup, but i'll leave it dynamic just in case
-            var assetEntriesListPos = assetEntryOffsetPos + assetEntryOffsetsSize;
-            foreach (var assetGroup in AssetGroups)
-            {
-                relativeFieldPos[(assetGroup, "AssetEntryOffsets")] = assetEntryOffsetPos;
-                relativeFieldPos[(assetGroup, "AssetList")] = assetEntryOffsetPos + assetEntryOffsetsSize;
-                assetGroup.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
-            }
-            // Write the asset entry offsets
-            List<Asset> allAssets = AssetGroups.Where(ag=>ag.AssetList != null).SelectMany(ag => ag.AssetList).ToList();
-            for (int i = 0; i<allAssets.Count; i++) {
-                var offsetToAsset = assetEntryOffsetsSize + allAssets[0].TotalSize * i;
-                bs.WriteInt32(offsetToAsset);
-            }
-            // Write the assets
-            foreach (Asset asset in allAssets)
-            {
-                asset.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
-            }
-
-            // ***** End of asset groups *****
-
-            // ** Write final structs **
-            long finalSubStructPos = bs.Position + finalStructsSize;
-            int finalStructIndex = 0;
-            foreach (var finalStruct in FinalStructs)
-            {
-                relativeFieldPos[(finalStruct, "Sub")] = finalSubStructPos + FinalStructs[0].Sub.TotalSize * finalStructIndex;
-                finalStruct.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
-                finalStructIndex++;
-            }
-
-            // Write the sub structs
-            foreach (var finalStruct in FinalStructs)
-            {
-                finalStruct.Sub.Write(bs, relativeFieldPos: relativeFieldPos, stringPos: stringPos);
-            }
-
-            // ***** End of final structs *****
-
-            // ** Write strings **
-            stringBuffer.Position = 0;
-            stringBuffer.CopyTo(bs);
-            // ***** End of strings *****
         }
+    }
+
+    private void WriteMainTimelineElementData(SmartBinaryStream bs)
+    {
+        foreach (var element in Elements)
+        {
+            if (_preTimelineTypes.Contains(element.DataUnion.UnionType))
+            {
+                long tmpPos = bs.Position;
+
+                // See comment in WritePreTimelineElements(). We actually write the data here.
+                long elementOffset = bs.GetObjectPointerOffset(element.DataUnion);
+                bs.Position = elementOffset;
+                element.DataUnion.Write(bs);
+
+                bs.Position = tmpPos;
+            }
+            else
+            {
+                bs.AddObjectPointer(element.DataUnion);
+                element.DataUnion.Write(bs);
+            }
+        }
+    }
+
+    private void WriteAssetGroups(SmartBinaryStream bs)
+    {
+        // Skip toc for now.
+        long assetGroupToc = bs.Position;
+        bs.Position += AssetGroups.Count * 0x0C;
+
+        long assetOffsetListOffset = bs.Position;
+
+        // Skip asset pointers aswell. We want the data offset.
+        for (int i = 0; i < AssetGroups.Count; i++)
+        {
+            AssetGroup assetGroup = AssetGroups[i];
+            bs.AddObjectPointer(assetGroup); // <- Make sure to keep track where the asset pointer list is, for groups.
+
+            long assetTocOffset = bs.Position;
+            bs.Position += assetGroup.AssetList.Count * sizeof(int); // Skip asset toc for now
+
+            for (int j = 0; j < assetGroup.AssetList.Count; j++)
+            {
+                Asset asset = assetGroup.AssetList[j];
+                bs.AddObjectPointer(asset);
+                asset.Write(bs);
+            }
+
+            long lastPos = bs.Position;
+
+            bs.Position = assetTocOffset;
+            for (int j = 0; j < assetGroup.AssetList.Count; j++)
+            {
+                Asset asset = assetGroup.AssetList[j];
+                bs.WriteObjectPointer(asset, assetOffsetListOffset);
+            }
+
+            bs.Position = lastPos;
+        }
+
+        long lastOffset = bs.Position;
+
+        // Write asset group pointers.
+        bs.Position = assetGroupToc;
+        for (int i = 0; i < AssetGroups.Count; i++)
+        {
+            long assetGroupOffset = bs.Position;
+
+            AssetGroup assetGroup = AssetGroups[i];
+            bs.WriteInt32(assetGroup.Index);
+            bs.WriteObjectPointer(assetGroup, assetGroupOffset);
+            bs.WriteInt32(assetGroup.AssetList.Count);
+        }
+
+        // Done with asset groups.
+        bs.Position = lastOffset;
     }
 }
