@@ -17,25 +17,25 @@ public class TimelineElement_1035 : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.kTimelineElem_1035;
     }
 
-    public AssetReference AnimationAsset = new();
-    public int field_0x08;
-    public int field_0x0C;
-    public int field_0x10;
-    public int field_0x14;
-    public int field_0x18;
-    public int field_0x1C;
+    public AssetReference AnimationAsset { get; set; } = new();
+    public int Field_0x08 { get; set; }
+    public int Field_0x0C { get; set; }
+    public int Field_0x10 { get; set; }
+    public int Field_0x14 { get; set; }
+    public int Field_0x18 { get; set; }
+    public int Field_0x1C { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
         AnimationAsset.Read(bs);
-        field_0x08 = bs.ReadInt32();
-        field_0x0C = bs.ReadInt32();
-        field_0x10 = bs.ReadInt32();
-        field_0x14 = bs.ReadInt32();
-        field_0x18 = bs.ReadInt32();
-        field_0x1C = bs.ReadInt32();
+        Field_0x08 = bs.ReadInt32();
+        Field_0x0C = bs.ReadInt32();
+        Field_0x10 = bs.ReadInt32();
+        Field_0x14 = bs.ReadInt32();
+        Field_0x18 = bs.ReadInt32();
+        Field_0x1C = bs.ReadInt32();
     }
 
     public override void Write(SmartBinaryStream bs)
@@ -43,12 +43,12 @@ public class TimelineElement_1035 : TimelineElementBase, ISerializableStruct
         WriteMeta(bs);
 
         AnimationAsset.Write(bs);
-        bs.WriteInt32(field_0x08);
-        bs.WriteInt32(field_0x0C);
-        bs.WriteInt32(field_0x10);
-        bs.WriteInt32(field_0x14);
-        bs.WriteInt32(field_0x18);
-        bs.WriteInt32(field_0x1C);
+        bs.WriteInt32(Field_0x08);
+        bs.WriteInt32(Field_0x0C);
+        bs.WriteInt32(Field_0x10);
+        bs.WriteInt32(Field_0x14);
+        bs.WriteInt32(Field_0x18);
+        bs.WriteInt32(Field_0x1C);
     }
 
     public uint GetSize() => GetMetaSize() + 0x20;

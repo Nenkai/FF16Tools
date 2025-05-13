@@ -17,7 +17,7 @@ public class TimelineElement_49 : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.kTimelineElem_49;
     }
 
-    public int MSeqInputId;
+    public int MSeqInputId { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {

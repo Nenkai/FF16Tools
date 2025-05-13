@@ -17,20 +17,20 @@ public class MotionAttribute : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.MotionAttribute;
     }
 
-    public int field_0x00;
+    public int Field_0x00 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
-        field_0x00 = bs.ReadInt32();
+        Field_0x00 = bs.ReadInt32();
     }
 
     public override void Write(SmartBinaryStream bs)
     {
         WriteMeta(bs);
 
-        bs.WriteInt32(field_0x00);
+        bs.WriteInt32(Field_0x00);
     }
 
     public uint GetSize() => GetMetaSize() + 0x04;

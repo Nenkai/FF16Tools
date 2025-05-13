@@ -15,38 +15,38 @@ public class TimelineElement_5 : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.kTimelineElem_5;
     }
 
-    public byte field_0x00;
-    public byte field_0x01;
-    public byte field_0x02;
-    public byte field_0x03;
-    public int field_0x04;
-    public int field_0x08;
-    public int field_0x0C;
+    public byte Field_0x00 { get; set; }
+    public byte Field_0x01 { get; set; }
+    public byte Field_0x02 { get; set; }
+    public byte Field_0x03 { get; set; }
+    public int Field_0x04 { get; set; }
+    public int Field_0x08 { get; set; }
+    public int Field_0x0C { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
-        field_0x00 = bs.Read1Byte();
-        field_0x01 = bs.Read1Byte();
-        field_0x02 = bs.Read1Byte();
-        field_0x03 = bs.Read1Byte();
-        field_0x04 = bs.ReadInt32();
-        field_0x08 = bs.ReadInt32();
-        field_0x0C = bs.ReadInt32();
+        Field_0x00 = bs.Read1Byte();
+        Field_0x01 = bs.Read1Byte();
+        Field_0x02 = bs.Read1Byte();
+        Field_0x03 = bs.Read1Byte();
+        Field_0x04 = bs.ReadInt32();
+        Field_0x08 = bs.ReadInt32();
+        Field_0x0C = bs.ReadInt32();
     }
 
     public override void Write(SmartBinaryStream bs)
     {
         WriteMeta(bs);
 
-        bs.Write(field_0x00);
-        bs.Write(field_0x01);
-        bs.Write(field_0x02);
-        bs.Write(field_0x03);
-        bs.Write(field_0x04);
-        bs.Write(field_0x08);
-        bs.Write(field_0x0C);
+        bs.Write(Field_0x00);
+        bs.Write(Field_0x01);
+        bs.Write(Field_0x02);
+        bs.Write(Field_0x03);
+        bs.Write(Field_0x04);
+        bs.Write(Field_0x08);
+        bs.Write(Field_0x0C);
     }
 
     public uint GetSize() => GetMetaSize() + 0x10;

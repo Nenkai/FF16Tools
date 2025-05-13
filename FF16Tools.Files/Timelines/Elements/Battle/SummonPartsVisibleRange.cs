@@ -17,27 +17,27 @@ public class SummonPartsVisibleRange : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.SummonPartsVisibleRange;
     }
 
-    public int SummonPartsPatternId;
-    public float field_0x04;
-    public float field_0x08;
-    public byte field_0x0C;
-    public byte field_0x0D;
-    public byte field_0x0E;
-    public byte field_0x0F;
-    public int field_0x10;
+    public int SummonPartsPatternId { get; set; }
+    public float Field_0x04 { get; set; }
+    public float Field_0x08 { get; set; }
+    public byte Field_0x0C { get; set; }
+    public byte Field_0x0D { get; set; }
+    public byte Field_0x0E { get; set; }
+    public byte Field_0x0F { get; set; }
+    public int Field_0x10 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
         SummonPartsPatternId = bs.ReadInt32();
-        field_0x04 = bs.ReadSingle();
-        field_0x08 = bs.ReadSingle();
-        field_0x0C = bs.Read1Byte();
-        field_0x0D = bs.Read1Byte();
-        field_0x0E = bs.Read1Byte();
-        field_0x0F = bs.Read1Byte();
-        field_0x10 = bs.ReadInt32();
+        Field_0x04 = bs.ReadSingle();
+        Field_0x08 = bs.ReadSingle();
+        Field_0x0C = bs.Read1Byte();
+        Field_0x0D = bs.Read1Byte();
+        Field_0x0E = bs.Read1Byte();
+        Field_0x0F = bs.Read1Byte();
+        Field_0x10 = bs.ReadInt32();
     }
 
     public override void Write(SmartBinaryStream bs)
@@ -45,13 +45,13 @@ public class SummonPartsVisibleRange : TimelineElementBase, ISerializableStruct
         WriteMeta(bs);
 
         bs.WriteInt32(SummonPartsPatternId);
-        bs.WriteSingle(field_0x04);
-        bs.WriteSingle(field_0x08);
-        bs.WriteByte(field_0x0C);
-        bs.WriteByte(field_0x0D);
-        bs.WriteByte(field_0x0E);
-        bs.WriteByte(field_0x0F);
-        bs.WriteInt32(field_0x10);
+        bs.WriteSingle(Field_0x04);
+        bs.WriteSingle(Field_0x08);
+        bs.WriteByte(Field_0x0C);
+        bs.WriteByte(Field_0x0D);
+        bs.WriteByte(Field_0x0E);
+        bs.WriteByte(Field_0x0F);
+        bs.WriteInt32(Field_0x10);
     }
 
     public uint GetSize() => GetMetaSize() + 0x14;

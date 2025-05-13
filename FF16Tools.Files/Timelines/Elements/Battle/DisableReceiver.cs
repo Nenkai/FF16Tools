@@ -17,9 +17,9 @@ public class DisableReceiver : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.DisableReceiver;
     }
 
-    public string? Name;
-    public int field_0x04;
-    public int field_0x08;
+    public string? Name { get; set; }
+    public int Field_0x04 { get; set; }
+    public int Field_0x08 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
@@ -27,8 +27,8 @@ public class DisableReceiver : TimelineElementBase, ISerializableStruct
         ReadMeta(bs);
 
         Name = bs.ReadStringPointer(basePos);
-        field_0x04 = bs.ReadInt32();
-        field_0x08 = bs.ReadInt32();
+        Field_0x04 = bs.ReadInt32();
+        Field_0x08 = bs.ReadInt32();
         bs.Position += 0x04;
     }
 
@@ -38,8 +38,8 @@ public class DisableReceiver : TimelineElementBase, ISerializableStruct
         WriteMeta(bs);
 
         bs.AddStringPointer(Name, relativeBaseOffset: baseMetaPos);
-        bs.WriteInt32(field_0x04);
-        bs.WriteInt32(field_0x08);
+        bs.WriteInt32(Field_0x04);
+        bs.WriteInt32(Field_0x08);
         bs.WritePadding(0x04);
     }
 

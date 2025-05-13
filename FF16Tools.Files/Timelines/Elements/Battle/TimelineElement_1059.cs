@@ -17,8 +17,8 @@ public class TimelineElement_1059 : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.kTimelineElem_1059;
     }
 
-    public string? Name;
-    public float field_0x04;
+    public string? Name { get; set; }
+    public float Field_0x04 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
@@ -26,7 +26,7 @@ public class TimelineElement_1059 : TimelineElementBase, ISerializableStruct
         ReadMeta(bs);
 
         Name = bs.ReadStringPointer(basePos);
-        field_0x04 = bs.ReadSingle();
+        Field_0x04 = bs.ReadSingle();
     }
 
     public override void Write(SmartBinaryStream bs)
@@ -35,7 +35,7 @@ public class TimelineElement_1059 : TimelineElementBase, ISerializableStruct
         WriteMeta(bs);
 
         bs.AddStringPointer(Name, relativeBaseOffset: baseMetaPos);
-        bs.WriteSingle(field_0x04);
+        bs.WriteSingle(Field_0x04);
     }
 
     public uint GetSize() => GetMetaSize() + 0x08;

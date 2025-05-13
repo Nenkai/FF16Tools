@@ -17,45 +17,45 @@ public class PlaySoundTrigger : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.PlaySoundTrigger;
     }
 
-    public AssetReference SoundAsset = new();
-    public int field_0x08;
-    public byte field_0x0C;
-    public int field_0x10;
-    public int field_0x14;
-    public double field_0x18;
-    public double field_0x20;
-    public double field_0x28;
-    public int field_0x30;
-    public int field_0x34;
-    public int field_0x38;
-    public float field_0x3C;
-    public byte field_0x40;
-    public float field_0x44;
-    public int field_0x48;
-    public int field_0x4C;
+    public AssetReference SoundAsset { get; set; } = new();
+    public int Field_0x08 { get; set; }
+    public byte Field_0x0C { get; set; }
+    public int Field_0x10 { get; set; }
+    public int Field_0x14 { get; set; }
+    public double Field_0x18 { get; set; }
+    public double Field_0x20 { get; set; }
+    public double Field_0x28 { get; set; }
+    public int Field_0x30 { get; set; }
+    public int Field_0x34 { get; set; }
+    public int Field_0x38 { get; set; }
+    public float Field_0x3C { get; set; }
+    public byte Field_0x40 { get; set; }
+    public float Field_0x44 { get; set; }
+    public int Field_0x48 { get; set; }
+    public int Field_0x4C { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
         SoundAsset.Read(bs);
-        field_0x08 = bs.ReadInt32();
-        field_0x0C = bs.Read1Byte();
+        Field_0x08 = bs.ReadInt32();
+        Field_0x0C = bs.Read1Byte();
         bs.Position += 3;
-        field_0x10 = bs.ReadInt32();
-        field_0x14 = bs.ReadInt32();
-        field_0x18 = bs.ReadDouble();
-        field_0x20 = bs.ReadDouble();
-        field_0x28 = bs.ReadDouble();
-        field_0x30 = bs.ReadInt32();
-        field_0x34 = bs.ReadInt32();
-        field_0x38 = bs.ReadInt32();
-        field_0x3C = bs.ReadSingle();
-        field_0x40 = bs.Read1Byte();
+        Field_0x10 = bs.ReadInt32();
+        Field_0x14 = bs.ReadInt32();
+        Field_0x18 = bs.ReadDouble();
+        Field_0x20 = bs.ReadDouble();
+        Field_0x28 = bs.ReadDouble();
+        Field_0x30 = bs.ReadInt32();
+        Field_0x34 = bs.ReadInt32();
+        Field_0x38 = bs.ReadInt32();
+        Field_0x3C = bs.ReadSingle();
+        Field_0x40 = bs.Read1Byte();
         bs.Position += 3;
-        field_0x44 = bs.ReadSingle();
-        field_0x48 = bs.ReadInt32();
-        field_0x4C = bs.ReadInt32();
+        Field_0x44 = bs.ReadSingle();
+        Field_0x48 = bs.ReadInt32();
+        Field_0x4C = bs.ReadInt32();
         bs.Position += 0x10;
     }
 
@@ -64,23 +64,23 @@ public class PlaySoundTrigger : TimelineElementBase, ISerializableStruct
         WriteMeta(bs);
 
         SoundAsset.Write(bs);
-        bs.WriteInt32(field_0x08);
-        bs.WriteByte(field_0x0C);
+        bs.WriteInt32(Field_0x08);
+        bs.WriteByte(Field_0x0C);
         bs.WritePadding(0x03);
-        bs.WriteInt32(field_0x10);
-        bs.WriteInt32(field_0x14);
-        bs.WriteDouble(field_0x18);
-        bs.WriteDouble(field_0x20);
-        bs.WriteDouble(field_0x28);
-        bs.WriteInt32(field_0x30);
-        bs.WriteInt32(field_0x34);
-        bs.WriteInt32(field_0x38);
-        bs.WriteSingle(field_0x3C);
-        bs.WriteByte(field_0x40);
+        bs.WriteInt32(Field_0x10);
+        bs.WriteInt32(Field_0x14);
+        bs.WriteDouble(Field_0x18);
+        bs.WriteDouble(Field_0x20);
+        bs.WriteDouble(Field_0x28);
+        bs.WriteInt32(Field_0x30);
+        bs.WriteInt32(Field_0x34);
+        bs.WriteInt32(Field_0x38);
+        bs.WriteSingle(Field_0x3C);
+        bs.WriteByte(Field_0x40);
         bs.WritePadding(0x03);
-        bs.WriteSingle(field_0x44);
-        bs.WriteInt32(field_0x48);
-        bs.WriteInt32(field_0x4C);
+        bs.WriteSingle(Field_0x44);
+        bs.WriteInt32(Field_0x48);
+        bs.WriteInt32(Field_0x4C);
         bs.WritePadding(0x10);
     }
 

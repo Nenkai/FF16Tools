@@ -17,7 +17,7 @@ public class BattleMessageRange : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.BattleMessageRange;
     }
 
-    public int BattleMessageId;
+    public int BattleMessageId { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {

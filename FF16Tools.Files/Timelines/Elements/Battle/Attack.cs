@@ -17,16 +17,16 @@ public class Attack : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.Attack;
     }
 
-    public int AttackParamId;
-    public string? Name;
-    public int field_0x08;
-    public int field_0x0C;
-    public string? UnkName2;
-    public int field_0x14;
-    public int field_0x18;
-    public int field_0x1C;
-    public int field_0x20;
-    public int field_0x24;
+    public int AttackParamId { get; set; }
+    public string? Name { get; set; }
+    public int Field_0x08 { get; set; }
+    public int Field_0x0C { get; set; }
+    public string? UnkName2 { get; set; }
+    public int Field_0x14 { get; set; }
+    public int Field_0x18 { get; set; }
+    public int Field_0x1C { get; set; }
+    public int Field_0x20 { get; set; }
+    public int Field_0x24 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
@@ -35,14 +35,14 @@ public class Attack : TimelineElementBase, ISerializableStruct
 
         AttackParamId = bs.ReadInt32();
         Name = bs.ReadStringPointer(basePos);
-        field_0x08 = bs.ReadInt32();
-        field_0x0C = bs.ReadInt32();
+        Field_0x08 = bs.ReadInt32();
+        Field_0x0C = bs.ReadInt32();
         UnkName2 = bs.ReadStringPointer(basePos);
-        field_0x14 = bs.ReadInt32();
-        field_0x18 = bs.ReadInt32();
-        field_0x1C = bs.ReadInt32();
-        field_0x20 = bs.ReadInt32();
-        field_0x24 = bs.ReadInt32();
+        Field_0x14 = bs.ReadInt32();
+        Field_0x18 = bs.ReadInt32();
+        Field_0x1C = bs.ReadInt32();
+        Field_0x20 = bs.ReadInt32();
+        Field_0x24 = bs.ReadInt32();
 
         bs.Position = basePos + GetSize();
     }
@@ -54,14 +54,14 @@ public class Attack : TimelineElementBase, ISerializableStruct
 
         bs.WriteInt32(AttackParamId);
         bs.AddStringPointer(Name, relativeBaseOffset: basePos);
-        bs.WriteInt32(field_0x08);
-        bs.WriteInt32(field_0x0C);
+        bs.WriteInt32(Field_0x08);
+        bs.WriteInt32(Field_0x0C);
         bs.AddStringPointer(UnkName2, relativeBaseOffset: basePos);
-        bs.WriteInt32(field_0x14);
-        bs.WriteInt32(field_0x18);
-        bs.WriteInt32(field_0x1C);
-        bs.WriteInt32(field_0x20);
-        bs.WriteInt32(field_0x24);
+        bs.WriteInt32(Field_0x14);
+        bs.WriteInt32(Field_0x18);
+        bs.WriteInt32(Field_0x1C);
+        bs.WriteInt32(Field_0x20);
+        bs.WriteInt32(Field_0x24);
     }
 
     public uint GetSize() => GetMetaSize() + 0x28;

@@ -22,31 +22,24 @@ public class TimelineElement_1049 : TimelineElementBase, ISerializableStruct
 
     public List<Sub1023Struct> SubStructs { get; set; } = [];
     public List<Sub1023Struct2> SubStructs2 { get; set; } = [];
-    public AssetReference VFXAssetRef = new();
-    public AssetReference UnkAsset2 = new();
-    public int field_0x20;
-    public byte field_0x24;
-    public byte field_0x25;
-    public byte field_0x26;
-    public byte field_0x27;
-    public int field_0x28;
-    public int field_0x2C;
-    public int field_0x30;
-    public int field_0x34;
-    public int field_0x38;
-    public int field_0x3C;
-    public int field_0x40;
-    public int field_0x44;
-    public int field_0x48;
-    public int field_0x4C;
-    public int field_0x50;
-    public int field_0x54;
-    public int field_0x58;
-    public int field_0x5C;
-    public float field_0x60;
-    public int field_0x64;
-    public int field_0x68;
-    public int field_0x6C;
+    public AssetReference VFXAssetRef { get; set; } = new();
+    public AssetReference UnkAsset2 { get; set; } = new();
+    public int Field_0x20 { get; set; }
+    public byte Field_0x24 { get; set; }
+    public byte Field_0x25 { get; set; }
+    public byte Field_0x26 { get; set; }
+    public byte Field_0x27 { get; set; }
+    public int Field_0x28 { get; set; }
+    public int Field_0x2C { get; set; }
+    public int Field_0x30 { get; set; }
+    public int Field_0x34 { get; set; }
+    public int Field_0x38 { get; set; }
+    public int Field_0x3C { get; set; }
+    public int Field_0x40 { get; set; }
+    public int Field_0x44 { get; set; }
+    public int Field_0x48 { get; set; }
+    public int Field_0x4C { get; set; }
+    public int Field_0x50 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
@@ -63,29 +56,22 @@ public class TimelineElement_1049 : TimelineElementBase, ISerializableStruct
 
         VFXAssetRef.Read(bs);
         UnkAsset2.Read(bs);
-        field_0x20 = bs.ReadInt32();
-        field_0x24 = bs.Read1Byte();
-        field_0x25 = bs.Read1Byte();
-        field_0x26 = bs.Read1Byte();
-        field_0x27 = bs.Read1Byte();
-        field_0x28 = bs.ReadInt32();
-        field_0x2C = bs.ReadInt32();
-        field_0x30 = bs.ReadInt32();
-        field_0x34 = bs.ReadInt32();
-        field_0x38 = bs.ReadInt32();
-        field_0x3C = bs.ReadInt32();
-        field_0x40 = bs.ReadInt32();
-        field_0x44 = bs.ReadInt32();
-        field_0x48 = bs.ReadInt32();
-        field_0x4C = bs.ReadInt32();
-        field_0x50 = bs.ReadInt32();
-        field_0x54 = bs.ReadInt32();
-        field_0x58 = bs.ReadInt32();
-        field_0x5C = bs.ReadInt32();
-        field_0x60 = bs.ReadSingle();
-        field_0x64 = bs.ReadInt32();
-        field_0x68 = bs.ReadInt32();
-        field_0x6C = bs.ReadInt32();
+        Field_0x20 = bs.ReadInt32();
+        Field_0x24 = bs.Read1Byte();
+        Field_0x25 = bs.Read1Byte();
+        Field_0x26 = bs.Read1Byte();
+        Field_0x27 = bs.Read1Byte();
+        Field_0x28 = bs.ReadInt32();
+        Field_0x2C = bs.ReadInt32();
+        Field_0x30 = bs.ReadInt32();
+        Field_0x34 = bs.ReadInt32();
+        Field_0x38 = bs.ReadInt32();
+        Field_0x3C = bs.ReadInt32();
+        Field_0x40 = bs.ReadInt32();
+        Field_0x44 = bs.ReadInt32();
+        Field_0x48 = bs.ReadInt32();
+        Field_0x4C = bs.ReadInt32();
+        Field_0x50 = bs.ReadInt32();
 
         if (structsOffset != 0)
         {
@@ -125,22 +111,22 @@ public class TimelineElement_1049 : TimelineElementBase, ISerializableStruct
 
         VFXAssetRef.Write(bs);
         UnkAsset2.Write(bs);
-        bs.WriteInt32(field_0x20);
-        bs.WriteByte(field_0x24);
-        bs.WriteByte(field_0x25);
-        bs.WriteByte(field_0x26);
-        bs.WriteByte(field_0x27);
-        bs.WriteInt32(field_0x28);
-        bs.WriteInt32(field_0x2C);
-        bs.WriteInt32(field_0x30);
-        bs.WriteInt32(field_0x34);
-        bs.WriteInt32(field_0x38);
-        bs.WriteInt32(field_0x3C);
-        bs.WriteInt32(field_0x40);
-        bs.WriteInt32(field_0x44);
-        bs.WriteInt32(field_0x48);
-        bs.WriteInt32(field_0x4C);
-        bs.WriteInt32(field_0x50);
+        bs.WriteInt32(Field_0x20);
+        bs.WriteByte(Field_0x24);
+        bs.WriteByte(Field_0x25);
+        bs.WriteByte(Field_0x26);
+        bs.WriteByte(Field_0x27);
+        bs.WriteInt32(Field_0x28);
+        bs.WriteInt32(Field_0x2C);
+        bs.WriteInt32(Field_0x30);
+        bs.WriteInt32(Field_0x34);
+        bs.WriteInt32(Field_0x38);
+        bs.WriteInt32(Field_0x3C);
+        bs.WriteInt32(Field_0x40);
+        bs.WriteInt32(Field_0x44);
+        bs.WriteInt32(Field_0x48);
+        bs.WriteInt32(Field_0x4C);
+        bs.WriteInt32(Field_0x50);
 
         for (int i = 0; i < SubStructs2.Count; i++)
         {

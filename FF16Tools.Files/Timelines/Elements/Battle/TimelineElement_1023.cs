@@ -19,21 +19,21 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
 
     public List<Sub1023Struct> SubStructs { get; set; } = [];
     public List<Sub1023Struct2> SubStructs2 { get; set; } = [];
-    public AssetReference VFXAssetRef = new();
-    public AssetReference UnkAsset2 = new();
-    public int field_0x20;
-    public int field_0x24;
-    public int field_0x28;
-    public int field_0x2C;
-    public int field_0x30;
-    public int field_0x34;
-    public int field_0x38;
-    public int field_0x3C;
-    public int field_0x40;
-    public int field_0x44;
-    public int field_0x48;
-    public int field_0x4C;
-    public int field_0x50;
+    public AssetReference VFXAssetRef { get; set; } = new();
+    public AssetReference UnkAsset2 { get; set; } = new();
+    public int Field_0x20 { get; set; }
+    public int Field_0x24 { get; set; }
+    public int Field_0x28 { get; set; }
+    public int Field_0x2C { get; set; }
+    public int Field_0x30 { get; set; }
+    public int Field_0x34 { get; set; }
+    public int Field_0x38 { get; set; }
+    public int Field_0x3C { get; set; }
+    public int Field_0x40 { get; set; }
+    public int Field_0x44 { get; set; }
+    public int Field_0x48 { get; set; }
+    public int Field_0x4C { get; set; }
+    public int Field_0x50 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
@@ -49,19 +49,19 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
         int structs2Count = bs.ReadInt32();
         VFXAssetRef.Read(bs);
         UnkAsset2.Read(bs);
-        field_0x20 = bs.ReadInt32();
-        field_0x24 = bs.ReadInt32();
-        field_0x28 = bs.ReadInt32();
-        field_0x2C = bs.ReadInt32();
-        field_0x30 = bs.ReadInt32();
-        field_0x34 = bs.ReadInt32();
-        field_0x38 = bs.ReadInt32();
-        field_0x3C = bs.ReadInt32();
-        field_0x40 = bs.ReadInt32();
-        field_0x44 = bs.ReadInt32();
-        field_0x48 = bs.ReadInt32();
-        field_0x4C = bs.ReadInt32();
-        field_0x50 = bs.ReadInt32();
+        Field_0x20 = bs.ReadInt32();
+        Field_0x24 = bs.ReadInt32();
+        Field_0x28 = bs.ReadInt32();
+        Field_0x2C = bs.ReadInt32();
+        Field_0x30 = bs.ReadInt32();
+        Field_0x34 = bs.ReadInt32();
+        Field_0x38 = bs.ReadInt32();
+        Field_0x3C = bs.ReadInt32();
+        Field_0x40 = bs.ReadInt32();
+        Field_0x44 = bs.ReadInt32();
+        Field_0x48 = bs.ReadInt32();
+        Field_0x4C = bs.ReadInt32();
+        Field_0x50 = bs.ReadInt32();
 
         if (structsOffset != 0)
         {
@@ -100,19 +100,19 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(SubStructs2.Count);
         VFXAssetRef.Write(bs);
         UnkAsset2.Write(bs);
-        bs.WriteInt32(field_0x20);
-        bs.WriteInt32(field_0x24);
-        bs.WriteInt32(field_0x28);
-        bs.WriteInt32(field_0x2C);
-        bs.WriteInt32(field_0x30);
-        bs.WriteInt32(field_0x34);
-        bs.WriteInt32(field_0x38);
-        bs.WriteInt32(field_0x3C);
-        bs.WriteInt32(field_0x40);
-        bs.WriteInt32(field_0x44);
-        bs.WriteInt32(field_0x48);
-        bs.WriteInt32(field_0x4C);
-        bs.WriteInt32(field_0x50);
+        bs.WriteInt32(Field_0x20);
+        bs.WriteInt32(Field_0x24);
+        bs.WriteInt32(Field_0x28);
+        bs.WriteInt32(Field_0x2C);
+        bs.WriteInt32(Field_0x30);
+        bs.WriteInt32(Field_0x34);
+        bs.WriteInt32(Field_0x38);
+        bs.WriteInt32(Field_0x3C);
+        bs.WriteInt32(Field_0x40);
+        bs.WriteInt32(Field_0x44);
+        bs.WriteInt32(Field_0x48);
+        bs.WriteInt32(Field_0x4C);
+        bs.WriteInt32(Field_0x50);
 
         for (int i = 0; i < SubStructs2.Count; i++)
         {
@@ -126,16 +126,16 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
 
     public class Sub1023Struct : ISerializableStruct
     {
-        public int Active;
-        public int UnkIdSlot;
-        public int EidId1;
-        public int EidId2;
-        public double field_0x10;
-        public double field_0x18;
-        public double field_0x20;
-        public double field_0x28;
-        public float field_0x30;
-        public float field_0x34;
+        public int Active { get; set; }
+        public int UnkIdSlot { get; set; }
+        public int EidId1 { get; set; }
+        public int EidId2 { get; set; }
+        public double Field_0x10 { get; set; }
+        public double Field_0x18 { get; set; }
+        public double Field_0x20 { get; set; }
+        public double Field_0x28 { get; set; }
+        public float Field_0x30 { get; set; }
+        public float Field_0x34 { get; set; }
 
         public void Read(SmartBinaryStream bs)
         {
@@ -143,12 +143,12 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
             UnkIdSlot = bs.ReadInt32();
             EidId1 = bs.ReadInt32();
             EidId2 = bs.ReadInt32();
-            field_0x10 = bs.ReadDouble();
-            field_0x18 = bs.ReadDouble();
-            field_0x20 = bs.ReadDouble();
-            field_0x28 = bs.ReadDouble();
-            field_0x30 = bs.ReadSingle();
-            field_0x34 = bs.ReadSingle();
+            Field_0x10 = bs.ReadDouble();
+            Field_0x18 = bs.ReadDouble();
+            Field_0x20 = bs.ReadDouble();
+            Field_0x28 = bs.ReadDouble();
+            Field_0x30 = bs.ReadSingle();
+            Field_0x34 = bs.ReadSingle();
             bs.Position += 0x20;
         }
 
@@ -158,12 +158,12 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
             bs.WriteInt32(UnkIdSlot);
             bs.WriteInt32(EidId1);
             bs.WriteInt32(EidId2);
-            bs.WriteDouble(field_0x10);
-            bs.WriteDouble(field_0x18);
-            bs.WriteDouble(field_0x20);
-            bs.WriteDouble(field_0x28);
-            bs.WriteSingle(field_0x30);
-            bs.WriteSingle(field_0x34);
+            bs.WriteDouble(Field_0x10);
+            bs.WriteDouble(Field_0x18);
+            bs.WriteDouble(Field_0x20);
+            bs.WriteDouble(Field_0x28);
+            bs.WriteSingle(Field_0x30);
+            bs.WriteSingle(Field_0x34);
             bs.Position += 0x20;
         }
 

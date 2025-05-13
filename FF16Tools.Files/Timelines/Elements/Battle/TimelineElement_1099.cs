@@ -17,53 +17,53 @@ public class TimelineElement_1099 : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.kTimelineElem_1099;
     }
 
-    public int field_0x00;
-    public int field_0x04;
-    public int field_0x08;
-    public int field_0x0C;
-    public int field_0x10;
-    public float field_0x14;
-    public int field_0x18;
-    public float field_0x1C;
-    public int field_0x20;
-    public int field_0x24;
-    public int field_0x28;
-    public int field_0x2C;
+    public int Field_0x00 { get; set; }
+    public int Field_0x04 { get; set; }
+    public int Field_0x08 { get; set; }
+    public int Field_0x0C { get; set; }
+    public int Field_0x10 { get; set; }
+    public float Field_0x14 { get; set; }
+    public int Field_0x18 { get; set; }
+    public float Field_0x1C { get; set; }
+    public int Field_0x20 { get; set; }
+    public int Field_0x24 { get; set; }
+    public int Field_0x28 { get; set; }
+    public int Field_0x2C { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
-        field_0x00 = bs.ReadInt32();
-        field_0x04 = bs.ReadInt32();
-        field_0x08 = bs.ReadInt32();
-        field_0x0C = bs.ReadInt32();
-        field_0x10 = bs.ReadInt32();
-        field_0x14 = bs.ReadSingle();
-        field_0x18 = bs.ReadInt32();
-        field_0x1C = bs.ReadSingle();
-        field_0x20 = bs.ReadInt32();
-        field_0x24 = bs.ReadInt32();
-        field_0x28 = bs.ReadInt32();
-        field_0x2C = bs.ReadInt32();
+        Field_0x00 = bs.ReadInt32();
+        Field_0x04 = bs.ReadInt32();
+        Field_0x08 = bs.ReadInt32();
+        Field_0x0C = bs.ReadInt32();
+        Field_0x10 = bs.ReadInt32();
+        Field_0x14 = bs.ReadSingle();
+        Field_0x18 = bs.ReadInt32();
+        Field_0x1C = bs.ReadSingle();
+        Field_0x20 = bs.ReadInt32();
+        Field_0x24 = bs.ReadInt32();
+        Field_0x28 = bs.ReadInt32();
+        Field_0x2C = bs.ReadInt32();
     }
 
     public override void Write(SmartBinaryStream bs)
     {
         WriteMeta(bs);
 
-        bs.WriteInt32(field_0x00);
-        bs.WriteInt32(field_0x04);
-        bs.WriteInt32(field_0x08);
-        bs.WriteInt32(field_0x0C);
-        bs.WriteInt32(field_0x10);
-        bs.WriteSingle(field_0x14);
-        bs.WriteInt32(field_0x18);
-        bs.WriteSingle(field_0x1C);
-        bs.WriteInt32(field_0x20);
-        bs.WriteInt32(field_0x24);
-        bs.WriteInt32(field_0x28);
-        bs.WriteInt32(field_0x2C);
+        bs.WriteInt32(Field_0x00);
+        bs.WriteInt32(Field_0x04);
+        bs.WriteInt32(Field_0x08);
+        bs.WriteInt32(Field_0x0C);
+        bs.WriteInt32(Field_0x10);
+        bs.WriteSingle(Field_0x14);
+        bs.WriteInt32(Field_0x18);
+        bs.WriteSingle(Field_0x1C);
+        bs.WriteInt32(Field_0x20);
+        bs.WriteInt32(Field_0x24);
+        bs.WriteInt32(Field_0x28);
+        bs.WriteInt32(Field_0x2C);
     }
 
     public uint GetSize() => GetMetaSize() + 0x30;
