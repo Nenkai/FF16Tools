@@ -40,8 +40,8 @@ public class CharaTimelineAttackParamDumper
 
                         names.TryAdd(type1002.AttackParamId, type1002.Name);
 
-                        if (type1002.field_0x0C != 0)
-                            names.TryAdd(type1002.field_0x0C, type1002.Name + " (2?)");
+                        if (type1002.Field_0x0C != 0)
+                            names.TryAdd(type1002.Field_0x0C, type1002.Name + " (2?)");
                     }
                     else if (elem.TimelineElemUnionTypeOrLayerId == ((int)TimelineElementType.kTimelineElem_1064))
                     {
