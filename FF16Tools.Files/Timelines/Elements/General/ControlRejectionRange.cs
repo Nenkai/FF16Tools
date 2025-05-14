@@ -34,46 +34,50 @@ public class ControlRejectionRange : TimelineElementBase, ISerializableStruct
     public int Field_0x14 { get; set; }
     public int Field_0x18 { get; set; }
 
-    public override void Read(SmartBinaryStream stream)
+    public override void Read(SmartBinaryStream bs)
     {
-        Field_0x00 = stream.ReadInt32();
-        Field_0x04 = stream.Read1Byte();
-        Field_0x05 = stream.Read1Byte();
-        Field_0x06 = stream.Read1Byte();
-        Field_0x07 = stream.Read1Byte();
-        Field_0x08 = stream.Read1Byte();
-        Field_0x09 = stream.Read1Byte();
-        Field_0x0A = stream.Read1Byte();
-        Field_0x0B = stream.Read1Byte();
-        Field_0x0C = stream.Read1Byte();
-        Field_0x0D = stream.Read1Byte();
-        Field_0x0E = stream.Read1Byte();
-        Field_0x0F = stream.Read1Byte();
-        Field_0x10 = stream.ReadInt32();
-        Field_0x14 = stream.ReadInt32();
-        Field_0x18 = stream.ReadInt32();
+        ReadMeta(bs);
+
+        Field_0x00 = bs.ReadInt32();
+        Field_0x04 = bs.Read1Byte();
+        Field_0x05 = bs.Read1Byte();
+        Field_0x06 = bs.Read1Byte();
+        Field_0x07 = bs.Read1Byte();
+        Field_0x08 = bs.Read1Byte();
+        Field_0x09 = bs.Read1Byte();
+        Field_0x0A = bs.Read1Byte();
+        Field_0x0B = bs.Read1Byte();
+        Field_0x0C = bs.Read1Byte();
+        Field_0x0D = bs.Read1Byte();
+        Field_0x0E = bs.Read1Byte();
+        Field_0x0F = bs.Read1Byte();
+        Field_0x10 = bs.ReadInt32();
+        Field_0x14 = bs.ReadInt32();
+        Field_0x18 = bs.ReadInt32();
     }
 
-    public override void Write(SmartBinaryStream stream)
+    public override void Write(SmartBinaryStream bs)
     {
-        stream.WriteInt32(Field_0x00);
-        stream.WriteByte(Field_0x04);
-        stream.WriteByte(Field_0x05);
-        stream.WriteByte(Field_0x06);
-        stream.WriteByte(Field_0x07);
-        stream.WriteByte(Field_0x08);
-        stream.WriteByte(Field_0x09);
-        stream.WriteByte(Field_0x0A);
-        stream.WriteByte(Field_0x0B);
-        stream.WriteByte(Field_0x0C);
-        stream.WriteByte(Field_0x0D);
-        stream.WriteByte(Field_0x0E);
-        stream.WriteByte(Field_0x0F);
-        stream.WriteInt32(Field_0x10);
-        stream.WriteInt32(Field_0x14);
-        stream.WriteInt32(Field_0x18);
+        WriteMeta(bs);
+
+        bs.WriteInt32(Field_0x00);
+        bs.WriteByte(Field_0x04);
+        bs.WriteByte(Field_0x05);
+        bs.WriteByte(Field_0x06);
+        bs.WriteByte(Field_0x07);
+        bs.WriteByte(Field_0x08);
+        bs.WriteByte(Field_0x09);
+        bs.WriteByte(Field_0x0A);
+        bs.WriteByte(Field_0x0B);
+        bs.WriteByte(Field_0x0C);
+        bs.WriteByte(Field_0x0D);
+        bs.WriteByte(Field_0x0E);
+        bs.WriteByte(Field_0x0F);
+        bs.WriteInt32(Field_0x10);
+        bs.WriteInt32(Field_0x14);
+        bs.WriteInt32(Field_0x18);
     }
 
-    public uint GetSize() => 0x1C;
+    public uint GetSize() => GetMetaSize() + 0x1C;
 }
 

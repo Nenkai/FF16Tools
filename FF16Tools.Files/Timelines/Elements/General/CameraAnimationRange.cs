@@ -21,7 +21,7 @@ public class CameraAnimationRange : TimelineElementBase, ISerializableStruct
     public byte Field_0x0A { get; set; }
     public byte Field_0x0B { get; set; }
     public Sub8Struct[] Entries { get; set; } = new Sub8Struct[8];
-    public int[] Unks { get; set; } = new int[12];
+    public int[] Unks { get; set; } = new int[13];
 
     public CameraAnimationRange()
     {
@@ -47,7 +47,7 @@ public class CameraAnimationRange : TimelineElementBase, ISerializableStruct
             Entries[i].Read(bs);
         }
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 13; i++)
             Unks[i] = bs.ReadInt32();
     }
 
@@ -66,20 +66,13 @@ public class CameraAnimationRange : TimelineElementBase, ISerializableStruct
         long entriesOffset = bs.Position;
         bs.Position += Entries.Length * 0x10;
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 13; i++)
             bs.WriteInt32(Unks[i]);
 
-        bool aligned = false;
         for (int i = 0; i < 8; i++)
         {
             if (Entries[i].Data is not null)
             {
-                if (!aligned)
-                {
-                    bs.Align(0x10, grow: true);
-                    aligned = true;
-                }
-
                 bs.AddObjectPointer(Entries[i].Data!);
                 bs.Write(Entries[i].Data);
             }

@@ -25,6 +25,8 @@ public class TimelineElement_84 : TimelineElementBase, ISerializableStruct
 
     public override void Read(SmartBinaryStream bs)
     {
+        ReadMeta(bs);
+
         for (int i = 0; i < 9; i++)
         {
             Entries[i] = new CameraAnimationRange.Sub8Struct();
@@ -39,7 +41,7 @@ public class TimelineElement_84 : TimelineElementBase, ISerializableStruct
 
     public override void Write(SmartBinaryStream bs)
     {
-        throw new NotImplementedException();
+        WriteMeta(bs);
 
         for (int i = 0; i < 9; i++)
             Entries[i].Write(bs);

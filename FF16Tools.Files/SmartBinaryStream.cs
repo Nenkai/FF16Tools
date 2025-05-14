@@ -128,6 +128,8 @@ public class SmartBinaryStream : BinaryStream
         {
             _writtenStrings.Add(string.Empty, Position);
             this.WriteString(string.Empty, StringCoding);
+
+            lastDataPos = Position;
         }
 
         foreach (var stringRef in StringPointers)

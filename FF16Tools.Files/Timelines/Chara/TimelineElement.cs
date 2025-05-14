@@ -40,10 +40,7 @@ public class TimelineElement : ISerializableStruct
         TimelineElementType type = (TimelineElementType)bs.ReadUInt32();
         bs.Position -= 4;
 
-        if (!TimelineElementRegistry.ElementList.TryGetValue(type, out TimelineElementBase? element))
-            throw new NotSupportedException($"Timeline element {type} not yet supported");
-
-        DataUnion = element;
+        DataUnion = TimelineElementFactory.CreateElement(type);
         DataUnion?.Read(bs);
     }
 

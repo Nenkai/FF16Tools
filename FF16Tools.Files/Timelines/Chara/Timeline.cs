@@ -162,6 +162,7 @@ public class Timeline
             // These sub-structures are also written before. These ones we can actually write, they don't have strings so order doesn't matter.
             switch (element.DataUnion.UnionType)
             {
+                // TODO: Shorten this
                 case TimelineElementType.kTimelineElem_1023:
                     {
                         var elem = (TimelineElement_1023)element.DataUnion;
@@ -199,6 +200,22 @@ public class Timeline
                 case TimelineElementType.kTimelineElem_1049:
                     {
                         var elem = (TimelineElement_1049)element.DataUnion;
+
+                        // Aligned regardless if count is 0
+                        if (!aligned)
+                        {
+                            bs.Align(0x10, grow: true);
+                            aligned = true;
+                        }
+
+                        bs.AddObjectPointer(elem.SubStructs);
+                        for (int i = 0; i < elem.SubStructs.Count; i++)
+                            elem.SubStructs[i].Write(bs);
+                    }
+                    break;
+                case TimelineElementType.kTimelineElem_1050:
+                    {
+                        var elem = (TimelineElement_1050)element.DataUnion;
 
                         // Aligned regardless if count is 0
                         if (!aligned)

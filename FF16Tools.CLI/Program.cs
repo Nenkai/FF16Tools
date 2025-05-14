@@ -15,6 +15,7 @@ using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
 using FF16Tools.Files.VFX;
+using FF16Tools.Files.Timelines.Chara;
 
 namespace FF16Tools.CLI;
 
@@ -35,6 +36,7 @@ public class Program
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("");
 
+        TimelineSerializationIntegrityChecker.Check(@"C:\Program Files (x86)\Steam\steamapps\common\FINAL FANTASY XVI\data\0001.extracted\chara");
 
         _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
         _logger = _loggerFactory.CreateLogger<Program>();
