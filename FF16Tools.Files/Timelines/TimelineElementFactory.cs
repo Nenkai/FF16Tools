@@ -67,7 +67,6 @@ public class TimelineElementFactory
             TimelineElementType.kTimelineElem_1099 => new TimelineElement_1099(),
             TimelineElementType.kTimelineElem_1102 => new TimelineElement_1102(),
             TimelineElementType.kTimelineElem_1103 => new TimelineElement_1103(),
-            // TimelineElementType.kTimelineElem_1107 => throw new NotSupportedException($"Timeline element {type} not yet supported"),
             TimelineElementType.ExtrudeLayerRange => new ExtrudeLayerRange(),
             TimelineElementType.kTimelineElem_1115 => new TimelineElement_1115(),
             TimelineElementType.kTimelineElem_1123 => new TimelineElement_1123(),

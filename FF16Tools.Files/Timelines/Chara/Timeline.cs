@@ -102,7 +102,7 @@ public class Timeline
             bs.WriteObjectPointer(finalStruct.InternalFinalStruct, finalGroupOffset);
         }
 
-        // Done with asset groups.
+        // Done.
         bs.Position = lastOffset;
     }
 
