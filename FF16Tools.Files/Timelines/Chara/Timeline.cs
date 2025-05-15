@@ -12,6 +12,7 @@ public class Timeline
     public List<AssetGroup> AssetGroups { get; set; } = [];
     public List<FinalStruct> FinalStructs { get; set; } = [];
     public int Field_0x28 { get; set; }
+
     public void Read(SmartBinaryStream bs)
     {
         long thisPos = bs.Position;
@@ -119,10 +120,7 @@ public class Timeline
 
         // Now we can write the element toc.
         for (int i = 0; i < Elements.Count; i++)
-        {
-            TimelineElement element = Elements[i];
-            element.Write(bs);
-        }
+            Elements[i].Write(bs);
 
         bs.Position = lastOffset;
     }
@@ -140,8 +138,12 @@ public class Timeline
     private void WritePreTimelineElements(SmartBinaryStream bs)
     {
         bool aligned = false;
-        foreach (TimelineElement element in Elements)
+        for (int i = 0; i < Elements.Count; i++)
         {
+            TimelineElement element = Elements[i];
+            if (element.DataUnion is null)
+                throw new InvalidOperationException($"Data for timeline element at index {i} is null, cannot write element.");
+
             if (_preTimelineTypes.Contains(element.DataUnion.UnionType))
             {
                 if (!aligned)
@@ -175,8 +177,8 @@ public class Timeline
                         }
 
                         bs.AddObjectPointer(elem.SubStructs);
-                        for (int i = 0; i < elem.SubStructs.Count; i++)
-                            elem.SubStructs[i].Write(bs);
+                        for (int j = 0; j < elem.SubStructs.Count; j++)
+                            elem.SubStructs[j].Write(bs);
                     }
                     break;
 
@@ -192,8 +194,8 @@ public class Timeline
                         }
 
                         bs.AddObjectPointer(elem.SubStructs);
-                        for (int i = 0; i < elem.SubStructs.Count; i++)
-                            elem.SubStructs[i].Write(bs);
+                        for (int j = 0; j < elem.SubStructs.Count; j++)
+                            elem.SubStructs[j].Write(bs);
                     }
                     break;
 
@@ -209,8 +211,8 @@ public class Timeline
                         }
 
                         bs.AddObjectPointer(elem.SubStructs);
-                        for (int i = 0; i < elem.SubStructs.Count; i++)
-                            elem.SubStructs[i].Write(bs);
+                        for (int j = 0; j < elem.SubStructs.Count; j++)
+                            elem.SubStructs[j].Write(bs);
                     }
                     break;
                 case TimelineElementType.kTimelineElem_1050:
@@ -225,8 +227,8 @@ public class Timeline
                         }
 
                         bs.AddObjectPointer(elem.SubStructs);
-                        for (int i = 0; i < elem.SubStructs.Count; i++)
-                            elem.SubStructs[i].Write(bs);
+                        for (int j = 0; j < elem.SubStructs.Count; j++)
+                            elem.SubStructs[j].Write(bs);
                     }
                     break;
             }
@@ -237,7 +239,8 @@ public class Timeline
     {
         foreach (var element in Elements)
         {
-            if (_preTimelineTypes.Contains(element.DataUnion.UnionType))
+            // Won't be null, already checked in WritePreTimelineElements.
+            if (_preTimelineTypes.Contains(element.DataUnion!.UnionType))
             {
                 long tmpPos = bs.Position;
 
