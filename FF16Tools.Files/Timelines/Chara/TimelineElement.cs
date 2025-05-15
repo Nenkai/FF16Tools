@@ -1,13 +1,12 @@
-﻿using FF16Tools.Files.Timelines.Elements;
-using FF16Tools.Files.Timelines.Elements.Battle;
-using FF16Tools.Files.Timelines.Elements.General;
-
-using Syroot.BinaryData;
-
-namespace FF16Tools.Files.Timelines.Chara;
+﻿namespace FF16Tools.Files.Timelines.Chara;
 
 public class TimelineElement : ISerializableStruct
 {
+    /// <summary>
+    /// Whether to not throw when an unknown unsupported element is attempted to be read.
+    /// </summary>
+    public static bool SkipOnUnknownElement { get; set; } = false;
+
     public uint Field_0x00 { get; set; }
     public string? Name { get; set; }
     public uint TimelineElemUnionTypeOrLayerId { get; set; }
@@ -40,7 +39,16 @@ public class TimelineElement : ISerializableStruct
         TimelineElementType type = (TimelineElementType)bs.ReadUInt32();
         bs.Position -= 4;
 
-        DataUnion = TimelineElementFactory.CreateElement(type);
+        try
+        {
+            DataUnion = TimelineElementFactory.CreateElement(type);
+        }
+        catch (Exception)
+        {
+            if (!SkipOnUnknownElement)
+                throw;
+        }
+
         DataUnion?.Read(bs);
     }
 
