@@ -6,7 +6,17 @@ public class CharaTimelineFile
 {
     public const int MAGIC = 0x4C544346;
     public uint Version { get; set; }
-    public Timeline Timeline { get; set; }
+    public Timeline? Timeline { get; set; }
+
+    public static CharaTimelineFile Open(string file)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(file);
+
+        using var fs = File.OpenRead(file);
+        var charaTimelineFile = new CharaTimelineFile();
+        charaTimelineFile.Read(fs);
+        return charaTimelineFile;
+    }
 
     public void Read(string file)
     {
@@ -16,7 +26,7 @@ public class CharaTimelineFile
 
     public void Read(Stream stream)
     {
-        var bs = new BinaryStream(stream);
+        var bs = new SmartBinaryStream(stream, stringCoding: StringCoding.ZeroTerminated);
 
         if (bs.ReadUInt32() != MAGIC)
             throw new InvalidDataException("Not a chara timeline (.tlb) file. Magic did not match.");
@@ -25,52 +35,44 @@ public class CharaTimelineFile
         bs.Position += 0x10;
         int timelineDataPosition = bs.ReadInt32();
 
-        bs.Position = timelineDataPosition;
-        Timeline = new Timeline();
-        Timeline.Read(bs);
+        if (timelineDataPosition != 0)
+        {
+            bs.Position = timelineDataPosition;
+            Timeline = new Timeline();
+            Timeline.Read(bs);
+        }
     }
 
     public void Write(string file)
     {
-        if (Timeline == null)
+        using var fs = File.Create(file);
+        Write(fs);
+    }
+
+    public void Write(Stream stream)
+    {
+        if (Timeline is null)
             throw new InvalidOperationException("Timeline is null. Cannot write to file.");
 
-        using var buffer = new MemoryStream();
-        using BinaryStream bs = new BinaryStream(buffer);
+        SmartBinaryStream bs = new SmartBinaryStream(stream, stringCoding: StringCoding.ZeroTerminated);
 
-        ///* The file structure is as follows:
-        // * Header
-        // * Arrays of structs referenced by timeline elements, and specific element Data Unions
-        // * Timeline
-        // *  TimelineElementsList[]
-        // *      Elements
-        // *  DataUnion (referenced in Elements)
-        // *      ElementData        
-        // *  AssetGroups[]
-        // *      AssetGroup
-        // *  AssetOffsetsList[] (referenced in AssetGroup)
-        // *  Asset[] (referenced from AssetOffsetsList)
-        // *  FinalStructsArray[] // for a lack of a better name, its just the struct that appears at the end of the file
-        // *      FinalStruct
-        // *          SubStruct
-        // *  All distinct strings referenced everywhere 
-        // */
+        long basePos = bs.Position;
 
         // Write Header
         bs.WriteInt32(MAGIC);
-        bs.WriteUInt32(Version + 1);
-        bs.WriteInt32(0); // c
-        bs.WriteInt32(0); // d
-        bs.WriteInt32(0); // e
-        bs.WriteInt32(0); // f
+        bs.WriteUInt32(Version);
+        bs.WritePadding(0x10);
+        bs.WriteInt32(0); // Timeline offset, write later
 
-        // The final field of the header is the position of the timeline, which the timeline will write in its own write method
-        Timeline.Write(bs);
+        // Write the timeline
+        int timelineHeaderOffset = Timeline.Write(bs);
 
-        buffer.Position = 0;
-        using (var fileStream = File.Create(file))
-        {
-            buffer.CopyTo(fileStream);
-        }
+        long tempPos = bs.Position;
+
+        // Write the timeline offset
+        bs.Position = basePos + 0x18;
+        bs.WriteInt32(timelineHeaderOffset);
+
+        bs.Position = tempPos;
     }
 }

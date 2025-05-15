@@ -1,11 +1,12 @@
 ﻿namespace FF16Tools.Files.Timelines;
 
-public enum  TimelineElementType
+public enum TimelineElementType
 {
     kTimelineElem_5 = 5,
     CameraAnimationRange = 8,
     kTimelineElem_9 = 9,
     BattleCondition = 10,
+    kTimelineElem_11 = 11,
     BulletTimeRange = 12,
     ControlPermission = 17,
     kTimelineElem_23 = 23,
@@ -18,12 +19,18 @@ public enum  TimelineElementType
     BattleMessageRange = 47,
     kTimelineElem_49 = 49,
     EnableDestructorCollision = 51,
-    kTimelineElem_56 = 56,
+
+    /// <summary>
+    /// (Not the actual offical name) - does something with vibration, but known
+    /// </summary>
+    PadVibrationUnk = 56,
     PadVibration = 57,
     kTimelineElem_60 = 60,
     kTimelineElem_73 = 73,
     ControlRejectionRange = 74,
     kTimelineElem_84 = 84,
+
+    //--------------------------------------------------------------
     kTimelineElem_1001 = 1001,
     Attack = 1002,
     kTimelineElem_1004 = 1004,
@@ -35,16 +42,19 @@ public enum  TimelineElementType
     MagicCreate = 1012,
     kTimelineElem_1014 = 1014,
     PrecedeInputUnk = 1016,
+    kTimelineElem_1021 = 1021,
     kTimelineElem_1023 = 1023,
     kTimelineElem_1030 = 1030,
     kTimelineElem_1035 = 1035,
     SummonPartsVisibleRange = 1047,
     BattleVoiceTrigger = 1053,
     kTimelineElem_1049 = 1049,
+    kTimelineElem_1050 = 1050,
     DisableReceiver = 1058,
     kTimelineElem_1059 = 1059,
     kTimelineElem_1064 = 1064,
     MotionAttribute = 1066,
+    kTimelineElem_1068 = 1068,
     kTimelineElem_1075 = 1075,
     kTimelineElem_1084 = 1084,
     DisableCharaUnk = 1097,
@@ -54,7 +64,12 @@ public enum  TimelineElementType
     kTimelineElem_1107 = 1107,
     ExtrudeLayerRange = 1108, // Actual data layout is unknown
     kTimelineElem_1115 = 1115,
-    StartCooldown = 1117, // Not the actual offical name, but this is what it does
+    kTimelineElem_1123 = 1123,
+
+    /// <summary>
+    /// (Not the actual offical name)
+    /// </summary>
+    StartCooldown = 1117,
     JustBuddyCommand = 1130
 }
 
