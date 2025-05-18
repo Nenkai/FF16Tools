@@ -2,6 +2,9 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
+// item and equipitem accesses these the following way:
+// Value / 10 for key2, % 10 for array index.
+
 add_column|DLCFlags|int
 add_column|UnkUnionArray|union[]
 

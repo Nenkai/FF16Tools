@@ -8,4 +8,4 @@ add_column|Unk3|string|rel
 add_column|Unk4|string|rel|-4
 add_column|Comment|string
 add_column|Unk6|int
-add_column|Unk7|int
+add_column|Unk6FFMode|int

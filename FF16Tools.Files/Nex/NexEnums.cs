@@ -131,7 +131,7 @@ public enum NexUnionType : ushort
 
     skill = 632,
     behavioreventactionsequence = 639,
-    //unk_649 = 649,
+    difficultylevel = 649,
     behaviormoverailparam = 653,
     directoreventtasklist = 655, // mapdirectorsequence
     captionfreeword = 664,
@@ -168,7 +168,7 @@ public enum NexUnionType : ushort
     directorshipswingparameter = 934,
     directormovecustomspeedparam = 935,
     simpleeventselect = 942,
-    simpleeventsequencerandomset = 943,
+    simpleeventsequencerandomset = 943, // 
     cutsceneconnectquestseqarg = 945,
     shopquestcounter = 957,
     shopfixedpaletteaccess = 976,
@@ -184,8 +184,11 @@ public enum NexUnionType : ushort
     abysseffect = 1047,
     lorecutmreference = 1079,
     lorecutqreference = 1080,
+    // set from 48 89 5C 24 ? 48 89 6C 24 ? 57 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 84 24 ? ? ? ? 48 8B 51
+    fieldmapdiscoverymask = 1094,
     fieldmapobelisk = 1138,
     dlcentitlement = 1144,
+    loredictionaryenemycategory = 1162,
     patchdlcversion = 1174,
     simpleeventlightpresetselect = 1186,
     abyssboostparam = 1249,

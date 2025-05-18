@@ -4,4 +4,4 @@ use_base_row_id|true
 
 add_column|DLCFlags|int
 add_column|Unk2|int
-add_column|Unk3|int
+add_column|CameraTransitionSpeedId|int

@@ -2,6 +2,8 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
+// Key2 is difficulty. Refer to difficultylevel for ids.
+
 add_column|DLCFlags|int
 add_column|UnkUnion2|union
 add_column|Unk4|int

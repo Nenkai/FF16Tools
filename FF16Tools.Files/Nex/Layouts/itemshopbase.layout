@@ -8,10 +8,11 @@ add_column|Unk3|int
 add_column|Unk4|int
 add_column|Unk5|int
 add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
+// ref: 48 8B C4 48 89 58 ? 48 89 68 ? 48 89 70 ? 48 89 78 ? 41 54 41 56 41 57 48 83 EC ? 4D 8B E1
+add_column|ItemShopStockId|int
+add_column|ItemShopStockId2|int
+add_column|ItemShopStockFFModeId|int
+add_column|ItemShopStockFFModeId2|int
 add_column|Unk11|int
 add_column|Unk12|int
 add_column|Unk13|int

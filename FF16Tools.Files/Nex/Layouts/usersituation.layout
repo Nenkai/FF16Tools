@@ -2,7 +2,7 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
-// This table is basically game state flags
+// This table is basically game state flags checks
 // Simple example - row 15020 is referenced by gamemap 602000 aka hideaway 2 (pink sky variant)
 // If UnkIdType is 204 and current quest state is >= 10900
 // Then this "usersituation" is OK
@@ -27,35 +27,103 @@ use_base_row_id|false
 // COLUMNS
 /////////////////////////////////
 add_column|DLCFlags|int
-add_column|UnkType|int
 
-// union
-// 204 = questprogress
-// 458 = usersituationflag
-// 577 = ?
-// 649 = ?
-// 847 = questsimpleventsequence
-// 856 = simpleevent
-// 978 = fixedpalette
-// 985 = questdiscardlist
-// 989 = icondiscovery
-// 1094 = ?
-// 1162 = ? 
-add_column|UnkUnion1|union
-add_column|UnkUnion2|union
+// ################# CHECK TYPES #################
+// Handler: 40 55 53 56 57 41 56 48 8B EC 48 83 EC ? 44 8B 52
+// 1 = quest not completed?
+// 2 = quest completed?
+// 3 = questprogress (value1 < 0)
+// 4 = questprogress (value1 <= 0)
+// 5 = questprogress (value1 == 0)
+// 6 = questprogress (value1 >= 0)
+// 7 = questprogress (value1 > 0)
+// 8 = questprogress (current >= value1 && current <= value2)
+// 9 = questprogress (current >= value1 && current < value2)
+// 10 = questprogress (current > value1 && current <= value2)
+// 11 = questprogress (current > value1 && current < value2)
+// 12 = questdiscardlist (?)
+// 13 = questdiscardlist (?)
+// 16 = has completed quest 36000? (Echoes of the Fallen)
+// 17 = has completed quest 36001? (The Rising Tide)
+// 18 = something to do with quest 36000
+
+// 100 = in save -> something in UserData's userflags
+// 108 = in save -> EventData (branch a)
+// 109 = in save -> EventData (branch b)
+// 110 = HAS usersituationflag
+// 111 = NOT usersituationflag
+// 114 = HAS mapdirectorflag
+// 115 = NOT mapdirectorflag
+// 116 = difficultylevel
+// 117 = has equipped item (equipitem)
+// 118 = has letter
+// 119 = has icondiscovery
+// 120 = min player level (current level >= value1) 
+// 121 = max player level (current level <= value1)
+// 122 = player level (currentlevel >= value1 && current level <= value2)
+// 123 = simpleevent (?)
+// 124 = simpleevent (?)
+// 125 = min number of drinks for self? (save SafeHouseData->barCount_Oneself_) (current >= value1)
+// 126 = number of drinks for self? range. (save SafeHouseData->barCount_Oneself_) (current >= value1 && current < value2)
+// 127 = number of drinks for party? (save SafeHouseData->barCount_Somebody_) (current >= value1)
+// 128 = simpleevent (checks SimpleEventData?)
+// 129 = thousand thomes level (checks loredictionarylevel table, stores data in LoreDictionaryListData in save)
+// 130 = HAS. questsimpleventsequence or simpleeventsequencerandomset (union 943).
+// 131 = NOT. questsimpleventsequence or simpleeventsequencerandomset (union 943).
+// 132 = min renown
+// 133 = max renown
+// 134 = fieldmapdiscoverymask (aka ShowAreaNameData bit in save?)
+// 135 = loredictionaryenemycategory, referenced by bnpcbase. (checks data from LoreDictionaryEnemyData in save) 
+// 136 = layoutnamedinstance
+// 137 = partytalk, (internally: partytalk->GameMapId, checks into either MapGimmickData_ or PartyTalkData in save depending on UnkType12?)
+// 138 = partytalk, unknown
+// 200 = ? 1 - related to a battle or npc director? (current >= value1)
+// 201 = ? 1 - related to a battle or npc director? range. (current >= value1 && current < value2)
+// 205 = HAS hunted mob? (checks smobdirector)
+// 206 = NOT hunted mob? (checks smobdirector)
+// 207 = ? 2 - unknown director related  (current >= value)
+// 208 = ? 2 - unknown director related (current < value1)
+// 209 = ? 2 - unknown director related range. (current >= value1 && current < value2)
+// 210 = ? 3 - unknown director (current >= value1)
+// 211 = current summon/eikon (summonmode, checks PlayerData->summonCurrentIndex_)
+// 250 = has bnpcbase?
+
+// 300 = check IconDiscoveryData in save?
+
+// 400 = ? save related
+// 401 = ? save user flags related
+// 402 = check uichronicleperiod 200500? Unk1 = 7
+// 403 = check uichronicleperiod 300000?
+// 404 = ? always false?
+// 405 = check uichronicleperiod 300000?
+// 406 = check loredictionary 520010?
+// 407 = check loredictionary 545010?
+
+// 1000 = false
+// 1001 = true
+// #######################################################
+
+add_column|Check1_Type|int
+add_column|Check1_Value1|union
+add_column|Check1_Value2|union
+
 add_column|Comment|string
-add_column|Unk8|int
-add_column|UnkUnion3|union
-add_column|UnkType4|union
-add_column|UnkUnion44|int
-add_column|UnkUnion5|union
-add_column|UnkUnion6|union
+
+add_column|Check2_Type|int
+add_column|Check2_Value1|union
+add_column|Check2_Value2|union
+
+add_column|Check3_Type3|int
+add_column|Check3_Value1|union
+add_column|Check3_Value2|union
 
 add_column|Unk18|string
-add_column|Unk19|byte
-add_column|Unk20|byte
-add_column|Unk21|byte
-add_column|Unk22|byte
+
+// If true, check for success, otherwise fail is passed
+add_column|Check1_IsTrueForSuccess|byte
+add_column|Check2_IsTrueForSuccess|byte
+add_column|Check3_IsTrueForSuccess|byte
+// <implicit 1 byte padding>
 
 //////////////////////////////////////
 // Comments

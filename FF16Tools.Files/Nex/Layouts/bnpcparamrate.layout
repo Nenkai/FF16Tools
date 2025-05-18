@@ -3,7 +3,11 @@ set_table_category|SingleKeyed
 use_base_row_id|true
 
 add_column|DLCFlags|int
-add_column|Unk2|int
+add_column|NormalRate|int
+
+// Unknown rates
 add_column|Unk3|int
 add_column|Unk4|int
-add_column|Unk5|int
+
+// Same as NormalRate but for Ultimaniac
+add_column|UltimaniacRate|int

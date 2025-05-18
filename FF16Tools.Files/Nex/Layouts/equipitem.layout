@@ -2,31 +2,36 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
+// !!!!!! IF YOU UPDATE ANYTHING HERE, IT MAY ALSO NEED TO BE UPDATED IN THE ITEM TABLE.
 // Hardcoded ids: 100502, 100503, 100504, 100505, 100506, 100612, 100613, 100614, likely more
+// ID below 100000 points to item instead!
 
 add_column|DLCFlags|int
-add_column|Category|int
+add_column|ItemCategoryId|int
 add_column|WeaponBaseId|int
 add_column|Attack|int
 add_column|Defense|int
 add_column|Stagger|int
-add_column|Unk7|int
-add_column|SalePrice|int
-add_column|Rarity_UIArrayIdRelated|int
+add_column|ItemCap|int
+add_column|GilCost|int
+
+// divide by 10 for key 2, rem for array index.
+add_column|UiArrayIndexForRarity|int
 add_column|IconTexFileId|int
 add_column|EffectFlag|int
 add_column|Name|string|rel
 add_column|Description|string|rel|-4
-add_column|Name1|string|rel|-8
-add_column|Name2|string|rel|-12
+add_column|SingularText|string|rel|-8
+add_column|PluralText|string|rel|-12
 
-// These are identical to Unk7 in item
-add_column|Unk16|byte
-add_column|Unk17|byte
-add_column|Unk18|byte
-add_column|Unk19|byte
-add_column|Unk20|byte
-add_column|Unk21|byte
+// uiattributive stuff. Same as Unk16->Unk21 in equipitem
+// 26 is added thee two for id, references String2
+add_column|UiAttributiveSingularUnk|byte
+add_column|UiAttributivePluralUnk|byte
+add_column|UiAttributiveUnk3|byte
+add_column|UiAttributiveUnkType4|byte
+add_column|UiAttributiveUnk5|byte
+add_column|UiAttributiveUnkBool6|byte
 // implicit 2 byte padding
 
 add_column|Unk24|string|rel|-24
@@ -39,16 +44,31 @@ add_column|EffectPotency|int
 // 143 = ?
 add_column|EffectUnions|union[]
 add_column|HP|int
-add_column|Unk28|int
+add_column|GilCostFFMode|int
 add_column|Unk29|int
 add_column|SortOrder1|int
 add_column|WeaponSkinCategoryId|int
-add_column|Unk32|byte
+
+// Same as Unk24 in item
+add_column|UnkBool32|byte
+// ref: 48 89 4C 24 ? 48 83 EC ? 45 33 C9 48 8D 54 24
 add_column|Unk33|byte
+
+// ref: 80 78 ? ? 74 ? 8B D7 E8
+// ref2: 80 78 ? ? 74 ? 83 FE
 add_column|Unk34|byte
+
+// ref: 44 38 70 ? 0F 85 ? ? ? ? 8B D3
 add_column|Unk35|byte
+
+// Same as Unk36 in equipitem
+// GetCurrentDifficultyLevel() == 2? flag for whether this is available in a certain difficulty?
+// ref: 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8D 41
 add_column|Unk36|byte
+
+// ref: 48 8B C4 48 89 58 ? 44 89 48 ? 48 89 48 ? 57
 add_column|Unk37|byte
+
 add_column|Unk38|byte
 add_column|Unk39|byte
 add_column|SortOrder2|int

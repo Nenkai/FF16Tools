@@ -24,10 +24,10 @@ add_column|ActionId4|int
 add_column|ActionId5|int
 add_column|BattleEventId|int
 add_column|Unk9|float
-add_column|Damage1|int
-add_column|Damage2|int
-add_column|Damage3|int
-add_column|Damage4|int
+add_column|StoryDiffDamage|int
+add_column|ActionDiffDamage|int
+add_column|FFDiffDamage|int
+add_column|UltimaniacDiffDamage|int
 add_column|Unk14|byte
 // <implicit 3 bytes padding>
 

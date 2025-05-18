@@ -2,6 +2,13 @@ set_table_type|TripleKeyed
 set_table_category|TripleKeyed
 use_base_row_id|false
 
+// Key2 = difficultylevel id
+// Key3 = equip index
+
 add_column|DLCFlags|int
+
+// item/equipitem
 add_column|ItemUnion|union
-add_column|Unk4|int
+
+// Maybe?
+add_column|ItemCap|int

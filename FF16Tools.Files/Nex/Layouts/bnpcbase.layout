@@ -3,8 +3,15 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|int
-add_column|Unk3|int
+
+// 1 = eikon or boss? note that BossDamage will be used in difficultylevel if this not 2
+// 2 = regular enemy?
+add_column|UnkType|int
+
+// 1 = can use paramgrow? aka can level?
+// 2 = enemy?
+add_column|UnkType2|int
+
 add_column|ModelId|int
 add_column|ModelIdKey2|int
 
@@ -13,9 +20,14 @@ add_column|WeaponBaseId1|int
 // Left hand
 add_column|WeaponBaseId2|int
 
-add_column|Unk8|int
+add_column|ParamGrowIdForLevel|int
 add_column|Unk9|int
-add_column|Unk10|int
+
+// Combine with paramgrow
+// ref: 48 89 5C 24 ? 57 48 83 EC ? 48 8D 99 ? ? ? ? E8
+// before equipments
+add_column|HPMultiplierPercent|int
+
 add_column|Unk11|float
 add_column|Unk12|float
 add_column|Unk13|float
@@ -25,11 +37,11 @@ add_column|MoveTypeId|int
 add_column|Unk17|int
 add_column|Unk18|int
 add_column|Unk19|int
-add_column|Unk20|int
+add_column|MonStatIdDefault|int
 add_column|MonStatIds|int[]
 add_column|Unk23|int
 add_column|Unk24|int
-add_column|Unk25|int
+add_column|PartParamSetId|int
 add_column|Unk26|int
 add_column|Unk27|int
 add_column|Unk28|float
@@ -40,19 +52,28 @@ add_column|Unk32|float
 add_column|Unk33|int
 add_column|Unk34|int
 add_column|Unk35|float
-add_column|Unk36|int
-add_column|Unk37|int
+
+// cameraadjustparam id 8?
+// ref: 44 38 A0 ? ? ? ? 0F 84 ? ? ? ? 48 8B 05
+add_column|UseCameraAdjustParam|byte
+// <implciit 3 bytes padding>
+
+add_column|SpreadDropTableId|int
 add_column|ColorCoordinateId|int
 add_column|Unk39|int
 add_column|Unk40|int
 add_column|Unk41|int
+
+// training related?
+// ref: 48 83 EC ? 8B 51 ? 48 8D 4C 24 ? E8 ? ? ? ? 48 8B 4C 24 ? 33 C0
 add_column|Unk42|int
+
 add_column|Unk43|float
 add_column|Unk44|float
-add_column|Unk45|int
+add_column|StreamingObjectSizeId|int
 add_column|Unk46|int
 add_column|Unk47|int
-add_column|Unk48|int
+add_column|SummonPartsId|int
 add_column|Unk49_1|byte
 add_column|Unk49_2|byte
 add_column|Unk49_3|byte
@@ -62,17 +83,18 @@ add_column|Unk51|int
 add_column|Unk52|int
 add_column|Unk53|int
 add_column|Unk54|int
-add_column|Unk55_1|byte
+add_column|UnkBool55_1|byte
 add_column|Unk55_2|byte
 add_column|Unk55_3|byte
 add_column|Unk55_4|byte
 add_column|Unk56|string
-add_column|Unk57|int
+add_column|EmCorrectionParamId|int
 add_column|Comment1|string
 add_column|Comment2|string
 add_column|Unk60|int
 add_column|Unk61|int
-add_column|Unk62|int
+// partymember related
+add_column|UnkBNpcBaseId|int
 add_column|Unk63_1|byte
 add_column|Unk63_2|byte
 add_column|Unk63_3|byte
@@ -86,9 +108,21 @@ add_column|Unk69_1|byte
 add_column|Unk69_2|byte
 add_column|Unk69_3|byte
 add_column|Unk69_4|byte
-add_column|Unk70|int
-add_column|Unk71|int
-add_column|Unk72|int
+
+// difficultylevel->IsIncreaseEnemyLevel must be enabled?
+add_column|BNpcParamRateId|int
+
+// use BattleVoiceCategory id 1301?
+// ref: 80 B8 ? ? ? ? ? 74 ? 48 8B 43 ? 48 8B 0D
+add_column|UnkBool71|byte
+// <implicit 3 bytes padding>
+
+// This is what is used to store bits in the save's LoreDictionaryEnemyData
+// UnkType2 must be 2!! 
+// ref: 09 04 8A 4C 8B 6C 24
+// LoreDictionaryEnemyData[(LoreDictionaryEnemyCategoryId - 1000) / 32] |= 1 << (((byte)LoreDictionaryEnemyCategoryId + 24) & 0x1F);
+add_column|LoreDictionaryEnemyCategoryId|int
+
 add_column|Unk73|int
 add_column|Unk74_1|byte
 add_column|Unk74_2|byte

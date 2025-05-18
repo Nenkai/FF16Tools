@@ -2,5 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
+// See bnpcbase.
+// This is what is used to store bits in the save's LoreDictionaryEnemyData
+// LoreDictionaryEnemyData[(LoreDictionaryEnemyCategoryId - 1000) / 32] |= 1 << (((byte)LoreDictionaryEnemyCategoryId + 24) & 0x1F);
+
 add_column|DLCFlags|int
 add_column|Comment|string

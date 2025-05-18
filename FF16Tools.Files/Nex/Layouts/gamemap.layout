@@ -30,6 +30,9 @@ add_column|PartySelectId|short
 add_column|QuestId|int
 
 // ffxvi.exe steam 1.0.1 -> 1402681E0 (checked against 3), 14044C441 & 140464271 (2), 140462505 (1)
+// Used in 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC ? 8D 82 for usersituation check
+// 2 = MapGimmickData?
+// 1 or 3 = PartyTalkData?
 add_column|UnkType12|int
 
 add_column|SpecialAreaId|int

@@ -26,7 +26,9 @@ add_column|AssetIdUnion1|union
 // Same union
 add_column|AssetIdUnion2|union
 
-add_column|Unk14|int
+// IF ffmode, use howto redirected by this id
+add_column|HowToIdOverrideFFMode|int
+
 add_column|Unk15|int
 add_column|Unk16|byte
 add_column|Unk17|byte

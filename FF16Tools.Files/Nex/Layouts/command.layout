@@ -106,7 +106,7 @@ add_column|Unk57|int
 // explicitly checked against hardcoded numbers
 add_column|SkillBgOrIconColor|int
 
-add_column|Unk59|int
+add_column|FirelightItemCapUltimaniac|int
 add_column|Unk60|int
 add_column|Unk61|float
 add_column|Unk62|float

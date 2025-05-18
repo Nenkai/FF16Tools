@@ -12,7 +12,7 @@ add_column|UnkUnion8|union
 add_column|Unk10|int
 add_column|UnkUnion11|union
 add_column|UnkUnion13|union
-add_column|Unk15|int
+add_column|GameMapId|int
 add_column|Unk16|int
 add_column|UnkUnion17|union[]
 add_column|Unk19|float

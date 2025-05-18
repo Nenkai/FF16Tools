@@ -2,6 +2,8 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|true
 
+// Ids are largely hardcoded.
+
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|CategoryName|string|rel

@@ -26,11 +26,13 @@ add_column|MovementType1|int
 // Bitset from 0-15, 0 is none
 add_column|MovementType2|int
 
-//Lunge has FollowUpType [61,11,60,10], which means it does different animation depending on how far you are (regular/extreme lunge)
-//In that case Unk_0x28 is [5], which is the distance, so [0.5] would do extreme lunge from a shorter distance
+// Lunge has FollowUpType [61,11,60,10], which means it does different animation depending on how far you are (regular/extreme lunge)
+// In that case FollowupParameters is [5], which is the distance, so [0.5] would do extreme lunge from a shorter distance
+// Airborne Upheval has [33,32,30,1], which means its a different animation depending on the height
+// In that case FollowupParameters is [1.5,2.5], so 1.5 is the minimum height for the level 2 version, and 2.5 is the minimum height for the level 3 version
 
-//Airborne Upheval has [33,32,30,1], which means its a different animation depending on the height
-//In that case Unk_0x28 is [1.5,2.5], so 1.5 is the minimum height for the level 2 version, and 2.5 is the minimum height for the level 3 version
+// Note that difficultylevel->UnkActionFollowupIndex references this too
+// ref: 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 8B F9 33 DB 48 8B 89 ? ? ? ? 48 85 C9
 add_column|FollowupParameters|float[]
 
 add_column|ActionMoveTypeId|int

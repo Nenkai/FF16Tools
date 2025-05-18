@@ -13,7 +13,7 @@ add_column|SpeakerId|int
 add_column|ColorCoordinateId|int
 add_column|Unk10|int
 add_column|Unk11|int
-add_column|Unk12|int
+add_column|StreamingObjectSizeId|int
 add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
