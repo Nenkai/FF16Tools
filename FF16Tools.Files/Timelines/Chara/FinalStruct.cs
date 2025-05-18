@@ -1,20 +1,51 @@
-﻿namespace FF16Tools.Files.Timelines.Chara
+﻿namespace FF16Tools.Files.Timelines.Chara;
+
+public class InternalFinalStruct : ISerializableStruct
 {
+    public int UnkType;
 
-    public class InternalFinalStruct : BaseStruct
+    public void Read(SmartBinaryStream bs)
     {
-        public override int TotalSize => 0x28;
-
-        public int UnkType;
-        public int[] Pad = new int[9];
+        UnkType = bs.ReadInt32();
+        bs.Position += 0x24;
     }
 
-    public class FinalStruct : BaseStruct
+    public void Write(SmartBinaryStream bs)
     {
-        public override int TotalSize => 0x4;        
-        public int DataOffset;
-
-        [RelativeField("DataOffset")]
-        public InternalFinalStruct Sub;
+        bs.WriteInt32(UnkType);
+        bs.WritePadding(0x24);
     }
+
+
+    public uint GetSize() => 0x28;
+}
+
+public class FinalStruct : ISerializableStruct
+{
+    public InternalFinalStruct InternalFinalStruct = new();
+
+    public void Read(SmartBinaryStream bs)
+    {
+        long basePos = bs.Position;
+
+        int dataOffset = bs.ReadInt32();
+
+        bs.Position = basePos + dataOffset;
+        InternalFinalStruct.Read(bs);
+
+        bs.Position = basePos + GetSize();
+    }
+
+    public void Write(SmartBinaryStream bs)
+    {
+        long basePos = bs.Position;
+        bs.WriteUInt32(0x04); // offset
+
+        bs.Position = basePos + GetSize();
+        InternalFinalStruct.Write(bs);
+
+        bs.Position = basePos + GetSize();
+    }
+
+    public uint GetSize() => 0x04;
 }
