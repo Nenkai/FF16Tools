@@ -20,7 +20,7 @@ add_column|Unk10|int
 add_column|Unk11|int
 add_column|ActionIds|int[]
 add_column|Unk13|int
-add_column|Unk14|int
+add_column|CommandId|int
 add_column|Unk15|byte
 add_column|Unk16|byte
 add_column|Unk17|byte

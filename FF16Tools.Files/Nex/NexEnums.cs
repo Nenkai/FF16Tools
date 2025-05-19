@@ -164,6 +164,7 @@ public enum NexUnionType : ushort
     orchestrionlist = 889,
     orchestrion = 890,
     simpleeventlightpreset = 917,
+    phoenixshiftmove = 923,
     questcharalayoutenpc = 932,
     directorshipswingparameter = 934,
     directormovecustomspeedparam = 935,
