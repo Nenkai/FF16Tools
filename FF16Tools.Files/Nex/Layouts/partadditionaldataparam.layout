@@ -3,7 +3,7 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|string
+add_column|ModelExtraPartName|string
 add_column|Unk3|float
 add_column|Unk4|float
 add_column|Unk5|float

@@ -67,6 +67,7 @@ add_column|Unk35|byte
 add_column|Unk36|byte
 
 // ref: 48 8B C4 48 89 58 ? 44 89 48 ? 48 89 48 ? 57
+// ref2 (stomp jump limit check for bombardement bit?): 40 38 78 ? 75 ? 48 8B 4D
 add_column|Unk37|byte
 
 add_column|Unk38|byte
