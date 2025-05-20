@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -161,6 +162,100 @@ public class SmartBinaryStream : BinaryStream
             WriteByte(0);
     }
 
+    public void WriteVector2(Vector2 vec)
+    {
+        WriteSingle(vec.X);
+        WriteSingle(vec.Y);
+    }
+
+    public void WriteVector3(Vector3 vec)
+    {
+        WriteSingle(vec.X);
+        WriteSingle(vec.Y);
+        WriteSingle(vec.Z);
+    }
+
+    public void WriteVector4(Vector4 vec)
+    {
+        WriteSingle(vec.X);
+        WriteSingle(vec.Y);
+        WriteSingle(vec.Z);
+        WriteSingle(vec.Z);
+    }
+
+    public Vector2 ReadVector2()
+    {
+        return new Vector2(
+            ReadSingle(),
+            ReadSingle()
+        );
+    }
+    
+    public Vector3 ReadVector3()
+    {
+        return new Vector3(
+            ReadSingle(),
+            ReadSingle(),
+            ReadSingle()
+        );
+    }
+
+    public Vector4 ReadVector4()
+    {
+        return new Vector4(
+            ReadSingle(),
+            ReadSingle(),
+            ReadSingle(),
+            ReadSingle()
+        );
+    }
+
+    /// <summary>
+    /// Writes an array of inline structs starting from the current offset.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="elementCount"></param>
+    /// <returns></returns>
+    public void WriteArrayOfStructs<T>(IEnumerable<T> list) where T : ISerializableStruct, new()
+    {
+        foreach (T elem in list)
+        {
+            long startPos = Position;
+            elem.Write(this);
+            if (Position != startPos + elem.GetSize())
+                throw new InvalidDataException("WriteArrayOfStructs: Struct serialization size mismatch. Make sure Write and GetSize() matches.");
+        }
+    }
+
+    /// <summary>
+    /// Reads an array of inline structs starting from the current offset.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="elementCount"></param>
+    /// <returns></returns>
+    public List<T> ReadArrayOfStructs<T>(uint elementCount) where T : ISerializableStruct, new()
+    {
+        List<T> elements = [];
+
+        long basePos = Position;
+        for (int i = 0; i < elementCount; i++)
+        {
+            T elem = new();
+            Position = basePos + i * elem.GetSize();
+            elem.Read(this);
+            elements.Add(elem);
+        }
+
+        return elements;
+    }
+
+    /// <summary>
+    /// Reads an array of inline structs starting from the specified offset.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <param name="elementCount"></param>
+    /// <returns></returns>
     public List<T> ReadArrayOfStructs<T>(long startOffset, int elementCount) where T : ISerializableStruct, new()
     {
         List<T> elements = [];
@@ -174,6 +269,15 @@ public class SmartBinaryStream : BinaryStream
         }
 
         return elements;
+    }
+
+    public void WriteUint32AtOffset(long target, long relativePosition = 0)
+    {
+        long pos = Position;
+        using (TemporarySeek(target, SeekOrigin.Begin))
+        {
+            Write((uint)(pos - relativePosition));
+        }
     }
 
     public record StringPointer(string? String, long PointerOffset, long RelativeBaseOffset);

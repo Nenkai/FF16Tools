@@ -40,6 +40,11 @@ public enum AssetReferenceType : uint
     None = 0,
 
     /// <summary>
+    /// .skl file
+    /// </summary>
+    Skeleton = 1007,
+
+    /// <summary>
     /// .anmb file
     /// </summary>
     Animation = 1009,

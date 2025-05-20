@@ -43,6 +43,11 @@ public class GDeflate
         }
     }
 
+    public static long CompressionSize(long size)
+    {
+        return _codec.CompressBufferBound(size);
+    }
+
     // This is a hack. CompressBuffer would offer no way to grab back the compressed size
     private static unsafe void CompressBuffer(IDStorageCompressionCodec codec,
         nint uncompressedData, PointerSize uncompressedDataSize, Compression compressionSetting, nint compressedBuffer, PointerSize compressedBufferSize, out long compressedDataSize)
