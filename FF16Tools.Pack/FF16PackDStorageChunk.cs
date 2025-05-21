@@ -35,7 +35,7 @@ public class FF16PackDStorageChunk
     /// </summary>
     public ushort NumFilesInChunk { get; set; }
 
-    public byte[] CachedBuffer { get; set; }
+    public byte[]? CachedBuffer { get; set; }
 
     public void FromStream(BinaryStream bs)
     {

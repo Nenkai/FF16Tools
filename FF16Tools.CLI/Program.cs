@@ -26,6 +26,12 @@ public class Program
     private static ILoggerFactory _loggerFactory;
     private static Microsoft.Extensions.Logging.ILogger _logger;
 
+    static Program()
+    {
+        _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
+        _logger = _loggerFactory.CreateLogger<Program>();
+    }
+
     static async Task Main(string[] args)
     {
         Console.WriteLine("-----------------------------------------");
@@ -35,9 +41,6 @@ public class Program
         Console.WriteLine("- https://twitter.com/Nenkaai");
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("");
-
-        _loggerFactory = LoggerFactory.Create(builder => builder.AddNLog());
-        _logger = _loggerFactory.CreateLogger<Program>();
 
         if (args.Length == 1)
         {
@@ -98,7 +101,7 @@ public class Program
         if (string.IsNullOrEmpty(verbs.OutputPath))
         {
             string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}.extracted");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile))!, $"{inputFileName}.extracted");
         }
 
         try
@@ -126,7 +129,7 @@ public class Program
         if (string.IsNullOrEmpty(verbs.OutputPath))
         {
             string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}.extracted");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile))!, $"{inputFileName}.extracted");
         }
 
         var options = new FF16UnpackOptions()
@@ -205,7 +208,7 @@ public class Program
         if (string.IsNullOrEmpty(verbs.OutputPath))
         {
             string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFolder);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFolder)), "extracted");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFolder))!, "extracted");
         }
 
         var options = new FF16UnpackOptions()
@@ -247,7 +250,7 @@ public class Program
             pack.DumpInfo();
 
             string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            string outputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}_files.txt");
+            string outputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile))!, $"{inputFileName}_files.txt");
             pack.ListFiles(outputPath);
             _logger.LogInformation("Done. ({path})", outputPath);
         }
@@ -285,7 +288,7 @@ public class Program
             else
                 fileName += ".diff"; // should never be called
 
-            verbs.OutputFile = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{fileName}.pac");
+            verbs.OutputFile = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile))!, $"{fileName}.pac");
         }
 
         builder.InitFromDirectory(verbs.InputFile);
@@ -419,7 +422,7 @@ public class Program
         if (textureFile.Textures.Count > 1)
         {
             string fileName = Path.GetFileNameWithoutExtension(path);
-            string dir = Path.GetDirectoryName(Path.GetFullPath(path));
+            string dir = Path.GetDirectoryName(Path.GetFullPath(path))!;
             string outputDir = Path.Combine(dir, $"{fileName}_textures");
             Directory.CreateDirectory(outputDir);
 
@@ -516,7 +519,7 @@ public class Program
         if (string.IsNullOrEmpty(verbs.OutputFile))
         {
             string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputFile = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}_nxds");
+            verbs.OutputFile = Path.Combine(Path.GetDirectoryName(verbs.InputFile)!, $"{fileName}_nxds");
         }
 
         try
@@ -542,7 +545,7 @@ public class Program
         if (string.IsNullOrWhiteSpace(verbs.OutputDir))
         {
             string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputDir = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.extracted");
+            verbs.OutputDir = Path.Combine(Path.GetDirectoryName(verbs.InputFile)!, $"{fileName}.extracted");
         }
 
         try
@@ -578,7 +581,7 @@ public class Program
         if (string.IsNullOrWhiteSpace(verbs.OutputPath))
         {
             string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.png");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile)!, $"{fileName}.png");
         }
 
         try
@@ -627,7 +630,7 @@ public class Program
         if (string.IsNullOrWhiteSpace(verbs.OutputPath))
         {
             string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.json");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile)!, $"{fileName}.json");
         }
 
         try
@@ -664,7 +667,7 @@ public class Program
         if (string.IsNullOrWhiteSpace(verbs.OutputPath))
         {
             string fileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
-            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile), $"{fileName}.vatb");
+            verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile)!, $"{fileName}.vatb");
         }
 
         try
@@ -703,10 +706,10 @@ public class Program
             var layout = TableMappingReader.ReadTableLayout(table.Key, new System.Version(1, 0, 0));
             var builder = new NexDataFileBuilder(layout);
 
-            List<NexRowInfo> rowInfos = table.Value.RowManager.GetAllRowInfos();
+            List<NexRowInfo> rowInfos = table.Value.RowManager!.GetAllRowInfos();
             if (table.Value.Type == NexTableType.DoubleKeyed)
             {
-                NexTripleKeyedRowTableManager rowSetManager = table.Value.RowManager as NexTripleKeyedRowTableManager;
+                NexTripleKeyedRowTableManager rowSetManager = (NexTripleKeyedRowTableManager)table.Value.RowManager;
                 foreach (var dk in rowSetManager.GetRowSets())
                 {
                     builder.AddTripleKeyedSet(dk.Key);
@@ -716,7 +719,7 @@ public class Program
             }
             else if (table.Value.Type == NexTableType.DoubleKeyed)
             {
-                NexDoubleKeyedRowTableManager rowSetManager = table.Value.RowManager as NexDoubleKeyedRowTableManager;
+                NexDoubleKeyedRowTableManager rowSetManager = (NexDoubleKeyedRowTableManager)table.Value.RowManager;
                 foreach (var set in rowSetManager.GetRowSets())
                     builder.AddDoubleKeyedSet(set.Key);
             }
@@ -724,7 +727,7 @@ public class Program
             for (int i = 0; i < rowInfos.Count; i++)
             {
                 var row = rowInfos[i];
-                List<object> cells = NexUtils.ReadRow(layout, table.Value.Buffer, row.RowDataOffset);
+                List<object> cells = NexUtils.ReadRow(layout, table.Value.Buffer!, row.RowDataOffset);
                 builder.AddRow(row.Key, row.Key2, row.Key3, cells);
             }
 
@@ -776,23 +779,23 @@ public class Program
 public class UnpackFileVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .pac file")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 
     [Option('f', "file", Required = true, HelpText = "File to unpack.")]
-    public string FileToUnpack { get; set; }
+    public required string FileToUnpack { get; set; }
 
     [Option('o', "output", HelpText = "Optional. Output directory.")]
-    public string OutputPath { get; set; }
+    public string? OutputPath { get; set; }
 }
 
 [Verb("unpack-all", HelpText = "Unpacks all files from a .pac (FF16 Pack).")]
 public class UnpackAllVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .pac file")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output directory. Optional, defaults to a folder named the same as the .pac file.")]
-    public string OutputPath { get; set; }
+    public string? OutputPath { get; set; }
 
     [Option("filter", HelpText = "If provided, only file paths containing the specified filter will be extracted.")]
     public string? Filter { get; set; }
@@ -802,10 +805,10 @@ public class UnpackAllVerbs
 public class UnpackAllPacksVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input directory.")]
-    public string InputFolder { get; set; }
+    public required string InputFolder { get; set; }
 
     [Option('o', "output", HelpText = "Output directory.")]
-    public string OutputPath { get; set; }
+    public string? OutputPath { get; set; }
 
     [Option('l', "locale", HelpText = "Which localized packs to extract. Defaults to 'en'.\n" +
         "Valid options: ar, cs, ct, de, en, es, fr, it, ja, ko, ls, pb, pl, ru")]
@@ -825,13 +828,13 @@ public class UnpackAllPacksVerbs
 public class PackVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input directory containing files to pack.")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Optional. Output '.pac' file. Optional, defaults to <filename>.diff.pac for modding purposes.")]
-    public string OutputFile { get; set; }
+    public string? OutputFile { get; set; }
 
     [Option('n', "name", HelpText = "Optional. This overrides the internal parent path specified by the archive (normally in the .path file).")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [Option("no-compress", HelpText = "Optional. Whether to not compress data.")]
     public bool NoCompress { get; set; }
@@ -844,27 +847,27 @@ public class PackVerbs
 public class ListFilesVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .pac file")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 }
 
 [Verb("nxd-to-sqlite", HelpText = "Converts nxd files to SQLite.")]
 public class NxdToSqliteVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input directory with .nxd files.")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output SQLite database file.")]
-    public string OutputFile { get; set; }
+    public string? OutputFile { get; set; }
 }
 
 [Verb("sqlite-to-nxd", HelpText = "Converts a SQLite database to nxd files.")]
 public class SqliteToNxdVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input SQLite database/file.")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output directory for .nxd files.")]
-    public string OutputFile { get; set; }
+    public string? OutputFile { get; set; }
 
     [Option('t', "tables", HelpText = "Table(s) to import. If not provided, all tables in the database be imported.")]
     public IEnumerable<string> Tables { get; set; } = [];
@@ -874,7 +877,7 @@ public class SqliteToNxdVerbs
 public class TexConvVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .tex file or folder containing tex files")]
-    public IEnumerable<string> InputPaths { get; set; }
+    public required IEnumerable<string> InputPaths { get; set; }
 
     [Option('r', "recursive", HelpText = "If a folder is provided, whether to recursively convert.")]
     public bool Recursive { get; set; }
@@ -884,7 +887,7 @@ public class TexConvVerbs
 public class ImgConvVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .tex file or folder containing tex files")]
-    public IEnumerable<string> InputPaths { get; set; }
+    public required IEnumerable<string> InputPaths { get; set; }
 
     [Option("sdf", HelpText = "Mark texture as signed distance field (used for fonts and other textures)")]
     public bool SignedDistanceField { get; set; }
@@ -897,20 +900,20 @@ public class ImgConvVerbs
 public class UnpackSaveVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input save (.png) file.")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output directory.")]
-    public string OutputDir { get; set; }
+    public string? OutputDir { get; set; }
 }
 
 [Verb("pack-save", HelpText = "Packs a save folder into a save file (.png).")]
 public class PackSaveVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input directory.")]
-    public string InputFile { get; set; }
+    public required string? InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output save (.png) file.")]
-    public string OutputPath { get; set; }
+    public string? OutputPath { get; set; }
 
     [Option('s', "skip", HelpText = "Skip overwrite prompt.")]
     public bool SkipOverwritePrompt { get; set; }
@@ -920,18 +923,18 @@ public class PackSaveVerbs
 public class VatbToJsonVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .vatb file.")]
-    public string InputFile { get; set; }
+    public required string? InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output .json path.")]
-    public string OutputPath { get; set; }
+    public string? OutputPath { get; set; }
 }
 
 [Verb("json-to-vatb", HelpText = "Converts .json to .vatb (vfx audio table)")]
 public class JsonToVatbVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .json file.")]
-    public string InputFile { get; set; }
+    public required string InputFile { get; set; }
 
     [Option('o', "output", HelpText = "Output .vatb path.")]
-    public string OutputPath { get; set; }
+    public string? OutputPath { get; set; }
 }

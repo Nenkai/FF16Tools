@@ -28,8 +28,8 @@ namespace FF16Tools.Pack;
 /// </summary>
 public class FF16Pack : IDisposable, IAsyncDisposable
 {
-    private readonly ILoggerFactory _loggerFactory;
-    private readonly ILogger _logger;
+    private readonly ILoggerFactory? _loggerFactory;
+    private readonly ILogger? _logger;
 
     public const uint MAGIC = 0x4B434150;
     public const uint HEADER_SIZE = 0x400;
@@ -42,7 +42,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <summary>
     /// Internal Archive/Parent directory for this pack.
     /// </summary>
-    public string ArchiveDir { get; private set; }
+    public string? ArchiveDir { get; private set; }
 
     /// <summary>
     /// Whether the header is/was encrypted.
@@ -61,7 +61,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     private readonly FileStream _stream;
     private readonly HashSet<FF16PackDStorageChunk> _cachedChunks = [];
 
-    private FF16Pack(FileStream stream, ILoggerFactory loggerFactory = null)
+    private FF16Pack(FileStream stream, ILoggerFactory? loggerFactory = null)
     {
         ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
@@ -79,7 +79,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <param name="loggerFactory">Logger factory, for logging.</param>
     /// <returns></returns>
     /// <exception cref="InvalidDataException">If the file is not a pack file.</exception>
-    public static FF16Pack Open(string path, ILoggerFactory loggerFactory = null)
+    public static FF16Pack Open(string path, ILoggerFactory? loggerFactory = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(path, nameof(path));
 
@@ -149,13 +149,13 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// </summary>
     /// <param name="gamePath">Game path.</param>
     /// <returns>null if not found.</returns>
-    public FF16PackFile GetFileInfo(string gamePath)
+    public FF16PackFile? GetFileInfo(string gamePath)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath);
 
         gamePath = FF16PackPathUtil.NormalizePath(gamePath);
 
-        if (!_files.TryGetValue(gamePath, out FF16PackFile file))
+        if (!_files.TryGetValue(gamePath, out FF16PackFile? file))
             return null;
 
         return file;
@@ -225,7 +225,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         if (!outputStream.CanWrite)
             throw new ArgumentException("Output stream should be writable.");
 
-        FF16PackFile file = GetFileInfo(gamePath);
+        FF16PackFile? file = GetFileInfo(gamePath) ?? throw new FileNotFoundException($"File '{gamePath}' not found in the archive.");
         await UnpackFileToStreamAsync(file, outputStream, gamePath, ct: ct);
     }
 
@@ -247,7 +247,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         if (!outputStream.CanWrite)
             throw new ArgumentException("Output stream should be writable.");
 
-        FF16PackFile file = GetFileInfo(gamePath);
+        FF16PackFile file = GetFileInfo(gamePath) ?? throw new FileNotFoundException($"File '{gamePath}' not found in the archive.");
         UnpackFileToStream(file, outputStream, gamePath);
     }
 
@@ -264,7 +264,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         path = FF16PackPathUtil.NormalizePath(path);
 
-        FF16PackFile file = GetFileInfo(path);
+        FF16PackFile file = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
         MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate((int)file.DecompressedFileSize);
         await UnpackFileToStreamAsync(file, buffer.AsStream(), path, ct: ct);
@@ -284,7 +284,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         path = FF16PackPathUtil.NormalizePath(path);
 
-        FF16PackFile file = GetFileInfo(path);
+        FF16PackFile file = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
         byte[] buffer = new byte[file.DecompressedFileSize];
         await UnpackFileToStreamAsync(file, buffer.AsMemory().AsStream(), path, ct: ct);
@@ -304,7 +304,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         path = FF16PackPathUtil.NormalizePath(path);
 
-        FF16PackFile file = GetFileInfo(path);
+        FF16PackFile file = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
         byte[] buffer = new byte[file.DecompressedFileSize];
         UnpackFileToStream(file, buffer.AsMemory().AsStream(), path);
@@ -323,7 +323,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         path = FF16PackPathUtil.NormalizePath(path);
 
-        FF16PackFile file = GetFileInfo(path);
+        FF16PackFile file = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
         MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate((int)file.DecompressedFileSize);
         UnpackFileToStream(file, buffer.AsStream(), path);
@@ -410,7 +410,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         path = FF16PackPathUtil.NormalizePath(path);
 
-        FF16PackFile packFile = GetFileInfo(path);
+        FF16PackFile packFile = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
         if (_fileCounter is not null)
             _logger?.LogInformation("[{fileNumber}/{fileCount}] Extracting '{path}' (0x{packSize:X} bytes)...", _fileCounter + 1, _files.Count, path, packFile.DecompressedFileSize);
@@ -418,7 +418,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             _logger?.LogInformation("Extracting '{path}' (0x{packSize:X} bytes)...", path, packFile.DecompressedFileSize);
 
         string outputPath = Path.Combine(Path.GetFullPath(outputDir), path);
-        Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
         using var outputStream = new FileStream(outputPath, FileMode.Create);
         await UnpackFileToStreamAsync(packFile, outputStream, outputPath, ct);
@@ -438,7 +438,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         path = FF16PackPathUtil.NormalizePath(path);
 
-        FF16PackFile packFile = GetFileInfo(path);
+        FF16PackFile packFile = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
         if (_fileCounter is not null)
             _logger?.LogInformation("[{fileNumber}/{fileCount}] Extracting '{path}' (0x{packSize:X} bytes)...", _fileCounter + 1, _files.Count, path, packFile.DecompressedFileSize);
@@ -446,7 +446,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             _logger?.LogInformation("Extracting '{path}' (0x{packSize:X} bytes)...", path, packFile.DecompressedFileSize);
 
         string outputPath = Path.Combine(Path.GetFullPath(outputDir), path);
-        Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
         using var outputStream = new FileStream(outputPath, FileMode.Create);
         UnpackFileToStream(packFile, outputStream, outputPath);
@@ -798,8 +798,11 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             if (_cachedChunks.Count >= 20)
             {
                 var chunkToRemove = _cachedChunks.First();
-                ArrayPool<byte>.Shared.Return(chunkToRemove.CachedBuffer);
-                chunkToRemove.CachedBuffer = null;
+                if (chunkToRemove.CachedBuffer is not null)
+                {
+                    ArrayPool<byte>.Shared.Return(chunkToRemove.CachedBuffer);
+                    chunkToRemove.CachedBuffer = null;
+                }
 
                 _cachedChunks.Remove(chunkToRemove);
             }

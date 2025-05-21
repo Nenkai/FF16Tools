@@ -8,8 +8,8 @@ namespace FF16Tools.Pack.Packing;
 
 public class PackBuildOptions
 {
-    private string _name;
-    public string Name
+    private string? _name;
+    public string? Name
     {
         get => _name;
         set

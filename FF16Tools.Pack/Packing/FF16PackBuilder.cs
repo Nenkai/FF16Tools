@@ -27,13 +27,13 @@ namespace FF16Tools.Pack.Packing;
 
 public class FF16PackBuilder
 {
-    private ILoggerFactory _loggerFactory;
-    private ILogger _logger;
+    private ILoggerFactory? _loggerFactory;
+    private ILogger? _logger;
 
     private List<FileTask> _packFileTasks { get; set; } = [];
     private List<ChunkTask> _sharedChunksTasks { get; set; } = [];
-    private ChunkTask _lastSharedChunk;
-    private byte[] _stringTable;
+    private ChunkTask? _lastSharedChunk;
+    private byte[]? _stringTable;
     private long _lastMultiChunkHeaderOffset;
 
     private PackBuildOptions _options;
@@ -46,7 +46,7 @@ public class FF16PackBuilder
         _codec = DirectStorage.DStorageCreateCompressionCodec(CompressionFormat.GDeflate, (uint)Environment.ProcessorCount);
     }
 
-    public FF16PackBuilder(PackBuildOptions options = null, ILoggerFactory loggerFactory = null)
+    public FF16PackBuilder(PackBuildOptions? options = null, ILoggerFactory? loggerFactory = null)
     {
         _options = options ?? new();
         _loggerFactory = loggerFactory;
@@ -207,7 +207,7 @@ public class FF16PackBuilder
         uint size = FF16Pack.HEADER_SIZE + (uint)(_packFileTasks.Count * FF16PackFile.GetSize()) +
             CalculateSizeOfMultiChunkHeaders() +
             (uint)(_sharedChunksTasks.Count * FF16PackDStorageChunk.GetSize()) +
-            (uint)_stringTable.Length;
+            (uint)_stringTable!.Length;
 
         return size;
     }
@@ -220,7 +220,7 @@ public class FF16PackBuilder
             if (_packFileTasks[i].SplitChunkOffsets is null)
                 continue;
 
-            size += (uint)(8u + (_packFileTasks[i].SplitChunkOffsets.Length * sizeof(uint)));
+            size += (uint)(8u + (_packFileTasks[i].SplitChunkOffsets!.Length * sizeof(uint)));
         }
 
         return size;
@@ -330,12 +330,12 @@ public class FF16PackBuilder
             if (_packFileTasks[i].SplitChunkOffsets is null)
                 continue;
 
-            bs.WriteUInt32((uint)_packFileTasks[i].SplitChunkOffsets.Length);
+            bs.WriteUInt32((uint)_packFileTasks[i].SplitChunkOffsets!.Length);
             bs.WriteUInt32((3 << 24) | _packFileTasks[i].SplitLastChunkSize); // TODO: figure out what this '3' is.
 
-            for (int j = 0; j < _packFileTasks[i].SplitChunkOffsets.Length; j++)
+            for (int j = 0; j < _packFileTasks[i].SplitChunkOffsets!.Length; j++)
             {
-                bs.WriteUInt32(_packFileTasks[i].SplitChunkOffsets[j]);
+                bs.WriteUInt32(_packFileTasks[i].SplitChunkOffsets![j]);
             }
         }
 
@@ -436,7 +436,7 @@ public class FF16PackBuilder
                 crc.Append(slice.Span);
 
                 packStream.Position = (long)task.PackFile.ChunkDefOffsetOrPathLength + 8 + (i * sizeof(int));
-                task.SplitChunkOffsets[i] = (uint)(lastDataOffset - startDataOffset);
+                task.SplitChunkOffsets![i] = (uint)(lastDataOffset - startDataOffset);
 
                 packStream.Position = lastDataOffset;
                 uint compressedDataSize = GDeflate.Compress(slice.Span, compBuffer.Span);
@@ -458,7 +458,7 @@ public class FF16PackBuilder
             task.PackFile.ChunkedCompressionFlags = FF16PackChunkCompressionType.UseMultipleChunks;
             task.PackFile.CompressedFileSize = totalCompressedSize;
 
-            long chunkHeaderSize = (long)8 + (task.SplitChunkOffsets.Length * sizeof(int));
+            long chunkHeaderSize = (long)8 + (task.SplitChunkOffsets!.Length * sizeof(int));
             task.PackFile.ChunkHeaderSize = (uint)chunkHeaderSize;
             _lastMultiChunkHeaderOffset += chunkHeaderSize;
         }
@@ -545,10 +545,10 @@ public class ChunkTask
 
 public class FileTask
 {
-    public string LocalPath { get; set; }
-    public string GamePath { get; set; }
+    public required string LocalPath { get; set; }
+    public required string GamePath { get; set; }
     public FF16PackFile PackFile { get; set; } = new();
-    public ChunkTask SharedChunk { get; set; }
-    public uint[] SplitChunkOffsets { get; set; }
+    public ChunkTask? SharedChunk { get; set; }
+    public uint[]? SplitChunkOffsets { get; set; }
     public uint SplitLastChunkSize { get; set; }
 }
