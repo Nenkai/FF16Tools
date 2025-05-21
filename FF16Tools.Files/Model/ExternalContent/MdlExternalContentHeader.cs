@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +10,8 @@ namespace FF16Tools.Files.Model.ExternalContent;
 
 public class MdlExternalContentHeader
 {
+    public static uint MAGIC => BinaryPrimitives.ReadUInt32LittleEndian("MCEX"u8);
+
     // It seems only type 1 and 9 are ever used.
     public Dictionary<MdlExternalContentType, MdlExternalContentTypeBase> Entries { get; set; } = [];
 
@@ -16,7 +20,12 @@ public class MdlExternalContentHeader
         long basePos = bs.Position;
 
         uint magic = bs.ReadUInt32();
+        if (magic != MAGIC)
+            throw new InvalidDataException($"Model file has incorrect external content magic (expected {MAGIC:X4}, got {magic:X4}).");
+
         uint version = bs.ReadUInt32();
+        Debug.Assert(version == 1, $"Expected MCEX version 1, got {version}");
+
         bs.Position += 0x18;
 
         uint entryOffsetsOffset = bs.ReadUInt32();
@@ -37,6 +46,9 @@ public class MdlExternalContentHeader
                 case MdlExternalContentType.Unk1:
                     base_ = new MdlExternalContentType1();
                     break;
+
+                case MdlExternalContentType.Unk2:
+                    throw new NotImplementedException("MCEX type 2 is not yet implemented");
 
                 case MdlExternalContentType.EidMap:
                     base_ = new MdlExternalContentEidMap();

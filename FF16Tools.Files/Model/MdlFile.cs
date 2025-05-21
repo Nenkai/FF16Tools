@@ -325,17 +325,19 @@ public class MdlFile
         var OptionNamePointers = bs.ReadArrayOfStructs<NamePointer>(SpecsHeader.OptionCount);
         var VFXEntryNamePointers = bs.ReadArrayOfStructs<NamePointer>(SpecsHeader.VFXEntryCount);
 
+
         ExtraSection = bs.ReadBytes((int)SpecsHeader.ExtraSectionSize); //40 bytes when used
         bs.Align(0x04);
 
-        long baseePos = bs.Position;
-        ExternalContentHeader.Read(bs);
-        bs.Position = baseePos;
-        return;
-
+        // Read extra section bytes
         long mcexPosition = bs.Position;
         McexSection = bs.ReadBytes((int)SpecsHeader.ModelExternalContentSize);
         bs.Position = mcexPosition + (int)Utils.AlignValue(SpecsHeader.ModelExternalContentSize, 0x10);
+
+        // Also try to read the structure
+        long tempPos = bs.Position;
+        ExternalContentHeader.Read(bs);
+        bs.Position = tempPos;
 
         if (SpecsHeader.JointCount > 0)
             JointBoundings = bs.ReadArrayOfStructs<MdlJointBounding>(SpecsHeader.JointCount);
