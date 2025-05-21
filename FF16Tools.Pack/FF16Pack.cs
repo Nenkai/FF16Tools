@@ -334,11 +334,10 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// Extracts all the files in the pack to the specified directory.
     /// </summary>
     /// <param name="outputDir">Output directory for the extracted files.</param>
-    /// <param name="includePathFile">Whether to include a .path file, required for repacking individual packs.</param>
     /// <param name="token">Cancellation token.</param>
     /// <returns></returns>
     /// <exception cref="DirectoryNotFoundException"></exception>
-    public async Task ExtractAllAsync(string outputDir, bool includePathFile = true, CancellationToken token = default)
+    public async Task ExtractAllAsync(string outputDir, FF16UnpackOptions? options = null, CancellationToken token = default)
     {
         if (string.IsNullOrEmpty(outputDir))
             throw new DirectoryNotFoundException("Output dir is invalid.");
@@ -346,12 +345,16 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         _fileCounter = 0;
         foreach (KeyValuePair<string, FF16PackFile> file in _files)
         {
+            if (!string.IsNullOrWhiteSpace(options?.Filter) && !file.Key.Contains(options.Filter))
+                continue;
+
             await ExtractFileAsync(file.Key, outputDir, token);
             _fileCounter++;
         }
 
-        if (includePathFile && !string.IsNullOrEmpty(ArchiveDir))
+        if (options?.IncludePathFile == true && !string.IsNullOrEmpty(ArchiveDir))
         {
+            Directory.CreateDirectory(outputDir);
             File.WriteAllLines(Path.Combine(outputDir, ".path"), 
             [ 
                 "// This is the internal name/dir for this pack. Do not rename it if you are repacking.",
@@ -367,7 +370,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// <param name="includePathFile">Whether to include a .path file, required for repacking individual packs.</param>
     /// <returns></returns>
     /// <exception cref="DirectoryNotFoundException"></exception>
-    public void ExtractAll(string outputDir, bool includePathFile = true)
+    public void ExtractAll(string outputDir, FF16UnpackOptions? options = null)
     {
         if (string.IsNullOrEmpty(outputDir))
             throw new DirectoryNotFoundException("Output dir is invalid.");
@@ -375,11 +378,14 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         _fileCounter = 0;
         foreach (KeyValuePair<string, FF16PackFile> file in _files)
         {
+            if (!string.IsNullOrWhiteSpace(options?.Filter) && !file.Key.Contains(options.Filter))
+                continue;
+
             ExtractFile(file.Key, outputDir);
             _fileCounter++;
         }
 
-        if (includePathFile && !string.IsNullOrEmpty(ArchiveDir))
+        if (options?.IncludePathFile == true && !string.IsNullOrEmpty(ArchiveDir))
         {
             File.WriteAllLines(Path.Combine(outputDir, ".path"),
             [

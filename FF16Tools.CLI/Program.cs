@@ -129,13 +129,18 @@ public class Program
             verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFile)), $"{inputFileName}.extracted");
         }
 
+        var options = new FF16UnpackOptions()
+        {
+            Filter = verbs.Filter,
+        };
+
         try
         {
             using var pack = FF16Pack.Open(verbs.InputFile, _loggerFactory);
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
-            pack.ExtractAll(verbs.OutputPath);
+            pack.ExtractAll(verbs.OutputPath, options: options);
             _logger.LogInformation("Done.");
         }
         catch (Exception ex)
@@ -152,6 +157,8 @@ public class Program
             return;
         }
 
+        _logger.LogWarning("Extracting packs with locale: {locale}. Use --locale to override this.", verbs.Locale);
+
         List<string> packsToProcess = [];
         foreach (var pack in Directory.GetFiles(verbs.InputFolder, "*.pac"))
         {
@@ -161,6 +168,7 @@ public class Program
                 _logger.LogInformation("Skipping .diff pack '{packName}'", fileName);
                 continue;
             }
+
 
             if (FF16PackPathUtil.PackLocales.Any(locale => fileName.Contains($".{locale}.")))
             {
@@ -200,6 +208,12 @@ public class Program
             verbs.OutputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(verbs.InputFolder)), "extracted");
         }
 
+        var options = new FF16UnpackOptions()
+        {
+            Filter = verbs.Filter,
+            IncludePathFile = false,
+        };
+
         foreach (KeyValuePair<string, FF16Pack> pack in packs)
         {
             try
@@ -207,7 +221,7 @@ public class Program
                 _logger.LogInformation("Unpacking {pack}...", pack.Key);
                 pack.Value.DumpInfo();
 
-                await pack.Value.ExtractAllAsync(verbs.OutputPath, includePathFile: false);
+                await pack.Value.ExtractAllAsync(verbs.OutputPath, options: options);
             }
             catch (Exception ex)
             {
@@ -779,6 +793,9 @@ public class UnpackAllVerbs
 
     [Option('o', "output", HelpText = "Output directory. Optional, defaults to a folder named the same as the .pac file.")]
     public string OutputPath { get; set; }
+
+    [Option("filter", HelpText = "If provided, only file paths containing the specified filter will be extracted.")]
+    public string? Filter { get; set; }
 }
 
 [Verb("unpack-all-packs", HelpText = "Unpacks all packs from the specified folder.")]
@@ -799,6 +816,9 @@ public class UnpackAllPacksVerbs
 
     [Option('s', "skip", HelpText = "Skip any prompt.")]
     public bool SkipPrompt { get; set; }
+
+    [Option("filter", HelpText = "If provided, only file paths containing the specified filter will be extracted.")]
+    public string? Filter { get; set; }
 }
 
 [Verb("pack", HelpText = "Pack files from a directory.")]
