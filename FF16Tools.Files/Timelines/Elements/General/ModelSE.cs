@@ -18,18 +18,15 @@ public class ModelSE : TimelineElementBase, ISerializableStruct
     }
 
     public int Field_0x00 { get; set; }
-    public int Field_0x04 { get; set; }
-    public int Field_0x08 { get; set; }
+    public bool Bool_0x04 { get; set; }
+    public string SoundPath { get; set; }
     public int Field_0x0C { get; set; }
-    public int Field_0x10 { get; set; }
-    public int Field_0x14 { get; set; }
-    public int Field_0x18 { get; set; }
-    public int Field_0x1C { get; set; }
-    public int Field_0x20 { get; set; }
-    public int Field_0x24 { get; set; }
+    public double Field_0x10 { get; set; }
+    public double Field_0x18 { get; set; }
+    public double Field_0x20 { get; set; }
     public int Field_0x28 { get; set; }
-    public int Field_0x2C { get; set; }
-    public int Field_0x30 { get; set; }
+    public float Field_0x2C { get; set; }
+    public float Field_0x30 { get; set; }
     public float Field_0x34 { get; set; }
     public int Field_0x38 { get; set; }
     public float Field_0x3C { get; set; }
@@ -38,21 +35,20 @@ public class ModelSE : TimelineElementBase, ISerializableStruct
 
     public override void Read(SmartBinaryStream bs)
     {
+        long basePos = bs.Position;
         ReadMeta(bs);
 
         Field_0x00 = bs.ReadInt32();
-        Field_0x04 = bs.ReadInt32();
-        Field_0x08 = bs.ReadInt32();
+        Bool_0x04 = bs.ReadBoolean();
+        bs.Position += 3;
+        SoundPath = bs.ReadStringPointer(relativeBaseOffset: basePos);
         Field_0x0C = bs.ReadInt32();
-        Field_0x10 = bs.ReadInt32();
-        Field_0x14 = bs.ReadInt32();
-        Field_0x18 = bs.ReadInt32();
-        Field_0x1C = bs.ReadInt32();
-        Field_0x20 = bs.ReadInt32();
-        Field_0x24 = bs.ReadInt32();
+        Field_0x10 = bs.ReadDouble();
+        Field_0x18 = bs.ReadDouble();
+        Field_0x20 = bs.ReadDouble();
         Field_0x28 = bs.ReadInt32();
-        Field_0x2C = bs.ReadInt32();
-        Field_0x30 = bs.ReadInt32();
+        Field_0x2C = bs.ReadSingle();
+        Field_0x30 = bs.ReadSingle();
         Field_0x34 = bs.ReadSingle();
         Field_0x38 = bs.ReadInt32();
         Field_0x3C = bs.ReadSingle();
@@ -62,21 +58,20 @@ public class ModelSE : TimelineElementBase, ISerializableStruct
 
     public override void Write(SmartBinaryStream bs)
     {
+        long basePos = bs.Position;
         WriteMeta(bs);
 
         bs.WriteInt32(Field_0x00);
-        bs.WriteInt32(Field_0x04);
-        bs.WriteInt32(Field_0x08);
+        bs.WriteBoolean(Bool_0x04);
+        bs.WritePadding(3);
+        bs.AddStringPointer(SoundPath, basePos);
         bs.WriteInt32(Field_0x0C);
-        bs.WriteInt32(Field_0x10);
-        bs.WriteInt32(Field_0x14);
-        bs.WriteInt32(Field_0x18);
-        bs.WriteInt32(Field_0x1C);
-        bs.WriteInt32(Field_0x20);
-        bs.WriteInt32(Field_0x24);
+        bs.WriteDouble(Field_0x10);
+        bs.WriteDouble(Field_0x18);
+        bs.WriteDouble(Field_0x20);
         bs.WriteInt32(Field_0x28);
-        bs.WriteInt32(Field_0x2C);
-        bs.WriteInt32(Field_0x30);
+        bs.WriteSingle(Field_0x2C);
+        bs.WriteSingle(Field_0x30);
         bs.WriteSingle(Field_0x34);
         bs.WriteInt32(Field_0x38);
         bs.WriteSingle(Field_0x3C);

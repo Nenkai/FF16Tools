@@ -9,7 +9,7 @@ public class TimelineElement : ISerializableStruct
 
     public uint Field_0x00 { get; set; }
     public string? Name { get; set; }
-    public uint TimelineElemUnionTypeOrLayerId { get; set; }
+    public TimelineElementType ElementType { get; set; }
     public uint FrameStart { get; set; }
     public uint NumFrames { get; set; }
     public uint Field_0x14 { get; set; }
@@ -25,7 +25,7 @@ public class TimelineElement : ISerializableStruct
 
         Field_0x00 = bs.ReadUInt32();
         Name = bs.ReadStringPointer(thisPos);
-        TimelineElemUnionTypeOrLayerId = bs.ReadUInt32();
+        ElementType = (TimelineElementType)bs.ReadUInt32();
         FrameStart = bs.ReadUInt32();
         NumFrames = bs.ReadUInt32();
         Field_0x14 = bs.ReadUInt32();
@@ -36,12 +36,9 @@ public class TimelineElement : ISerializableStruct
         int dataHdrOffset = bs.ReadInt32();
 
         bs.Position = thisPos + dataHdrOffset;
-        TimelineElementType type = (TimelineElementType)bs.ReadUInt32();
-        bs.Position -= 4;
-
         try
         {
-            DataUnion = TimelineElementFactory.CreateElement(type);
+            DataUnion = TimelineElementFactory.CreateElement(ElementType);
         }
         catch (Exception)
         {
@@ -62,7 +59,7 @@ public class TimelineElement : ISerializableStruct
 
         bs.WriteUInt32(Field_0x00);
         bs.AddStringPointer(Name, thisPos);
-        bs.WriteUInt32(TimelineElemUnionTypeOrLayerId);
+        bs.WriteUInt32((uint)ElementType);
         bs.WriteUInt32(FrameStart);
         bs.WriteUInt32(NumFrames);
         bs.WriteUInt32(Field_0x14);

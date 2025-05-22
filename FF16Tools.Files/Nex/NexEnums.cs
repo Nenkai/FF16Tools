@@ -46,7 +46,7 @@ public enum NexUnionType : ushort
     // systemassistdirector = 3
     // fieldeventdirector = 4
     // smobdirector = 5
-    // sirequestbattledirector = 6
+    // sidequestbattledirector = 6
     // missionbattledirector = 7
     // battledirector = 8
     // behavioreventdirector = 9
