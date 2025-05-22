@@ -7,17 +7,24 @@ add_column|ModelCoordinateId|int
 add_column|Unk3|int
 add_column|Unk4|float
 
-// 48 03 C8 74 ? 44 38 11
+// ref: 48 03 C8 74 ? 44 38 11
 add_column|CharaCollisionFiles|string[]
 add_column|Comment|string
 add_column|MoveParamId|int
-add_column|Unk8|int
+
+// ref: 41 8B 54 24 ? 85 D2 74
+add_column|MotionParamId|int
+
 add_column|CharaTimelineVariationId|int
 add_column|Unk10|string[]
 add_column|EnvVfxSetId|int
 add_column|FootgroundId|int
 add_column|Unk13|int[]
+
+// Related to footground->Unk3
+// ref: C5 FA 10 78 ? EB ? C5 FA 10 3D ? ? ? ? 45 33 DB
 add_column|Unk14|float
+
 add_column|Unk15|float
 add_column|Unk16|int[]
 add_column|Unk17|string
@@ -34,20 +41,30 @@ add_column|Unk21_1|int
 // No more than 20, chosen at random
 // ffxvi.exe steam 1.0.1 - 140060211
 add_column|RandomVoiceLines|string[]
-add_column|Unk23|int
+add_column|BehaviorIdleBreakParamId|int
 add_column|Unk24|string
 add_column|Unk25|float
-add_column|Unk26|string[]
+
+// ref: 3B B8 ? ? ? ? 0F 8D ? ? ? ? 4D 85 C0 75 ? 49 8B C9
+add_column|MSeqFilePaths|string[]
+
 add_column|Unk27|float
 add_column|Unk28|int
 add_column|Unk29|int
 add_column|ModelCameraId|int
-add_column|Unk31|int
+
+// ref: 8B 90 ? ? ? ? 48 8D 4D ? E8 ? ? ? ? 84 C0
+add_column|UnkCharaTimelineVariationId2|int
+
 add_column|DeadParamId|int
-add_column|Unk33|int
-add_column|Unk34|int
+// Also key into characterskinmdelparamid
+add_column|CharacterSkinCategoryId|int
+add_column|CharacterSkinModelParamIdKey2|int
 add_column|Unk35|int
-add_column|Unk36|int
+
+// ref: 41 8B 88 ? ? ? ? 83 E9 ? 74 ? 83 F9 ? 75 ? 0F BA 6D
+add_column|UnkType36|int
+
 add_column|Unk37|int
 add_column|Unk38|byte
 add_column|Unk39|byte

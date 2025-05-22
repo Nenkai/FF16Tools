@@ -3,5 +3,5 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|int
-add_column|Unk3|int
+add_column|Unk2|float
+add_column|Unk3|float

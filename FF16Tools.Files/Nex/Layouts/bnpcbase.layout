@@ -43,7 +43,10 @@ add_column|Unk23|int
 add_column|Unk24|int
 add_column|PartParamSetId|int
 add_column|Unk26|int
-add_column|Unk27|int
+add_column|Unk27_1|byte
+add_column|Unk27_2|byte
+add_column|Unk27_3|byte
+add_column|Unk27_4|byte
 add_column|Unk28|float
 add_column|SpeakerId|int
 add_column|Unk30|int

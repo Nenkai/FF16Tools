@@ -18,6 +18,8 @@ add_column|Unk13|int
 add_column|Unk14|int
 add_column|Unk15|int
 add_column|Unk16|int
+// This is used as base value, which is then multiplied by model->Unk4
+// For all other 'bases', it's always 1.0 otherwise
 add_column|Unk17|float
 add_column|Comment1|string
 add_column|Comment2|string
