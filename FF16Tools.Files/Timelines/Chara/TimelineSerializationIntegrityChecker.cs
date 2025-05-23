@@ -20,8 +20,6 @@ public class TimelineSerializationIntegrityChecker
         foreach (var sourceFile in files)
         {
             counter++;
-            if (sourceFile.Contains("extracted"))
-                continue;
             try
             {
                 Console.WriteLine($"({counter}/{files.Length}) Reading " + sourceFile);
