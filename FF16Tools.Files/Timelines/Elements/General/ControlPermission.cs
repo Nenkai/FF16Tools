@@ -17,20 +17,20 @@ public class ControlPermission : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.ControlPermission;
     }
 
-    public byte Field_0x00 { get; set; }
-    public byte Field_0x01 { get; set; }
-    public byte Field_0x02 { get; set; }
+    public byte Movement { get; set; }
+    public byte MovmentInput { get; set; }
+    public byte TurnPossible { get; set; }
     public byte Field_0x03 { get; set; }
-    public byte Field_0x04 { get; set; }
+    public byte ComboAttack { get; set; }
     public byte Field_0x05 { get; set; }
-    public byte Field_0x06 { get; set; }
-    public byte Field_0x07 { get; set; }
-    public byte Field_0x08 { get; set; }
-    public byte Field_0x09 { get; set; }
-    public byte Field_0x0A { get; set; }
-    public byte Field_0x0B { get; set; }
-    public byte Field_0x0C { get; set; }
-    public byte Field_0x0D { get; set; }
+    public byte Jump { get; set; }
+    public byte Dodge { get; set; }
+    public byte BasicWeaponAction { get; set; }
+    public byte UniqueWeaponAction { get; set; }
+    public byte Shot { get; set; }
+    public byte Summon { get; set; }
+    public byte OtherAction { get; set; }
+    public byte ChocoboAction { get; set; }
     public byte Field_0x0E { get; set; }
     public byte Field_0x0F { get; set; }
     public byte Field_0x10 { get; set; }
@@ -54,20 +54,20 @@ public class ControlPermission : TimelineElementBase, ISerializableStruct
     {
         ReadMeta(bs);
 
-        Field_0x00 = bs.Read1Byte();
-        Field_0x01 = bs.Read1Byte();
-        Field_0x02 = bs.Read1Byte();
+        Movement = bs.Read1Byte();
+        MovmentInput = bs.Read1Byte();
+        TurnPossible = bs.Read1Byte();
         Field_0x03 = bs.Read1Byte();
-        Field_0x04 = bs.Read1Byte();
+        ComboAttack = bs.Read1Byte();
         Field_0x05 = bs.Read1Byte();
-        Field_0x06 = bs.Read1Byte();
-        Field_0x07 = bs.Read1Byte();
-        Field_0x08 = bs.Read1Byte();
-        Field_0x09 = bs.Read1Byte();
-        Field_0x0A = bs.Read1Byte();
-        Field_0x0B = bs.Read1Byte();
-        Field_0x0C = bs.Read1Byte();
-        Field_0x0D = bs.Read1Byte();
+        Jump = bs.Read1Byte();
+        Dodge = bs.Read1Byte();
+        BasicWeaponAction = bs.Read1Byte();
+        UniqueWeaponAction = bs.Read1Byte();
+        Shot = bs.Read1Byte();
+        Summon = bs.Read1Byte();
+        OtherAction = bs.Read1Byte();
+        ChocoboAction = bs.Read1Byte();
         Field_0x0E = bs.Read1Byte();
         Field_0x0F = bs.Read1Byte();
         Field_0x10 = bs.Read1Byte();
@@ -92,20 +92,20 @@ public class ControlPermission : TimelineElementBase, ISerializableStruct
     {
         WriteMeta(bs);
 
-        bs.WriteByte(Field_0x00);
-        bs.WriteByte(Field_0x01);
-        bs.WriteByte(Field_0x02);
+        bs.WriteByte(Movement);
+        bs.WriteByte(MovmentInput);
+        bs.WriteByte(TurnPossible);
         bs.WriteByte(Field_0x03);
-        bs.WriteByte(Field_0x04);
+        bs.WriteByte(ComboAttack);
         bs.WriteByte(Field_0x05);
-        bs.WriteByte(Field_0x06);
-        bs.WriteByte(Field_0x07);
-        bs.WriteByte(Field_0x08);
-        bs.WriteByte(Field_0x09);
-        bs.WriteByte(Field_0x0A);
-        bs.WriteByte(Field_0x0B);
-        bs.WriteByte(Field_0x0C);
-        bs.WriteByte(Field_0x0D);
+        bs.WriteByte(Jump);
+        bs.WriteByte(Dodge);
+        bs.WriteByte(BasicWeaponAction);
+        bs.WriteByte(UniqueWeaponAction);
+        bs.WriteByte(Shot);
+        bs.WriteByte(Summon);
+        bs.WriteByte(OtherAction);
+        bs.WriteByte(ChocoboAction);
         bs.WriteByte(Field_0x0E);
         bs.WriteByte(Field_0x0F);
         bs.WriteByte(Field_0x10);

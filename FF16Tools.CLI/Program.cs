@@ -15,7 +15,6 @@ using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
 using FF16Tools.Files.VFX;
-using FF16Tools.Files.Timelines.Chara;
 
 namespace FF16Tools.CLI;
 
