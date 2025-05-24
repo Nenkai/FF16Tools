@@ -49,10 +49,12 @@ public class CharaTimelineFile
         Write(fs);
     }
 
-    public void Write(Stream stream)
+    public void Write(Stream stream, CharaTimelineSerializationOptions? serializationOptions = null)
     {
         if (Timeline is null)
             throw new InvalidOperationException("Timeline is null. Cannot write to file.");
+
+        serializationOptions ??= new CharaTimelineSerializationOptions();
 
         SmartBinaryStream bs = new SmartBinaryStream(stream, stringCoding: StringCoding.ZeroTerminated);
 
@@ -65,7 +67,7 @@ public class CharaTimelineFile
         bs.WriteInt32(0); // Timeline offset, write later
 
         // Write the timeline
-        int timelineHeaderOffset = Timeline.Write(bs);
+        int timelineHeaderOffset = Timeline.Write(bs, serializationOptions);
 
         long tempPos = bs.Position;
 
@@ -75,4 +77,12 @@ public class CharaTimelineFile
 
         bs.Position = tempPos;
     }
+}
+
+public class CharaTimelineSerializationOptions
+{
+    /// <summary>
+    /// Whether to calculate the number of frames based on the current elements in a <see cref="Timeline"/>. Defaults to true.
+    /// </summary>
+    public bool CalculateTotalFrameCount { get; set; } = true;
 }

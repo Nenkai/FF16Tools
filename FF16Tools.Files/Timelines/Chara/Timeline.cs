@@ -7,7 +7,11 @@ namespace FF16Tools.Files.Timelines.Chara;
 public class Timeline
 {
     public int Field_0x00 { get; set; }
-    public int TotalFrames { get; set; }
+
+    /// <summary>
+    /// Number of frames in the timeline. There are 30 frames per second.
+    /// </summary>
+    public uint TotalFrames { get; set; }
     public List<TimelineElement> Elements { get; set; } = [];
     public List<AssetGroup> AssetGroups { get; set; } = [];
     public List<FinalStruct> FinalStructs { get; set; } = [];
@@ -24,7 +28,7 @@ public class Timeline
         int assetGroupCount = bs.ReadInt32();
         int offset_0x14 = bs.ReadInt32();
         int count_0x14 = bs.ReadInt32();
-        TotalFrames = bs.ReadInt32();
+        TotalFrames = bs.ReadUInt32();
         Field_0x28 = bs.ReadInt32();
 
         Elements = bs.ReadArrayOfStructs<TimelineElement>(thisPos + timelineElementsOffset, timelineElementCount);
@@ -32,8 +36,26 @@ public class Timeline
         FinalStructs = bs.ReadArrayOfStructs<FinalStruct>(thisPos + offset_0x14, count_0x14);
     }
 
-    public int Write(SmartBinaryStream bs)
+    /// <summary>
+    /// Gets the duration of the timeline in frames.
+    /// </summary>
+    /// <returns></returns>
+    public uint CalculateTimelineFrameLength()
     {
+        var elem = Elements.MaxBy(e => e.FrameStart + e.NumFrames);
+        if (elem is null)
+            return 0;
+
+        return elem.FrameStart + elem.NumFrames;
+    }
+
+    public int Write(SmartBinaryStream bs, CharaTimelineSerializationOptions serializationOptions)
+    {
+        if (serializationOptions.CalculateTotalFrameCount)
+            TotalFrames = CalculateTimelineFrameLength();
+        else
+            CheckTimelineElementFrameRanges();
+
         // We aim to write the data 1:1.
 
         // The timeline header can appear after some element data, which is weird, I wonder why they do this.
@@ -70,12 +92,28 @@ public class Timeline
         bs.WriteInt32(AssetGroups.Count);
         bs.WriteInt32((int)(finalStructsOffset - timelineHeaderOffset));
         bs.WriteInt32(FinalStructs.Count);
-        bs.WriteInt32((int)Elements.Select(e => e.FrameStart + e.NumFrames).Max()); // TotalFrames
+        bs.WriteUInt32(TotalFrames);
         bs.WriteInt32(Field_0x28);
 
         bs.Position = endPos;
 
         return (int)timelineHeaderOffset;
+    }
+
+    /// <summary>
+    /// Checks that all elements are within the frame range of the timeline or throws if not.
+    /// </summary>
+    /// <exception cref="InvalidDataException"></exception>
+    private void CheckTimelineElementFrameRanges()
+    {
+        for (int i = 0; i < Elements.Count; i++)
+        {
+            TimelineElement element = Elements[i];
+            uint startFrame = element.FrameStart;
+            uint endFrame = element.FrameStart + element.NumFrames;
+            if (startFrame >= TotalFrames || endFrame > TotalFrames)
+                throw new InvalidDataException($"Timeline element index {i} is out of frame range of the timeline (timeline frames: {TotalFrames}, element: {startFrame}->{endFrame}");
+        }
     }
 
     private void WriteFinalStruct(SmartBinaryStream bs)

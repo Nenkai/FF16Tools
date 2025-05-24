@@ -10,7 +10,15 @@ public class TimelineElement : ISerializableStruct
     public uint Field_0x00 { get; set; }
     public string? Name { get; set; }
     public TimelineElementType ElementType { get; set; }
+
+    /// <summary>
+    /// Frame number within the timeline in which this element starts.
+    /// </summary>
     public uint FrameStart { get; set; }
+
+    /// <summary>
+    /// Number of frames this element lasts for. There are 30 frames per second.
+    /// </summary>
     public uint NumFrames { get; set; }
     public uint Field_0x14 { get; set; }
     public byte Field_0x18 { get; set; }
