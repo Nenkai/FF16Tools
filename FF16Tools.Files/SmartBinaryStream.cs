@@ -153,6 +153,42 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
+    /// Reads a null terminated string out of a fixed-size string buffer.
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public string ReadStringFix(uint bufferSize)
+    {
+        Span<byte> buffer = bufferSize <= 1024 ? stackalloc byte[(int)bufferSize] : new byte[bufferSize];
+        ReadExactly(buffer);
+
+        int end = buffer.IndexOf<byte>(0);
+        if (end == -1)
+            throw new InvalidDataException($"ReadStringFix: No null terminator within string buffer with size {bufferSize}.");
+
+        return this.Encoding.GetString(buffer[..end]);
+    }
+
+    /// <summary>
+    /// Writes a fixed-size string buffer containing a null-terminated string.
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="size"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public void WriteStringFix(string str, uint bufferSize)
+    {
+        int byteCount = Encoding.GetByteCount(str);
+        if (byteCount > bufferSize - 1)
+            throw new ArgumentOutOfRangeException($"WriteStringFix: String is too large to fit in buffer. (string byte count: {byteCount}, bufferSize: {bufferSize})");
+
+        Span<byte> buffer = bufferSize <= 1024 ? stackalloc byte[(int)bufferSize] : new byte[bufferSize];
+        this.Encoding.GetBytes(str, buffer);
+        buffer[byteCount] = 0;
+
+        Write(buffer);
+    }
+
+    /// <summary>
     /// Writes padding. This is prefered over adjusting Position or using Seek(), as seeking does not ensure bytes to be written by default.
     /// </summary>
     /// <param name="paddingSize"></param>

@@ -1,14 +1,16 @@
-﻿using Syroot.BinaryData;
+﻿using System.Buffers.Binary;
 
 namespace FF16Tools.Files.Timelines.Chara;
 
 public class CharaTimelineIdsFile
 {
-    private const int StringByteSize = 0x80;
+    /// <summary>
+    /// 'idlt'
+    /// </summary>
+    public static uint MAGIC => BinaryPrimitives.ReadUInt32LittleEndian("idlt"u8);
+    private const int PathStringBufferSize = 0x80;
 
-    public const uint MAGIC = 0x746C6469;
-    public uint NumFiles { get; set; }
-    public Dictionary<uint, string> TimelineIdsToFiles { get; set; }
+    public Dictionary<uint, string> TimelineIdsToFiles { get; private set; } = [];
 
     public static CharaTimelineIdsFile Open(string file)
     {
@@ -33,12 +35,12 @@ public class CharaTimelineIdsFile
         if (bs.ReadUInt32() != MAGIC)
             throw new InvalidDataException("Not a chara timeline ids (.idl) file. Magic did not match.");
 
-        NumFiles = bs.ReadUInt32();
-        TimelineIdsToFiles = new ();
-        for (int i = 0; i < NumFiles; i++)
+        uint numFiles = bs.ReadUInt32();
+        TimelineIdsToFiles = [];
+        for (int i = 0; i < numFiles; i++)
         {
             uint id = bs.ReadUInt32();
-            string fileName = System.Text.Encoding.UTF8.GetString(bs.ReadBytes(StringByteSize)).Trim('\0');
+            string fileName = bs.ReadStringFix(PathStringBufferSize);
             TimelineIdsToFiles.Add(id, fileName);
         }
     }
@@ -51,9 +53,6 @@ public class CharaTimelineIdsFile
 
     public void Write(Stream stream)
     {
-        if (TimelineIdsToFiles is null)
-            throw new InvalidOperationException("TimelineIdsToFiles is null. Cannot write to file.");
-
         var bs = new SmartBinaryStream(stream);
 
         bs.WriteUInt32(MAGIC);
@@ -62,9 +61,7 @@ public class CharaTimelineIdsFile
         foreach (var kvp in TimelineIdsToFiles)
         {
             bs.WriteUInt32(kvp.Key);
-            var bytes = System.Text.Encoding.UTF8.GetBytes(kvp.Value);
-            bs.WriteBytes(bytes);
-            bs.WritePadding(StringByteSize - bytes.Length);
+            bs.WriteStringFix(kvp.Value, PathStringBufferSize);
         }
     }
 
@@ -73,18 +70,23 @@ public class CharaTimelineIdsFile
         MergeWith(other.TimelineIdsToFiles, overwriteExisting);
     }
 
-    public void MergeWith(Dictionary<uint, string> idsToFiles, bool overwriteExisting = false) {
-        foreach (var kvp in idsToFiles) {
-            if (overwriteExisting) { 
+    public void MergeWith(Dictionary<uint, string> idsToFiles, bool overwriteExisting = false)
+    {
+        foreach (var kvp in idsToFiles)
+        {
+            if (overwriteExisting)
+            {
                 TimelineIdsToFiles[kvp.Key] = kvp.Value;
             }
-            else {
+            else
+            {
                 string currentValue = TimelineIdsToFiles.GetValueOrDefault(kvp.Key, kvp.Value);
                 if (kvp.Value != currentValue)
                     throw new InvalidOperationException($"Cannot merge id lists as they contain conflicting values.");
-                else {
+                else
+                {
                     TimelineIdsToFiles.Add(kvp.Key, kvp.Value);
-                }    
+                }
             }
         }
     }
