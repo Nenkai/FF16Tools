@@ -111,7 +111,7 @@ public class Timeline
             TimelineElement element = Elements[i];
             uint startFrame = element.FrameStart;
             uint endFrame = element.FrameStart + element.NumFrames;
-            if (startFrame >= TotalFrames || endFrame > TotalFrames)
+            if (startFrame > TotalFrames || endFrame > TotalFrames)
                 throw new InvalidDataException($"Timeline element index {i} is out of frame range of the timeline (timeline frames: {TotalFrames}, element: {startFrame}->{endFrame}");
         }
     }
