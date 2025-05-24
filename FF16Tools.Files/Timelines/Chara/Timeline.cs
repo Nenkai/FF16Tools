@@ -70,7 +70,7 @@ public class Timeline
         bs.WriteInt32(AssetGroups.Count);
         bs.WriteInt32((int)(finalStructsOffset - timelineHeaderOffset));
         bs.WriteInt32(FinalStructs.Count);
-        bs.WriteInt32(TotalFrames);
+        bs.WriteInt32((int)Elements.Select(e => e.FrameStart + e.NumFrames).Max()); // TotalFrames
         bs.WriteInt32(Field_0x28);
 
         bs.Position = endPos;

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class TimelineElement_23 : TimelineElementBase, ISerializableStruct
+public class TimelineElement_24 : TimelineElementBase, ISerializableStruct
 {
-    public TimelineElement_23()
+    public TimelineElement_24()
     {
-        UnionType = TimelineElementType.kTimelineElem_23;
+        UnionType = TimelineElementType.kTimelineElem_24;
     }
 
     public override void Read(SmartBinaryStream bs)

@@ -15,11 +15,14 @@ public class TimelineSerializationIntegrityChecker
 {
     public static void Check(string charaDir) // Path to chara
     {
-        foreach (var sourceFile in Directory.GetFiles(charaDir, "*.tlb", SearchOption.AllDirectories))
+        int counter = 0;
+        var files = Directory.GetFiles(charaDir, "*.tlb", SearchOption.AllDirectories);
+        foreach (var sourceFile in files)
         {
+            counter++;
             try
             {
-                Console.WriteLine("Reading " + sourceFile);
+                Console.WriteLine($"({counter}/{files.Length}) Reading " + sourceFile);
 
                 var filee = CharaTimelineFile.Open(sourceFile);
                 filee.Write("built.tlb");
@@ -30,7 +33,7 @@ public class TimelineSerializationIntegrityChecker
                     throw new DataException("Hash mismatch");
                 }
                 else
-                    Console.WriteLine("Hash match.");
+                    Console.WriteLine($"({counter}/{files.Length}) Hash match.");
 
             }
             catch (Exception ex)

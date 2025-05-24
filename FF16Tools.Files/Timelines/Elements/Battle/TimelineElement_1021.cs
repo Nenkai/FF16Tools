@@ -17,6 +17,9 @@ public class TimelineElement_1021 : TimelineElementBase, ISerializableStruct
         UnionType = TimelineElementType.DisableCharaUnk;
     }
 
+    /// <summary>
+    /// Refers to strings like "JustDodgeBase", "JustDodgeShortClaw", "JustDodge_Ultimate_B_1st", all which exist in the  CharaCollisionBinary files
+    /// </summary>
     public string? Name { get; set; }
     public int Field_0x04 { get; set; }
     public int Field_0x08 { get; set; }

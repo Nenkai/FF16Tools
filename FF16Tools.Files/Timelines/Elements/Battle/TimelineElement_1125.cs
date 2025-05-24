@@ -10,26 +10,29 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class TimelineElement_23 : TimelineElementBase, ISerializableStruct
+public class TimelineElement_1125 : TimelineElementBase, ISerializableStruct
 {
-    public TimelineElement_23()
+    public TimelineElement_1125()
     {
-        UnionType = TimelineElementType.kTimelineElem_23;
+        UnionType = TimelineElementType.kTimelineElem_1125;
     }
+
+    public byte[] Field_0x00 { get; set; } // Actual structure unknown, but its 20 bytes without any offset fields
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
-        bs.Position += 0x20; // Padding
+
+        Field_0x00 = bs.ReadBytes(0x14);
     }
 
     public override void Write(SmartBinaryStream bs)
     {
         WriteMeta(bs);
 
-        bs.WritePadding(0x20);
+        bs.WriteBytes(Field_0x00);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x20;
+    public uint GetSize() => GetMetaSize() + 0x14;
 }
 
