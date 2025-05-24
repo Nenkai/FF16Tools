@@ -26,7 +26,7 @@ public class MdlExternalContentHeader
         uint version = bs.ReadUInt32();
         Debug.Assert(version == 1, $"Expected MCEX version 1, got {version}");
 
-        bs.Position += 0x18;
+        bs.ReadCheckPadding(0x18);
 
         uint entryOffsetsOffset = bs.ReadUInt32();
         uint entryCount = bs.ReadUInt32();

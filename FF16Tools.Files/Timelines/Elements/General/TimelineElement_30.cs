@@ -41,7 +41,7 @@ public class TimelineElement_30 : TimelineElementBase, ISerializableStruct
         SoundAsset.Read(bs);
         Field_0x08 = bs.ReadInt32();
         Field_0x0C = bs.Read1Byte();
-        bs.Position += 3;
+        bs.ReadCheckPadding(0x03);
         Field_0x10 = bs.ReadInt32();
         Field_0x14 = bs.ReadInt32();
         Field_0x18 = bs.ReadDouble();
@@ -52,11 +52,11 @@ public class TimelineElement_30 : TimelineElementBase, ISerializableStruct
         Field_0x38 = bs.ReadInt32();
         Field_0x3C = bs.ReadSingle();
         Field_0x40 = bs.Read1Byte();
-        bs.Position += 3;
+        bs.ReadCheckPadding(0x03);
         Field_0x44 = bs.ReadSingle();
         Field_0x48 = bs.ReadInt32();
         Field_0x4C = bs.ReadInt32();
-        bs.Position += 0x10;
+        bs.ReadCheckPadding(0x10);
     }
 
     public override void Write(SmartBinaryStream bs)

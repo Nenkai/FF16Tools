@@ -24,7 +24,7 @@ public class TimelineElement_1083 : TimelineElementBase, ISerializableStruct
         ReadMeta(bs);
 
         CommandId = bs.ReadInt32();
-        bs.Position += 0x20; // Padding
+        bs.ReadCheckPadding(0x20);
     }
 
     public override void Write(SmartBinaryStream bs)

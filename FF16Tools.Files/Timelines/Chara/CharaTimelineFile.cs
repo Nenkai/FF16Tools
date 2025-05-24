@@ -32,7 +32,7 @@ public class CharaTimelineFile
             throw new InvalidDataException("Not a chara timeline (.tlb) file. Magic did not match.");
 
         Version = bs.ReadUInt32();
-        bs.Position += 0x10;
+        bs.ReadCheckPadding(0x10);
         int timelineDataPosition = bs.ReadInt32();
 
         if (timelineDataPosition != 0)
@@ -43,10 +43,10 @@ public class CharaTimelineFile
         }
     }
 
-    public void Write(string file)
+    public void Write(string file, CharaTimelineSerializationOptions? serializationOptions = null)
     {
         using var fs = File.Create(file);
-        Write(fs);
+        Write(fs, serializationOptions);
     }
 
     public void Write(Stream stream, CharaTimelineSerializationOptions? serializationOptions = null)

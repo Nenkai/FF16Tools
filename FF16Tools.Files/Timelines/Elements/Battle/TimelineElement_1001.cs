@@ -48,7 +48,7 @@ public class TimelineElement_1001 : TimelineElementBase, ISerializableStruct
         Field_0x11 = bs.Read1Byte();
         Field_0x12 = bs.Read1Byte();
         Field_0x13 = bs.Read1Byte();
-        bs.Position += 0x18;
+        bs.ReadCheckPadding(0x18);
     }
 
     public override void Write(SmartBinaryStream bs)

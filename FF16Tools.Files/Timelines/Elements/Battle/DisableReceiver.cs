@@ -29,7 +29,7 @@ public class DisableReceiver : TimelineElementBase, ISerializableStruct
         Name = bs.ReadStringPointer(basePos);
         Field_0x04 = bs.ReadInt32();
         Field_0x08 = bs.ReadInt32();
-        bs.Position += 0x04;
+        bs.ReadCheckPadding(0x04);
     }
 
     public override void Write(SmartBinaryStream bs)

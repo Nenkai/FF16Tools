@@ -672,13 +672,13 @@ public class MdlFile
         public void Read(SmartBinaryStream bs)
         {
             Offset = bs.ReadUInt32();
-            bs.Position += 0x0C;
+            bs.ReadCheckPadding(0x0C);
         }
 
         public void Write(SmartBinaryStream bs)
         {
             bs.Write(Offset);
-            bs.Write(new byte[0x0C]);
+            bs.WritePadding(0x0C);
         }
 
         public uint GetSize() => 0x10;

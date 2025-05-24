@@ -1,6 +1,7 @@
 ﻿using Syroot.BinaryData;
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -196,6 +197,20 @@ public class SmartBinaryStream : BinaryStream
     {
         for (int i = 0; i < paddingSize; i++)
             WriteByte(0);
+    }
+
+    /// <summary>
+    /// Reads and checks padding. If the padding contains any non-zero bytes, this method will throw.
+    /// </summary>
+    /// <param name="paddingSize"></param>
+    /// <exception cref="InvalidDataException"></exception>
+    public void ReadCheckPadding(int paddingSize)
+    {
+        Span<byte> buffer = paddingSize <= 1024 ? stackalloc byte[(int)paddingSize] : new byte[paddingSize];
+        ReadExactly(buffer);
+
+        if (buffer.ContainsAnyExcept<byte>(0))
+            throw new InvalidDataException("SkipCheckPadding failed. Padding had non-zero data.");
     }
 
     public void WriteVector2(Vector2 vec)

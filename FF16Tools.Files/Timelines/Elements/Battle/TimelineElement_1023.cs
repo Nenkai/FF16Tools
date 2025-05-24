@@ -149,7 +149,7 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
             Field_0x28 = bs.ReadDouble();
             Field_0x30 = bs.ReadSingle();
             Field_0x34 = bs.ReadSingle();
-            bs.Position += 0x20;
+            bs.ReadCheckPadding(0x20);
         }
 
         public void Write(SmartBinaryStream bs)
@@ -164,7 +164,7 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
             bs.WriteDouble(Field_0x28);
             bs.WriteSingle(Field_0x30);
             bs.WriteSingle(Field_0x34);
-            bs.Position += 0x20;
+            bs.WritePadding(0x20);
         }
 
         public uint GetSize() => 0x58;

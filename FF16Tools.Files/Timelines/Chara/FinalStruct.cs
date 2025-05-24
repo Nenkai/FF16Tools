@@ -7,7 +7,7 @@ public class InternalFinalStruct : ISerializableStruct
     public void Read(SmartBinaryStream bs)
     {
         UnkType = bs.ReadInt32();
-        bs.Position += 0x24;
+        bs.ReadCheckPadding(0x24);
     }
 
     public void Write(SmartBinaryStream bs)

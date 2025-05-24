@@ -25,7 +25,7 @@ public class TimelineSerializationIntegrityChecker
                 Console.WriteLine($"({counter}/{files.Length}) Reading " + sourceFile);
 
                 var filee = CharaTimelineFile.Open(sourceFile);
-                filee.Write("built.tlb");
+                filee.Write("built.tlb", new CharaTimelineSerializationOptions() { CalculateTotalFrameCount = false });
 
                 if (XxHash3.HashToUInt64(File.ReadAllBytes(sourceFile)) != XxHash3.HashToUInt64(File.ReadAllBytes("built.tlb")))
                 {

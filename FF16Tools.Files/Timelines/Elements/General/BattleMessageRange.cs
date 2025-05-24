@@ -24,7 +24,7 @@ public class BattleMessageRange : TimelineElementBase, ISerializableStruct
         ReadMeta(bs);
 
         BattleMessageId = bs.ReadInt32();
-        bs.Position += 0x20;
+        bs.ReadCheckPadding(0x20);
     }
 
     public override void Write(SmartBinaryStream bs)

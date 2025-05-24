@@ -20,7 +20,7 @@ public class TimelineElement_24 : TimelineElementBase, ISerializableStruct
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
-        bs.Position += 0x20; // Padding
+        bs.ReadCheckPadding(0x20);
     }
 
     public override void Write(SmartBinaryStream bs)
