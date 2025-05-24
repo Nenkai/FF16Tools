@@ -9,9 +9,9 @@ public class Timeline
     public int Field_0x00 { get; set; }
 
     /// <summary>
-    /// Number of frames in the timeline. There are 30 frames per second.
+    /// Last frame index in the timeline. There are 30 frames per second.
     /// </summary>
-    public uint TotalFrames { get; set; }
+    public uint LastFrameIndex { get; set; }
     public List<TimelineElement> Elements { get; set; } = [];
     public List<AssetGroup> AssetGroups { get; set; } = [];
     public List<FinalStruct> FinalStructs { get; set; } = [];
@@ -28,7 +28,7 @@ public class Timeline
         int assetGroupCount = bs.ReadInt32();
         int offset_0x14 = bs.ReadInt32();
         int count_0x14 = bs.ReadInt32();
-        TotalFrames = bs.ReadUInt32();
+        LastFrameIndex = bs.ReadUInt32();
         Field_0x28 = bs.ReadInt32();
 
         Elements = bs.ReadArrayOfStructs<TimelineElement>(thisPos + timelineElementsOffset, timelineElementCount);
@@ -52,7 +52,7 @@ public class Timeline
     public int Write(SmartBinaryStream bs, CharaTimelineSerializationOptions serializationOptions)
     {
         if (serializationOptions.CalculateTotalFrameCount)
-            TotalFrames = CalculateTimelineFrameLength();
+            LastFrameIndex = CalculateTimelineFrameLength();
         else
             CheckTimelineElementFrameRanges();
 
@@ -92,7 +92,7 @@ public class Timeline
         bs.WriteInt32(AssetGroups.Count);
         bs.WriteInt32((int)(finalStructsOffset - timelineHeaderOffset));
         bs.WriteInt32(FinalStructs.Count);
-        bs.WriteUInt32(TotalFrames);
+        bs.WriteUInt32(LastFrameIndex);
         bs.WriteInt32(Field_0x28);
 
         bs.Position = endPos;
@@ -111,8 +111,8 @@ public class Timeline
             TimelineElement element = Elements[i];
             uint startFrame = element.FrameStart;
             uint endFrame = element.FrameStart + element.NumFrames;
-            if (startFrame > TotalFrames || endFrame > TotalFrames)
-                throw new InvalidDataException($"Timeline element index {i} is out of frame range of the timeline (timeline frames: {TotalFrames}, element: {startFrame}->{endFrame}");
+            if (startFrame > LastFrameIndex || endFrame > LastFrameIndex)
+                throw new InvalidDataException($"Timeline element index {i} is out of frame range of the timeline (timeline frames: {LastFrameIndex}, element: {startFrame}->{endFrame}");
         }
     }
 
