@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class TimelineElement_84 : TimelineElementBase, ISerializableStruct
+public class TimelineElement_84 : TimelineElementBase, ITimelineRangeElement
 {
     public CameraAnimationRange.Sub8Struct[] Entries { get; set; } = new CameraAnimationRange.Sub8Struct[9];
     public int Unk { get; set; }
@@ -52,7 +52,7 @@ public class TimelineElement_84 : TimelineElementBase, ISerializableStruct
             bs.WriteInt32(Unks[i]);
     }
 
-    public uint GetSize()
+    public override uint GetSize()
     {
         uint size = GetMetaSize() +
             (9 * 0x10) +

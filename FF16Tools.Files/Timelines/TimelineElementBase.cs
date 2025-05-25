@@ -1,7 +1,4 @@
-﻿using FF16Tools.Files.Timelines.Elements.Battle;
-using FF16Tools.Files.Timelines.Elements.General;
-
-using Syroot.BinaryData;
+﻿using Syroot.BinaryData;
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines;
 
-public abstract class TimelineElementBase
+public abstract class TimelineElementBase : ISerializableStruct
 {
     public TimelineElementType UnionType { get; set; }
     public uint HeaderField_0x04 { get; set; }
@@ -36,6 +33,7 @@ public abstract class TimelineElementBase
 
     public abstract void Read(SmartBinaryStream bs);
     public abstract void Write(SmartBinaryStream bs);
+    public abstract uint GetSize();
 
     public uint GetMetaSize() => 0x10;
 }

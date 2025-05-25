@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class SummonPartsVisibleRange : TimelineElementBase, ISerializableStruct
+public class SummonPartsVisibleRange : TimelineElementBase, ITimelineRangeElement
 {
     public SummonPartsVisibleRange()
     {
@@ -54,6 +54,6 @@ public class SummonPartsVisibleRange : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x10);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x14;
+    public override uint GetSize() => GetMetaSize() + 0x14;
 }
 

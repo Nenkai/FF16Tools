@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class ExtrudeLayerRange : TimelineElementBase, ISerializableStruct
+public class ExtrudeLayerRange : TimelineElementBase, ITimelineRangeElement
 {
     public ExtrudeLayerRange()
     {
         UnionType = TimelineElementType.ExtrudeLayerRange;
     }
+
     public int Field_0x00 { get; set; }
     public int Field_0x04 { get; set; }
     public int Field_0x08 { get; set; }
@@ -58,6 +59,6 @@ public class ExtrudeLayerRange : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x20);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x24;
+    public override uint GetSize() => GetMetaSize() + 0x24;
 }
 

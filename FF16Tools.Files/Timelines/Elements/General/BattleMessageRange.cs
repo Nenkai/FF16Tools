@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class BattleMessageRange : TimelineElementBase, ISerializableStruct
+public class BattleMessageRange : TimelineElementBase, ITimelineRangeElement
 {
     public BattleMessageRange()
     {
@@ -35,6 +35,6 @@ public class BattleMessageRange : TimelineElementBase, ISerializableStruct
         bs.WritePadding(0x20);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x24;
+    public override uint GetSize() => GetMetaSize() + 0x24;
 }
 

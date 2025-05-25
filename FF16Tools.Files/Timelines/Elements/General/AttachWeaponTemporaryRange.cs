@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class AttachWeaponTemporaryRange : TimelineElementBase, ISerializableStruct
+public class AttachWeaponTemporaryRange : TimelineElementBase, ITimelineRangeElement
 {
     public AttachWeaponTemporaryRange()
     {
@@ -36,6 +36,6 @@ public class AttachWeaponTemporaryRange : TimelineElementBase, ISerializableStru
         bs.WriteInt32(Field_0x04);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x08;
+    public override uint GetSize() => GetMetaSize() + 0x08;
 }
 

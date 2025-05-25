@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class MagicCreate : TimelineElementBase, ISerializableStruct
+public class MagicCreate : TimelineElementBase, ITimelineTriggerElement
 {
     public MagicCreate()
     {
@@ -60,6 +60,6 @@ public class MagicCreate : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x24);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x28;
+    public override uint GetSize() => GetMetaSize() + 0x28;
 }
 

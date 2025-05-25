@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class TimelineElement_1068 : TimelineElementBase, ISerializableStruct
+public class TimelineElement_1068 : TimelineElementBase, ITimelineRangeElement
 {
     public TimelineElement_1068()
     {
@@ -39,6 +39,6 @@ public class TimelineElement_1068 : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x08);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x0C;
+    public override uint GetSize() => GetMetaSize() + 0x0C;
 }
 

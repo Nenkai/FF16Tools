@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class TurnToTarget : TimelineElementBase, ISerializableStruct
+public class TurnToTarget : TimelineElementBase, ITimelineRangeElement
 {
     public TurnToTarget()
     {
@@ -75,6 +75,6 @@ public class TurnToTarget : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x38);
     }
 
-    public uint GetSize() => 0x3C;
+    public override uint GetSize() => 0x3C;
 }
 

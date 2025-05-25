@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class BulletTimeRange : TimelineElementBase, ISerializableStruct
+public class BulletTimeRange : TimelineElementBase, ITimelineRangeElement
 {
     public BulletTimeRange()
     {
@@ -60,6 +60,6 @@ public class BulletTimeRange : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x24);
     }
 
-    public uint GetSize() => 0x28;
+    public override uint GetSize() => 0x28;
 }
 

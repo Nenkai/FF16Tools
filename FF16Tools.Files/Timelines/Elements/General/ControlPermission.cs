@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class ControlPermission : TimelineElementBase, ISerializableStruct
+public class ControlPermission : TimelineElementBase, ITimelineRangeElement
 {
     public ControlPermission()
     {
@@ -126,6 +126,6 @@ public class ControlPermission : TimelineElementBase, ISerializableStruct
         bs.WriteBoolean(Field_0x1F);
     }
 
-    public uint GetSize() => 0x20;
+    public override uint GetSize() => 0x20;
 }
 

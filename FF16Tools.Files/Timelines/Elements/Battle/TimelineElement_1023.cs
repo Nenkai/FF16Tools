@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
+public class TimelineElement_1023 : TimelineElementBase, ITimelineTriggerElement
 {
     public TimelineElement_1023()
     {
@@ -122,7 +122,7 @@ public class TimelineElement_1023 : TimelineElementBase, ISerializableStruct
         bs.Position = baseOffset + GetSize();
     }
 
-    public uint GetSize() => GetMetaSize() + 0x54 + ((uint)SubStructs2.Count * 0x1C);
+    public override uint GetSize() => GetMetaSize() + 0x54 + ((uint)SubStructs2.Count * 0x1C);
 
     public class Sub1023Struct : ISerializableStruct
     {

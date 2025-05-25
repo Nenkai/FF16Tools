@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class DisableReceiver : TimelineElementBase, ISerializableStruct
+public class DisableReceiver : TimelineElementBase, ITimelineRangeElement
 {
     public DisableReceiver()
     {
@@ -43,6 +43,6 @@ public class DisableReceiver : TimelineElementBase, ISerializableStruct
         bs.WritePadding(0x04);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x10;
+    public override uint GetSize() => GetMetaSize() + 0x10;
 }
 

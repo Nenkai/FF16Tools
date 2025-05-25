@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class BattleCondition : TimelineElementBase, ISerializableStruct
+public class BattleCondition : TimelineElementBase, ITimelineRangeElement
 {
     public BattleCondition()
     {
         UnionType = TimelineElementType.BattleCondition;
     }
+
     public byte Field_0x00 { get; set; }
     public byte Field_0x01 { get; set; }
     public byte Field_0x02 { get; set; }
@@ -83,6 +84,5 @@ public class BattleCondition : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x20);
     }
 
-    public uint GetSize() => 0x24;
+    public override uint GetSize() => 0x24;
 }
-

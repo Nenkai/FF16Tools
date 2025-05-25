@@ -13,7 +13,7 @@ using static FF16Tools.Files.Timelines.Elements.Battle.TimelineElement_1023;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class TimelineElement_1049 : TimelineElementBase, ISerializableStruct
+public class TimelineElement_1049 : TimelineElementBase, ITimelineTriggerElement
 {
     public TimelineElement_1049()
     {
@@ -134,6 +134,6 @@ public class TimelineElement_1049 : TimelineElementBase, ISerializableStruct
         }
     }
 
-    public uint GetSize() => GetMetaSize() + 0x54 + ((uint)SubStructs2.Count * 0x1C);
+    public override uint GetSize() => GetMetaSize() + 0x54 + ((uint)SubStructs2.Count * 0x1C);
 }
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class PadVibration : TimelineElementBase, ISerializableStruct
+public class PadVibration : TimelineElementBase, ITimelineTriggerElement
 {
     public PadVibration()
     {
@@ -74,6 +74,6 @@ public class PadVibration : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x34);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x38;
+    public override uint GetSize() => GetMetaSize() + 0x38;
 }
 

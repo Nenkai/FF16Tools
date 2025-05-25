@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class PlaySoundTrigger : TimelineElementBase, ISerializableStruct
+public class PlaySoundTrigger : TimelineElementBase, ITimelineTriggerElement
 {
     public PlaySoundTrigger()
     {
@@ -84,6 +84,6 @@ public class PlaySoundTrigger : TimelineElementBase, ISerializableStruct
         bs.WritePadding(0x10);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x60;
+    public override uint GetSize() => GetMetaSize() + 0x60;
 }
 

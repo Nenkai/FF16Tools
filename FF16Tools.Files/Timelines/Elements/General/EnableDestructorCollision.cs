@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class EnableDestructorCollision : TimelineElementBase, ISerializableStruct
+public class EnableDestructorCollision : TimelineElementBase, ITimelineRangeElement
 {
     public EnableDestructorCollision()
     {
         UnionType = TimelineElementType.EnableDestructorCollision;
     }
+
     public string? Name { get; set; }
     public int Field_0x04 { get; set; }
 
@@ -37,5 +38,5 @@ public class EnableDestructorCollision : TimelineElementBase, ISerializableStruc
         bs.WriteInt32(Field_0x04);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x08;
+    public override uint GetSize() => GetMetaSize() + 0x08;
 }

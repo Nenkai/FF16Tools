@@ -8,11 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class CameraAnimationRange : TimelineElementBase, ISerializableStruct
+public class CameraAnimationRange : TimelineElementBase, ITimelineRangeElement
 {
     public int Field_0x00 { get; set; }
     public int Field_0x04 { get; set; }
@@ -94,7 +92,7 @@ public class CameraAnimationRange : TimelineElementBase, ISerializableStruct
         bs.Position = lastOffset;
     }
 
-    public uint GetSize()
+    public override uint GetSize()
     {
         uint size = GetMetaSize() + 
             0x0C + // This size

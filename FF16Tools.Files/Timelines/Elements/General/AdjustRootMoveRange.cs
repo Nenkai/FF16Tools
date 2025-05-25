@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.General;
 
-public class AdjustRootMoveRange : TimelineElementBase, ISerializableStruct
+public class AdjustRootMoveRange : TimelineElementBase, ITimelineRangeElement
 {
     public AdjustRootMoveRange()
     {
@@ -36,6 +36,6 @@ public class AdjustRootMoveRange : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x04);
     }
 
-    public uint GetSize() => 0x08;
+    public override uint GetSize() => 0x08;
 }
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class JustBuddyCommand : TimelineElementBase, ISerializableStruct
+public class JustBuddyCommand : TimelineElementBase, ITimelineRangeElement
 {
     public JustBuddyCommand()
     {
@@ -54,6 +54,6 @@ public class JustBuddyCommand : TimelineElementBase, ISerializableStruct
         bs.WriteInt32(Field_0x1C);
     }
 
-    public uint GetSize() => GetMetaSize() + 0x20;
+    public override uint GetSize() => GetMetaSize() + 0x20;
 }
 
