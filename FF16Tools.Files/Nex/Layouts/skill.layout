@@ -2,10 +2,20 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|true
 
+// There are some hardcoded skill ids
+// 2 - B9 ? ? ? ? E8 ? ? ? ? 8B 54 24 ? 48 85 C0
+// 22 - 41 8D 50 ? E8 ? ? ? ? 4C 8B C0 48 85 C0 74 ? 48 83 38 ? 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 49 83 38 ? 7C ? 49 8B C8 E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? C4 E1 FA 2C 40 ? EB ? 33 C0 48 83 C4 ? C3 CC CC C5 FA 10 05
+// 26 - 48 89 5C 24 ? 57 48 83 EC ? 8B DA E8
+// 41 - BA ? ? ? ? E8 ? ? ? ? C5 FA 10 4F
+// 50 - 41 8D 50 ? E8 ? ? ? ? 4C 8B C0 48 85 C0 74 ? 48 83 38 ? 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 49 83 38 ? 7C ? 49 8B C8 E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? C4 E1 FA 2C 40 ? EB ? 33 C0 48 83 C4 ? C3 CC CC B8
+// 54 (Unk7 = percentage) - B9 ? ? ? ? 41 8D 50 ? E8 ? ? ? ? 48 85 C0 74 ? C5 7A 2C 48
+
 add_column|DLCFlags|int
 add_column|Comment|string
 
 // Checked against hardcoded numbers/switch table - 0-12
+// ref: 8B 40 ? 83 F8 ? 77 ? 74 ? 83 E8 ? 74 ? 83 E8 ? 74 ? 83 E8 ? 74 ? 83 E8 ? 74 ? 83 F8
+// ref2: 44 8B 70 ? 33 FF
 add_column|SkillCategoryId|int
 
 // Note: usersituation 992013 is checked first
@@ -13,8 +23,16 @@ add_column|ReqSkillIdUnlock1|int
 add_column|ReqSkillIdUnlock2|int
 add_column|ReqSkillIdUnlock3|int
 
-// Unknown. This is used in battle but the purpose remains unknown
-add_column|Unk7|float
+// Represents a value that is affected by the upgrade level of the skill
+// Like in the sattelite rows, that is the number of sateliltes
+// for wings of light, max gauge level
+// for Ice Age, the size of the red portion of the gauge, etc
+// ref: 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 8B FA E8
+// ref2: C4 E1 FA 2C 47
+// ref3: C5 7A 2C 48
+// ref4: 48 83 EC ? 48 8B 0D ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 48 85 C0 74 ? 45 33 C0 48 8B C8 41 8D 50 ? E8 ? ? ? ? 4C 8B C0 48 85 C0 74 ? 48 83 38 ? 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 49 83 38 ? 7C ? 49 8B C8 E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? C4 E1 FA 2C 40 ? EB ? 33 C0 48 83 C4 ? C3 CC CC C5 FA 10 05
+// ref5: C5 FA 10 40 ? EB ? C5 F8 57 C0 48 8B 5C 24
+add_column|CommandPotencyParameter|float
 
 add_column|CommandId|int
 add_column|Name|string|rel
@@ -26,6 +44,7 @@ add_column|ThumbnailTexFileId|int
 add_column|MovieDataId|int
 
 // Hardcoded checks against numbers like 6
+// ref: 39 58 ? 74 ? 4D 85 C0 74 ? 49 39 18 7C ? 49 8B C8 E8 ? ? ? ? 48 8B D8 EB ? 48 8D 1D
 add_column|Unk16|int
 
 // But also checked against hardcoded numbers (for text color)
@@ -37,7 +56,10 @@ add_column|Unk18|int
 add_column|RecommendAcquireOrder|int
 add_column|AttackHalfStars|byte
 add_column|StaggerHalfStars|byte
+
+// ref: 38 48 ? 41 8B C1
 add_column|MinimumResetLevel|byte
+
 add_column|AvailableToOtherEikonsOnMaster|byte
 
 // Same as RefundPointsOnReset, but depends on current partymember row, specifically Unk9

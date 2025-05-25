@@ -141,7 +141,7 @@ add_column|Unk_0x10A|byte
 add_column|Unk_0x10B|byte
 add_column|Unk_0x10C|byte
 add_column|Unk_0x10D|byte
-add_column|Unk_0x10E|byte
+add_column|CanReuseOnStomp|byte
 add_column|Unk_0x10F|byte
 add_column|Unk_0x110|byte
 add_column|Unk_0x111|byte
