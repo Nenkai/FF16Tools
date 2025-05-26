@@ -14,9 +14,9 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Authors>Nenkai</Authors>
-	<AssemblyVersion>1.0.17</AssemblyVersion>
-	<FileVersion>1.0.17</FileVersion>
-	<Version>1.0.17</Version>
+	<AssemblyVersion>1.0.18</AssemblyVersion>
+	<FileVersion>1.0.18</FileVersion>
+	<Version>1.0.18</Version>
   </PropertyGroup>
 
   <ItemGroup>
