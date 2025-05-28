@@ -10,23 +10,27 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Timelines.Elements.Battle;
 
-public class TimelineElement_1117 : TimelineElementBase, ITimelineTriggerElement
+/// <summary>
+/// Triggers an event for the current action. <br/>
+/// (Name is guessed)
+/// </summary>
+public class ActionEventTrigger : TimelineElementBase, ITimelineTriggerElement
 {
-    public TimelineElement_1117()
+    public ActionEventTrigger()
     {
-        UnionType = TimelineElementType.kTimelineElem_1117;
+        UnionType = TimelineElementType.ActionEventTrigger;
     }
 
     /// <summary>
     /// Some kind of Id (1-88), for example 1/2 spawn the satelite skill, 11 starts skill cooldown
     /// </summary>
-    public int Field_0x00 { get; set; }
+    public int EventId { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
-        Field_0x00 = bs.ReadInt32();
+        EventId = bs.ReadInt32();
         bs.ReadCheckPadding(0x20);
     }
 
@@ -34,7 +38,7 @@ public class TimelineElement_1117 : TimelineElementBase, ITimelineTriggerElement
     {
         WriteMeta(bs);
 
-        bs.WriteInt32(Field_0x00);
+        bs.WriteInt32(EventId);
         bs.WritePadding(0x20);
     }
 

@@ -68,7 +68,12 @@ public enum TimelineElementType
     kTimelineElem_1107 = 1107,
     ExtrudeLayerRange = 1108, // Actual data layout is unknown
     kTimelineElem_1115 = 1115,
-    kTimelineElem_1117 = 1117, // Maybe PlayActionTrigger or EventActionTrigger?
+
+    /// <summary>
+    /// Triggers an event for the current action. <br/>
+    /// (Name is guessed)
+    /// </summary>
+    ActionEventTrigger = 1117,
     kTimelineElem_1123 = 1123,
     kTimelineElem_1125 = 1125, // Actual data layout is unknown
     JustBuddyCommand = 1130

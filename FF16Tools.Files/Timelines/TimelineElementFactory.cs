@@ -73,7 +73,7 @@ public class TimelineElementFactory
             TimelineElementType.kTimelineElem_1103 => new TimelineElement_1103(),
             TimelineElementType.ExtrudeLayerRange => new ExtrudeLayerRange(),
             TimelineElementType.kTimelineElem_1115 => new TimelineElement_1115(),
-            TimelineElementType.kTimelineElem_1117 => new TimelineElement_1117(),
+            TimelineElementType.ActionEventTrigger => new ActionEventTrigger(),
             TimelineElementType.kTimelineElem_1123 => new TimelineElement_1123(),
             TimelineElementType.kTimelineElem_1125 => new TimelineElement_1125(),
             TimelineElementType.JustBuddyCommand => new JustBuddyCommand(),
