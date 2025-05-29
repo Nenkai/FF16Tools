@@ -2,7 +2,13 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
-// Row ID 543, 547 are known to have hardcoded checks
+// Many action ids are hardcoded.
+// UnkType0xC4 seems important.
+
+// The action object factory (based on 0xC4 and hardcoded ids) is located at
+// 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B 05 ? ? ? ? 33 FF 44 8B 31
+
+///////////////////////////////////////////////////////////////
 
 add_column|DLCFlags|int
 add_column|CharaTimelineId|int
@@ -39,10 +45,15 @@ add_column|ActionMoveTypeId|int
 add_column|Comment|string
 add_column|LayoutNamedInstanceId1|int
 add_column|LayoutNamedInstanceId2|int
-add_column|Unk_0x40|int
-add_column|Unk_0x44|int
-add_column|Unk_0x48|int
-add_column|Unk_0x4C|int
+
+// Not used in vanilla
+// ref: AttackActionBase::TryApplyBuffOnAttack - 48 8B C4 48 89 58 ? 48 89 68 ? 56 57 41 56 48 83 EC ? C5 F8 29 70 ? C5 F8 29 78 ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 44 24 ? 4C 8B 81
+// BuffedFollowupActionId must not be zero to use the other columns.
+add_column|BuffedFollowupActionId|int
+add_column|BuffedFollowupDelaySecond|float
+// These differs in how the buff is applied. Both are buff ids.
+add_column|BuffedFollowupUnkBuffId1|int
+add_column|BuffedFollowupUnkBuffId2|int
 
 // Basically FollowupActionIds is an array which contains every action that can be "chained" with the specific action under certain conditions
 add_column|FollowupActionIds|int[]
@@ -89,13 +100,16 @@ add_column|UnkCharaTimelineId0x9C|int
 // (Recoome):
 // Basically if an ability has a FollowUpType [1], you can use this column to set after how long it will transition to the next action
 // For example Dark Lunge has a short version with [0.33] and a far version with [1.19]. You can make a really long one with like [10]
+
+// May depend on difficultylevel->UnkActionFollowupIndex too?
+// ref: 48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC ?? 48 8B F9 33 DB 48 8B 89 ?? ?? ?? ?? 48 85 C9
 add_column|FollowupTransitionLengths|float[]
 
 add_column|UnkSkillId|int
 add_column|Unk_0xAC|int
 add_column|Unk_0xB0|int
 add_column|Unk_0xB4|float
-add_column|Unk_0xB8|int
+add_column|OptionalFacialMotionId|int
 add_column|Unk_0xBC|float
 add_column|Unk_0xC0|int
 
@@ -122,11 +136,15 @@ add_column|GraphicsEnvironmentParamId|int
 add_column|UnkCharaTimelineId0xEC|int
 add_column|Unk_0xF0|float[]
 add_column|ActionLogId|int
-add_column|Unk_0xFC|int
-add_column|Unk_0x100|byte
-add_column|Unk_0x101|byte
-add_column|Unk_0x102|byte
-add_column|Unk_0x103|byte
+add_column|ActionLogId2|int
+
+// ref: 41 0F B7 81 ?? ?? ?? ?? 66 83 F8
+// 23 (bnpcid) or 30
+add_column|UnkUnionType|ushort
+
+// ref: 44 0F B7 90 ?? ?? ?? ?? 4D 85 C0
+add_column|UnkUnionId|ushort
+
 add_column|Unk_0x104|byte
 add_column|Unk_0x105|byte
 

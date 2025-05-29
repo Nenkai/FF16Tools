@@ -9,10 +9,10 @@ add_column|Unk4|float
 add_column|Unk5|float
 add_column|Unk6|float
 add_column|Unk7|int
-add_column|Unk8|int
+add_column|float|int
 add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
+add_column|GameMapId|uint
+add_column|GameMapIdKey2|uint
 add_column|Unk12|float
 add_column|Unk13|float
 add_column|Unk14|float

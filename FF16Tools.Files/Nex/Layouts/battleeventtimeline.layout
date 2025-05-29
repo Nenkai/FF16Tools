@@ -4,7 +4,7 @@ use_base_row_id|false
 
 add_column|DLCFlags|int
 add_column|CutsceneFile|string
-add_column|Unk3|uint
-add_column|Unk4|uint
+add_column|GameMapId|uint
+add_column|GameMapIdKey2|uint
 add_column|Unk5|uint
 add_column|Unk6|uint

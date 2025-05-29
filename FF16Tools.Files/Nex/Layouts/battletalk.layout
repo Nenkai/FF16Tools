@@ -3,12 +3,17 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|float|int
+add_column|GameMapId|int
+add_column|GameMapIdKey2|int
+add_column|Unk4|float
 add_column|BattleTalkSequenceId|int
 add_column|Comment|string
 add_column|Unk7|int
-add_column|Unk8|byte
-add_column|Unk9|byte
+
+// ref: 80 78 ? ? 74 ? 48 85 DB 75 ? 33 C0 EB ? 48 83 3B ? 7C ? 48 8B CB E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? 80 78
+add_column|UnkBool8|byte
+
+// ref: 80 78 ? ? 74 ? 48 8B 47 ? 41 B8
+add_column|UnkBool9|byte
+
 // <implicit 2 bytes padding>

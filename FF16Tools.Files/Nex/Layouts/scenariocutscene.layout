@@ -18,9 +18,9 @@ add_column|Unk9|int
 add_column|UnkUnion10|union
 
 add_column|Comment2|string
-add_column|UnkTimelineRelated|int
-add_column|UnkTimelineRelated2|int
-add_column|Unk15|int
+add_column|Unk13|int
+add_column|GameMapId|int
+add_column|GameMapIdKey2|int
 add_column|Unk16|int
 add_column|UnkUnion17|union
 add_column|LoreWorldViewNaviStartupTypeId|int

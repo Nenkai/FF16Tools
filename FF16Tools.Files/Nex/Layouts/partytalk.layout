@@ -13,7 +13,10 @@ add_column|Unk10|int
 add_column|UnkUnion11|union
 add_column|UnkUnion13|union
 add_column|GameMapId|int
-add_column|Unk16|int
+
+// Unused!
+add_column|GameMapIdKey2|int
+
 add_column|UnkUnion17|union[]
 add_column|Unk19|float
 add_column|UnkUnion20|union

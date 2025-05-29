@@ -2,6 +2,13 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Many buff ids are hardcoded.
+// Useful refs:
+// Buffs::AssignBuffToSelf - 40 55 48 8D 6C 24 ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 45 ? 45 33 C9
+// Buffs::CheckHasActiveBuff - 40 53 48 83 EC ? 48 69 81 ? ? ? ? ? ? ? ? 4C 8D 99 ? ? ? ? 8B DA 4C 03 D8 4C 8D 91
+// Buffs::AssignBuffToSelfUnk - 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 69 81 ? ? ? ? ? ? ? ? 48 8D B9 ? ? ? ? 8B F2
+////////////////////////////////////////////////////////////////
+
 add_column|DLCFlags|int
 add_column|Comment|string
 add_column|Duration|float
@@ -33,7 +40,15 @@ add_column|Unk27|byte
 add_column|Unk28|byte
 add_column|Unk29|byte
 
-set_comment|11|||Freeze
+/////////////////////////////////////////////////////
+// Comments
+/////////////////////////////////////////////////////
+
+set_comment|11|||Debuff - Freeze
+set_comment|12|||Debuff - Slow
+set_comment|13|||Debuff - Slow 2
+set_comment|14|||Buff - Knockback/Reaction Immunity||
+set_comment|19|||Buff - Attack Up?||
 set_comment|21|||Defense Buff (Jill)
 set_comment|22|||Attack Buff (Cid)
 set_comment|23|||Cure (Regen)
@@ -47,6 +62,13 @@ set_comment|55|||Hearthflame
 set_comment|56|||Will-o'-the-Wykes?
 set_comment|57|||Will-o'-the-Wykes?c
 
-set_comment|101|||Strength tonic duration
-set_comment|102|||Stoneskin tonic duration
-set_comment|103|||Gradually fills Limit Break gauge||
+set_comment|101|||Buff - Strength tonic duration
+set_comment|102|||Buff - Stoneskin tonic duration
+set_comment|103|||Buff - Gradually fills Limit Break gauge||
+set_comment|104|||Debuff? No movement?||
+set_comment|202|||Debuff? No run?||
+set_comment|206|||Buff - Knockback/Reaction Immunity||
+set_comment|207|||Debuff - Slow?
+set_comment|212|||Camera Shake??
+set_comment|214|||Debuff - Slow?
+set_comment|215|||Debuff - Slow?
