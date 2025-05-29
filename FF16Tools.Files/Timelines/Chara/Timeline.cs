@@ -2,6 +2,8 @@
 
 using Syroot.BinaryData;
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace FF16Tools.Files.Timelines.Chara;
 
 public class Timeline
@@ -14,7 +16,7 @@ public class Timeline
     public uint LastFrameIndex { get; set; }
     public List<TimelineElement> Elements { get; set; } = [];
     public List<AssetGroup> AssetGroups { get; set; } = [];
-    public List<FinalStruct> FinalStructs { get; set; } = [];
+    public List<SetupData> SetupData { get; set; } = [];
     public int Field_0x28 { get; set; }
 
     public void Read(SmartBinaryStream bs)
@@ -26,14 +28,14 @@ public class Timeline
         int timelineElementCount = bs.ReadInt32();
         int assetGroupsOffset = bs.ReadInt32();
         int assetGroupCount = bs.ReadInt32();
-        int offset_0x14 = bs.ReadInt32();
-        int count_0x14 = bs.ReadInt32();
+        int setupDatasOffset = bs.ReadInt32();
+        int setupDataCount = bs.ReadInt32();
         LastFrameIndex = bs.ReadUInt32();
         Field_0x28 = bs.ReadInt32();
 
         Elements = bs.ReadArrayOfStructs<TimelineElement>(thisPos + timelineElementsOffset, timelineElementCount);
         AssetGroups = bs.ReadArrayOfStructs<AssetGroup>(thisPos + assetGroupsOffset, assetGroupCount);
-        FinalStructs = bs.ReadArrayOfStructs<FinalStruct>(thisPos + offset_0x14, count_0x14);
+        SetupData = bs.ReadStructsFromOffsetTable32<SetupData>(thisPos + setupDatasOffset, setupDataCount);
     }
 
     /// <summary>
@@ -76,7 +78,7 @@ public class Timeline
 
         // Write whatever this is.
         long finalStructsOffset = bs.Position;
-        WriteFinalStruct(bs);
+        WriteSetupDataList(bs);
 
         // String table.
         bs.WriteStringTable();
@@ -91,7 +93,7 @@ public class Timeline
         bs.WriteInt32((int)(assetGroupsOffset - timelineHeaderOffset));
         bs.WriteInt32(AssetGroups.Count);
         bs.WriteInt32((int)(finalStructsOffset - timelineHeaderOffset));
-        bs.WriteInt32(FinalStructs.Count);
+        bs.WriteInt32(SetupData.Count);
         bs.WriteUInt32(LastFrameIndex);
         bs.WriteInt32(Field_0x28);
 
@@ -116,29 +118,29 @@ public class Timeline
         }
     }
 
-    private void WriteFinalStruct(SmartBinaryStream bs)
+    private void WriteSetupDataList(SmartBinaryStream bs)
     {
         // Skip toc for now.
-        long finalStructToc = bs.Position;
-        bs.Position += FinalStructs.Count * sizeof(int);
+        long setupDataToc = bs.Position;
+        bs.Position += SetupData.Count * sizeof(int);
 
-        // Got the start data offset to final structs. Begin to write
-        for (int i = 0; i < FinalStructs.Count; i++)
+        // Got the start data offset to setup structs. Begin to write
+        for (int i = 0; i < SetupData.Count; i++)
         {
-            FinalStruct finalStruct = FinalStructs[i];
-            bs.AddObjectPointer(finalStruct.InternalFinalStruct);
-            finalStruct.InternalFinalStruct.Write(bs);
+            SetupData setupData = SetupData[i];
+            bs.AddObjectPointer(setupData);
+            setupData.Write(bs);
         }
         long lastOffset = bs.Position;
 
-        // Write asset group pointers.
-        bs.Position = finalStructToc;
-        for (int i = 0; i < FinalStructs.Count; i++)
+        // Write setup data pointers.
+        bs.Position = setupDataToc;
+        for (int i = 0; i < SetupData.Count; i++)
         {
-            long finalGroupOffset = bs.Position;
+            long setupDataOffset = bs.Position;
 
-            FinalStruct finalStruct = FinalStructs[i];
-            bs.WriteObjectPointer(finalStruct.InternalFinalStruct, finalGroupOffset);
+            SetupData setupData = SetupData[i];
+            bs.WriteObjectPointer(setupData, setupDataOffset);
         }
 
         // Done.

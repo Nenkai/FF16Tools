@@ -322,6 +322,31 @@ public class SmartBinaryStream : BinaryStream
         return elements;
     }
 
+    /// <summary>
+    /// Reads structs starting from the specified offset, using the offset table for each entry at the specified offset.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <param name="elementCount"></param>
+    /// <returns></returns>
+    public List<T> ReadStructsFromOffsetTable32<T>(long startOffset, int elementCount) where T : ISerializableStruct, new()
+    {
+        List<T> elements = [];
+
+        for (int i = 0; i < elementCount; i++)
+        {
+            T elem = new();
+            Position = startOffset + (i * 4);
+            uint dataOffset = ReadUInt32();
+
+            Position = startOffset + dataOffset;
+            elem.Read(this);
+            elements.Add(elem);
+        }
+
+        return elements;
+    }
+
     public void WriteUint32AtOffset(long target, long relativePosition = 0)
     {
         long pos = Position;
