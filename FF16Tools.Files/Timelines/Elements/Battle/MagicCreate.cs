@@ -17,47 +17,31 @@ public class MagicCreate : TimelineElementBase, ITimelineTriggerElement
         UnionType = TimelineElementType.MagicCreate;
     }
 
-    public int Field_0x00 { get; set; }
-    public int Field_0x04 { get; set; }
-    public int Field_0x08 { get; set; }
-    public int Field_0x0C { get; set; }
-    public int Field_0x10 { get; set; }
-    public int Field_0x14 { get; set; }
-    public int Field_0x18 { get; set; }
-    public int Field_0x1C { get; set; }
-    public int Field_0x20 { get; set; }
-    public int Field_0x24 { get; set; }
+    public int Unused { get; set; }
+    public int MagicId { get; set; }
+    public bool Field_0x08 { get; set; }
+    public byte Field_0x09 { get; set; }
 
     public override void Read(SmartBinaryStream bs)
     {
         ReadMeta(bs);
 
-        Field_0x00 = bs.ReadInt32();
-        Field_0x04 = bs.ReadInt32();
-        Field_0x08 = bs.ReadInt32();
-        Field_0x0C = bs.ReadInt32();
-        Field_0x10 = bs.ReadInt32();
-        Field_0x14 = bs.ReadInt32();
-        Field_0x18 = bs.ReadInt32();
-        Field_0x1C = bs.ReadInt32();
-        Field_0x20 = bs.ReadInt32();
-        Field_0x24 = bs.ReadInt32();
+        Unused = bs.ReadInt32();
+        MagicId = bs.ReadInt32();
+        Field_0x08 = bs.ReadBoolean();
+        Field_0x09 = bs.Read1Byte();
+        bs.ReadCheckPadding(0x1E);
     }
 
     public override void Write(SmartBinaryStream bs)
     {
         WriteMeta(bs);
 
-        bs.WriteInt32(Field_0x00);
-        bs.WriteInt32(Field_0x04);
-        bs.WriteInt32(Field_0x08);
-        bs.WriteInt32(Field_0x0C);
-        bs.WriteInt32(Field_0x10);
-        bs.WriteInt32(Field_0x14);
-        bs.WriteInt32(Field_0x18);
-        bs.WriteInt32(Field_0x1C);
-        bs.WriteInt32(Field_0x20);
-        bs.WriteInt32(Field_0x24);
+        bs.WriteInt32(Unused);
+        bs.WriteInt32(MagicId);
+        bs.WriteBoolean(Field_0x08);
+        bs.WriteByte(Field_0x09);
+        bs.WritePadding(0x1E);
     }
 
     public override uint GetSize() => GetMetaSize() + 0x28;
