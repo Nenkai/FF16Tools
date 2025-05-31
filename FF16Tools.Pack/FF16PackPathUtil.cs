@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Frozen;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FF16Tools.Pack;
 
@@ -114,7 +115,7 @@ public class FF16PackPathUtil
     /// <param name="gamePathFolder">Returned game path for said pack, example: nxd</param>
     /// <param name="demo">Whether to use demo paths</param>
     /// <returns>Whether a pack name was found for the provided path. If not, use 0001 instead.</returns>
-    public static bool TryGetPackNameForPath(string gamePath, out string? packName, out string? gamePathFolder, bool demo = false)
+    public static bool TryGetPackNameForPath(string gamePath, [NotNullWhen(true)] out string? packName, [NotNullWhen(true)] out string? gamePathFolder, bool demo = false)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
 
