@@ -2,14 +2,26 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Hardcoded ids
+// 3027/3028 - 41 BF ? ? ? ? 81 FF
+//             BA ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B 0D ? ? ? ? BA ? ? ? ? 41 B9 ? ? ? ? 44 8D 42 ? E8 ? ? ? ? 48 85 C0 74 ? 0F BA A8 ? ? ? ? ? 0F BA A8
+// 7/4111 - 41 81 E6 ? ? ? ? 41 81 C6 ? ? ? ? E8
+
+// referenced from bnpcbase
+
+////////////////////////////////////////////////
 add_column|DLCFlags|int
 add_column|Comment|string
 add_column|AiActionSelectorId1|int
 add_column|AiActionSelectorId2|int
-add_column|Unk5|int
+
+// ref: 8B 48 ? 39 8E
+// ref2: 8B 96 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B D8 48 85 C0 0F 84 ? ? ? ? 48 83 38 ? 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 0F 84 ? ? ? ? 48 83 3B
+// ref3: 8B 93 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B 2D
+add_column|NavPowerMoverTuneId|int
 add_column|Unk6|int
 add_column|AiCounterId|int
 add_column|Unk8|byte
 add_column|Unk9|byte
-add_column|Unk10|byte
+add_column|UnkBool10|byte
 add_column|Unk11|byte

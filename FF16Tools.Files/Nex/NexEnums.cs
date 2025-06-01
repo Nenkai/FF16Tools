@@ -82,6 +82,7 @@ public enum NexUnionType : ushort
     transition = 198,
     questprogress = 204,
     summonmode = 208,
+    partyselect = 255,
     partymember = 256,
     scenariocutscene = 260,
     icon_file_id = 266, // Not sure
@@ -119,6 +120,7 @@ public enum NexUnionType : ushort
     howto = 528,
     tutorialdirector = 530,
     behaviorwaitparam = 539,
+    vacuumedmoveparam = 541,
     tutorial = 545,
     directorcondition = 557,
     directoractormonitor = 568,

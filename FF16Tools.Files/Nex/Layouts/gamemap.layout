@@ -17,14 +17,10 @@ add_column|ReqUserSituationId|int
 // union (but not actually?)
 // 146 = bgmmode
 // 314 = bgmselect
-add_column|BgmUnionType1|short
-add_column|BgmUnionId1|ushort
-add_column|BgmUnionType2|short
-add_column|BgmUnionId2|ushort
+add_column|BgmUnion1|union16
+add_column|BgmUnion2|union16
 
-add_column|Unk10|short
-// Seems correct? Checked in debugger
-add_column|PartySelectId|short
+add_column|PartyUnion|union16
 
 // Same - demo 1.0.0 -> 140451DF6
 add_column|QuestId|int

@@ -2,6 +2,9 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Referenced from accessadaptivetrigger
+
+//////////////////////////////////////////////////////
 add_column|DLCFlags|int
 add_column|Comment|string
 add_column|Unk3|float

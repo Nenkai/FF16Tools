@@ -6,6 +6,7 @@ add_column|DLCFlags|int
 
 // 1 = eikon or boss? note that BossDamage will be used in difficultylevel if this not 2
 // 2 = regular enemy?
+// Interesting check here, something gets multiplied by 0.25 if this is 2 and ultimaniac: 83 78 ? ? 75 ? C5 CA 59 35
 add_column|UnkType|int
 
 // 1 = can use paramgrow? aka can level?
@@ -74,7 +75,10 @@ add_column|Unk42|int
 add_column|Unk43|float
 add_column|Unk44|float
 add_column|StreamingObjectSizeId|int
+
+// hardcoded types? ref: 8B 80 ? ? ? ? 3B C7 74 ? 83 F8
 add_column|Unk46|int
+
 add_column|Unk47|int
 add_column|SummonPartsId|int
 add_column|Unk49_1|byte
@@ -85,7 +89,10 @@ add_column|BNpcExtrudedLayerId|int
 add_column|Unk51|int
 add_column|Unk52|int
 add_column|Unk53|int
-add_column|Unk54|int
+
+// ref: 48 89 5C 24 ? 57 48 83 EC ? 8B 81 ? ? ? ? 85 C0
+add_column|AutoAttackPackId|int
+
 add_column|UnkBool55_1|byte
 add_column|Unk55_2|byte
 add_column|Unk55_3|byte
@@ -102,7 +109,10 @@ add_column|Unk63_1|byte
 add_column|Unk63_2|byte
 add_column|Unk63_3|byte
 add_column|Unk63_4|byte
-add_column|Unk64|int
+
+// ref: 44 8B B8 ? ? ? ? 48 8B FB
+add_column|GuardDataId|int
+
 add_column|Unk65|int
 add_column|Unk66|int
 add_column|Unk67|int

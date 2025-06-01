@@ -2,11 +2,17 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
+// Referenced from access
+// ref: 48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8B EC 48 83 EC ? 80 79 ? ? 48 8B DA
+
+//////////////////////////////////////////////////////
 add_column|DLCFlags|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|float
-add_column|Unk6|float
-add_column|Unk7|short
-add_column|Unk8|short
+add_column|NormalCameraModeId|int
+
+// Two sets
+add_column|Unk1_1|int
+add_column|Unk2_1|int
+add_column|Unk1_2|float
+add_column|Unk2_2|float
+add_column|UnkFrameCount1|ushort
+add_column|UnkFrameCount2|ushort

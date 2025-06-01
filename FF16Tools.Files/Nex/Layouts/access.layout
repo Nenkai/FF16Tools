@@ -10,9 +10,12 @@ add_column|UnkType5|int
 add_column|UnkType6|int
 add_column|Comment|string
 add_column|InteractText|string|rel
-add_column|Unk9|int
+
+// ref: 8B 57 ? 48 8D 8E ? ? ? ? E8 ? ? ? ? 48 8B 4D
+add_column|AccessAdaptiveTriggerId|int
+
 add_column|AccessHoldParamId|int
-add_column|Unk11|int
+add_column|AccessDoorCameraId|int
 add_column|Unk12|float
 add_column|Unk13|int
 add_column|AccessEffectTriggerId|int
@@ -20,8 +23,13 @@ add_column|Unk15|float
 add_column|Unk16|int
 add_column|Unk17|byte
 add_column|Unk18|byte
+
+// ref: 80 78 ? ? 75 ? 48 8B 43
 add_column|Unk19|byte
+
+// ref: 40 38 7A ? 49 8B D5
 add_column|Unk20|byte
+
 add_column|Unk21|byte
 add_column|Unk22|byte
 add_column|Unk23|byte

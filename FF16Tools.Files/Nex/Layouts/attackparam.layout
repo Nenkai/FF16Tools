@@ -7,7 +7,8 @@ add_column|DLCFlags|int
 // Checked against hardcoded numbers i.e 3
 add_column|UnkType2|int
 
-// is this the "value"" of the attack param?
+// Recoome: total dmg dealt is 
+// AttackValue / 100 * AtkAttribute (the one in the menu, based on your level/gear)
 add_column|AttackValue|int
 
 // Checked against hardcoded numbers i.e 3
@@ -22,14 +23,21 @@ add_column|Unk10|int
 add_column|Unk11|int
 add_column|Unk12|int[]
 add_column|Unk13|int
-add_column|Unk14|int
+
+// ref: 41 8B 52 ? C5 E0 57 DB
+add_column|CameraFCurveId|int
+
+// ref: 8B 50 ? 41 B8 ? ? ? ? 48 8B CE
 add_column|UnkType15|int
+
 add_column|Unk16|int[]
 add_column|Unk17|int
 add_column|Unk18|int
 add_column|Unk19|int
 add_column|Unk20|float
-add_column|Unk21|int
+
+// ref: 44 8B 78 ? 48 8B 05 ? ? ? ? 48 85 C0 75 ? 48 8B 1D
+add_column|DamageReactionId|int
 add_column|Unk22|int
 add_column|Unk23|int
 add_column|Unk24|int
@@ -38,6 +46,8 @@ add_column|Unk26|int
 add_column|Unk27|int
 add_column|Unk28|int
 add_column|Unk29|int
+
+// ref: 8B 40 ? 89 86
 add_column|Unk30|float
 
 // Checked against hardcoded numbers i.e 2
@@ -66,66 +76,154 @@ add_column|UnkType44|int
 add_column|Unk45|int
 add_column|Unk46|int
 add_column|Unk47TitleRelatedToUnk5|int
-add_column|Unk48|int
+
+// Same as unk15?
+// ref: 8B 97 ? ? ? ? 41 B8 ? ? ? ? 48 8B CE
+// or just attack category
+add_column|FixedPaletteAttackCategoryId|int
+
 add_column|BuffIdMaybe|int
 add_column|Duration|float
 
 // Checked against hardcoded numbers
 add_column|UnkType51|int
 add_column|Unk52|int
-add_column|Unk53|int
+add_column|WillDamage|int
 add_column|Unk54|int
 add_column|Comment|string
-// Used by equipitem
 add_column|AtkType|int
-add_column|Unk57|int
-add_column|Unk58|int
+
+// 541 - vacuumedmoveparam (ref: 66 39 88 ? ? ? ? 0F 85) - Unk21 must be 16?
+// 155 - ?
+// ? - attackmovestraight
+
+add_column|Unk57|union16
+
+add_column|LimitGain|short
+
+// ref: 0F B7 80 ? ? ? ? 89 86 ? ? ? ? 8B 45
+// ref2: 0F B7 88 ? ? ? ? B8 ? ? ? ? F7 E1 D1 EA 48 8B CF
+// ref3: 0F B7 90 ? ? ? ? E9
+add_column|Unk58|short
+
 add_column|Unk59_1|byte
 add_column|Unk59_2|byte
 add_column|Unk59_3|byte
-add_column|Unk59_4|byte
-add_column|Unk60_1|byte
-add_column|Unk60_2|byte
-add_column|Unk60_3|byte
-add_column|Unk60_4|byte
+
+// ref: 40 38 B0 ? ? ? ? 0F 85 ? ? ? ? 4D 85 C0
+// ref2: 44 38 90 ? ? ? ? 0F 85
+// ref3: 80 B8 ? ? ? ? ? 0F 85 ? ? ? ? C5 F8 2F 3D
+// ref4: 44 38 B8 ? ? ? ? 0F 85 ? ? ? ? 4D 85 C0 75
+// ref5: 80 B8 ? ? ? ? ? 0F 85 ? ? ? ? 4D 85 C0 75
+// & more
+add_column|UnkBool59_4|byte
+
+// ref: 44 38 A0 ? ? ? ? 0F 84 ? ? ? ? 49 8B 46
+// ref: 38 98 ? ? ? ? 75 ? 49 8B CE
+add_column|UnkBool60_1|byte
+
+// ref: 44 38 A0 ? ? ? ? 74 ? 48 8B 44 24
+// ref2: 38 98 ? ? ? ? 0F 84 ? ? ? ? 41 83 FF ? 75 ? 49 8B CE E8 ? ? ? ? 48 8B 08 48 85 C9 75 ? 48 8B C3 EB ? 48 39 19 7C ? E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? 38 98 ? ? ? ? 0F 84
+add_column|UnkBool60_2|byte
+
+// ref: 80 B8 ? ? ? ? ? 74 ? 33 D2 49 8B CB E8 ? ? ? ? 84 C0 0F 85 ? ? ? ? 48 8B 0B
+add_column|UnkBool60_3|byte
+
+// ref: 38 98 ? ? ? ? 0F 84 ? ? ? ? 41 83 FF ? 75 ? 49 8B CE E8 ? ? ? ? 48 8B 08 48 85 C9 75 ? 48 8B C3 EB ? 48 39 19 7C ? E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? 38 98 ? ? ? ? 75
+add_column|UnkBool60_4|byte
+
 add_column|Unk61_1|byte
-add_column|Unk61_2|byte
-add_column|Unk61_3|byte
-add_column|Unk61_4|byte
-add_column|Unk62_1|byte
-add_column|Unk62_2|byte
-add_column|Unk62_3|byte
-add_column|Unk62_4|byte
+
+// ref: 80 B8 ? ? ? ? ? 74 ? 33 D2 49 8B CB E8 ? ? ? ? 84 C0 0F 84
+add_column|UnkBool61_2|byte
+
+// ref: 80 B8 ? ? ? ? ? 74 ? 33 D2 49 8B CB E8 ? ? ? ? 84 C0 0F 85 ? ? ? ? 41 F6 83
+add_column|UnkBool61_3|byte
+
+// ref: 80 B8 ? ? ? ? ? 74 ? B2 ? 48 8B CE
+add_column|UnkBool61_4|byte
+
+// ref: 44 39 A0 ? ? ? ? 0F 84 ? ? ? ? C5 FA 10 87
+// ref2: 44 8B B8 ? ? ? ? 49 8B DC
+add_column|GuardDataId|int
+
+// ref: 44 38 90 ? ? ? ? 8B 86
+// ref2: 80 BF ? ? ? ? ? 41 0F 45 C0
+// ref3: 38 98 ? ? ? ? 0F 85 ? ? ? ? 41 8B 85
 add_column|Unk63_1|byte
+
 add_column|Unk63_2|byte
 add_column|Unk63_3|byte
 add_column|Unk63_4|byte
 add_column|Unk64_1|byte
+
+// ref: 45 0F B6 87
 add_column|Unk64_2|byte
-add_column|Unk64_3|byte
+
+// ref: 0 B8 ? ? ? ? ? 0F 84 ? ? ? ? 48 85 DB 74
+// ref2: 40 38 B8 ? ? ? ? 74 ? 40 B7 ? 41 8B 42
+// ref3: 44 38 A0 ? ? ? ? 0F 84 ? ? ? ? 49 8D 4D
+// & more
+add_column|UnkBool64_3|byte
+
 add_column|Unk64_4|byte
-add_column|Unk65_1|byte
+
+// ref: 80 B8 ? ? ? ? ? 74 ? 41 83 FA
+add_column|UnkBool65_1|byte
+
 add_column|Unk65_2|byte
 add_column|Unk65_3|byte
+
+// ref: 41 38 BA ? ? ? ? 40 0F 94 C7
+// ref2: 41 38 BA ? ? ? ? 0F 85
+// ref3: 38 98 ? ? ? ? 75 ? 41 83 FF ? 75 ? 41 8B 44 24
 add_column|Unk65_4|byte
-add_column|Unk66_1|byte
+
+// ref: 80 B8 ? ? ? ? ? 74 ? 8B 87 ? ? ? ? 83 F8
+add_column|UnkBool66_1|byte
+
 add_column|Unk66_2|byte
 add_column|Unk66_3|byte
-add_column|Unk66_4|byte
+
+// ref: 40 38 B8 ? ? ? ? 75 ? 8B 46
+add_column|UnkBool66_4|byte
 add_column|Unk67_1|byte
 add_column|Unk67_2|byte
-add_column|Unk67_3|byte
+
+// ref: 80 B8 ? ? ? ? ? 74 ? 80 BE ? ? ? ? ? 75
+add_column|UnkBool67_3|byte
+
 add_column|Unk67_4|byte
-add_column|Unk68_1|byte
-add_column|Unk68_2|byte
-add_column|Unk68_3|byte
-add_column|Unk68_4|byte
+
+// ref: 80 B8 ? ? ? ? ? 75 ? C7 43
+add_column|UnkBool68_1|byte
+
+// ref: 80 B8 ? ? ? ? ? 0F 85 ? ? ? ? 48 8B 0D ? ? ? ? 48 8D 55
+// ref2: 44 38 B0 ? ? ? ? 74 ? 32 C0
+add_column|UnkBool68_2|byte
+
+// ref: 44 38 B8 ? ? ? ? 75 ? 48 8D 4C 24
+// ref2: 44 38 A0 ? ? ? ? 0F 85 ? ? ? ? 48 8D 4C 24
+add_column|UnkBool68_3|byte
+
+// ref: 44 38 B8 ? ? ? ? 0F 85 ? ? ? ? 4D 85 C0 74
+// ref2: 38 98 ? ? ? ? 0F 85 ? ? ? ? 4D 85 C0
+add_column|UnkBool68_4|byte
+
 add_column|Unk69_1|byte
 add_column|Unk69_2|byte
-add_column|Unk69_3|byte
+
+// ref: 80 B8 ? ? ? ? ? 0F 84 ? ? ? ? 49 8B 43
+add_column|UnkBool69_3|byte
+
 add_column|Unk69_4|byte
-add_column|Unk70_1|byte
+
+// ref: 8A 80 ? ? ? ? F6 D8 45 1B F6
+add_column|UnkBool70_1|byte
+
+// ref: 8A 80 ? ? ? ? 88 44 24 ? 48 89 74 24
 add_column|Unk70_2|byte
+
 add_column|Unk70_3|byte
 add_column|Unk70_4|byte
 add_column|Unk71|int
@@ -139,7 +237,9 @@ add_column|Unk75|int
 add_column|Unk76_1|byte
 add_column|Unk76_2|byte
 add_column|Unk76_3|byte
-add_column|Unk76_4|byte
+
+// ref: 80 B8 ? ? ? ? ? 8B 0F
+add_column|UnkBool76_4|byte
 
 //////////////////////////////////////////////////////
 // Comments
