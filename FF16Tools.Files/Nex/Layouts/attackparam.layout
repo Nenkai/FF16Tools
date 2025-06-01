@@ -99,12 +99,14 @@ add_column|AtkType|int
 
 add_column|Unk57|union16
 
+// Limit break gain on attack
 add_column|LimitGain|short
 
+// Zantetsuken gain on attack
 // ref: 0F B7 80 ? ? ? ? 89 86 ? ? ? ? 8B 45
 // ref2: 0F B7 88 ? ? ? ? B8 ? ? ? ? F7 E1 D1 EA 48 8B CF
 // ref3: 0F B7 90 ? ? ? ? E9
-add_column|Unk58|short
+add_column|ZantetsukenGain|short
 
 add_column|Unk59_1|byte
 add_column|Unk59_2|byte
