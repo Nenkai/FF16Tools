@@ -64,5 +64,6 @@ public enum NexColumnType
     StringArray,
     CustomStructArray,
     Union,
+    Union16,
     UnionArray,
 }

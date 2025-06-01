@@ -338,7 +338,7 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.Byte => $"{(byte)cell}",
                 NexColumnType.SByte => $"{(sbyte)cell}",
                 NexColumnType.Double => $"{(double)cell}",
-                NexColumnType.Union => $"\"{((NexUnion)cell).Type}:{((NexUnion)cell).Value}\"",
+                NexColumnType.Union or NexColumnType.Union16 => $"\"{((NexUnion)cell).Type}:{((NexUnion)cell).Value}\"",
                 NexColumnType.UnionArray => $"\"[{string.Join(',', ((NexUnion[])cell).Select(e => $"{e.Type}:{e.Value}"))}]\"",
                 NexColumnType.ByteArray => $"\"{JsonSerializer.Serialize((byte[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.IntArray => $"\"{JsonSerializer.Serialize((int[])cell, _jsonSerializerOptions)}\"",

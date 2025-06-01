@@ -507,6 +507,13 @@ public class NexDataFileBuilder
                     bs.WriteInt32(union.Value);
                 }
                 break;
+            case NexColumnType.Union16:
+                {
+                    NexUnion union = (NexUnion)cellValue;
+                    bs.WriteUInt16((ushort)union.Type);
+                    bs.WriteInt16((short)union.Value);
+                }
+                break;
             case NexColumnType.ByteArray: // byte arrays are combined with strings at the end of the file
                 {
                     int relOffset = column.UsesRelativeOffset ? (int)bs.Position + column.RelativeOffsetShift : rowDataOffset;

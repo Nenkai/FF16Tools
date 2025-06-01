@@ -310,6 +310,7 @@ public class SQLiteToNexImporter : IDisposable
             case NexColumnType.String:
                 return val is not DBNull ? (string)val : string.Empty;
             case NexColumnType.Union:
+            case NexColumnType.Union16:
                 {
                     string str = (string)val;
                     return ParseUnion(column, str);
@@ -490,6 +491,7 @@ public class SQLiteToNexImporter : IDisposable
                                         structItem[fieldIndex] = field.GetUInt32();
                                         break;
                                     case NexColumnType.Union:
+                                    case NexColumnType.Union16:
                                         {
                                             ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
 

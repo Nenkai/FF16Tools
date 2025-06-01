@@ -206,6 +206,12 @@ public class NexUtils
                     int id = sr.ReadInt32();
                     return new NexUnion(unionType, id);
                 }
+            case NexColumnType.Union16:
+                {
+                    NexUnionType unionType = (NexUnionType)sr.ReadUInt16();
+                    short id = sr.ReadInt16();
+                    return new NexUnion(unionType, id);
+                }
             default:
                 throw new NotImplementedException($"ReadCell: Type {column.Type} is invalid or not supported.");
         }
@@ -228,7 +234,7 @@ public class NexUtils
     public static string? TypeToSQLiteTypeIdentifier(NexColumnType type)
     {
         // can't use a switch for types :(
-        if (type == NexColumnType.String || type == NexColumnType.HexUInt || type == NexColumnType.Union ||
+        if (type == NexColumnType.String || type == NexColumnType.HexUInt || type == NexColumnType.Union || type == NexColumnType.Union16 ||
             type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || 
             type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray ||
             type == NexColumnType.UnionArray)
@@ -250,17 +256,33 @@ public class NexUtils
     public static int TypeToSize(NexColumnType type)
     {
         // can't use a switch for types :(
-        if (type == NexColumnType.Int64 || type == NexColumnType.Double || type == NexColumnType.Union ||
-            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || 
-            type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray ||
-            type == NexColumnType.UnionArray)
-            return 8;
-        else if (type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.HexUInt || type == NexColumnType.Float || type == NexColumnType.HexUInt || type == NexColumnType.String)
-            return 4;
-        else if (type == NexColumnType.Short || type == NexColumnType.UShort)
-            return 2;
-        else if (type == NexColumnType.Byte || type == NexColumnType.SByte)
-            return 1;
+        switch (type)
+        {
+            case NexColumnType.Int64:
+            case NexColumnType.Double:
+            case NexColumnType.Union:
+            case NexColumnType.ByteArray:
+            case NexColumnType.IntArray:
+            case NexColumnType.UIntArray:
+            case NexColumnType.FloatArray:
+            case NexColumnType.StringArray:
+            case NexColumnType.CustomStructArray:
+            case NexColumnType.UnionArray:
+                return 8;
+            case NexColumnType.Int:
+            case NexColumnType.UInt:
+            case NexColumnType.HexUInt:
+            case NexColumnType.Float:
+            case NexColumnType.Union16:
+            case NexColumnType.String:
+                return 4;
+            case NexColumnType.Short:
+            case NexColumnType.UShort:
+                return 2;
+            case NexColumnType.Byte:
+            case NexColumnType.SByte:
+                return 1;
+        }
 
         throw new NotSupportedException($"TypeToSize: unsupported type {type}");
     }
@@ -287,6 +309,7 @@ public class NexUtils
             "float" => NexColumnType.Float,
             "double" => NexColumnType.Double,
             "union" => NexColumnType.Union,
+            "union16" => NexColumnType.Union16,
             "byte[]" => NexColumnType.ByteArray,
             "int[]" or "int32[]" => NexColumnType.IntArray,
             "uint[]" or "uint32[]" => NexColumnType.UIntArray,
@@ -317,6 +340,7 @@ public class NexUtils
             NexColumnType.Float => "float",
             NexColumnType.Double => "double",
             NexColumnType.Union => "union",
+            NexColumnType.Union16 => "union16",
             NexColumnType.ByteArray => "byte[]",
             NexColumnType.IntArray => "int[]",
             NexColumnType.UIntArray => "uint[]",
