@@ -2,10 +2,14 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
+// ref: 48 8B C4 48 89 58 ? 48 89 68 ? 48 89 70 ? 48 89 78 ? 41 54 41 56 41 57 48 83 EC ? 41 8B E9
+///////////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
-add_column|Unk2|int
+add_column|NormalCameraParamId1|int
 add_column|BattleNormalCameraId|int
-add_column|Unk4|int
-add_column|Unk5|int
+
+// ref: 8B 43 ? EB ? 33 C0 48 8B 5C 24 ? 48 83 C4 ? 5F C3 48 89 5C 24 ? 57 48 83 EC ? 48 8B 05 ? ? ? ? 48 8B 0D ? ? ? ? 8B 50 ? 48 8B 05 ? ? ? ? 48 8B 8C C8 ? ? ? ? 48 8B 01 FF 50 ? 48 85 C0 0F 84 ? ? ? ? 48 8B 40 ? 48 8D 1D ? ? ? ? 48 8B 08 48 85 C9 75 ? 33 C0 EB ? 48 83 39 ? 7C ? E8 ? ? ? ? EB ? 48 8B C3 8B B8 ? ? ? ? 48 8B 05 ? ? ? ? 48 85 C0 75 ? 48 8B 0D ? ? ? ? 48 85 C9 74 ? BA ? ? ? ? E8 ? ? ? ? 48 89 05 ? ? ? ? 48 85 C0 74 ? 8B D7 48 8B C8 E8 ? ? ? ? 4C 8B C0 48 85 C0 74 ? 48 83 38 ? 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 49 83 38 ? 7C ? 49 8B C8 E8 ? ? ? ? 48 8B D8 8B 43 ? EB ? 33 C0 48 8B 5C 24 ? 48 83 C4 ? 5F C3 33 D2
+add_column|NormalCameraParamId2|int
+add_column|NormalCameraParamId3|int
 add_column|Unk6|float
 add_column|Unk7|int

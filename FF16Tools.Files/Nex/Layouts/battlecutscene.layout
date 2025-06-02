@@ -2,6 +2,8 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
+// Unused table? no references in executable
+////////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
 add_column|Comment|string
 add_column|Unk3|int

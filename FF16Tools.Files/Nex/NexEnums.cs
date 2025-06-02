@@ -96,7 +96,7 @@ public enum NexUnionType : ushort
     //unk_330 = 330,
     missionbattledirector = 359,
     uicolor = 363,
-    normalcameraparam2 = 344, // Same as 366 apparently, see ffxvi.exe 1.0.1 steam - sub_1405BCB34 and sub_1405D1B98
+    normalcameraparam2 = 344, // Same as 366 apparently, see ffxvi.exe 0F 84 ? ? ? ? 81 E9 ? ? ? ? 0F 84 ? ? ? ? 83 E9 ? 0F 84 ? ? ? ? 81 F9
     normalcameraparam = 366,
     astralprojection = 373,
     mapdirectorsequence = 375,
@@ -185,6 +185,7 @@ public enum NexUnionType : ushort
     envvoice = 1027,
     //unk_1044 = 1044,
     abysseffect = 1047,
+    battlescoreattackcategory = 1049,
     lorecutmreference = 1079,
     lorecutqreference = 1080,
     // set from 48 89 5C 24 ? 48 89 6C 24 ? 57 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 84 24 ? ? ? ? 48 8B 51

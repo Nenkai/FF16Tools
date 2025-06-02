@@ -2,8 +2,15 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false
 
+// ref: 4C 8B 4B ? C5 F9 EF C0
+
+////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
-add_column|Unk2|int
+
+// ref: 8B 50 ? BF ? ? ? ? B9
+// ref2: 8B 78 ? 48 8B 05 ? ? ? ? 48 85 C0 75 ? 48 8B 0D ? ? ? ? 48 85 C9 0F 84 ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 48 89 05 ? ? ? ? 48 85 C0 0F 84 ? ? ? ? 8B D7 48 8B C8 E8 ? ? ? ? 48 8B F8 48 85 C0 0F 84 ? ? ? ? 48 83 38
+add_column|BattleScoreAchievedDifficultyId|int
+
 add_column|ActionIds|int[]
 add_column|ActionCaption|string|rel
 add_column|Score|int

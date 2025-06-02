@@ -72,9 +72,10 @@ add_column|Unk30|byte
 // ref: 0F B6 4B ? 8B D0
 add_column|Unk31|byte
 
-// buff related?
-// ref: 40 38 68 ? 75 ? 41 84 AE
-add_column|UnkBool32|byte
+// Maybri: Torgal's Sic and Ravage can still do damage.
+// ref (func - CanPartyMemberDealDamageFromCurrentDifficulty): 40 38 68 ? 75 ? 41 84 AE
+// ^ that function seems important and some other columns may affect the result? i.e attackparam->Unk64_3 and bnpcbase->UnkType2
+add_column|CanPartyMembersDealDamage|byte
 
 // previously 'IsIncreaseEnemyLevel'
 // use paramgrow and bnpcparamrate basically

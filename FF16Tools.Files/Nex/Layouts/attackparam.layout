@@ -87,9 +87,19 @@ add_column|Duration|float
 
 // Checked against hardcoded numbers
 add_column|UnkType51|int
-add_column|Unk52|int
+
+// ref: 8B A8 ? ? ? ? 48 8B FB
+// ref2: 8B B8 ? ? ? ? 48 8B 05 ? ? ? ? 48 85 C0 75 ? 48 8B 0D ? ? ? ? 48 85 C9 0F 84 ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 48 89 05 ? ? ? ? 48 85 C0 0F 84 ? ? ? ? 8B D7 48 8B C8 E8 ? ? ? ? 4C 8B C0 48 85 C0 0F 84 ? ? ? ? 48 83 38 ? 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 0F 84 ? ? ? ? 49 83 38 ? 7C ? 49 8B C8 E8 ? ? ? ? 48 8B D8 80 7B
+// ref3: 44 8B A8 ? ? ? ? 48 8B 05 ? ? ? ? 48 85 C0
+// ref4: 8B B8 ? ? ? ? 48 8B 05 ? ? ? ? 48 85 C0 75 ? 48 8B 0D ? ? ? ? 48 85 C9 74 ? BA ? ? ? ? E8 ? ? ? ? 48 89 05 ? ? ? ? 48 85 C0 74 ? 8B D7 48 8B C8 E8 ? ? ? ? 4C 8B C0 48 85 C0 74 ? 4C 8B 08 4D 85 C9 78 ? 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 4D 85 C9 78 ? 49 8B C8 E8 ? ? ? ? EB ? 48 8B C3
+add_column|BattleScoreAttackCategoryId|int
+
+// ref: 44 8B A8 ? ? ? ? 48 8B 84 24
 add_column|WillDamage|int
+
+// ref: 8B 89 ? ? ? ? 83 E9 ? 74 ? 83 F9 ? 74 ? 4D 8B C4
 add_column|Unk54|int
+
 add_column|Comment|string
 add_column|AtkType|int
 
@@ -165,7 +175,7 @@ add_column|Unk64_2|byte
 // ref: 0 B8 ? ? ? ? ? 0F 84 ? ? ? ? 48 85 DB 74
 // ref2: 40 38 B8 ? ? ? ? 74 ? 40 B7 ? 41 8B 42
 // ref3: 44 38 A0 ? ? ? ? 0F 84 ? ? ? ? 49 8D 4D
-// & more
+// & many more
 add_column|UnkBool64_3|byte
 
 add_column|Unk64_4|byte
@@ -231,13 +241,24 @@ add_column|Unk70_4|byte
 add_column|Unk71|int
 add_column|Unk72|float
 add_column|Unk73_1|byte
-add_column|Unk73_2|byte
+
+// is capped to 999999?
+// ref: 45 38 A6 ? ? ? ? B8
+add_column|UnkBool73_2|byte
+
 add_column|Unk73_3|byte
 add_column|Unk73_4|byte
 add_column|Unk74|int
 add_column|Unk75|int
-add_column|Unk76_1|byte
-add_column|Unk76_2|byte
+
+// abysseffect related?
+// ref: 40 38 A8 ? ? ? ? 74 ? 45 33 C9 49 8D 92 ? ? ? ? 49 8B CA 45 8D 41 ? E8 ? ? ? ? 4D 8B 07 8B C8 4C 8B 15 ? ? ? ? B8 ? ? ? ? 0F AF CE
+add_column|UnkBool76_1|byte
+
+// abysseffect related?
+// ref: 40 38 A8 ? ? ? ? 74 ? 45 33 C9 49 8D 92 ? ? ? ? 49 8B CA 45 8D 41 ? E8 ? ? ? ? 8B C8
+add_column|UnkBool76_2|byte
+
 add_column|Unk76_3|byte
 
 // ref: 80 B8 ? ? ? ? ? 8B 0F

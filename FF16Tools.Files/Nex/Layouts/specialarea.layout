@@ -6,6 +6,7 @@ use_base_row_id|false
 // I believe this is also referenced from some sort of 
 // map file? Couldn't find which though.
 
+//////////////////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
 
 // ffxvi_demo.exe 1.0.0 - 140429D52
@@ -35,8 +36,11 @@ add_column|UserConditionId|int
 // 40 = attacks/charge/jump ok. no full speed run
 // ---------------------------------------------
 add_column|MovementRestrictionBitSet|int
-add_column|Unk4|int
-add_column|Unk5|int
+
+// ref: 48 8B C4 48 89 58 ? 48 89 68 ? 48 89 70 ? 48 89 78 ? 41 54 41 56 41 57 48 83 EC ? 41 8B E9
+add_column|NormalCameraParamId1|int
+add_column|NormalCameraParamId2|int
+
 add_column|Comment|string
 add_column|EnvironmentVibrationId|int
 add_column|CharaSituationId|int

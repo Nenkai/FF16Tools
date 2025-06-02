@@ -2,6 +2,10 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false
 
+// Hardcoded ids 0-15 (game iterates from 0 to 15, no references from other tables)
+// ref: E8 ? ? ? ? 4C 8B 0D ? ? ? ? 48 8B D8 45 8B C6
+
+/////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
 add_column|Unk2|int[]
 add_column|Comment|string

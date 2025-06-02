@@ -3,32 +3,66 @@ set_table_category|SingleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
+
+// ref: 8B 70 ? 4D 85 D2 78 ? 49 8B C8 E8 ? ? ? ? 4C 8B C8 41 8B 69
+// ref2: 44 8B 68 ? 4D 85 D2
 add_column|Unk2|int
 
 // Hardcoded enum
-// ffxvi.exe steam 1.0.1:
-// 48 89 5C 24 ? 48 89 7C 24 ? 48 89 4C 24 ? 55 48 8B EC 48 83 EC ? 48 8B 05
+// ref: 8B 40 ? 83 F8 ? 0F 87 ? ? ? ? 0F 84 ? ? ? ? 83 F8 ? 0F 87 ? ? ? ? 0F 84 ? ? ? ? 83 F8 ? 0F 87 ? ? ? ? 0F 84 ? ? ? ? 83 E8 ? 0F 84 ? ? ? ? 83 E8 ? 0F 84 ? ? ? ? 83 E8 ? 0F 84 ? ? ? ? 83 E8 ? 0F 84
 add_column|UnkType3|int
 
 add_column|Unk4|float
 add_column|Unk5|int
+
+// 17 - attackparam
+// 1049 - battlescoreattackcategory
+// - fetched from attackparam at: 48 8B C4 48 89 58 ? 48 89 68 ? 48 89 70 ? 48 89 78 ? 41 56 48 83 EC ? 4C 8D 71 ? 48 8B F1 49 8B CE
+// - then matched at 44 3A 89
+// ref: 4A 89 84 03
 add_column|UnkUnionArray6|union[]
+
+// ref: 48 63 41 ? 48 03 C1 4C 39 35
 add_column|BattleScoreBonusLevel|int[]
-add_column|Unk8|int
+
+// ref: 41 8B 69 ? 85 ED
+// ref2: 8B 48 ? 41 8B 28 (hardcoded excludes: 271, 291, 314, 327, 331)
+add_column|UnkCommandId|int
+
 add_column|Comment|string
 add_column|Unk10|int
+
+// Unknown, seems to be mainly hardcoded numbers coming from func: 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 8B 05 ? ? ? ? 49 8B F0
+// ref: 44 39 58 ? 75 ? 4D 85 C9
 add_column|Unk11|int
+
 add_column|ActionIds|int[]
 add_column|Unk13|int
-add_column|CommandId|int
+add_column|UnkCommandId2|int
+
+// ref: 44 38 58 ? 74 ? 41 8A 81
 add_column|Unk15|byte
+
+// ref: 44 38 58 ? EB ? 4D 85 D2 78 ? 49 8B C8 E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? 44 38 58 ? 74 ? 41 8A 81
 add_column|Unk16|byte
-add_column|Unk17|byte
+
+// ref: 80 78 ? ? 74 ? 48 8B 05 ? ? ? ? 48 8B 88 ? ? ? ? 48 85 C9 74 ? 48 83 C1 ? 48 8B 01 FF 90 ? ? ? ? 84 C0 75
+add_column|UnkBool17|byte
+
 add_column|Unk18|byte
-add_column|Unk19|byte
-add_column|Unk20|byte
-add_column|Unk21|byte
-add_column|Unk22|byte
+
+// ref: 80 78 ? ? 74 ? 49 8B 00
+add_column|UnkBool19|byte
+
+// ref: 80 78 ? ? 74 ? 41 8B 40 ? C1 E8 ? A8 ? 0F 84
+add_column|UnkBool20|byte
+
+// ref: 80 7E ? ? 74 ? 48 8B 03 48 8B CB FF 90
+add_column|UnkBool21|byte
+
+// 80 78 ? ? 74 ? 41 8B 40 ? C1 E8 ? A8 ? 74
+add_column|UnkBool22|byte
+
 add_column|Unk23|byte
 add_column|Unk24|byte
 add_column|Unk25|byte

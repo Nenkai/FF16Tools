@@ -25,17 +25,15 @@ add_column|ReqSkillIdUnlock3|int
 
 // Represents a value that is affected by the upgrade level of the skill
 // Like in the sattelite rows, that is the number of sateliltes
-// for wings of light (skill 39), this is an id into bahamutcastmegaflare - max gauge level
-// for Ice Age, the size of the red portion of the gauge, etc
-
-// ref: 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 8B FA E8
-// ref2: C4 E1 FA 2C 47
-// ref3: C5 7A 2C 48
-// ref4: 48 83 EC ? 48 8B 0D ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 48 85 C0 74 ? 45 33 C0 48 8B C8 41 8D 50 ? E8 ? ? ? ? 4C 8B C0 48 85 C0 74 ? 48 83 38 ? 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 49 83 38 ? 7C ? 49 8B C8 E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? C4 E1 FA 2C 40 ? EB ? 33 C0 48 83 C4 ? C3 CC CC C5 FA 10 05
-// ref5: C5 FA 10 40 ? EB ? C5 F8 57 C0 48 8B 5C 24
+// - Wings of Light (skill 39), this is an id into bahamutcastmegaflare - max gauge level
+// - Ice Age (skill 45), the size of the red portion of the gauge, etc
+// - Arm of Darkness (skill 49), value * 1500 = zantetsuken gain for level? 
+//   -> ref: E8 ? ? ? ? 0F B6 D0 45 8D 66
+//   -> ref2: B8 ? ? ? ? 41 F7 E0 C1 EA ? 69 CA ? ? ? ? 44 2B C1 49 8B C9
+//   -> ref3: B9 ? ? ? ? 0F AF F9
+// ref (Skill::GetCurrentPotencyParameter(void*, int skillId)) : 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 8B FA E8
 add_column|CommandPotencyParameter|float
 
-// 
 add_column|CommandId|int
 add_column|Name|string|rel
 add_column|Description|string|rel|-4
