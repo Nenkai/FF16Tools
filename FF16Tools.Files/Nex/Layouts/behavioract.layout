@@ -2,6 +2,14 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
+// This table is used only to check if certain ids exist
+// In general this refers to types of dynamic behaviors
+// See: behaviordynamicthinkset for more details
+
+// Ids are largely hardcoded for all 0-49. Each one maps to a different type.
+// ref: 48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 41 56 48 83 EC ? 48 8D 79 ? 48 8B F1
+
+//////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
 add_column|Comment|string
 

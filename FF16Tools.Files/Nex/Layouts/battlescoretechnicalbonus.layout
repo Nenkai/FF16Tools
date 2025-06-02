@@ -2,6 +2,13 @@ set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|true
 
+// Hardcoded ids
+// - 1 => BA ? ? ? ? 48 8B C8 E8 ? ? ? ? 4C 8B C0 48 85 C0 74 ? 48 39 38 7C ? 48 8B C8 E8 ? ? ? ? 48 85 C0 74 ? 49 39 38
+
+// No table explicitly points to this table
+// Game iterates through it
+
+//////////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int

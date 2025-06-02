@@ -103,8 +103,10 @@ public enum NexUnionType : ushort
     directorfaketargetsettings = 382,
     directoractorlist = 399,
     behaviormovesequence = 403, // behaviormovesequence (or behaviormoveset)
+    behaviorwanderingparam = 405,
     //unk_428 = 428,
     battletag = 454,
+    behaviordialogueactionset = 455,
     usersituationflag = 458,
     shopchronicle = 484,
     layoutgroup = 486, // groups from map
@@ -131,6 +133,7 @@ public enum NexUnionType : ushort
     // up to 64
     mapdirectorflag = 577,
 
+    behaviorlookatactparam = 628,
     skill = 632,
     behavioreventactionsequence = 639,
     difficultylevel = 649,
@@ -145,6 +148,7 @@ public enum NexUnionType : ushort
     layoutenpcinstance = 706,
     shopmythril = 719,
     behaviorlinkmovetarget = 722,
+    behaviorguidanceparam = 739,
     telemetryobjectset = 742,
     telemetrypropertyvalue = 758,
     letter = 791,
@@ -159,6 +163,7 @@ public enum NexUnionType : ushort
     questdefaulttalksequence = 846,
     questsimpleventsequence = 847,
     mainsimpleeventsequence = 848,
+    behavioreventidlestateparam = 853,
     behavioreventdirector = 854,
     simpleevent = 856,
     synopsis = 861,
@@ -171,7 +176,7 @@ public enum NexUnionType : ushort
     directorshipswingparameter = 934,
     directormovecustomspeedparam = 935,
     simpleeventselect = 942,
-    simpleeventsequencerandomset = 943, // 
+    simpleeventsequencerandomset = 943,
     cutsceneconnectquestseqarg = 945,
     shopquestcounter = 957,
     shopfixedpaletteaccess = 976,

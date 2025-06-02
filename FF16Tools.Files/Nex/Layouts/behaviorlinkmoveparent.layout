@@ -6,6 +6,8 @@ add_column|DLCFlags|int
 add_column|Unk2|float
 add_column|Unk3|float
 add_column|Unk4|int
+
+// unused ints?
 add_column|Unk5|int
 add_column|Unk6|int
 add_column|Unk7|int
@@ -16,21 +18,22 @@ add_column|Unk11|int
 add_column|Unk12|int
 add_column|Unk13|int
 add_column|Unk14|int
-add_column|Unk15|int
-add_column|Unk16|int
-add_column|Unk17|int
-add_column|Unk18|int
-add_column|Unk19|int
-add_column|Unk20|int
-add_column|Unk21|int
-add_column|Unk22|int
+
+// ref: 8B 50 ? 85 D2 0F 84 ? ? ? ? 48 8B 0D ? ? ? ? E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 48 8B 05 ? ? ? ? 4C 8D 4C 24 ? BA ? ? ? ? 4C 89 7C 24
+add_column|UnkUnion15|union
+
+// ref: 41 8B 14 02
+add_column|UnkUnion16|union
+add_column|UnkUnion17|union
+add_column|UnkUnion18|union
+add_column|UnkUnion19|union
+add_column|UnkUnion20|union
+add_column|UnkUnion21|union
+add_column|UnkUnion22|union
+
+// not sure about this one
 add_column|Unk23|int
-add_column|Unk24|int
-add_column|Unk25|int
-add_column|Unk26|int
-add_column|Unk27|int
-add_column|Unk28|int
-add_column|Unk29|int
-add_column|Unk30|int
-add_column|Unk31|int
-add_column|Unk32|int
+
+// ref: 41 8A 41 ? 88 83
+add_column|Unk24|byte
+// <implicit 3 byte padding>

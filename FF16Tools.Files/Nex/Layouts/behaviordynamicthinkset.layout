@@ -3,16 +3,120 @@ set_table_category|DoubleKeyed
 use_base_row_id|false
 
 add_column|DLCFlags|int
-add_column|Unk2|int
-add_column|Unk3|int
-add_column|UnkUnion4|union
+
+// 0-12
+// ref: 83 78 ? ? 0F 83 ? ? ? ? 48 83 65
+add_column|UnkType2|int
+
+// Very important, acts as a type too
+// hardcoded handlers 0-49
+// union args:
+// 0 - no args
+// 1 - no args
+// 2 - no args
+// 3 - no args
+// 4 - no args
+// 5 - no args?
+// 6 - no args
+// 7 - no args
+// 8 - no args
+// 9-11 unused
+// 12 - behaviordialogueactionset
+// 13-14 unused
+// 15 - no args
+// 16 - behaviorwaitparam?
+// 17 - behavioreventidlestateparam? doesn't seem right, weird
+// 21 - behavioreventactionset
+// 22 - behavioreventactionset
+// 23 - behavioreventactionset
+// 24 - behavioreventactionsequence
+// 25 - behavioreventactionsequence
+// 26 - behavioreventactionsequence
+// 27 - no args
+// 28 - no args
+// 29 - no args
+// 30 - no args
+// 31 - behaviorlookatactparam
+// 32 - behavioreventactionset?
+// 33 - no args
+// 34 - behavioreventidlestateparam?
+// 35 - behavioreventidlestateparam?
+// 36 - behavioreventidlestateparam?
+// 37 - no args
+// 38 - no args
+// 39 - no args
+// 40 - no args
+// 41 - no args
+// 42 - no args
+// 43 - no args
+// 44 - behavioreventactionset
+// 45 - behavioreventactionset?
+// 46 - behavioreventactionsequence?
+// 47 - behavioreventactionsequence?
+// 48 - behaviorlookatactparam
+// 49 - behavioreventactionset
+add_column|BehaviorActId|int
+
+add_column|BehaviorActArgumentUnion|union
 add_column|UnkUnion6|union
 add_column|Comment|string
 add_column|Unk9|float
 add_column|Unk10|float
-add_column|Unk11|float
+add_column|UnkAngle11|float
 add_column|Unk12|float
 add_column|UnkUnion13|union
 add_column|Unk15|float
 add_column|Unk16|float
 
+/////////////////////////////////////////////////////////////////
+// Reverse engineering notes
+/////////////////////////////////////////////////////////////////
+// ref (row load func): 48 8B C4 48 89 58 ? 48 89 70 ? 55 41 54
+// ref2 (create params struct): 40 55 48 8B EC 48 83 EC ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 45 ? 44 8A 91
+//
+// arg2 struct:
+// struct BehaviorDynamicThinkSetParams // sizeof=0x40
+// {
+//     _DWORD dword0;
+//     _DWORD Union13IdFromRow;
+//     _DWORD dword8;
+//     _DWORD Unk3FromRow;
+//     _DWORD Union4IdFromRow;
+//     _DWORD Union6IdFromRow;
+//     float Unk9FromRow;
+//     float Unk10FromRow;
+//     _BYTE byte20;
+//     _BYTE byte21;
+//     _BYTE byte22;
+//     // padding byte
+//     // padding byte
+//     // padding byte
+//     // padding byte
+//     // padding byte
+//     _DWORD dword28;
+//     _DWORD dword2C;
+//     float Unk12FromRow;
+//     float Unk15FromRow;
+//     float Unk16FromRow;
+//     float float3C;
+// };
+
+// some more refs, less related to rows itself but the data gets passed around a lot
+// ref2: 48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 55 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC ? 48 8D 59
+// ref3: (func table usage for BehaviorActId) - 48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 41 56 48 83 EC ? 48 8D 79 ? 48 8B F1
+// 
+// arg2 struct:
+// struct BehaviorActData
+// {
+//     int Unk3FromBehaviorDynamicThinkSet;
+//     int Union6IdFromBehaviorDynamicThinkSet;
+//     int Field_8;
+//     int Union4IdFromBehaviorDynamicThinkSet;
+//     int field_10;
+//     int field_14;
+// };
+
+// ref4: func table init: 40 55 48 8B EC 48 83 EC ? 33 D2 48 8D 0D ? ? ? ? 48 89 4D ? 48 8D 05 ? ? ? ? 89 55 ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45 ? 48 8D 05 ? ? ? ? 89 55 ? C5 FA 7F 05 ? ? ? ? C5 F8 10 45 ? 48 89 45
+
+// this function is useful too, not sure if related though
+// 48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 60 ? 55 41 56 41 57 48 8B EC 48 83 EC ? 33 DB 45 8A F9

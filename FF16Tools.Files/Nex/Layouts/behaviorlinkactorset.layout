@@ -2,21 +2,17 @@ set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed
 use_base_row_id|false
 
+// ref: 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B 05 ? ? ? ? 48 8D B9
+///////////////////////////////////////////////////////////////
 add_column|DLCFlags|int
 add_column|Unk2|int
 add_column|Unk3|int
-add_column|Unk4|int
-add_column|Unk5|int
-add_column|Unk6|int
-add_column|Unk7|int
-add_column|Unk8|int
-add_column|Unk9|int
-add_column|Unk10|int
-add_column|Unk11|int
-add_column|Unk12|int
-add_column|Unk13|int
-add_column|Unk14|int
-add_column|Unk15|int
+add_column|UnkUnion4|union
+add_column|UnkUnion6|union
+add_column|UnkUnion8|union
+add_column|UnkUnion10|union
+add_column|UnkUnion12|union
+add_column|UnkUnion14|union
 add_column|Unk16|byte
 add_column|Unk17|byte
 add_column|Unk18|byte

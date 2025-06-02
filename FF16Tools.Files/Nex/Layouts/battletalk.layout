@@ -6,7 +6,11 @@ add_column|DLCFlags|int
 add_column|GameMapId|int
 add_column|GameMapIdKey2|int
 add_column|Unk4|float
+
+// nxd/text%s/bossbattle/bossbattle%07u.pzd
+// ref: 8B 50 ? 48 8D 4D ? E8 ? ? ? ? 49 8B D7
 add_column|BattleTalkSequenceId|int
+
 add_column|Comment|string
 add_column|Unk7|int
 
