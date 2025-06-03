@@ -144,16 +144,16 @@ add_column|UnkBool60_3|byte
 // ref: 38 98 ? ? ? ? 0F 84 ? ? ? ? 41 83 FF ? 75 ? 49 8B CE E8 ? ? ? ? 48 8B 08 48 85 C9 75 ? 48 8B C3 EB ? 48 39 19 7C ? E8 ? ? ? ? EB ? 48 8D 05 ? ? ? ? 38 98 ? ? ? ? 75
 add_column|UnkBool60_4|byte
 
-add_column|Unk61_1|byte
+add_column|CantKillTarget|byte
 
 // ref: 80 B8 ? ? ? ? ? 74 ? 33 D2 49 8B CB E8 ? ? ? ? 84 C0 0F 84
-add_column|UnkBool61_2|byte
+add_column|CantHitStandingTarget|byte
 
 // ref: 80 B8 ? ? ? ? ? 74 ? 33 D2 49 8B CB E8 ? ? ? ? 84 C0 0F 85 ? ? ? ? 41 F6 83
-add_column|UnkBool61_3|byte
+add_column|CantHitAirborneTarget|byte
 
 // ref: 80 B8 ? ? ? ? ? 74 ? B2 ? 48 8B CE
-add_column|UnkBool61_4|byte
+add_column|CantHitGroundedTarget|byte
 
 // ref: 44 39 A0 ? ? ? ? 0F 84 ? ? ? ? C5 FA 10 87
 // ref2: 44 8B B8 ? ? ? ? 49 8B DC
@@ -195,17 +195,20 @@ add_column|Unk65_4|byte
 add_column|UnkBool66_1|byte
 
 add_column|Unk66_2|byte
-add_column|Unk66_3|byte
+
+add_column|CantStaggerTarget|byte
 
 // ref: 40 38 B8 ? ? ? ? 75 ? 8B 46
 add_column|UnkBool66_4|byte
+
 add_column|Unk67_1|byte
 add_column|Unk67_2|byte
 
 // ref: 80 B8 ? ? ? ? ? 74 ? 80 BE ? ? ? ? ? 75
 add_column|UnkBool67_3|byte
 
-add_column|Unk67_4|byte
+// ref: 80 B8 ? ? ? ? ? 0F 85 ? ? ? ? 45 8B 06
+add_column|UnkBool67_4|byte
 
 // ref: 80 B8 ? ? ? ? ? 75 ? C7 43
 add_column|UnkBool68_1|byte
