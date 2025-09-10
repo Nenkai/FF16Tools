@@ -324,14 +324,14 @@ public class TableMappingReader
             case NexColumnType.Int64:
             case NexColumnType.Double:
             case NexColumnType.String:
-            case NexColumnType.Union:
-            case NexColumnType.Union16:
+            case NexColumnType.NexUnionKey32:
+            case NexColumnType.NexUnionKey16:
             case NexColumnType.ByteArray:
             case NexColumnType.IntArray:
             case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
-            case NexColumnType.UnionArray:
+            case NexColumnType.NexUnionKey32Array:
             case NexColumnType.CustomStructArray:
                 offset = (int)NexUtils.AlignValue((uint)offset, 0x04);
                 break;

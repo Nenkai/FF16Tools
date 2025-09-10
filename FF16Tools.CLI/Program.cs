@@ -15,6 +15,7 @@ using FF16Tools.Files.Textures;
 using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
 using FF16Tools.Files.VFX;
+using FF16Tools.Files.Panzer;
 
 namespace FF16Tools.CLI;
 
@@ -71,9 +72,30 @@ public class Program
             }
         }
 
-        var p = Parser.Default.ParseArguments<UnpackFileVerbs, UnpackAllVerbs, UnpackAllPacksVerbs, ListFilesVerbs, PackVerbs, TexConvVerbs,
-            ImgConvVerbs, NxdToSqliteVerbs, SqliteToNxdVerbs, UnpackSaveVerbs, PackSaveVerbs,
-            VatbToJsonVerbs, JsonToVatbVerbs>(args);
+        var verbs = new Type[]
+        {
+            typeof(UnpackFileVerbs),
+            typeof(UnpackAllVerbs),
+            typeof(UnpackAllPacksVerbs),
+            typeof(ListFilesVerbs),
+            typeof(PackVerbs),
+
+            typeof(TexConvVerbs),
+            typeof(ImgConvVerbs),
+
+            typeof(NxdToSqliteVerbs),
+            typeof(SqliteToNxdVerbs),
+
+            typeof(UnpackSaveVerbs),
+            typeof(PackSaveVerbs),
+
+            typeof(VatbToJsonVerbs),
+            typeof(JsonToVatbVerbs),
+
+            typeof(PzdConvVerbs),
+        };
+
+        var p = Parser.Default.ParseArguments(args, verbs);
         await p.WithParsedAsync<UnpackFileVerbs>(UnpackFile);
         p.WithParsed<UnpackAllVerbs>(UnpackAll);
         await p.WithParsedAsync<UnpackAllPacksVerbs>(UnpackAllPacks);
@@ -87,6 +109,7 @@ public class Program
         p.WithParsed<PackSaveVerbs>(PackSave);
         p.WithParsed<VatbToJsonVerbs>(VatbToJson);
         p.WithParsed<JsonToVatbVerbs>(JsonToVatb);
+        p.WithParsed<PzdConvVerbs>(PzdConvert);
     }
 
     static async Task UnpackFile(UnpackFileVerbs verbs)
@@ -372,6 +395,10 @@ public class Program
             case ".pac": // Extract pack
                 return true;
 
+            case ".pzd": // panzer localization to xml
+            case ".yaml": // panzer yaml to pzd
+                return true;
+
             case ".tex": // tex to dds
                 return true;
 
@@ -393,18 +420,64 @@ public class Program
 
     private static void ProcessFile(string file)
     {
-        if (Path.GetExtension(file) == ".tex")
+        string ext = Path.GetExtension(file);
+        if (ext == ".tex")
             ProcessTexFile(file);
-        else if (Path.GetExtension(file) == ".vatb")
+        else if (ext == ".vatb")
             VatbToJson(new VatbToJsonVerbs() { InputFile = file });
-        else if (Path.GetExtension(file) == ".pac")
+        else if (ext == ".pac")
             UnpackAll(new UnpackAllVerbs() { InputFile = file });
+        else if (ext == ".pzd" || ext == ".yaml")
+            PzdConvert(new PzdConvVerbs() { InputPaths = [file] });
         else
         {
             using var fs = new FileStream(Path.ChangeExtension(file, ".tex"), FileMode.Create);
             var builder = new TextureFileBuilder(_loggerFactory);
             builder.AddImage(file);
             builder.Build(fs);
+        }
+    }
+
+    public static void PzdConvert(PzdConvVerbs pzdConv)
+    {
+        foreach (var file in pzdConv.InputPaths)
+        {
+            string ext = Path.GetExtension(file);
+            if (ext == ".pzd")
+            {
+                try
+                {
+                    var panzer = PzdFile.Open(file);
+
+                    string outputPath = Path.ChangeExtension(file, ".yaml");
+                    using var writer = File.CreateText(outputPath);
+                    panzer.WriteAsYaml(writer);
+
+                    _logger?.LogInformation("Converted panzer file '{path}' to .yaml.", file);
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError(ex, "Failed to convert from panzer file '{path}'", file);
+                }
+            }
+            else if (ext == ".yaml")
+            {
+                try
+                {
+                    using var inputYamlStream = File.OpenText(file);
+                    var panzerFile = new PzdFile();
+                    panzerFile.ReadFromYaml(inputYamlStream);
+
+                    using var outputPzdStream = File.Create(Path.ChangeExtension(file, ".pzd"));
+                    panzerFile.Write(outputPzdStream);
+
+                    _logger?.LogInformation("Converted yaml file '{path}' to panzer (.pzd).", file);
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError(ex, "Failed to convert '{path}' to panzer file", file);
+                }
+            }
         }
     }
 
@@ -429,7 +502,6 @@ public class Program
             {
                 try
                 {
-
                     fs.Position = 0;
 
                     using var data = textureFile.GetAsDds(0, fs);
@@ -893,6 +965,13 @@ public class ImgConvVerbs
 
     [Option("no-chunk-compression", HelpText = "Whether not to use compression for chunks")]
     public bool NoChunkCompression { get; set; }
+}
+
+[Verb("pzd-conv", HelpText = "Converts Panzer (localization/voice lines) files .pzd <-> .yaml.")]
+public class PzdConvVerbs
+{
+    [Option('i', "input", Required = true, HelpText = "Input .pzd or .yaml files.")]
+    public required IEnumerable<string> InputPaths { get; set; }
 }
 
 [Verb("unpack-save", HelpText = "Unpacks a save file (.png) into a folder.")]

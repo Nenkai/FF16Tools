@@ -63,7 +63,7 @@ public enum NexColumnType
     FloatArray,
     StringArray,
     CustomStructArray,
-    Union,
-    Union16,
-    UnionArray,
+    NexUnionKey32,
+    NexUnionKey16,
+    NexUnionKey32Array,
 }

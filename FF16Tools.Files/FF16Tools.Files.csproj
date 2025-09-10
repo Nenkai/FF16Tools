@@ -36,6 +36,7 @@
     <PackageReference Include="Syroot.BinaryData" Version="5.2.2" />
     <PackageReference Include="Syroot.BinaryData.Memory" Version="5.2.2" />
     <PackageReference Include="System.IO.Hashing" Version="9.0.5" />
+    <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 
   <ItemGroup>

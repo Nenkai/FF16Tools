@@ -4,7 +4,7 @@ use_base_row_id|false
 
 add_column|DLCFlags|int
 add_column|Comment|string
-add_column|Unk3|int
+add_column|PanzerLineId|int
 add_column|Unk4|float
 add_column|Unk5|int
 add_column|Unk6|int

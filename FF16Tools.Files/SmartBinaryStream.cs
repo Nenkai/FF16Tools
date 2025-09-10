@@ -118,7 +118,7 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
-    /// Writes the string table.
+    /// Writes the string table. Make sure to have set the <see cref="StringCoding"/> property in the constructor to avoid any surprises.
     /// </summary>
     public void WriteStringTable()
     {

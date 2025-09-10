@@ -206,9 +206,9 @@ public class NexDataFileBuilder
         if (UsesBaseRow && _rows.Count > 0)
             baseRowId = _rows.First().Key.Key;
 
-        var bs = new BinaryStream(stream, ByteConverter.Little);
+        var bs = new SmartBinaryStream(stream, ByteConverter.Little);
         bs.WriteUInt32(NexDataFile.MAGIC);
-        bs.WriteUInt32(1);
+        bs.WriteUInt32(1); // Version
         bs.WriteByte((byte)Type);
         bs.WriteByte((byte)Category);
         bs.WriteBoolean(UsesBaseRow);
@@ -235,7 +235,7 @@ public class NexDataFileBuilder
         }
     }
 
-    private void WriteRowTable(BinaryStream bs)
+    private void WriteRowTable(SmartBinaryStream bs)
     {
         _rows = _rows.OrderBy(e => e.Key.Key).ToDictionary();
 
@@ -267,7 +267,7 @@ public class NexDataFileBuilder
         WriteByteArrayTable(bs);
     }
 
-    private void WriteDoubleKeyedTable(BinaryStream bs)
+    private void WriteDoubleKeyedTable(SmartBinaryStream bs)
     {
         _rows = _rows.OrderBy(e => e.Key.Key)
                      .ThenBy(e => e.Key.Key2).ToDictionary();
@@ -278,7 +278,7 @@ public class NexDataFileBuilder
         bs.WriteInt32(0);
         bs.WriteUInt32(0); // rows info offset (write later)
         bs.WriteInt32(_rows.Count);
-        bs.WriteBytes(new byte[8]); // Pad
+        bs.WritePadding(8);
 
         long rowSetInfosOffset = bs.Position;
         _lastDataEndOffset = rowSetInfosOffset + (_rowSets.Count * 0x0C);
@@ -342,7 +342,7 @@ public class NexDataFileBuilder
         bs.Position = tempLastPos;
     }
 
-    private void WriteTripleKeyedRowTable(BinaryStream bs)
+    private void WriteTripleKeyedRowTable(SmartBinaryStream bs)
     {
         _rows = _rows.OrderBy(e => e.Key.Key)
                 .ThenBy(e => e.Key.Key2)
@@ -353,7 +353,7 @@ public class NexDataFileBuilder
         bs.WriteInt32(_dkSets.Count);
         bs.WriteUInt32(0); // rows info offset (write later)
         bs.WriteInt32(_rows.Count);
-        bs.WriteBytes(new byte[8]); // Pad
+        bs.WritePadding(8);
 
         long dkSetInfosOffset = bs.Position;
         _lastRowDataStartOffset = dkSetInfosOffset + (_dkSets.Count * 0x14);
@@ -447,7 +447,7 @@ public class NexDataFileBuilder
         bs.Position = tempLastPos;
     }
 
-    private void WriteRowData(BinaryStream bs, NexRowBuild row)
+    private void WriteRowData(SmartBinaryStream bs, NexRowBuild row)
     {
         row.RowDataOffset = (int)bs.Position;
 
@@ -472,7 +472,7 @@ public class NexDataFileBuilder
         bs.Align(0x04, grow: true);
     }
 
-    private void WriteCell(BinaryStream bs, int rowDataOffset, object cellValue, NexStructColumn column)
+    private void WriteCell(SmartBinaryStream bs, int rowDataOffset, object cellValue, NexStructColumn column)
     {
         switch (column.Type)
         {
@@ -499,19 +499,16 @@ public class NexDataFileBuilder
                 bs.WriteSingle((float)cellValue);
                 break;
 
-            case NexColumnType.Union:
+            case NexColumnType.NexUnionKey32:
                 {
-                    NexUnion union = (NexUnion)cellValue;
-                    bs.WriteUInt16((ushort)union.Type);
-                    bs.WriteUInt16(0); // align
-                    bs.WriteInt32(union.Value);
+                    NexUnionKey union = (NexUnionKey)cellValue;
+                    union.Write32(bs);
                 }
                 break;
-            case NexColumnType.Union16:
+            case NexColumnType.NexUnionKey16:
                 {
-                    NexUnion union = (NexUnion)cellValue;
-                    bs.WriteUInt16((ushort)union.Type);
-                    bs.WriteInt16((short)union.Value);
+                    NexUnionKey union = (NexUnionKey)cellValue;
+                    union.Write16(bs);
                 }
                 break;
             case NexColumnType.ByteArray: // byte arrays are combined with strings at the end of the file
@@ -536,7 +533,7 @@ public class NexDataFileBuilder
             case NexColumnType.FloatArray:
             case NexColumnType.StringArray:
             case NexColumnType.CustomStructArray:
-            case NexColumnType.UnionArray:
+            case NexColumnType.NexUnionKey32Array:
                 {
                     bs.Position += 8; // Skip (write later)
                 }
@@ -550,7 +547,7 @@ public class NexDataFileBuilder
             _lastDataEndOffset = bs.Position;
     }
 
-    private void WriteArray(BinaryStream bs, int rowDataOffset, int arrayFieldOffset, object cellValue, NexStructColumn column)
+    private void WriteArray(SmartBinaryStream bs, int rowDataOffset, int arrayFieldOffset, object cellValue, NexStructColumn column)
     {
         bs.Position = _lastDataEndOffset;
         int arrayDataOffset = (int)_lastDataEndOffset;
@@ -589,9 +586,9 @@ public class NexDataFileBuilder
                     arrayLength = array.Length;
                     break;
                 }
-            case NexColumnType.UnionArray:
+            case NexColumnType.NexUnionKey32Array:
                 {
-                    NexUnion[] array = (NexUnion[])cellValue;
+                    NexUnionKey[] array = (NexUnionKey[])cellValue;
                     for (int i = 0; i < array.Length; i++)
                     {
                         bs.WriteUInt16((ushort)array[i].Type);

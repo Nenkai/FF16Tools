@@ -309,17 +309,17 @@ public class SQLiteToNexImporter : IDisposable
                 return val is not DBNull ? (double)val : 0d;
             case NexColumnType.String:
                 return val is not DBNull ? (string)val : string.Empty;
-            case NexColumnType.Union:
-            case NexColumnType.Union16:
+            case NexColumnType.NexUnionKey32:
+            case NexColumnType.NexUnionKey16:
                 {
                     string str = (string)val;
                     return ParseUnion(column, str);
                 }
-            case NexColumnType.UnionArray:
+            case NexColumnType.NexUnionKey32Array:
                 {
                     string str = (string)val;
                     if (string.IsNullOrWhiteSpace(str))
-                        return Array.Empty<NexUnion>();
+                        return Array.Empty<NexUnionKey>();
 
                     if (str[0] != '[' || str[^1] != ']')
                         ThrowTableError($"Union array is malformed at column {column.Name} - expected an array, got '{str}'");
@@ -332,7 +332,7 @@ public class SQLiteToNexImporter : IDisposable
                         foreach (var _ in contents.Split(','))
                             count++;
 
-                        var arr = new NexUnion[count];
+                        var arr = new NexUnionKey[count];
                         int i = 0;
                         foreach (Range elemRange in contents.Split(','))
                         {
@@ -343,7 +343,7 @@ public class SQLiteToNexImporter : IDisposable
                         return arr;
                     }
                     else
-                        return Array.Empty<NexUnion>();
+                        return Array.Empty<NexUnionKey>();
 
                 }
             case NexColumnType.ByteArray:
@@ -490,8 +490,8 @@ public class SQLiteToNexImporter : IDisposable
                                         ThrowIfStructElemNotValueKind(field, JsonValueKind.Number, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
                                         structItem[fieldIndex] = field.GetUInt32();
                                         break;
-                                    case NexColumnType.Union:
-                                    case NexColumnType.Union16:
+                                    case NexColumnType.NexUnionKey32:
+                                    case NexColumnType.NexUnionKey16:
                                         {
                                             ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
 
@@ -579,7 +579,7 @@ public class SQLiteToNexImporter : IDisposable
         }
     }
 
-    private NexUnion ParseUnion(NexStructColumn column, ReadOnlySpan<char> val)
+    private NexUnionKey ParseUnion(NexStructColumn column, ReadOnlySpan<char> val)
     {
         int idx = 0;
 
@@ -627,7 +627,7 @@ public class SQLiteToNexImporter : IDisposable
         if (idx != 2)
             ThrowTableError($"Union is malformed at column {column.Name} - not enough elements, expected type:id");
 
-        return new NexUnion(type!.Value, id);
+        return new NexUnionKey(type!.Value, id);
     }
 
     private void ThrowIfStructElemNotValueKind(JsonElement jsonElement, JsonValueKind expectedKind, NexStructColumn nexColumn, int arrayIndex, int fieldIndex)

@@ -27,8 +27,9 @@ public enum NexTableCategory
 
 public enum NexUnionType : ushort
 {
-    // Avoid renaming them when possible.
+    // NOTE: Avoid renaming them when possible.
     // Names are written into exported sqlite databases.
+
     action = 3,
     result = 15, // Not sure, only telemetryarray uses this, but DLCFlags seem to match
     attackparam = 17,
@@ -82,6 +83,7 @@ public enum NexUnionType : ushort
     transition = 198,
     questprogress = 204,
     summonmode = 208,
+    speaker = 224, // Used by panzer
     partyselect = 255,
     partymember = 256,
     scenariocutscene = 260,
