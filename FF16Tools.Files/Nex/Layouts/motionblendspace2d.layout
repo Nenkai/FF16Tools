@@ -17,7 +17,15 @@ add_column|Unk12|float
 add_column|Unk13|float
 add_column|Unk14|float
 add_column|Unk15|float
-add_column|Unk16|int[]
+
+// mThund3R: Elements seem to go in groups of three, in order: Left, Forward, Right
+// For example, for key 1 the array is [215,213,214,218,216,217,221,219,220,224,222,223]:
+// 215 is walk_l_lp
+// 213 is walk_f_lp
+// 214 is walk_r_lp
+// You then have jog, run and dash
+add_column|CharaTimelineIds|int[]
+
 add_column|Unk17|int
 add_column|Unk18|int
 add_column|Comment|string

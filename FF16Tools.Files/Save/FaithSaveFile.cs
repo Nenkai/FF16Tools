@@ -25,7 +25,7 @@ public class FaithSaveGameData
 
     public const string PNG_CHUNK_FAITH = "faTh";
 
-    private Dictionary<string, byte[]> _files { get; set; } = [];
+    private Dictionary<string, byte[]> _files = [];
 
     public IReadOnlyDictionary<string, byte[]> Files => _files;
 

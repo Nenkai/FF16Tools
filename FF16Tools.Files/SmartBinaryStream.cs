@@ -17,8 +17,8 @@ public class SmartBinaryStream : BinaryStream
 {
     public SmartBinaryStream(
         Stream baseStream,
-        ByteConverter byteConverter = null,
-        Encoding encoding = null,
+        ByteConverter? byteConverter = null,
+        Encoding? encoding = null,
         BooleanCoding booleanCoding = BooleanCoding.Byte,
         DateTimeCoding dateTimeCoding = DateTimeCoding.NetTicks,
         StringCoding stringCoding = StringCoding.VariableByteCount,

@@ -1,3 +1,6 @@
+//--------------------------------------------------------------------------------------
+// questprogress determines the range of QuestSequenceValue that a quest occupies
+//--------------------------------------------------------------------------------------
 set_table_type|SingleKeyed
 set_table_category|SingleKeyed
 use_base_row_id|false

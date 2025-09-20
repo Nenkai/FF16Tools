@@ -1,3 +1,9 @@
+//--------------------------------------------------------------------------------------
+// 100 = Main Quest
+// 20000 <-> 20102 = Stage Replay
+// 21010 <-> 21202 = Arcade Mode
+// >30000 = Side Quests/DLC
+//--------------------------------------------------------------------------------------
 set_table_type|SingleKeyed
 set_table_category|SingleKeyed_Localized
 use_base_row_id|false

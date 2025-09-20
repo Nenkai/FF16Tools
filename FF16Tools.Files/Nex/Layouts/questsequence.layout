@@ -1,6 +1,14 @@
+//--------------------------------------------------------------------------------------
+// questsequence is used to determine the actual quest objective/stage of completion.
+// Referenced by questprogress.
+//--------------------------------------------------------------------------------------
+
 set_table_type|DoubleKeyed
 set_table_category|DoubleKeyed_Localized
 use_base_row_id|false
+
+// Key is QuestId
+// Key2 is QuestSequenceValue
 
 // union
 // 46 = defaulttalk
