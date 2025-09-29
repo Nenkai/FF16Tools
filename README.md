@@ -1,6 +1,9 @@
 # FF16Tools
 
-Tools & Library for Final Fantasy XVI / 16. 
+Tools & Library for Final Fantasy XVI / 16.
+
+Also supports some file formats used in:
+* FINAL FANTASY TACTICS - The Ivalice Chronicles (same engine).
 
 ### Features
 
