@@ -54,6 +54,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// </summary>
     public bool UsesChunks { get; set; }
 
+    public string CodeName { get; }
+
     private readonly Dictionary<string, FF16PackFile> _files = [];
     private readonly List<FF16PackDStorageChunk> _chunks = [];
     private readonly Dictionary<long, FF16PackDStorageChunk> _offsetToChunk = [];
@@ -61,12 +63,14 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     private readonly FileStream _stream;
     private readonly HashSet<FF16PackDStorageChunk> _cachedChunks = [];
 
-    private FF16Pack(FileStream stream, ILoggerFactory? loggerFactory = null)
+    private FF16Pack(FileStream stream, string codeName, ILoggerFactory? loggerFactory = null)
     {
         ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
         _stream = stream;
         _loggerFactory = loggerFactory;
+
+        CodeName = codeName;
 
         if (_loggerFactory is not null)
             _logger = _loggerFactory.CreateLogger(GetType().ToString());
@@ -76,10 +80,13 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     /// Opens a pack file.
     /// </summary>
     /// <param name="path">Pack path.</param>
+    /// <param name="codeName">Codename, used to determine the decryption key to use.<br/>
+    /// Valid codenames are 'faith' (FFXVI), 'ffto' (FFT).
+    /// </param>
     /// <param name="loggerFactory">Logger factory, for logging.</param>
     /// <returns></returns>
     /// <exception cref="InvalidDataException">If the file is not a pack file.</exception>
-    public static FF16Pack Open(string path, ILoggerFactory? loggerFactory = null)
+    public static FF16Pack Open(string path, string codeName, ILoggerFactory? loggerFactory = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(path, nameof(path));
 
@@ -89,7 +96,10 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         if (fileBinStream.ReadUInt32() != MAGIC)
             throw new InvalidDataException("Not a FF16 Pack file, magic did not match.");
 
-        FF16Pack pack = new FF16Pack(fs, loggerFactory);
+        if (!PackKeyStore.Keys.TryGetValue(codeName, out ulong key))
+            throw new InvalidDataException($"Invalid codename provided. Must match: {string.Join(", ", PackKeyStore.Keys.Keys.ToList())}");
+
+        FF16Pack pack = new FF16Pack(fs, codeName, loggerFactory);
         uint headerSize = fileBinStream.ReadUInt32();
         fileBinStream.Position = 0;
         byte[] header = fileBinStream.ReadBytes((int)headerSize);
@@ -105,7 +115,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             ulong packSize = bs.ReadUInt64();
             bs.Position = 0x18;
             if (pack.HeaderEncrypted)
-                XorEncrypt.CryptHeaderPart(header.AsSpan(0x18, 0x100));
+                XorEncrypt.CryptHeaderPart(header.AsSpan(0x18, 0x100), PackKeyStore.Keys[codeName]);
             pack.ArchiveDir = bs.ReadString(StringCoding.ZeroTerminated);
 
             bs.Position = 0x118;
@@ -114,7 +124,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             ulong stringTableSize = bs.ReadUInt64();
 
             if (pack.HeaderEncrypted)
-                XorEncrypt.CryptHeaderPart(header.AsSpan((int)stringsOffset, (int)stringTableSize));
+                XorEncrypt.CryptHeaderPart(header.AsSpan((int)stringsOffset, (int)stringTableSize), key);
 
             for (int i = 0; i < numFiles; i++)
             {
@@ -126,7 +136,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
                 string fileName = bs.ReadString(StringCoding.ZeroTerminated);
                 pack._files.Add(Path.Combine(pack.ArchiveDir, fileName).Replace('\\', '/'), file);
 
-                SysDebug.Assert(Fnv1Hash.HashPath(fileName) == file.FileNameHash, $"File name hash did not match ({fileName})");
+                if (Fnv1Hash.HashPath(fileName) != file.FileNameHash)
+                    throw new InvalidDataException($"File name hash for '{fileName.Substring(0, Math.Min(fileName.Length, 50))}' did not match. Wrong decryption key or archive corrupted?");
             }
 
             pack._chunks.Capacity = numChunks;

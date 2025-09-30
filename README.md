@@ -1,6 +1,9 @@
 # FF16Tools
 
-Tools & Library for Final Fantasy XVI / 16. 
+Tools & Library for games created using the Final Fantasy XVI / 16 Engine:
+
+* FINAL FANTASY XVI
+* FINAL FANTASY TACTICS - The Ivalice Chronicles
 
 ### Features
 
@@ -20,11 +23,17 @@ Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/rele
 ### Pac File
 You can use the **GUI/Graphical version**, or for the command line (CLI) commands:
 
-* Unpacking all files from a pack: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>]`
-* Unpacking a specific file from a specific pack: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>]`
-* Unpacking all packs: `FF16Tools.CLI unpack-all-packs -i <path_to_folder_with_packs> [-o <output_directory>]`
-* Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o <output_directory>]`
-* Listing files: `FF16Tools.CLI list-files -i <path_to_pac>`
+* Unpacking all files from a pack: `FF16Tools.CLI unpack-all -i <path_to_pac> [-o <output_directory>] [-g <gametype>]`
+* Unpacking a specific file from a specific pack: `FF16Tools.CLI unpack -i <path_to_pac> -f <game_file> [-o <output_directory>] [-g <gametype>]`
+* Unpacking all packs: `FF16Tools.CLI unpack-all-packs -i <path_to_folder_with_packs> [-o <output_directory>] [-g <gametype>]`
+* Pack a directory into a `.pac`: `FF16Tools.CLI pack -i <path_to_directory> [-o <output_directory>] [-g <gametype>]`
+* Listing files: `FF16Tools.CLI list-files -i <path_to_pac> [-g <gametype>]`
+
+> [!NOTE]
+> You must supply the `-g` (or `--gametype` argument) for games other than FFXVI when unpacking or packing. Valid options are:
+> * `ffxvi` for FINAL FANTASY XVI
+> * `fft` for FINAL FANTASY TACTICS - The Ivalice Chronicles
+
 
 ### Textures
 * Converting `.tex` to `.dds`: Drag-drop files/folders or `FF16Tools.CLI tex-conv -i <path>`

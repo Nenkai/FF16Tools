@@ -53,6 +53,9 @@ public class FF16PackBuilder
 
         if (_loggerFactory is not null)
             _logger = _loggerFactory.CreateLogger(GetType().ToString());
+
+        if (!PackKeyStore.Keys.ContainsKey(_options.CodeName))
+            throw new InvalidDataException($"Invalid codename provided. Must match: {string.Join(", ", PackKeyStore.Keys.Keys.ToList())}");
     }
 
     /// <summary>
@@ -292,7 +295,7 @@ public class FF16PackBuilder
         byte[] nameBuffer = new byte[0x100];
         Encoding.UTF8.GetBytes(_options.Name ?? "", nameBuffer);
         if (_options.Encrypt)
-            XorEncrypt.CryptHeaderPart(nameBuffer);
+            XorEncrypt.CryptHeaderPart(nameBuffer, PackKeyStore.Keys[_options.CodeName]);
         bs.WriteBytes(nameBuffer);
 
         // Write the string table first
@@ -309,7 +312,7 @@ public class FF16PackBuilder
         long stringTableSize = bs.Position - stringTableOffset;
 
         if (_options.Encrypt)
-            XorEncrypt.CryptHeaderPart(headerBuffer.AsSpan((int)stringTableOffset, (int)stringTableSize));
+            XorEncrypt.CryptHeaderPart(headerBuffer.AsSpan((int)stringTableOffset, (int)stringTableSize), PackKeyStore.Keys[_options.CodeName]);
 
         // Then, write the shared chunks
         long chunkTableOffset = FF16Pack.HEADER_SIZE + (_packFileTasks.Count * FF16PackFile.GetSize()) + CalculateSizeOfMultiChunkHeaders();
