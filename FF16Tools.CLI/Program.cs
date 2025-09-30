@@ -16,6 +16,7 @@ using FF16Tools.Pack;
 using FF16Tools.Pack.Packing;
 using FF16Tools.Files.VFX;
 using FF16Tools.Files.Panzer;
+using FF16Tools.Pack.Crypto;
 
 namespace FF16Tools.CLI;
 
@@ -128,7 +129,14 @@ public class Program
 
         try
         {
-            using var pack = FF16Pack.Open(verbs.InputFile, _loggerFactory);
+            string? codeName = GameTypeToCodeName(verbs.GameType);
+            if (codeName is null)
+            {
+                PrintCodeNameError();
+                return;
+            }
+
+            using var pack = FF16Pack.Open(verbs.InputFile, codeName, _loggerFactory);
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
@@ -159,9 +167,17 @@ public class Program
             Filter = verbs.Filter,
         };
 
+        string? codeName = GameTypeToCodeName(verbs.GameType);
+        if (codeName is null)
+        {
+            PrintCodeNameError();
+            return;
+        }
+
         try
         {
-            using var pack = FF16Pack.Open(verbs.InputFile, _loggerFactory);
+
+            using var pack = FF16Pack.Open(verbs.InputFile, codeName, _loggerFactory);
             pack.DumpInfo();
 
             _logger.LogInformation("Starting unpack process.");
@@ -182,6 +198,13 @@ public class Program
             return;
         }
 
+        string? codeName = GameTypeToCodeName(verbs.GameType);
+        if (codeName is null)
+        {
+            PrintCodeNameError();
+            return;
+        }
+
         _logger.LogWarning("Extracting packs with locale: {locale}. Use --locale to override this.", verbs.Locale);
 
         List<string> packsToProcess = [];
@@ -193,7 +216,6 @@ public class Program
                 _logger.LogInformation("Skipping .diff pack '{packName}'", fileName);
                 continue;
             }
-
 
             if (FF16PackPathUtil.PackLocales.Any(locale => fileName.Contains($".{locale}.")))
             {
@@ -210,7 +232,7 @@ public class Program
         {
             _logger.LogInformation("Loading {pack}", packToProcess);
 
-            var pack = FF16Pack.Open(Path.Combine(verbs.InputFolder, packToProcess), _loggerFactory);
+            var pack = FF16Pack.Open(Path.Combine(verbs.InputFolder, packToProcess), codeName, _loggerFactory);
             packs.Add(packToProcess, pack);
 
             totalSize += pack.GetTotalDecompressedSize();
@@ -266,9 +288,16 @@ public class Program
             return;
         }
 
+        string? codeName = GameTypeToCodeName(verbs.GameType);
+        if (codeName is null)
+        {
+            PrintCodeNameError();
+            return;
+        }
+
         try
         {
-            using var pack = FF16Pack.Open(verbs.InputFile, _loggerFactory);
+            using var pack = FF16Pack.Open(verbs.InputFile, codeName, _loggerFactory);
             pack.DumpInfo();
 
             string inputFileName = Path.GetFileNameWithoutExtension(verbs.InputFile);
@@ -290,8 +319,16 @@ public class Program
             return;
         }
 
+        string? codeName = GameTypeToCodeName(verbs.GameType);
+        if (codeName is null)
+        {
+            PrintCodeNameError();
+            return;
+        }
+
         var builder = new FF16PackBuilder(new PackBuildOptions()
         {
+            CodeName = verbs.GameType,
             Compress = !verbs.NoCompress,
             Encrypt = verbs.Encrypt,
             Name = verbs.Name,
@@ -844,6 +881,21 @@ public class Program
 
         return (readable / 1024).ToString("0.## ", CultureInfo.InvariantCulture) + suffix;
     }
+
+    public static string? GameTypeToCodeName(string gameType)
+    {
+        return gameType switch
+        {
+            "ffxvi" => PackKeyStore.FFXVI_CODENAME,
+            "fft" => PackKeyStore.FFT_IVALICE_CODENAME,
+            _ => null
+        };
+    }
+
+    private static void PrintCodeNameError()
+    {
+        _logger.LogError("Unknown codename. Must be 'ffxvi' or 'fft'.");
+    }
 }
 
 [Verb("unpack", HelpText = "Unpacks a .pac (FF16 Pack) file.")]
@@ -857,6 +909,11 @@ public class UnpackFileVerbs
 
     [Option('o', "output", HelpText = "Optional. Output directory.")]
     public string? OutputPath { get; set; }
+
+    [Option('g', "gametype", HelpText = "Game type, used to determine the encryption key to use. Defaults to ffxvi. Valid options:\n" +
+        "- 'ffxvi' (Final Fantasy 16)\n" +
+        "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
+    public string GameType { get; set; } = "ffxvi";
 }
 
 [Verb("unpack-all", HelpText = "Unpacks all files from a .pac (FF16 Pack).")]
@@ -867,6 +924,11 @@ public class UnpackAllVerbs
 
     [Option('o', "output", HelpText = "Output directory. Optional, defaults to a folder named the same as the .pac file.")]
     public string? OutputPath { get; set; }
+
+    [Option('g', "gametype", HelpText = "Game type, used to determine the encryption key to use. Defaults to ffxvi. Valid options:\n" +
+    "- 'ffxvi' (Final Fantasy 16)\n" +
+    "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
+    public string GameType { get; set; } = "ffxvi";
 
     [Option("filter", HelpText = "If provided, only file paths containing the specified filter will be extracted.")]
     public string? Filter { get; set; }
@@ -885,6 +947,11 @@ public class UnpackAllPacksVerbs
         "Valid options: ar, cs, ct, de, en, es, fr, it, ja, ko, ls, pb, pl, ru")]
     public string Locale { get; set; } = "en";
 
+    [Option('g', "gametype", HelpText = "Game type, used to determine the encryption key to use. Defaults to ffxvi. Valid options:\n" +
+"- 'ffxvi' (Final Fantasy 16)\n" +
+"- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
+    public string GameType { get; set; } = "ffxvi";
+
     [Option("include-diff", HelpText = "Whether to include diff packs.")]
     public bool IncludeDiff { get; set; }
 
@@ -893,6 +960,7 @@ public class UnpackAllPacksVerbs
 
     [Option("filter", HelpText = "If provided, only file paths containing the specified filter will be extracted.")]
     public string? Filter { get; set; }
+
 }
 
 [Verb("pack", HelpText = "Pack files from a directory.")]
@@ -903,6 +971,11 @@ public class PackVerbs
 
     [Option('o', "output", HelpText = "Optional. Output '.pac' file. Optional, defaults to <filename>.diff.pac for modding purposes.")]
     public string? OutputFile { get; set; }
+
+    [Option('g', "gametype", HelpText = "Game type, used to determine the encryption key to use. Defaults to ffxvi. Valid options:\n" +
+"- 'ffxvi' (Final Fantasy 16)\n" +
+"- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
+    public string GameType { get; set; } = "ffxvi";
 
     [Option('n', "name", HelpText = "Optional. This overrides the internal parent path specified by the archive (normally in the .path file).")]
     public string? Name { get; set; }
@@ -919,6 +992,11 @@ public class ListFilesVerbs
 {
     [Option('i', "input", Required = true, HelpText = "Input .pac file")]
     public required string InputFile { get; set; }
+
+    [Option('g', "gametype", HelpText = "Game Type. Defaults to ffxvi. Valid options:\n" +
+        "- 'ffxvi' (Final Fantasy 16)\n" +
+        "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
+    public string GameType { get; set; } = "ffxvi";
 }
 
 [Verb("nxd-to-sqlite", HelpText = "Converts nxd files to SQLite.")]
