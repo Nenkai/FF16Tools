@@ -328,7 +328,7 @@ public class Program
 
         var builder = new FF16PackBuilder(new PackBuildOptions()
         {
-            CodeName = verbs.GameType,
+            CodeName = codeName,
             Compress = !verbs.NoCompress,
             Encrypt = verbs.Encrypt,
             Name = verbs.Name,
