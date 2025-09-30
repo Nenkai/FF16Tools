@@ -29,7 +29,10 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
     /// Opens a directory containing pack files.
     /// </summary>
     /// <param name="directory">Directory containing pack files. Normally 'data' folder.</param>
-    public void Open(string directory)
+    /// <param name="codeName">Codename, used to determine the decryption key to use.<br/>
+    /// Valid codenames are 'faith' (FFXVI), 'ffto' (FFT).
+    /// </param>
+    public void Open(string directory, string codeName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(directory, nameof(directory));
 
@@ -37,7 +40,7 @@ public class FF16PackManager : IDisposable, IAsyncDisposable
         {
             try
             {
-                FF16Pack pack = FF16Pack.Open(file);
+                FF16Pack pack = FF16Pack.Open(file, codeName);
                 _packFiles.Add(Path.GetFileNameWithoutExtension(file), pack);
             }
             catch (Exception ex)
