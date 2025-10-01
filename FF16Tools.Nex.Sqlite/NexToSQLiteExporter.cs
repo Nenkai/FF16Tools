@@ -28,6 +28,7 @@ public class NexToSQLiteExporter : IDisposable
     private NexDatabase _database;
     private SqliteConnection? _con;
     private Version _version;
+    private string _codeName;
 
     // We don't want byte arrays to be converted to base64.
     private static JsonSerializerOptions _jsonSerializerOptions = new()
@@ -45,15 +46,17 @@ public class NexToSQLiteExporter : IDisposable
     /// <param name="database">Nex database. (You can get one with <see cref="NexDatabase.Open(string, ILoggerFactory)>"/>)</param>
     /// <param name="version">Version. Should match game version and be at least 1.0.0.</param>
     /// <param name="loggerFactory">Logger factory, for logging.</param>
-    public NexToSQLiteExporter(NexDatabase database, Version version, ILoggerFactory? loggerFactory = null)
+    public NexToSQLiteExporter(NexDatabase database, Version version, string codeName, ILoggerFactory? loggerFactory = null)
     {
         ArgumentNullException.ThrowIfNull(database, nameof(database));
         ArgumentNullException.ThrowIfNull(version, nameof(version));
+        ArgumentNullException.ThrowIfNull(codeName, nameof(codeName));
 
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         _database = database;
         _version = version;
+        _codeName = codeName;
 
         _loggerFactory = loggerFactory;
         if (loggerFactory is not null)
@@ -88,7 +91,7 @@ public class NexToSQLiteExporter : IDisposable
         foreach (var table in _database.Tables)
         {
             _logger?.LogInformation("Exporting table '{tableName}'", table.Key);
-            if (!TableMappingReader.LayoutExists(table.Key))
+            if (!TableMappingReader.LayoutExists(table.Key, _codeName))
             {
                 _logger?.LogWarning("Skipping table '{tableName}', no layout file", table.Key);
                 continue;
@@ -97,7 +100,7 @@ public class NexToSQLiteExporter : IDisposable
 
             List<NexRowInfo> nexRows = table.Value.RowManager!.GetAllRowInfos();
 
-            NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(table.Key, new Version(1, 0, 0));
+            NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(table.Key, new Version(1, 0, 0), _codeName);
             ExportTableToSQLite(table.Key, table.Value, tableColumnLayout, nexRows);
         }
 

@@ -586,6 +586,13 @@ public class Program
 
     public static void NxdToSqlite(NxdToSqliteVerbs verbs)
     {
+        string? codeName = GameTypeToCodeName(verbs.GameType);
+        if (codeName is null)
+        {
+            PrintCodeNameError();
+            return;
+        }
+
         if (!Directory.Exists(verbs.InputFile))
         {
             _logger.LogError("Directory '{path}' containing nxd files does not exist", verbs.InputFile);
@@ -601,7 +608,7 @@ public class Program
             }
 
 
-            using var exporter = new NexToSQLiteExporter(db, new Version(1, 0, 0), _loggerFactory);
+            using var exporter = new NexToSQLiteExporter(db, new Version(1, 0, 0), codeName, _loggerFactory);
             exporter.ExportTables(verbs.OutputFile);
         }
         catch (Exception ex)
@@ -612,6 +619,13 @@ public class Program
 
     public static void SqliteToNxd(SqliteToNxdVerbs verbs)
     {
+        string? codeName = GameTypeToCodeName(verbs.GameType);
+        if (codeName is null)
+        {
+            PrintCodeNameError();
+            return;
+        }
+
         if (Directory.Exists(verbs.InputFile))
         {
             _logger.LogError("No, point to a database file (.sqlite) file, not a folder.");
@@ -632,7 +646,7 @@ public class Program
 
         try
         {
-            using var importer = new SQLiteToNexImporter(verbs.InputFile, new Version(1, 0, 0), verbs.Tables.ToList(), _loggerFactory);
+            using var importer = new SQLiteToNexImporter(verbs.InputFile, new Version(1, 0, 0), codeName, verbs.Tables.ToList(), _loggerFactory);
             importer.ReadSqlite();
             importer.SaveTo(verbs.OutputFile);
         }
@@ -804,14 +818,14 @@ public class Program
 
 #if DEBUG
     // Debug utility for reading and re-serializing tables
-    private static void DebugReBuildTables(string dir)
+    private static void DebugReBuildTables(string dir, string codeName)
     {
         var db = NexDatabase.Open(dir);
 
         Directory.CreateDirectory("built");
         foreach (var table in db.Tables)
         {
-            var layout = TableMappingReader.ReadTableLayout(table.Key, new System.Version(1, 0, 0));
+            var layout = TableMappingReader.ReadTableLayout(table.Key, new System.Version(1, 0, 0), codeName);
             var builder = new NexDataFileBuilder(layout);
 
             List<NexRowInfo> rowInfos = table.Value.RowManager!.GetAllRowInfos();
@@ -1007,6 +1021,11 @@ public class NxdToSqliteVerbs
 
     [Option('o', "output", HelpText = "Output SQLite database file.")]
     public string? OutputFile { get; set; }
+
+    [Option('g', "gametype", HelpText = "Game Type. Defaults to ffxvi. Valid options:\n" +
+        "- 'ffxvi' (Final Fantasy 16)\n" +
+        "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
+    public string GameType { get; set; } = "ffxvi";
 }
 
 [Verb("sqlite-to-nxd", HelpText = "Converts a SQLite database to nxd files.")]
@@ -1020,6 +1039,11 @@ public class SqliteToNxdVerbs
 
     [Option('t', "tables", HelpText = "Table(s) to import. If not provided, all tables in the database be imported.")]
     public IEnumerable<string> Tables { get; set; } = [];
+
+    [Option('g', "gametype", HelpText = "Game Type. Defaults to ffxvi. Valid options:\n" +
+        "- 'ffxvi' (Final Fantasy 16)\n" +
+        "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
+    public string GameType { get; set; } = "ffxvi";
 }
 
 [Verb("tex-conv", HelpText = "Converts tex files to dds.")]

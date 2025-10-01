@@ -31,6 +31,8 @@ public class SQLiteToNexImporter : IDisposable
     private readonly List<string>? _tablesToConvert;
     private readonly string _sqliteFile = "<no table>";
 
+    private readonly string _codeName;
+
     private SqliteConnection? _con;
 
     private Dictionary<string, NexUnionType> _unionMap = [];
@@ -47,15 +49,18 @@ public class SQLiteToNexImporter : IDisposable
     /// <param name="version">Version which should match the game. Should be at least 1.0.0.</param>
     /// <param name="tablesToConvert">Tables to convert. If null is provided, all tables will be converted.</param>
     /// <param name="loggerFactory">Logger factory, for logging.</param>
-    public SQLiteToNexImporter(string sqliteFile, Version version, List<string>? tablesToConvert = null, ILoggerFactory? loggerFactory = null)
+    public SQLiteToNexImporter(string sqliteFile, Version version, string codeName, List<string>? tablesToConvert = null, ILoggerFactory? loggerFactory = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sqliteFile, nameof(sqliteFile));
         ArgumentNullException.ThrowIfNull(version, nameof(version));
+        ArgumentNullException.ThrowIfNull(codeName, nameof(codeName));
 
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         _tablesToConvert = tablesToConvert;
         _sqliteFile = sqliteFile;
+
+        _codeName = codeName;
 
         _loggerFactory = loggerFactory;
         if (loggerFactory is not null)
@@ -139,7 +144,7 @@ public class SQLiteToNexImporter : IDisposable
         while (reader.Read())
         {
             string tableName = (string)reader["name"];
-            if (!TableMappingReader.LayoutExists(tableName))
+            if (!TableMappingReader.LayoutExists(tableName, _codeName))
             {
                 _logger?.LogInformation("Skipping table {tableName}, no layout exists", tableName);
                 continue;
@@ -153,7 +158,7 @@ public class SQLiteToNexImporter : IDisposable
 
             _logger?.LogInformation("Fetching table {tableName}", tableName);
 
-            var layout = TableMappingReader.ReadTableLayout(tableName, new Version(1, 0, 0));
+            var layout = TableMappingReader.ReadTableLayout(tableName, new Version(1, 0, 0), _codeName);
             _tableBuilders.Add(tableName, new NexDataFileBuilder(layout, _loggerFactory));
             _tableLayouts.Add(tableName, layout);
         }
