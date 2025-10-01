@@ -27,7 +27,7 @@ public class TableMappingReader
 
     public static bool LayoutExists(string tableName, string codeName)
     {
-        string? path = GetHeadersFilePath(codeName, tableName);
+        string? path = GetHeadersFilePath(tableName, codeName);
         return !string.IsNullOrEmpty(path);
     }
 
@@ -57,7 +57,7 @@ public class TableMappingReader
 
     private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int currentRowOffset, Version inputVersion, string codeName)
     {
-        string? path = GetHeadersFilePath(codeName, filename);
+        string? path = GetHeadersFilePath(filename, codeName);
         if (string.IsNullOrEmpty(path))
             throw new FileNotFoundException($"Layout file '{filename}' not found. Does it exist in the Nex/Layouts folder?");
 
