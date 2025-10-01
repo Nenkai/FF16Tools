@@ -15,28 +15,28 @@ namespace FF16Tools.Files.Nex;
 /// </summary>
 public class TableMappingReader
 {
-    public static NexTableLayout ReadTableLayout(string tableName, Version version)
+    public static NexTableLayout ReadTableLayout(string tableName, Version version, string codeName)
     {
         var columnLayout = new NexTableLayout();
         int offset = 0;
-        IterativeLayoutReader(columnLayout, tableName, ref offset, version);
+        IterativeLayoutReader(columnLayout, tableName, ref offset, version,codeName);
 
         columnLayout.TotalInlineSize = offset;
         return columnLayout;
     }
 
-    public static bool LayoutExists(string tableName)
+    public static bool LayoutExists(string tableName, string codeName)
     {
-        string? path = GetHeadersFilePath(tableName);
+        string? path = GetHeadersFilePath(codeName, tableName);
         return !string.IsNullOrEmpty(path);
     }
 
-    public static string? GetHeadersFilePath(string tableName, bool checkSize = false)
+    public static string? GetHeadersFilePath(string tableName, string codeName, bool checkSize = false)
     {
         string exePath = NexUtils.GetCurrentExecutingPath();
         string currentDir = Path.GetDirectoryName(exePath)!;
 
-        string headersFilePath = Path.Combine(currentDir, "Nex", "Layouts", Path.ChangeExtension(tableName, ".layout"));
+        string headersFilePath = Path.Combine(currentDir, "Nex", "Layouts", codeName, Path.ChangeExtension(tableName, ".layout"));
         if (File.Exists(headersFilePath))
         {
             if (checkSize)
@@ -55,9 +55,9 @@ public class TableMappingReader
         return null;
     }
 
-    private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int currentRowOffset, Version inputVersion)
+    private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int currentRowOffset, Version inputVersion, string codeName)
     {
-        string? path = GetHeadersFilePath(filename);
+        string? path = GetHeadersFilePath(codeName, filename);
         if (string.IsNullOrEmpty(path))
             throw new FileNotFoundException($"Layout file '{filename}' not found. Does it exist in the Nex/Layouts folder?");
 
