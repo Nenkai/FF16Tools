@@ -58,6 +58,7 @@ public enum NexColumnType
     Double,
     String,
     ByteArray,
+    ShortArray,
     IntArray,
     UIntArray,
     FloatArray,

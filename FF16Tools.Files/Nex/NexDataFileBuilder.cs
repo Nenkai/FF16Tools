@@ -528,6 +528,7 @@ public class NexDataFileBuilder
                     break;
                 }
 
+            case NexColumnType.ShortArray:
             case NexColumnType.IntArray:
             case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
@@ -547,6 +548,14 @@ public class NexDataFileBuilder
             _lastDataEndOffset = bs.Position;
     }
 
+    private static void WriteArray<T>(SmartBinaryStream bs, object cellValue, Action<SmartBinaryStream, T> writer, out int arrayLength)
+    {
+        T[] array = (T[])cellValue;
+        for (int i = 0; i < array.Length; i++)
+            writer(bs, array[i]);
+        arrayLength = array.Length;
+    }
+
     private void WriteArray(SmartBinaryStream bs, int rowDataOffset, int arrayFieldOffset, object cellValue, NexStructColumn column)
     {
         bs.Position = _lastDataEndOffset;
@@ -561,29 +570,24 @@ public class NexDataFileBuilder
                     arrayLength = array.Length;
                     break;
                 }
-
+            case NexColumnType.ShortArray:
+                {
+                    WriteArray<short>(bs, cellValue, (bs, v) => bs.WriteInt16(v), out arrayLength);
+                    break;
+                }
             case NexColumnType.IntArray:
                 {
-                    int[] array = (int[])cellValue;
-                    for (int i = 0; i < array.Length; i++)
-                        bs.WriteInt32(array[i]);
-                    arrayLength = array.Length;
+                    WriteArray<int>(bs, cellValue, (bs, v) => bs.WriteInt32(v), out arrayLength);
                     break;
                 }
             case NexColumnType.UIntArray:
                 {
-                    uint[] array = (uint[])cellValue;
-                    for (int i = 0; i < array.Length; i++)
-                        bs.WriteUInt32(array[i]);
-                    arrayLength = array.Length;
+                    WriteArray<uint>(bs, cellValue, (bs, v) => bs.WriteUInt32(v), out arrayLength);
                     break;
                 }
             case NexColumnType.FloatArray:
                 {
-                    float[] array = (float[])cellValue;
-                    for (int i = 0; i < array.Length; i++)
-                        bs.WriteSingle(array[i]);
-                    arrayLength = array.Length;
+                    WriteArray<float>(bs, cellValue, (bs, v) => bs.WriteSingle(v), out arrayLength);
                     break;
                 }
             case NexColumnType.NexUnionKey32Array:

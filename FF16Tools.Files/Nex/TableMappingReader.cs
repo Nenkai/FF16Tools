@@ -327,6 +327,7 @@ public class TableMappingReader
             case NexColumnType.NexUnionKey32:
             case NexColumnType.NexUnionKey16:
             case NexColumnType.ByteArray:
+            case NexColumnType.ShortArray:
             case NexColumnType.IntArray:
             case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
