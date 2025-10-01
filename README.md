@@ -10,7 +10,8 @@ Tools & Library for games created using the Final Fantasy XVI / 16 Engine:
 * `.pac` Unpacker/Repacker
 * `.tex` to `.dds` conversion
 * `.dds` & other image formats to `.tex`
-* `.nxd`  (Nex/Next ExcelDB) conversion
+* `.nxd` (Nex/Next ExcelDB) conversion
+* `.pzd` (Panzer Files aka Dialogue Lines) files conversion
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 * FlatBuffer schemas for `.kdb` (KineDriver) & `.bnmb` (Bonamik) files
 
