@@ -45,6 +45,18 @@ public class NexUtils
         return cells;
     }
 
+    private delegate T ReadCellArrayItemDelegate<T>(ref SpanReader sr);
+
+    private static object ReadCellArray<T>(ref SpanReader sr, int currentOffset, int arrayLength, ReadCellArrayItemDelegate<T> reader)
+    {
+        T[] arr = new T[arrayLength];
+        for (int i = 0; i < arrayLength; i++)
+            arr[i] = reader(ref sr);
+
+        sr.Position = currentOffset + 8;
+        return arr;
+    }
+
     private static object ReadCell(ref SpanReader sr, NexTableLayout tableColumnLayout, NexStructColumn column,
         int rowOffset)
     {
@@ -65,6 +77,7 @@ public class NexUtils
                     return str;
                 }
             case NexColumnType.ByteArray:
+            case NexColumnType.ShortArray:
             case NexColumnType.IntArray:
             case NexColumnType.UIntArray:
             case NexColumnType.FloatArray:
@@ -86,39 +99,23 @@ public class NexUtils
                     {
                         case NexColumnType.ByteArray:
                             {
-                                byte[] arr = new byte[arrayLength];
-                                for (int i = 0; i < arrayLength; i++)
-                                    arr[i] = sr.ReadByte();
-
-                                sr.Position = currentOffset + 8;
-                                return arr;
+                                return ReadCellArray(ref sr, currentOffset, arrayLength, (ref SpanReader sr) => sr.ReadByte());
+                            }
+                        case NexColumnType.ShortArray:
+                            {
+                                return ReadCellArray(ref sr, currentOffset, arrayLength, (ref SpanReader sr) => sr.ReadInt16());
                             }
                         case NexColumnType.IntArray:
                             {
-                                int[] arr = new int[arrayLength];
-                                for (int i = 0; i < arrayLength; i++)
-                                    arr[i] = sr.ReadInt32();
-
-                                sr.Position = currentOffset + 8;
-                                return arr;
+                                return ReadCellArray(ref sr, currentOffset, arrayLength, (ref SpanReader sr) => sr.ReadInt32());
                             }
                         case NexColumnType.UIntArray:
                             {
-                                uint[] arr = new uint[arrayLength];
-                                for (int i = 0; i < arrayLength; i++)
-                                    arr[i] = sr.ReadUInt32();
-
-                                sr.Position = currentOffset + 8;
-                                return arr;
+                                return ReadCellArray(ref sr, currentOffset, arrayLength, (ref SpanReader sr) => sr.ReadUInt32());
                             }
                         case NexColumnType.FloatArray:
                             {
-                                float[] arr = new float[arrayLength];
-                                for (int i = 0; i < arrayLength; i++)
-                                    arr[i] = sr.ReadSingle();
-
-                                sr.Position = currentOffset + 8;
-                                return arr;
+                                return ReadCellArray(ref sr, currentOffset, arrayLength, (ref SpanReader sr) => sr.ReadSingle());
                             }
                         case NexColumnType.NexUnionKey32Array:
                             {
@@ -231,61 +228,64 @@ public class NexUtils
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string? TypeToSQLiteTypeIdentifier(NexColumnType type)
-    {
-        // can't use a switch for types :(
-        if (type == NexColumnType.String || type == NexColumnType.HexUInt || type == NexColumnType.NexUnionKey32 || type == NexColumnType.NexUnionKey16 ||
-            type == NexColumnType.ByteArray || type == NexColumnType.IntArray || type == NexColumnType.UIntArray || 
-            type == NexColumnType.FloatArray || type == NexColumnType.StringArray || type == NexColumnType.CustomStructArray ||
-            type == NexColumnType.NexUnionKey32Array)
-            return "TEXT";
-        else if (type == NexColumnType.Byte || type == NexColumnType.Short || type == NexColumnType.Int || type == NexColumnType.UInt || type == NexColumnType.Int64 ||
-            type == NexColumnType.SByte || type == NexColumnType.UShort)
-            return "INTEGER";
-        else if (type == NexColumnType.Float || type == NexColumnType.Double)
-            return "REAL";
-        else
-            return null;
-    }
+    public static string? TypeToSQLiteTypeIdentifier(NexColumnType type) =>
+        type switch
+        {
+            NexColumnType.String or
+            NexColumnType.HexUInt or
+            NexColumnType.NexUnionKey32 or
+            NexColumnType.NexUnionKey16 or
+            NexColumnType.ByteArray or
+            NexColumnType.ShortArray or
+            NexColumnType.IntArray or
+            NexColumnType.UIntArray or
+            NexColumnType.FloatArray or
+            NexColumnType.StringArray or
+            NexColumnType.CustomStructArray or
+            NexColumnType.NexUnionKey32Array => "TEXT",
+            NexColumnType.Byte or
+            NexColumnType.Short or
+            NexColumnType.Int or
+            NexColumnType.UInt or
+            NexColumnType.Int64 or
+            NexColumnType.SByte or
+            NexColumnType.UShort => "INTEGER",
+            NexColumnType.Float or
+            NexColumnType.Double => "REAL",
+            _ => null
+        };
 
     /// <summary>
     /// Returns the byte size of a database value type.
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static int TypeToSize(NexColumnType type)
-    {
-        // can't use a switch for types :(
-        switch (type)
+    public static int TypeToSize(NexColumnType type) =>
+        type switch
         {
-            case NexColumnType.Int64:
-            case NexColumnType.Double:
-            case NexColumnType.NexUnionKey32:
-            case NexColumnType.ByteArray:
-            case NexColumnType.IntArray:
-            case NexColumnType.UIntArray:
-            case NexColumnType.FloatArray:
-            case NexColumnType.StringArray:
-            case NexColumnType.CustomStructArray:
-            case NexColumnType.NexUnionKey32Array:
-                return 8;
-            case NexColumnType.Int:
-            case NexColumnType.UInt:
-            case NexColumnType.HexUInt:
-            case NexColumnType.Float:
-            case NexColumnType.NexUnionKey16:
-            case NexColumnType.String:
-                return 4;
-            case NexColumnType.Short:
-            case NexColumnType.UShort:
-                return 2;
-            case NexColumnType.Byte:
-            case NexColumnType.SByte:
-                return 1;
-        }
-
-        throw new NotSupportedException($"TypeToSize: unsupported type {type}");
-    }
+            NexColumnType.Int64 or
+            NexColumnType.Double or
+            NexColumnType.NexUnionKey32 or
+            NexColumnType.ByteArray or
+            NexColumnType.ShortArray or
+            NexColumnType.IntArray or
+            NexColumnType.UIntArray or
+            NexColumnType.FloatArray or
+            NexColumnType.StringArray or
+            NexColumnType.CustomStructArray or
+            NexColumnType.NexUnionKey32Array => 8,
+            NexColumnType.Int or
+            NexColumnType.UInt or
+            NexColumnType.HexUInt or
+            NexColumnType.Float or
+            NexColumnType.NexUnionKey16 or
+            NexColumnType.String => 4,
+            NexColumnType.Short or
+            NexColumnType.UShort => 2,
+            NexColumnType.Byte or
+            NexColumnType.SByte => 1,
+            _ => throw new NotSupportedException($"TypeToSize: unsupported type {type}"),
+        };
 
     /// <summary>
     /// "int" -> DBColumnType.Int, etc.
@@ -311,6 +311,7 @@ public class NexUtils
             "union" => NexColumnType.NexUnionKey32,
             "union16" => NexColumnType.NexUnionKey16,
             "byte[]" => NexColumnType.ByteArray,
+            "short[]" or "int16[]" => NexColumnType.ShortArray,
             "int[]" or "int32[]" => NexColumnType.IntArray,
             "uint[]" or "uint32[]" => NexColumnType.UIntArray,
             "float[]" => NexColumnType.FloatArray,
@@ -342,6 +343,7 @@ public class NexUtils
             NexColumnType.NexUnionKey32 => "union",
             NexColumnType.NexUnionKey16 => "union16",
             NexColumnType.ByteArray => "byte[]",
+            NexColumnType.ShortArray => "short[]",
             NexColumnType.IntArray => "int[]",
             NexColumnType.UIntArray => "uint[]",
             NexColumnType.FloatArray => "float[]",

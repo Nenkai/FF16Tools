@@ -282,6 +282,37 @@ public class SQLiteToNexImporter : IDisposable
         }
     }
 
+    private static object ParseCellArray<T>(object val)
+    {
+        if (val is DBNull)
+            return Array.Empty<T>();
+
+        string arrStr = (string)val;
+        if (!string.IsNullOrEmpty(arrStr))
+        {
+            T[]? arr = JsonSerializer.Deserialize<T[]>(arrStr, _jsonSerializerOptions);
+            if (arr is null)
+                return Array.Empty<T>();
+
+            return arr;
+        }
+        else
+            return Array.Empty<T>();
+    }
+
+    private object ParseCellCustomStructArray<T>(JsonElement field, NexStructColumn column, int arrayIndex, int fieldIndex, Func<JsonElement, T> getter)
+    {
+        ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, column, arrayIndex, fieldIndex);
+
+        int arrLen = field.GetArrayLength();
+        var arr = new T[arrLen];
+
+        int j = 0;
+        foreach (JsonElement elem in field.EnumerateArray())
+            arr[j++] = getter(elem);
+        return arr;
+    }
+
     private object ParseCell(NexTableLayout tableLayout, NexStructColumn column, object val)
     {
         switch (column.Type)
@@ -353,88 +384,27 @@ public class SQLiteToNexImporter : IDisposable
                 }
             case NexColumnType.ByteArray:
                 {
-                    if (val is DBNull)
-                        return Array.Empty<byte>();
-
-                    string arrStr = (string)val;
-                    if (!string.IsNullOrEmpty(arrStr))
-                    {
-                        byte[]? arr = JsonSerializer.Deserialize<byte[]>(arrStr, _jsonSerializerOptions);
-                        if (arr is null)
-                            return Array.Empty<byte>();
-
-                        return arr;
-                    }
-                    else
-                        return Array.Empty<byte>();
+                    return ParseCellArray<byte>(val);
+                }
+            case NexColumnType.ShortArray:
+                {
+                    return ParseCellArray<short>(val);
                 }
             case NexColumnType.IntArray:
                 {
-                    if (val is DBNull)
-                        return Array.Empty<int>();
-
-                    string arrStr = (string)val;
-                    if (!string.IsNullOrEmpty(arrStr))
-                    {
-                        int[]? arr = JsonSerializer.Deserialize<int[]>(arrStr);
-                        if (arr is null)
-                            return Array.Empty<int>();
-
-                        return arr;
-                    }
-                    else
-                        return Array.Empty<int>();
+                    return ParseCellArray<int>(val);
                 }
             case NexColumnType.UIntArray:
                 {
-                    if (val is DBNull)
-                        return Array.Empty<uint>();
-
-                    string arrStr = (string)val;
-                    if (!string.IsNullOrEmpty(arrStr))
-                    {
-                        uint[]? arr = JsonSerializer.Deserialize<uint[]>(arrStr);
-                        if (arr is null)
-                            return Array.Empty<uint>();
-
-                        return arr;
-                    }
-                    else
-                        return Array.Empty<uint>();
+                    return ParseCellArray<uint>(val);
                 }
             case NexColumnType.FloatArray:
                 {
-                    if (val is DBNull)
-                        return Array.Empty<float>();
-
-                    string arrStr = (string)val;
-                    if (!string.IsNullOrEmpty(arrStr))
-                    {
-                        float[]? arr = JsonSerializer.Deserialize<float[]>(arrStr);
-                        if (arr is null)
-                            return Array.Empty<float>();
-
-                        return arr;
-                    }
-                    else
-                        return Array.Empty<float>();
+                    return ParseCellArray<float>(val);
                 }
             case NexColumnType.StringArray:
                 {
-                    if (val is DBNull)
-                        return Array.Empty<string>();
-
-                    string arrStr = (string)val;
-                    if (!string.IsNullOrEmpty(arrStr))
-                    {
-                        string[]? arr = JsonSerializer.Deserialize<string[]>(arrStr);
-                        if (arr is null)
-                            return Array.Empty<string>();
-
-                        return arr;
-                    }
-                    else
-                        return Array.Empty<string>();
+                    return ParseCellArray<string>(val);
                 }
             case NexColumnType.CustomStructArray:
                 {
@@ -498,66 +468,32 @@ public class SQLiteToNexImporter : IDisposable
                                     case NexColumnType.NexUnionKey32:
                                     case NexColumnType.NexUnionKey16:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
-
-                                            int arrLen = field.GetArrayLength();
-                                            var arr = new int[arrLen];
-
-                                            int j = 0;
-                                            foreach (JsonElement elem in field.EnumerateArray())
-                                                arr[j++] = elem.GetInt32();
-                                            structItem[fieldIndex] = arr;
+                                            structItem[fieldIndex] = ParseCellCustomStructArray(field, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex, e => e.GetInt32());
                                             break;
                                         }
                                     case NexColumnType.ByteArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
-                                            int arrLen = field.GetArrayLength();
-                                            var arr = new byte[arrLen];
-
-                                            int j = 0;
-                                            foreach (JsonElement elem in field.EnumerateArray())
-                                                arr[j++] = elem.GetByte();
-                                            structItem[fieldIndex] = arr;
+                                            structItem[fieldIndex] = ParseCellCustomStructArray(field, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex, e => e.GetByte());
+                                            break;
+                                        }
+                                    case NexColumnType.ShortArray:
+                                        {
+                                            structItem[fieldIndex] = ParseCellCustomStructArray(field, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex, e => e.GetInt32());
                                             break;
                                         }
                                     case NexColumnType.IntArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
-
-                                            int arrLen = field.GetArrayLength();
-                                            var arr = new int[arrLen];
-
-                                            int j = 0;
-                                            foreach (JsonElement elem in field.EnumerateArray())
-                                                arr[j++] = elem.GetInt32();
-                                            structItem[fieldIndex] = arr;
+                                            structItem[fieldIndex] = ParseCellCustomStructArray(field, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex, e => e.GetInt32());
                                             break;
                                         }
                                     case NexColumnType.UIntArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
-
-                                            int arrLen = field.GetArrayLength();
-                                            var arr = new uint[arrLen];
-
-                                            int j = 0;
-                                            foreach (JsonElement elem in field.EnumerateArray())
-                                                arr[j++] = elem.GetUInt32();
-                                            structItem[fieldIndex] = arr;
+                                            structItem[fieldIndex] = ParseCellCustomStructArray(field, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex, e => e.GetUInt32());
                                             break;
                                         }
                                     case NexColumnType.FloatArray:
                                         {
-                                            ThrowIfStructElemNotValueKind(field, JsonValueKind.Array, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex);
-
-                                            int arrLen = field.GetArrayLength();
-                                            var arr = new float[arrLen];
-
-                                            int j = 0;
-                                            foreach (JsonElement elem in field.EnumerateArray())
-                                                arr[j++] = elem.GetSingle();
-                                            structItem[fieldIndex] = arr;
+                                            structItem[fieldIndex] = ParseCellCustomStructArray(field, customStruct.Columns[fieldIndex], arrayIndex, fieldIndex, e => e.GetSingle());
                                             break;
                                         }
                                     default:
