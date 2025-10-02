@@ -3,7 +3,7 @@
 Tools & Library for games created using the Final Fantasy XVI / 16 Engine:
 
 * FINAL FANTASY XVI
-* FINAL FANTASY TACTICS - The Ivalice Chronicles
+* FINAL FANTASY TACTICS - The Ivalice Chronicles (mod loader in progress.)
 
 ### Features
 
@@ -15,7 +15,7 @@ Tools & Library for games created using the Final Fantasy XVI / 16 Engine:
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 * FlatBuffer schemas for `.kdb` (KineDriver) & `.bnmb` (Bonamik) files
 
-This has been tested on Final Fantasy 16 (Steam/PC) files.
+This hasbeen tested on Final Fantasy 16 (Steam/PC) files.
 
 ## Usage
 
