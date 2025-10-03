@@ -23,11 +23,15 @@ public class FaithSaveGameData
     public const uint MAIN_HEADER_SIZE = 0x10;
     public const uint FILE_ENTRY_SIZE = 0x20;
 
-    public const string PNG_CHUNK_FAITH = "faTh";
+    public static readonly HashSet<string> KnownChunkIds = new()
+    {
+        "faTh", // Faith, FFXVI
+        "ffTo", // FFTO, FINAL FANTASY TACTICS - The Origin (aka The Ivalice Chronicles)
+    };
 
     private Dictionary<string, byte[]> _files = [];
-
     public IReadOnlyDictionary<string, byte[]> Files => _files;
+    private string _chunkId;
 
     public static FaithSaveGameData Open(string path)
     {
@@ -43,11 +47,19 @@ public class FaithSaveGameData
         // Yep. They're storing SAVE DATA in a PNG CHUNK.
         var pngReader = new PngReader(ms);
         ChunksList chunks = pngReader.GetChunksList();
-        PngChunkUNKNOWN faithChunk = (PngChunkUNKNOWN)chunks.GetById1(PNG_CHUNK_FAITH, false);
-        if (faithChunk is null)
-            throw new KeyNotFoundException($"Faith Chunk '{PNG_CHUNK_FAITH}' was not found in PNG Save File. Is this a valid save file?");
 
-        byte[] saveData = faithChunk.GetData();
+        PngChunkUNKNOWN dataChunk = null;
+        foreach (var knownChunkId in KnownChunkIds)
+        {
+            dataChunk = (PngChunkUNKNOWN)chunks.GetById1(knownChunkId, false);
+            if (dataChunk is not null)
+                break;
+        }
+
+        if (dataChunk is null)
+            throw new KeyNotFoundException($"Data Chunk was not found in PNG Save File. Is this a valid save file?");
+
+        byte[] saveData = dataChunk.GetData();
 
         saveFile.ReadSaveData(saveData);
         return saveFile;
@@ -102,7 +114,7 @@ public class FaithSaveGameData
         var pngWriter = new PngWriter(ms, new ImageInfo(776, 436, 8, true));
         pngWriter.IdatMaxSize = 0x2000;
 
-        var faithChunk = new PngChunkUNKNOWN(PNG_CHUNK_FAITH, pngWriter.ImgInfo);
+        var faithChunk = new PngChunkUNKNOWN(_chunkId, pngWriter.ImgInfo);
         faithChunk.ChunkGroup = 1;
         faithChunk.SetData(saveData);
         pngWriter.GetChunksList().Queue(faithChunk);
