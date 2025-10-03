@@ -48,7 +48,8 @@ public class FF16PackFile
     public ulong FileNameOffset { get; set; }
 
     /// <summary>
-    /// File name hash, FNV algorithm. (Not FNV-1A)
+    /// File name hash, FNV algorithm. (Not FNV-1A) <br/>
+    /// <b>Without the locale from the path 'i.e .en' if applicable.</b>
     /// </summary>
     public uint FileNameHash { get; set; }
 

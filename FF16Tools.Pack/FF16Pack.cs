@@ -56,6 +56,9 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
     public string CodeName { get; }
 
+    public string Name { get; private set; }
+    public string Locale { get; private set; }
+
     private readonly Dictionary<string, FF16PackFile> _files = [];
     private readonly List<FF16PackDStorageChunk> _chunks = [];
     private readonly Dictionary<long, FF16PackDStorageChunk> _offsetToChunk = [];
@@ -100,6 +103,18 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             throw new InvalidDataException($"Invalid codename provided. Must match: {string.Join(", ", PackKeyStore.Keys.Keys.ToList())}");
 
         FF16Pack pack = new FF16Pack(fs, codeName, loggerFactory);
+        pack.Name = Path.GetFileName(path);
+
+        // A locale pack should extract files with a locale before the extension.
+        // At least, according to FINAL FANTASY TACTICS.
+        // Running FFXVI unpacked also confirms that it tries to load files with the locale before the extension.
+        string[] spl = pack.Name.Split(".");
+        if (spl.Length >= 3)
+        {
+            if (FF16PackPathUtil.PackLocales.Contains(spl[^2]))
+                pack.Locale = spl[1];
+        }
+
         uint headerSize = fileBinStream.ReadUInt32();
         fileBinStream.Position = 0;
         byte[] header = fileBinStream.ReadBytes((int)headerSize);
@@ -134,7 +149,9 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
                 bs.Position = (long)file.FileNameOffset;
                 string fileName = bs.ReadString(StringCoding.ZeroTerminated);
-                pack._files.Add(Path.Combine(pack.ArchiveDir, fileName).Replace('\\', '/'), file);
+
+                string localeFileName = pack.ApplyLocaleToPathIfNeeded(fileName);
+                pack._files.Add(Path.Combine(pack.ArchiveDir, localeFileName).Replace('\\', '/'), file);
 
                 if (Fnv1Hash.HashPath(fileName) != file.FileNameHash)
                     throw new InvalidDataException($"File name hash for '{fileName.Substring(0, Math.Min(fileName.Length, 50))}' did not match. Wrong decryption key or archive corrupted?");
@@ -420,6 +437,13 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         ArgumentException.ThrowIfNullOrEmpty(outputDir);
 
         path = FF16PackPathUtil.NormalizePath(path);
+
+        // Apply locale if present.
+        if (!string.IsNullOrEmpty(Locale))
+        {
+            string oldExtension = Path.GetExtension(path);
+            path = Path.ChangeExtension(path, Locale) + oldExtension;
+        }
 
         FF16PackFile packFile = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
@@ -818,6 +842,18 @@ public class FF16Pack : IDisposable, IAsyncDisposable
                 _cachedChunks.Remove(chunkToRemove);
             }
         }
+    }
+
+    private string ApplyLocaleToPathIfNeeded(string path)
+    {
+        // Apply locale if present.
+        if (!string.IsNullOrEmpty(Locale))
+        {
+            string oldExtension = Path.GetExtension(path);
+            path = Path.ChangeExtension(path, Locale) + oldExtension;
+        }
+
+        return path;
     }
 
     private void ReturnCachedChunks()

@@ -142,11 +142,32 @@ public class FF16PackBuilder
 
         _logger?.LogInformation("PACK: Adding '{path}'...", gamePath);
 
+        // Apply locale to path transparently.
+        // Basically, for example, 0007.en pack would mean every file inside it would have '.en' before the extension.
+        // NOTE: The pack itself still stores a file without the locale in the name, hence the separation.
+        // This behavior is verified based on the Switch version of FFT.
+        string[] spl = Path.GetFileName(gamePath).Split('.');
+        string localeGamePath = gamePath;
+        if (spl.Length > 2)
+        {
+            var parts = spl.ToList();
+            if (FF16PackPathUtil.PackLocales.Contains(parts[^2]))
+            {
+                parts.Remove(parts[^2]);
+                string newFileName = string.Join(".", parts);
+
+                gamePath = gamePath.Replace(Path.GetFileName(gamePath), newFileName);
+
+                _logger?.LogInformation("PACK: '{localePath}' maps to '{originalPath}' internally (assuming locale file).", localeGamePath, gamePath);
+            }
+        }
+
         var fileInfo = new FileInfo(localPath);
         var task = new FileTask()
         {
             LocalPath = localPath,
-            GamePath = gamePath,
+            LocaleGamePath = localeGamePath,
+            OriginalGamePath = gamePath,
         };
         task.PackFile.DecompressedFileSize = (ulong)fileInfo.Length;
 
@@ -158,7 +179,7 @@ public class FF16PackBuilder
         int i = 0;
         foreach (FileTask file in _packFileTasks)
         {
-            if (!_options.Compress || !IsCompressionForFileSuggested(file.GamePath) || file.PackFile.DecompressedFileSize == 0)
+            if (!_options.Compress || !IsCompressionForFileSuggested(file.LocaleGamePath) || file.PackFile.DecompressedFileSize == 0)
                 continue;
 
             if (file.PackFile.DecompressedFileSize >= FF16Pack.MIN_FILE_SIZE_FOR_MULTIPLE_CHUNKS)
@@ -171,7 +192,7 @@ public class FF16PackBuilder
             }
             else if (file.PackFile.DecompressedFileSize < FF16Pack.MAX_FILE_SIZE_FOR_SHARED_CHUNK)
             {
-                _logger?.LogInformation("PACK: Compressing '{path}' into shared chunk..", file.GamePath);
+                _logger?.LogInformation("PACK: Compressing '{path}' into shared chunk..", file.LocaleGamePath);
                 _lastSharedChunk ??= new ChunkTask();
 
                 if (_lastSharedChunk.PackChunk.DecompressedSize + (long)file.PackFile.DecompressedFileSize > FF16Pack.MAX_DECOMPRESSED_SHARED_CHUNK_SIZE)
@@ -199,7 +220,7 @@ public class FF16PackBuilder
         using var bs = new BinaryStream(ms);
         foreach (var file in _packFileTasks)
         {
-            bs.WriteString(file.GamePath, StringCoding.ZeroTerminated);
+            bs.WriteString(file.OriginalGamePath, StringCoding.ZeroTerminated);
         }
 
         _stringTable = ms.ToArray();
@@ -306,8 +327,8 @@ public class FF16PackBuilder
         {
             FileTask fileTask = _packFileTasks[i];
             fileTask.PackFile.FileNameOffset = (ulong)bs.Position;
-            fileTask.PackFile.FileNameHash = Fnv1Hash.HashPath(fileTask.GamePath);
-            bs.WriteString(fileTask.GamePath, StringCoding.ZeroTerminated);
+            fileTask.PackFile.FileNameHash = Fnv1Hash.HashPath(fileTask.OriginalGamePath);
+            bs.WriteString(fileTask.OriginalGamePath, StringCoding.ZeroTerminated);
         }
         long stringTableSize = bs.Position - stringTableOffset;
 
@@ -369,9 +390,9 @@ public class FF16PackBuilder
 
     private async Task WriteFile(FileStream packStream, FileTask task, CancellationToken ct = default)
     {
-        if (!_options.Compress || !IsCompressionForFileSuggested(task.GamePath) || task.PackFile.DecompressedFileSize == 0)
+        if (!_options.Compress || !IsCompressionForFileSuggested(task.LocaleGamePath) || task.PackFile.DecompressedFileSize == 0)
         {
-            _logger?.LogInformation("PACK: Writing raw '{path}'..", task.GamePath);
+            _logger?.LogInformation("PACK: Writing raw '{path}'..", task.LocaleGamePath);
 
             task.PackFile.DataOffset = (ulong)packStream.Position;
 
@@ -383,12 +404,12 @@ public class FF16PackBuilder
             if (task.PackFile.DecompressedFileSize == 0)
             {
                 task.PackFile.FileEmptyFlag = 1;
-                task.PackFile.ChunkDefOffsetOrPathLength = (ulong)(Encoding.ASCII.GetByteCount(task.GamePath) + 1);
+                task.PackFile.ChunkDefOffsetOrPathLength = (ulong)(Encoding.ASCII.GetByteCount(task.OriginalGamePath) + 1);
             }
         }
         else if ((long)task.PackFile.DecompressedFileSize < FF16Pack.MIN_FILE_SIZE_FOR_MULTIPLE_CHUNKS)
         {
-            _logger?.LogInformation("PACK: Compressing '{path}' into unique chunk..", task.GamePath);
+            _logger?.LogInformation("PACK: Compressing '{path}' into unique chunk..", task.LocaleGamePath);
 
             task.PackFile.DataOffset = (ulong)packStream.Position;
 
@@ -413,7 +434,7 @@ public class FF16PackBuilder
         else
         {
             // File will only fit using multiple chunks
-            _logger?.LogInformation("PACK: Compressing '{path}' into multiple chunks..", task.GamePath);
+            _logger?.LogInformation("PACK: Compressing '{path}' into multiple chunks..", task.LocaleGamePath);
 
             using var fileStream = File.Open(task.LocalPath, FileMode.Open);
             long remBytes = fileStream.Length;
@@ -548,8 +569,21 @@ public class ChunkTask
 
 public class FileTask
 {
+    /// <summary>
+    /// Local file path on disk.
+    /// </summary>
     public required string LocalPath { get; set; }
-    public required string GamePath { get; set; }
+
+    /// <summary>
+    /// Locale game path, i.e ui.en.nxd
+    /// </summary>
+    public required string LocaleGamePath { get; set; }
+
+    /// <summary>
+    /// Original game path, without locale. i.e ui.nxd
+    /// </summary>
+    public required string OriginalGamePath { get; set; }
+
     public FF16PackFile PackFile { get; set; } = new();
     public ChunkTask? SharedChunk { get; set; }
     public uint[]? SplitChunkOffsets { get; set; }

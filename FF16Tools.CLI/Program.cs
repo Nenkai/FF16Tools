@@ -205,8 +205,6 @@ public class Program
             return;
         }
 
-        _logger.LogWarning("Extracting packs with locale: {locale}. Use --locale to override this.", verbs.Locale);
-
         List<string> packsToProcess = [];
         foreach (var pack in Directory.GetFiles(verbs.InputFolder, "*.pac"))
         {
@@ -217,13 +215,7 @@ public class Program
                 continue;
             }
 
-            if (FF16PackPathUtil.PackLocales.Any(locale => fileName.Contains($".{locale}.")))
-            {
-                if (fileName.Contains($".{verbs.Locale}."))
-                    packsToProcess.Add(fileName);
-            }
-            else
-                packsToProcess.Add(fileName);
+            packsToProcess.Add(fileName);
         }
 
         ulong totalSize = 0;
@@ -957,10 +949,6 @@ public class UnpackAllPacksVerbs
     [Option('o', "output", HelpText = "Output directory.")]
     public string? OutputPath { get; set; }
 
-    [Option('l', "locale", HelpText = "Which localized packs to extract. Defaults to 'en'.\n" +
-        "Valid options: ar, cs, ct, de, en, es, fr, it, ja, ko, ls, pb, pl, ru")]
-    public string Locale { get; set; } = "en";
-
     [Option('g', "gametype", HelpText = "Game type, used to determine the encryption key to use. Defaults to ffxvi. Valid options:\n" +
 "- 'ffxvi' (Final Fantasy 16)\n" +
 "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
@@ -1021,7 +1009,6 @@ public class NxdToSqliteVerbs
 
     [Option('o', "output", HelpText = "Output SQLite database file.")]
     public string? OutputFile { get; set; }
-
     [Option('g', "gametype", HelpText = "Game Type. Defaults to ffxvi. Valid options:\n" +
         "- 'ffxvi' (Final Fantasy 16)\n" +
         "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
@@ -1039,7 +1026,6 @@ public class SqliteToNxdVerbs
 
     [Option('t', "tables", HelpText = "Table(s) to import. If not provided, all tables in the database be imported.")]
     public IEnumerable<string> Tables { get; set; } = [];
-
     [Option('g', "gametype", HelpText = "Game Type. Defaults to ffxvi. Valid options:\n" +
         "- 'ffxvi' (Final Fantasy 16)\n" +
         "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
