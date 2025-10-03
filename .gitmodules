@@ -1,0 +1,6 @@
+[submodule "FF16Tools.Files/Nex/Layouts/faith"]
+	path = FF16Tools.Files/Nex/Layouts/faith
+	url = https://github.com/Nenkai/ffxvi-nex-layouts
+[submodule "FF16Tools.Files/Nex/Layouts/ffto"]
+	path = FF16Tools.Files/Nex/Layouts/ffto
+	url = https://github.com/Nenkai/fftivc-nex-layouts
