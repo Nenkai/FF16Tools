@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<None Include="Nex\Layouts\*.*" Pack="true" PackagePath="contentFiles/any/any/Nex/Layouts">
+	<None Include="Nex\Layouts\*\*.*" Pack="true" PackagePath="contentFiles/any/any/Nex/Layouts">
 	  <PackageCopyToOutput>true</PackageCopyToOutput>
 	</None>
     <None Update="Nex\Layouts\razerevent.layout">
