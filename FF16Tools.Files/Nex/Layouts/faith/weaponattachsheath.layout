@@ -1,9 +1,0 @@
-set_table_type|SingleKeyed
-set_table_category|SingleKeyed
-use_base_row_id|true
-
-add_column|Unk1|int
-add_column|Unk2|byte
-add_column|Unk3|byte
-add_column|Unk4|byte
-add_column|Unk5|byte

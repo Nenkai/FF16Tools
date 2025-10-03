@@ -1,9 +1,0 @@
-set_table_type|SingleKeyed
-set_table_category|SingleKeyed
-use_base_row_id|false
-
-// maptoanimaltable
-
-// This layout was generated, guessed row length: 0x8
-add_column|DLCFlags|int
-add_column|AnimalMapResideListId|int

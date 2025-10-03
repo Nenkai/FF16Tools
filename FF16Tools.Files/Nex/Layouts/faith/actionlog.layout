@@ -1,9 +1,0 @@
-set_table_type|SingleKeyed
-set_table_category|SingleKeyed_Localized
-use_base_row_id|true
-
-// Hardcoded row ids
-
-add_column|DLCFlags|int
-add_column|UnkType2|int
-add_column|ActionName|string|rel

@@ -1,7 +1,0 @@
-set_table_type|SingleKeyed
-set_table_category|SingleKeyed
-use_base_row_id|true
-
-add_column|DLCFlags|int
-add_column|Comment|string
-add_column|Event|string

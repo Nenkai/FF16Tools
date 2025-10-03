@@ -1,5 +1,0 @@
-set_table_type|DoubleKeyed
-set_table_category|DoubleKeyed
-use_base_row_id|false
-
-// No table has any rows for this

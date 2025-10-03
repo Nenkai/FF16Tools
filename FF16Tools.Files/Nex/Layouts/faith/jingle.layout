@@ -1,8 +1,0 @@
-set_table_type|SingleKeyed
-set_table_category|SingleKeyed
-use_base_row_id|false
-
-// Mainly if not all hardcoded row ids
-
-add_column|DLCFlags|int
-add_column|SoundFilePath|string

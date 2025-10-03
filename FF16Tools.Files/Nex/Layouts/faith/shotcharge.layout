@@ -1,9 +1,0 @@
-set_table_type|SingleKeyed
-set_table_category|SingleKeyed
-use_base_row_id|true
-
-// This layout was generated, guessed row length: 0x10
-add_column|DLCFlags|int
-add_column|VFXAudioId1|int
-add_column|VFXAudioId2|int
-add_column|VFXAudioId3|int

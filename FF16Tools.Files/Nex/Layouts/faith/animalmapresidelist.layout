@@ -1,8 +1,0 @@
-set_table_type|DoubleKeyed
-set_table_category|DoubleKeyed
-use_base_row_id|false
-
-// Pointed to by maptoanimaltable
-
-add_column|DLCFlags|int
-add_column|LayoutNamedInstanceId|int

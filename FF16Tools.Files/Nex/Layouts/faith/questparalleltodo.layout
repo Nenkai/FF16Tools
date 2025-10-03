@@ -1,6 +1,0 @@
-set_table_type|TripleKeyed
-set_table_category|TripleKeyed_Localized
-use_base_row_id|false
-
-add_column|DLCFlags|int
-add_column|Task|string|rel

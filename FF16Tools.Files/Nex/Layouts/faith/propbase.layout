@@ -1,9 +1,0 @@
-set_table_type|SingleKeyed
-set_table_category|SingleKeyed
-use_base_row_id|false
-
-add_column|DLCFlags|int
-add_column|ModelId|int
-add_column|ModelIdKey2|int
-add_column|Comment|string
-add_column|Unk5|string
