@@ -80,8 +80,16 @@ public class TableMappingReader
 
             var line = sr.ReadLine()?.Trim();
 
-            // support comments & skip empty lines
-            if (string.IsNullOrEmpty(line) || line.StartsWith("//"))
+            // support comments
+            var commentIndex = line.IndexOf("//");
+            if (commentIndex >= 0)
+            {
+                line = line.Substring(0, commentIndex);
+                line = line.Trim();
+            }
+
+            // skip empty lines
+            if (string.IsNullOrEmpty(line))
                 continue;
 
             var split = line.Split("|");
