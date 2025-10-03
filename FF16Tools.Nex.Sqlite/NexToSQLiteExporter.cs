@@ -97,10 +97,14 @@ public class NexToSQLiteExporter : IDisposable
                 continue;
             }
 
+            string tableNameWithoutLocale = table.Key;
+            string[] spl = table.Key.Split('.');
+            if (spl.Length >= 2)
+                tableNameWithoutLocale = spl[0];
 
             List<NexRowInfo> nexRows = table.Value.RowManager!.GetAllRowInfos();
 
-            NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(table.Key, new Version(1, 0, 0), _codeName);
+            NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(tableNameWithoutLocale, new Version(1, 0, 0), _codeName);
             ExportTableToSQLite(table.Key, table.Value, tableColumnLayout, nexRows);
         }
 
@@ -139,6 +143,8 @@ public class NexToSQLiteExporter : IDisposable
 
     private void ExportTableToSQLite(string tableName, NexDataFile nexFile, NexTableLayout columnLayout, List<NexRowInfo> rows)
     {
+        tableName = tableName.Replace('.', '-');
+
         //SQL: DROP TABLE IF EXISTS
         var command = _con!.CreateCommand();
         command.CommandText = $"DROP TABLE IF EXISTS \"{tableName}\";";
@@ -146,7 +152,7 @@ public class NexToSQLiteExporter : IDisposable
         command.ExecuteNonQuery();
 
         //SQL: CREATE TABLE
-        string tableDefinition = $"CREATE TABLE {tableName} (";
+        string tableDefinition = $"CREATE TABLE \"{tableName}\" (";
 
         switch (nexFile.Type)
         {

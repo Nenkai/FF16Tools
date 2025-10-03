@@ -94,7 +94,7 @@ public class SQLiteToNexImporter : IDisposable
 
         foreach (var table in _tableBuilders)
         {
-            string nxdPath = Path.Combine(directory, $"{table.Key}.nxd");
+            string nxdPath = Path.Combine(directory, $"{table.Key.Replace('-', '.')}.nxd");
 
             _logger?.LogInformation("Writing {file}", nxdPath);
             using var fs = new FileStream(nxdPath, FileMode.Create);
@@ -144,13 +144,19 @@ public class SQLiteToNexImporter : IDisposable
         while (reader.Read())
         {
             string tableName = (string)reader["name"];
-            if (!TableMappingReader.LayoutExists(tableName, _codeName))
+            string[] spl = tableName.Split("-");
+
+            string tableNameWithoutLocale = tableName;
+            if (spl.Length >= 2)
+                tableNameWithoutLocale = spl[0];
+
+            if (!TableMappingReader.LayoutExists(tableNameWithoutLocale, _codeName))
             {
                 _logger?.LogInformation("Skipping table {tableName}, no layout exists", tableName);
                 continue;
             }
 
-            if (_tablesToConvert is not null)
+            if (_tablesToConvert is not null && _tablesToConvert.Count > 0)
             {
                 if (!_tablesToConvert.Contains(tableName))
                     continue;
@@ -158,7 +164,7 @@ public class SQLiteToNexImporter : IDisposable
 
             _logger?.LogInformation("Fetching table {tableName}", tableName);
 
-            var layout = TableMappingReader.ReadTableLayout(tableName, new Version(1, 0, 0), _codeName);
+            var layout = TableMappingReader.ReadTableLayout(tableNameWithoutLocale, new Version(1, 0, 0), _codeName);
             _tableBuilders.Add(tableName, new NexDataFileBuilder(layout, _loggerFactory));
             _tableLayouts.Add(tableName, layout);
         }
@@ -173,7 +179,7 @@ public class SQLiteToNexImporter : IDisposable
             _lastTable = table.Key;
 
             var command = _con!.CreateCommand();
-            command.CommandText = $"SELECT * FROM {table.Key};";
+            command.CommandText = $"SELECT * FROM \"{table.Key}\";";
             _logger?.LogTrace("{command}", command.CommandText);
 
             var reader = command.ExecuteReader();

@@ -36,6 +36,10 @@ public class TableMappingReader
         string exePath = NexUtils.GetCurrentExecutingPath();
         string currentDir = Path.GetDirectoryName(exePath)!;
 
+        string[] spl = tableName.Split('.');
+        if (spl.Length >= 2)
+            tableName = spl[0];
+
         string headersFilePath = Path.Combine(currentDir, "Nex", "Layouts", codeName, Path.ChangeExtension(tableName, ".layout"));
         if (File.Exists(headersFilePath))
         {
@@ -57,6 +61,10 @@ public class TableMappingReader
 
     private static void IterativeLayoutReader(NexTableLayout tableColumnLayout, string filename, ref int currentRowOffset, Version inputVersion, string codeName)
     {
+        string[] spl = filename.Split('.');
+        if (spl.Length >= 2)
+            filename = spl[0];
+
         string? path = GetHeadersFilePath(filename, codeName);
         if (string.IsNullOrEmpty(path))
             throw new FileNotFoundException($"Layout file '{filename}' not found. Does it exist in the Nex/Layouts folder?");
