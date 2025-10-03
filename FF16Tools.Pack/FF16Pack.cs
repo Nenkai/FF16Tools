@@ -438,13 +438,6 @@ public class FF16Pack : IDisposable, IAsyncDisposable
 
         path = FF16PackPathUtil.NormalizePath(path);
 
-        // Apply locale if present.
-        if (!string.IsNullOrEmpty(Locale))
-        {
-            string oldExtension = Path.GetExtension(path);
-            path = Path.ChangeExtension(path, Locale) + oldExtension;
-        }
-
         FF16PackFile packFile = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
 
         if (_fileCounter is not null)
