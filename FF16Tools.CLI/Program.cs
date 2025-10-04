@@ -698,9 +698,16 @@ public class Program
             verbs.OutputPath = Path.Combine(Path.GetDirectoryName(verbs.InputFile)!, $"{fileName}.png");
         }
 
+        string? codeName = GameTypeToCodeName(verbs.GameType);
+        if (codeName is null)
+        {
+            PrintCodeNameError();
+            return;
+        }
+
         try
         {
-            var save = new FaithSaveGameData();
+            var save = new FaithSaveGameData(codeName);
             foreach (var file in Directory.GetFiles(verbs.InputFile))
             {
                 _logger.LogInformation("Adding {file} to save..", file);
@@ -1026,6 +1033,7 @@ public class SqliteToNxdVerbs
 
     [Option('t', "tables", HelpText = "Table(s) to import. If not provided, all tables in the database be imported.")]
     public IEnumerable<string> Tables { get; set; } = [];
+
     [Option('g', "gametype", HelpText = "Game Type. Defaults to ffxvi. Valid options:\n" +
         "- 'ffxvi' (Final Fantasy 16)\n" +
         "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles", Default = "ffxvi")]
@@ -1083,6 +1091,11 @@ public class PackSaveVerbs
 
     [Option('s', "skip", HelpText = "Skip overwrite prompt.")]
     public bool SkipOverwritePrompt { get; set; }
+    
+    [Option('g', "gametype", Required = true, HelpText = "Game Type. Defaults to ffxvi. Valid options:\n" +
+    "- 'ffxvi' (Final Fantasy 16)\n" +
+    "- 'fft' (FINAL FANTASY TACTICS - The Ivalice Chronicles")]
+    public string GameType { get; set; } = "ffxvi";
 }
 
 [Verb("vatb-to-json", HelpText = "Converts .vatb (vfx audio table) to .json")]

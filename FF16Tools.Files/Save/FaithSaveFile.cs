@@ -23,15 +23,25 @@ public class FaithSaveGameData
     public const uint MAIN_HEADER_SIZE = 0x10;
     public const uint FILE_ENTRY_SIZE = 0x20;
 
-    public static readonly HashSet<string> KnownChunkIds = new()
+    public static readonly Dictionary<string, string> GameCodeToChunkId = new()
     {
-        "faTh", // Faith, FFXVI
-        "ffTo", // FFTO, FINAL FANTASY TACTICS - The Origin (aka The Ivalice Chronicles)
+        ["faith"] = "faTh", // Faith, FFXVI
+        ["ffto"] = "ffTo", // FFTO, FINAL FANTASY TACTICS - The Origin (aka The Ivalice Chronicles)
     };
 
     private Dictionary<string, byte[]> _files = [];
     public IReadOnlyDictionary<string, byte[]> Files => _files;
     private string _chunkId;
+
+    private FaithSaveGameData()
+    {
+        
+    }
+
+    public FaithSaveGameData(string codeName)
+    {
+        _chunkId = GameCodeToChunkId.GetValueOrDefault(codeName) ?? throw new KeyNotFoundException($"Game code '{codeName}' is not recognized.");
+    }
 
     public static FaithSaveGameData Open(string path)
     {
@@ -46,21 +56,21 @@ public class FaithSaveGameData
 
         // Yep. They're storing SAVE DATA in a PNG CHUNK.
         var pngReader = new PngReader(ms);
+        pngReader.SkipChunkMaxSize = 20 * 1024 * 1024; // Default is 2MB, which is too small for certain FFT saves. Raise it.
         ChunksList chunks = pngReader.GetChunksList();
 
-        PngChunkUNKNOWN dataChunk = null;
-        foreach (var knownChunkId in KnownChunkIds)
+        PngChunk dataChunk = null;
+        foreach (var knownChunkId in GameCodeToChunkId.Values)
         {
-            dataChunk = (PngChunkUNKNOWN)chunks.GetById1(knownChunkId, false);
+            dataChunk = chunks.GetById1(knownChunkId, false);
             if (dataChunk is not null)
                 break;
         }
 
-        if (dataChunk is null)
+        if (dataChunk is not PngChunkUNKNOWN ffChunk)
             throw new KeyNotFoundException($"Data Chunk was not found in PNG Save File. Is this a valid save file?");
 
-        byte[] saveData = dataChunk.GetData();
-
+        byte[] saveData = ffChunk.GetData();
         saveFile.ReadSaveData(saveData);
         return saveFile;
     }
