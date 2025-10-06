@@ -72,7 +72,7 @@ public class TableMappingReader
         using var sr = new StreamReader(path);
 
         var dir = Path.GetDirectoryName(filename);
-        var fn = Path.GetFileNameWithoutExtension(Path.GetFileName(filename));
+        var layoutFileName = Path.GetFileNameWithoutExtension(Path.GetFileName(filename));
         int lineNumber = 0;
 
         Version? max_version = null;
@@ -81,10 +81,11 @@ public class TableMappingReader
         NexTableColumnStruct? currentCustomStruct = null;
         int currentStructOffset = 0;
 
+        tableColumnLayout.Name = layoutFileName;
         while (!sr.EndOfStream)
         {
             lineNumber++;
-            var debugln = $"{fn}:{lineNumber}";
+            var debugln = $"{layoutFileName}:{lineNumber}";
 
             var line = sr.ReadLine()?.Trim();
 
@@ -105,6 +106,14 @@ public class TableMappingReader
 
             switch (id)
             {
+                case "table_name":
+                    {
+                        if (split.Length != 2)
+                            throw new InvalidDataException($"Metadata error: {debugln} has malformed 'table_name' - expected 1 argument (name)");
+
+                        tableColumnLayout.Name = split[1];
+                    }
+                    break;
                 case "add_column":
                     {
                         if (split.Length < 3)

@@ -8,6 +8,7 @@ namespace FF16Tools.Files.Nex.Entities;
 
 public class NexTableLayout
 {
+    public string Name { get; set; }
     public NexTableType Type { get; set; }
     public NexTableCategory Category { get; set; }
     public bool UsesBaseRowId { get; set; }

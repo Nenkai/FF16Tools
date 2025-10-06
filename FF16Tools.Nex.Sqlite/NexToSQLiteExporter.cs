@@ -98,14 +98,19 @@ public class NexToSQLiteExporter : IDisposable
             }
 
             string tableNameWithoutLocale = table.Key;
+            string locale = string.Empty;
             string[] spl = table.Key.Split('.');
             if (spl.Length >= 2)
+            {
                 tableNameWithoutLocale = spl[0];
+                locale = spl[1];
+            }
 
             List<NexRowInfo> nexRows = table.Value.RowManager!.GetAllRowInfos();
 
             NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(tableNameWithoutLocale, new Version(1, 0, 0), _codeName);
-            ExportTableToSQLite(table.Key, table.Value, tableColumnLayout, nexRows);
+            string exportTableName = tableColumnLayout.Name + (!string.IsNullOrEmpty(locale) ? $".{locale}" : string.Empty);
+            ExportTableToSQLite(exportTableName, table.Value, tableColumnLayout, nexRows);
         }
 
         _con.Close();
