@@ -94,7 +94,7 @@ public class SQLiteToNexImporter : IDisposable
 
         foreach (var table in _tableBuilders)
         {
-            string nxdPath = Path.Combine(directory, $"{table.Key.Replace('-', '.')}.nxd");
+            string nxdPath = Path.Combine(directory, $"{table.Key.ToLower().Replace('-', '.')}.nxd");
 
             _logger?.LogInformation("Writing {file}", nxdPath);
             using var fs = new FileStream(nxdPath, FileMode.Create);

@@ -852,7 +852,7 @@ public class Program
                 builder.AddRow(row.Key, row.Key2, row.Key3, cells);
             }
 
-            using var fs = new FileStream(Path.Combine("built", table.Key + ".nxd"), FileMode.Create);
+            using var fs = new FileStream(Path.Combine("built", table.Key.ToLower() + ".nxd"), FileMode.Create);
             builder.Write(fs);
         }
     }
