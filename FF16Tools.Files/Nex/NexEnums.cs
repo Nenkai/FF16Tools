@@ -25,183 +25,208 @@ public enum NexTableCategory
     TripleKeyed_Localized = 6,
 }
 
-public enum NexUnionType : ushort
+public class NexUnions
 {
+    public static string? GetTypeNameForTypeId(string codeName, int unionTypeId)
+    {
+        if (UnionTypes.TryGetValue(codeName, out Dictionary<int, string> unionTypes))
+        {
+            if (unionTypes.TryGetValue(unionTypeId, out string typeName))
+            {
+                return typeName;
+            }
+        }
+
+        return null;
+    }
+
     // NOTE: Avoid renaming them when possible.
     // Names are written into exported sqlite databases.
+    public static readonly Dictionary<string, Dictionary<int, string>> UnionTypes = new()
+    {
+        ["ffto"] = new()
+        {
+            [24] = "Speaker",
+            [113] = "PlaceName",
+            [115] = "CaptionFreeWord",
+            [247] = "VoicePatternSituation",
+        },
 
-    action = 3,
-    result = 15, // Not sure, only telemetryarray uses this, but DLCFlags seem to match
-    attackparam = 17,
-    bnpcbase = 23,
-    directorbankitem = 25,
-    eid = 27,
-    //unk_41 = 41,
-    command = 42,
-    defaulttalk = 46,
+        ["faith"] = new Dictionary<int, string>()
+        {
+            [3] = "action",
+            [15] = "result",
+            [17] = "attackparam",
+            [23] = "bnpcbase",
+            [25] = "directorbankitem",
+            [27] = "eid",
+            //[41] = "unk_41",
+            [42] = "command",
+            [46] = "defaulttalk",
 
-    // Not an actual table.
-    // Guessed. Engine/executable creates factories for each director, each factory has an id which goes up to 14, matches directorchangebgmparam.
-    // mapdirector = 1,
-    // tutorialdirector = 2
-    // systemassistdirector = 3
-    // fieldeventdirector = 4
-    // smobdirector = 5
-    // sidequestbattledirector = 6
-    // missionbattledirector = 7
-    // battledirector = 8
-    // behavioreventdirector = 9
-    // battleblockdirector = 10
-    // fixedpalettedirector = 11
-    // 12 & 13 are used but unknown
-    // abyssgatedirector = 14
-    directortype = 48,
+            // Not an actual table.
+            // Guessed. Engine/executable creates factories for each director, each factory has an id which goes up to 14, matches directorchangebgmparam.
+            // mapdirector = 1,
+            // tutorialdirector = 2
+            // systemassistdirector = 3
+            // fieldeventdirector = 4
+            // smobdirector = 5
+            // sidequestbattledirector = 6
+            // missionbattledirector = 7
+            // battledirector = 8
+            // behavioreventdirector = 9
+            // battleblockdirector = 10
+            // fixedpalettedirector = 11
+            // 12 & 13 are used but unknown
+            // abyssgatedirector = 14
 
-    enpcbase = 50,
-    layoutnamedinstance = 55,
-    attackparam_atktype = 58, // customaction (?)
-    quest = 79,
-    questsequence = 82, // (not an id to any table?)
-    itemshopbase = 99,
-    smithshopbase = 100,
-    charatimelinevariation = 105,
-    shopbase = 107,
+            [48] = "directortype", // Not an actual table.
+            [50] = "enpcbase",
+            [55] = "layoutnamedinstance",
+            [58] = "attackparam_atktype", // customaction (?)
+            [79] = "quest",
+            [82] = "questsequence", // (not an id to any table?)
+            [99] = "itemshopbase",
+            [100] = "smithshopbase",
+            [105] = "charatimelinevariation",
+            [107] = "shopbase",
 
-    // not an actual table. maps to EquipmentData in the save file.
-    equipment_index = 112,
-    sidequestbattledirector = 114,
-    item = 124,
-    levelcutscene = 127,
-    partytalk = 131,
-    droptable = 135,
-    behavioreventactionset = 138,
-    buff = 143,
-    bgmmode = 146,
-    placename = 147,
-    equipitem = 177,
-    cutsceneset = 192,
-    transition = 198,
-    questprogress = 204,
-    summonmode = 208,
-    speaker = 224, // Used by panzer
-    partyselect = 255,
-    partymember = 256,
-    scenariocutscene = 260,
-    icon_file_id = 266, // Not sure
-    worldmapanchor = 273,
-    usersituation = 277,
-    levelevent = 282,
-    battleevent = 312,
-    bgmselect = 314,
-    moviedata = 316,
-    gamemap = 317,
-    //unk_330 = 330,
-    missionbattledirector = 359,
-    uicolor = 363,
-    normalcameraparam2 = 344, // Same as 366 apparently, see ffxvi.exe 0F 84 ? ? ? ? 81 E9 ? ? ? ? 0F 84 ? ? ? ? 83 E9 ? 0F 84 ? ? ? ? 81 F9
-    normalcameraparam = 366,
-    astralprojection = 373,
-    mapdirectorsequence = 375,
-    directorfaketargetsettings = 382,
-    directoractorlist = 399,
-    behaviormovesequence = 403, // behaviormovesequence (or behaviormoveset)
-    behaviorwanderingparam = 405,
-    //unk_428 = 428,
-    battletag = 454,
-    behaviordialogueactionset = 455,
-    usersituationflag = 458,
-    shopchronicle = 484,
-    layoutgroup = 486, // groups from map
-    letterlist = 487,
-    shoppastsight = 488,
-    //unk_491 = 491,
-    battleblockdirector = 494,
-    caption = 496,
-    stageshopbase = 502,
-    collectionlist = 517,
-    shoplore = 523,
-    battletalk = 524,
-    howto = 528,
-    tutorialdirector = 530,
-    behaviorwaitparam = 539,
-    vacuumedmoveparam = 541,
-    tutorial = 545,
-    directorcondition = 557,
-    directoractormonitor = 568,
+            // not an actual table. maps to EquipmentData in the save file.
+            [112] = "equipment_index",
+            [114] = "sidequestbattledirector",
+            [124] = "item",
+            [127] = "levelcutscene",
+            [131] = "partytalk",
+            [135] = "droptable",
+            [138] = "behavioreventactionset",
+            [143] = "buff",
+            [146] = "bgmmode",
+            [147] = "placename",
+            [177] = "equipitem",
+            [192] = "cutsceneset",
+            [198] = "transition",
+            [204] = "questprogress",
+            [208] = "summonmode",
+            [224] = "speaker", // Used by panzer
+            [255] = "partyselect",
+            [256] = "partymember",
+            [260] = "scenariocutscene",
+            [266] = "icon_file_id", // Not sure
+            [273] = "worldmapanchor",
+            [277] = "usersituation",
+            [282] = "levelevent",
+            [312] = "battleevent",
+            [314] = "bgmselect",
+            [316] = "moviedata",
+            [317] = "gamemap",
+            //[330] = "unk_330",
+            [359] = "missionbattledirector",
+            [363] = "uicolor",
+            [344] = "normalcameraparam2", // Same as 366 apparently, see ffxvi.exe 0F 84 ? ? ? ? 81 E9 ? ? ? ? 0F 84 ? ? ? ? 83 E9 ? 0F 84 ? ? ? ? 81 F9
+            [366] = "normalcameraparam",
+            [373] = "astralprojection",
+            [375] = "mapdirectorsequence",
+            [382] = "directorfaketargetsettings",
+            [399] = "directoractorlist",
+            [403] = "behaviormovesequence", // behaviormovesequence (or behaviormoveset)
+            [405] = "behaviorwanderingparam",
+            //[428] = "unk_428",
+            [454] = "battletag",
+            [455] = "behaviordialogueactionset",
+            [458] = "usersituationflag",
+            [484] = "shopchronicle",
+            [486] = "layoutgroup", // groups from map
+            [487] = "letterlist",
+            [488] = "shoppastsight",
+            //[491] = "unk_491",
+            [494] = "battleblockdirector",
+            [496] = "caption",
+            [502] = "stageshopbase",
+            [517] = "collectionlist",
+            [523] = "shoplore",
+            [524] = "battletalk",
+            [528] = "howto",
+            [530] = "tutorialdirector",
+            [539] = "behaviorwaitparam",
+            [541] = "vacuumedmoveparam",
+            [545] = "tutorial",
+            [557] = "directorcondition",
+            [568] = "directoractormonitor",
 
-    // mapdirectorflag (table) seems unused.
-    // This seems to be used as a persistent map 'custom' flag state
-    // i.e enable flag 1, check on it, disable it, etc. see: questsequence
-    // up to 64
-    mapdirectorflag = 577,
-
-    behaviorlookatactparam = 628,
-    skill = 632,
-    behavioreventactionsequence = 639,
-    difficultylevel = 649,
-    behaviormoverailparam = 653,
-    directoreventtasklist = 655, // mapdirectorsequence
-    captionfreeword = 664,
-    directorforwardmoveparam = 665,
-    questcharalayoutbnpc = 668,
-    smobdirector = 692,
-    systemassisttimertalkitem = 700,
-    // 702 = related to difficulty? ffxvi.exe steam 1.0.1 -> sub_14065170C
-    layoutenpcinstance = 706,
-    shopmythril = 719,
-    behaviorlinkmovetarget = 722,
-    behaviorguidanceparam = 739,
-    telemetryobjectset = 742,
-    telemetrypropertyvalue = 758,
-    letter = 791,
-    telemetryobject = 793,
-    shopfixedpaletteexit = 818,
-    cutsceneconnect = 831,
-    cutsceneconnectcamerapreset = 837,
-    questcutscene = 841,
-    mainpartytalksequence = 843,
-    questpartytalksequence = 844,
-    maindefaulttalksequence = 845,
-    questdefaulttalksequence = 846,
-    questsimpleventsequence = 847,
-    mainsimpleeventsequence = 848,
-    behavioreventidlestateparam = 853,
-    behavioreventdirector = 854,
-    simpleevent = 856,
-    synopsis = 861,
-    simpleeventmarkerpoint = 884,
-    orchestrionlist = 889,
-    orchestrion = 890,
-    simpleeventlightpreset = 917,
-    phoenixshiftmove = 923,
-    questcharalayoutenpc = 932,
-    directorshipswingparameter = 934,
-    directormovecustomspeedparam = 935,
-    simpleeventselect = 942,
-    simpleeventsequencerandomset = 943,
-    cutsceneconnectquestseqarg = 945,
-    shopquestcounter = 957,
-    shopfixedpaletteaccess = 976,
-    shopfixedpalettewarp = 977,
-    fixedpalette = 978,
-    questdiscardlist = 985,
-    icondiscovery = 989,
-    shopfamevalue = 998,
-    //unk_1011 = 1011,
-    loresynopsysreference = 1012,
-    envvoice = 1027,
-    //unk_1044 = 1044,
-    abysseffect = 1047,
-    battlescoreattackcategory = 1049,
-    lorecutmreference = 1079,
-    lorecutqreference = 1080,
-    // set from 48 89 5C 24 ? 48 89 6C 24 ? 57 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 84 24 ? ? ? ? 48 8B 51
-    fieldmapdiscoverymask = 1094,
-    fieldmapobelisk = 1138,
-    dlcentitlement = 1144,
-    loredictionaryenemycategory = 1162,
-    patchdlcversion = 1174,
-    simpleeventlightpresetselect = 1186,
-    abyssboostparam = 1249,
-    //unk1255 = 1255,
+            // mapdirectorflag (table) seems unused.
+            // This seems to be used as a persistent map 'custom' flag state
+            // i.e enable flag 1, check on it, disable it, etc. see: questsequence
+            // up to 64
+            [577] = "mapdirectorflag",
+            [628] = "behaviorlookatactparam",
+            [632] = "skill",
+            [639] = "behavioreventactionsequence",
+            [649] = "difficultylevel",
+            [653] = "behaviormoverailparam",
+            [655] = "directoreventtasklist", // mapdirectorsequence
+            [664] = "captionfreeword",
+            [665] = "directorforwardmoveparam",
+            [668] = "questcharalayoutbnpc",
+            [692] = "smobdirector",
+            [700] = "systemassisttimertalkitem",
+            // 702 = related to difficulty? ffxvi.exe steam 1.0.1 -> sub_14065170C
+            [706] = "layoutenpcinstance",
+            [719] = "shopmythril",
+            [722] = "behaviorlinkmovetarget",
+            [739] = "behaviorguidanceparam",
+            [742] = "telemetryobjectset",
+            [758] = "telemetrypropertyvalue",
+            [791] = "letter",
+            [793] = "telemetryobject",
+            [818] = "shopfixedpaletteexit",
+            [831] = "cutsceneconnect",
+            [837] = "cutsceneconnectcamerapreset",
+            [841] = "questcutscene",
+            [843] = "mainpartytalksequence",
+            [844] = "questpartytalksequence",
+            [845] = "maindefaulttalksequence",
+            [846] = "questdefaulttalksequence",
+            [847] = "questsimpleventsequence",
+            [848] = "mainsimpleeventsequence",
+            [853] = "behavioreventidlestateparam",
+            [854] = "behavioreventdirector",
+            [856] = "simpleevent",
+            [861] = "synopsis",
+            [884] = "simpleeventmarkerpoint",
+            [889] = "orchestrionlist",
+            [890] = "orchestrion",
+            [917] = "simpleeventlightpreset",
+            [923] = "phoenixshiftmove",
+            [932] = "questcharalayoutenpc",
+            [934] = "directorshipswingparameter",
+            [935] = "directormovecustomspeedparam",
+            [942] = "simpleeventselect",
+            [943] = "simpleeventsequencerandomset",
+            [945] = "cutsceneconnectquestseqarg",
+            [957] = "shopquestcounter",
+            [976] = "shopfixedpaletteaccess",
+            [977] = "shopfixedpalettewarp",
+            [978] = "fixedpalette",
+            [985] = "questdiscardlist",
+            [989] = "icondiscovery",
+            [998] = "shopfamevalue",
+            //[1011] = "unk_1011",
+            [1012] = "loresynopsysreference",
+            [1027] = "envvoice",
+            //[1044] = "unk_1044",
+            [1047] = "abysseffect",
+            [1049] = "battlescoreattackcategory",
+            [1079] = "lorecutmreference",
+            [1080] = "lorecutqreference",
+            // set from 48 89 5C 24 ? 48 89 6C 24 ? 57 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 84 24 ? ? ? ? 48 8B 51
+            [1094] = "fieldmapdiscoverymask",
+            [1138] = "fieldmapobelisk",
+            [1144] = "dlcentitlement",
+            [1162] = "loredictionaryenemycategory",
+            [1174] = "patchdlcversion",
+            [1186] = "simpleeventlightpresetselect",
+            [1249] = "abyssboostparam",
+            //[1255] = "unk1255",
+        }
+    };
 }

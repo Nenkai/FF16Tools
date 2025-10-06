@@ -11,19 +11,21 @@ namespace FF16Tools.Files.Nex.Entities;
 /// </summary>
 public struct NexUnionKey
 {
-    public NexUnionType Type { get; set; }
+    public int Type { get; set; }
     public int Value { get; set; }
+    public string? TypeName { get; set; }
 
-    public NexUnionKey(NexUnionType type, int id)
+    public NexUnionKey(int type, int id, string? typeName)
     {
         Type = type;
         Value = id;
+        TypeName = typeName;
     }
 
     public static NexUnionKey FromStream(SmartBinaryStream bs)
     {
         var union = new NexUnionKey();
-        union.Type = (NexUnionType)bs.ReadInt16();
+        union.Type = (int)bs.ReadInt16();
         bs.ReadCheckPadding(2);
         union.Value = bs.ReadInt32();
         return union;
@@ -41,6 +43,9 @@ public struct NexUnionKey
         bs.WriteUInt16((ushort)Type);
         bs.WriteInt16((short)Value);
     }
+
+    public string GetNameOrValue()
+        => !string.IsNullOrEmpty(TypeName) ? TypeName : Type.ToString();
 
     public override string ToString()
     {

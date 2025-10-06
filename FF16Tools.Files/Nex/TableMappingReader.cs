@@ -17,7 +17,7 @@ public class TableMappingReader
 {
     public static NexTableLayout ReadTableLayout(string tableName, Version version, string codeName)
     {
-        var columnLayout = new NexTableLayout();
+        var columnLayout = new NexTableLayout(codeName);
         int offset = 0;
         IterativeLayoutReader(columnLayout, tableName, ref offset, version,codeName);
 

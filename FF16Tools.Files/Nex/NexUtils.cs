@@ -122,10 +122,10 @@ public class NexUtils
                                 NexUnionKey[] arr = new NexUnionKey[arrayLength];
                                 for (int i = 0; i < arrayLength; i++)
                                 {
-                                    NexUnionType type = (NexUnionType)sr.ReadUInt16();
+                                    int type = sr.ReadUInt16();
                                     sr.ReadInt16();
                                     int value = sr.ReadInt32();
-                                    arr[i] = new NexUnionKey(type, value);
+                                    arr[i] = new NexUnionKey(type, value, NexUnions.GetTypeNameForTypeId(tableColumnLayout.CodeName, type));
                                 }
 
                                 sr.Position = currentOffset + 8;
@@ -198,16 +198,16 @@ public class NexUtils
                 return sr.ReadUInt16();
             case NexColumnType.NexUnionKey32:
                 {
-                    NexUnionType unionType = (NexUnionType)sr.ReadUInt16();
+                    int unionType = sr.ReadUInt16();
                     sr.ReadInt16();
                     int id = sr.ReadInt32();
-                    return new NexUnionKey(unionType, id);
+                    return new NexUnionKey(unionType, id, NexUnions.GetTypeNameForTypeId(tableColumnLayout.CodeName, unionType));
                 }
             case NexColumnType.NexUnionKey16:
                 {
-                    NexUnionType unionType = (NexUnionType)sr.ReadUInt16();
+                    int unionType = sr.ReadUInt16();
                     short id = sr.ReadInt16();
-                    return new NexUnionKey(unionType, id);
+                    return new NexUnionKey(unionType, id, NexUnions.GetTypeNameForTypeId(tableColumnLayout.CodeName, unionType));
                 }
             default:
                 throw new NotImplementedException($"ReadCell: Type {column.Type} is invalid or not supported.");

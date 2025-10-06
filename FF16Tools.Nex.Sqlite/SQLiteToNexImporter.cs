@@ -1,19 +1,19 @@
-﻿using System;
+﻿using FF16Tools.Files.Nex;
+using FF16Tools.Files.Nex.Entities;
+
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
+
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using System.Globalization;
 using System.Text.Json;
-using System.Diagnostics;
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Data.Sqlite;
-
-using FF16Tools.Files.Nex;
-using FF16Tools.Files.Nex.Entities;
-using System.Diagnostics.CodeAnalysis;
 
 namespace FF16Tools.Nex.Sqlite;
 
@@ -35,7 +35,7 @@ public class SQLiteToNexImporter : IDisposable
 
     private SqliteConnection? _con;
 
-    private Dictionary<string, NexUnionType> _unionMap = [];
+    private Dictionary<string, int> _unionMap = [];
 
     // We don't want byte arrays to be converted to base64.
     private static JsonSerializerOptions _jsonSerializerOptions = new() { Converters = { new JsonByteArrayConverter() } };
@@ -129,7 +129,7 @@ public class SQLiteToNexImporter : IDisposable
             if (id < 0)
                 continue;
 
-            _unionMap.TryAdd(name, (NexUnionType)id);
+            _unionMap.TryAdd(name, (int)id);
         }
     }
 
@@ -355,7 +355,7 @@ public class SQLiteToNexImporter : IDisposable
             case NexColumnType.NexUnionKey16:
                 {
                     string str = (string)val;
-                    return ParseUnion(column, str);
+                    return ParseUnion(tableLayout, column, str);
                 }
             case NexColumnType.NexUnionKey32Array:
                 {
@@ -379,7 +379,7 @@ public class SQLiteToNexImporter : IDisposable
                         foreach (Range elemRange in contents.Split(','))
                         {
                             ReadOnlySpan<char> elemSpan = contents[elemRange];
-                            arr[i++] = ParseUnion(column, elemSpan);
+                            arr[i++] = ParseUnion(tableLayout, column, elemSpan);
                         }
 
                         return arr;
@@ -526,12 +526,13 @@ public class SQLiteToNexImporter : IDisposable
         }
     }
 
-    private NexUnionKey ParseUnion(NexStructColumn column, ReadOnlySpan<char> val)
+    private NexUnionKey ParseUnion(NexTableLayout layout, NexStructColumn column, ReadOnlySpan<char> val)
     {
         int idx = 0;
 
-        NexUnionType? type = null;
+        int? unionTypeId = null;
         int id = 0;
+        string? unionTypeName = null;
         foreach (Range elemRange in val.Split(':'))
         {
             if (idx > 2)
@@ -541,23 +542,35 @@ public class SQLiteToNexImporter : IDisposable
             if (idx == 0)
             {
                 // Check if the database already has mappings
-                if (_unionMap.GetAlternateLookup<ReadOnlySpan<char>>().TryGetValue(elemSpan, out NexUnionType value))
-                    type = value;
+                if (_unionMap.GetAlternateLookup<ReadOnlySpan<char>>().TryGetValue(elemSpan, out int value))
+                {
+                    unionTypeId = value;
+                    unionTypeName = elemSpan.ToString();
+                }
 
                 // If not, try to parse our local enum.
-                if (type is null)
+                NexUnions.UnionTypes.TryGetValue(layout.CodeName, out Dictionary<int, string>? unions);
+                if (unionTypeId is null && unions is not null)
                 {
-                    if (Enum.TryParse(elemSpan, out NexUnionType value_))
-                        type = value_;
+                    string str = elemSpan.ToString();
+
+                    // TODO: Optimize this
+                    var unionKv = unions.FirstOrDefault(e => e.Value.AsSpan().Equals(str, StringComparison.InvariantCultureIgnoreCase));
+                    if (!unionKv.Equals(default(KeyValuePair<int, string>)))
+                    {
+                        unionTypeId = unionKv.Key;
+                        unionTypeName = unionKv.Value;
+                    }
                 }
 
                 // If not, try to parse it as a number
-                if (type is null)
+                if (unionTypeId is null)
                 {
                     if (!ushort.TryParse(elemSpan, out ushort value_))
                         ThrowTableError($"Union is malformed at column {column.Name} - unable to parse '{elemSpan}' as union type or number");
 
-                    type = (NexUnionType)value_;
+                    unionTypeId = value_;
+                    unions?.TryGetValue(unionTypeId.Value, out unionTypeName);
                 }
             }
             else if (idx == 1)
@@ -574,7 +587,7 @@ public class SQLiteToNexImporter : IDisposable
         if (idx != 2)
             ThrowTableError($"Union is malformed at column {column.Name} - not enough elements, expected type:id");
 
-        return new NexUnionKey(type!.Value, id);
+        return new NexUnionKey(unionTypeId!.Value, id, unionTypeName);
     }
 
     private void ThrowIfStructElemNotValueKind(JsonElement jsonElement, JsonValueKind expectedKind, NexStructColumn nexColumn, int arrayIndex, int fieldIndex)

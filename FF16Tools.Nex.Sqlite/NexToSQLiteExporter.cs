@@ -135,10 +135,10 @@ public class NexToSQLiteExporter : IDisposable
         command.CommandText = $"INSERT INTO _uniontypes (Id, Name) VALUES (-100, '(FF16Tools) Do not edit/delete this table unless you know what you are doing.')";
         command.ExecuteNonQuery();
 
-        foreach (NexUnionType val in Enum.GetValues<NexUnionType>())
+        foreach (var kv in NexUnions.UnionTypes[_codeName])
         {
             command = _con.CreateCommand();
-            command.CommandText = $"INSERT INTO _uniontypes (Id, Name) VALUES ({(ushort)val},'{val}')";
+            command.CommandText = $"INSERT INTO _uniontypes (Id, Name) VALUES ({(ushort)kv.Key},'{kv.Value}')";
             _logger?.LogTrace("{command}", command.CommandText);
 
             command.ExecuteNonQuery();
@@ -352,7 +352,7 @@ public class NexToSQLiteExporter : IDisposable
                 NexColumnType.Byte => $"{(byte)cell}",
                 NexColumnType.SByte => $"{(sbyte)cell}",
                 NexColumnType.Double => $"{(double)cell}",
-                NexColumnType.NexUnionKey32 or NexColumnType.NexUnionKey16 => $"\"{((NexUnionKey)cell).Type}:{((NexUnionKey)cell).Value}\"",
+                NexColumnType.NexUnionKey32 or NexColumnType.NexUnionKey16 => $"\"{((NexUnionKey)cell).GetNameOrValue()}:{((NexUnionKey)cell).Value}\"",
                 NexColumnType.NexUnionKey32Array => $"\"[{string.Join(',', ((NexUnionKey[])cell).Select(e => $"{e.Type}:{e.Value}"))}]\"",
                 NexColumnType.ByteArray => $"\"{JsonSerializer.Serialize((byte[])cell, _jsonSerializerOptions)}\"",
                 NexColumnType.ShortArray => $"\"{JsonSerializer.Serialize((short[])cell, _jsonSerializerOptions)}\"",
