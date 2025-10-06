@@ -45,8 +45,8 @@ You can use the **GUI/Graphical version**, or for the command line (CLI) command
 
 ### Nex (NXD)
 
-* To SQLite: `nxd-to-sqlite -i <path to directory> [-o output sqlite file]`
-* From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list_separated_by_spaces> -o <output_directory>]`
+* To SQLite: `nxd-to-sqlite -i <path to directory> [-o output sqlite file] [-g <gametype>]`
+* From SQLite: `sqlite-to-nxd -i <path to sqlite file> [-t <table_list_separated_by_spaces> -o <output_directory>] [-g <gametype>]`
 
 > [!NOTE]
 > * When converting from SQLite to Nex, you can provide a table list to avoid converting all the tables if not needed.
@@ -61,14 +61,17 @@ You can use the **GUI/Graphical version**, or for the command line (CLI) command
 
 ### Method 1: Automatic Mod Loader
 
-Use [Reloaded-II](https://github.com/Reloaded-Project/Reloaded-II/releases) and install the [FFXVI Mod Loader](https://github.com/Nenkai/ff16.utility.modloader).
+Use [Reloaded-II](https://github.com/Reloaded-Project/Reloaded-II/releases) and install the mod loader for each game:
+* [FINAL FANTASY XVI](https://www.nexusmods.com/finalfantasy16/mods/3) ([**Guide**](https://nenkai.github.io/ffxvi-modding/modding/creating_mods/))
+* [FINAL FANTASY TACTICS - The Ivalice Chronicles](https://www.nexusmods.com/finalfantasytacticstheivalicechronicles/mods/4) ([**Guide**](https://nenkai.github.io/ffxvi-modding/modding/creating_mods_fft/))
 
-Refer to [this](https://nenkai.github.io/ffxvi-modding/modding/installing_mods/).
 
 ### Method 2: Modding Manually
 
-> [!NOTE]
-> You should use **Method 1** if you intend to distribute mods, otherwise it is not possible for users to install multiple mods that edits the same pack contents.
+> [!WARNING]
+> This guide is only for FINAL FANTASY XVI as it uses a different mechanism for sideloading packs.
+> 
+> You should use **Method 1** if you intend to distribute mods, otherwise it is not possible for users to install multiple mods that edits the same pack contents. **You should not be touching original game files!**
 
 You may choose to rebuild a `.pac` entirely, or **preferably** you can use `.diff.pac` files.
 
