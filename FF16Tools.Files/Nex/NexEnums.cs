@@ -46,10 +46,13 @@ public class NexUnions
     {
         ["ffto"] = new()
         {
+            [7] = "SortieConfirm",
             [24] = "Speaker",
             [113] = "PlaceName",
             [115] = "CaptionFreeWord",
             [247] = "VoicePatternSituation",
+            [289] = "ContinuousSortieConfirm",
+            [382] = "Jingle",
         },
 
         ["faith"] = new Dictionary<int, string>()
