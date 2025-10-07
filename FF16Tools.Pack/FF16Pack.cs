@@ -112,7 +112,7 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         if (spl.Length >= 3)
         {
             if (FF16PackPathUtil.PackLocales.Contains(spl[^2]))
-                pack.Locale = spl[1];
+                pack.Locale = spl[^2];
         }
 
         uint headerSize = fileBinStream.ReadUInt32();
