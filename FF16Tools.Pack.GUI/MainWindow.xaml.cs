@@ -1,4 +1,9 @@
-﻿using System;
+﻿using FF16Tools.Pack.Crypto;
+using FF16Tools.Pack.Packing;
+using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -10,12 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.ComponentModel;
-using Microsoft.Win32;
-
-using Microsoft.Extensions.Logging;
-using FF16Tools.Pack.Packing;
-using System.Diagnostics;
 
 namespace FF16Tools.Pack.GUI;
 
@@ -26,17 +25,17 @@ public partial class MainWindow : Window
 {
 
     //|||||||||||||||||||||||||||||||||| PUBLIC VARIABLES ||||||||||||||||||||||||||||||||||
-    public static string Version = "1.0.1";
+    public static string Version = "1.0.2";
     public static string WindowTitle = "FF16 Unpacker by Nenkai (GUI) " + Version;
 
     //|||||||||||||||||||||||||||||||||| PRIVATE VARIABLES ||||||||||||||||||||||||||||||||||
     private ILoggerFactory _loggerFactory;
-    
+
     private string unpackInputPath = ""; //This is the source file that we read from (or folder path if its configured)
     private string unpackOutputPath = ""; //This is the folder path where we output our data to
     private string unpackGameFile = ""; //This is where the user can specify what file they want to pull from an archive
 
-    private string repackInputPath = ""; 
+    private string repackInputPath = "";
     private string repackOutputPath = "";
     private string repackPackName = "";
     private bool repackEncrypt = false;
@@ -51,6 +50,28 @@ public partial class MainWindow : Window
     }
 
     private ExtractionMode extractionMode;
+
+    private enum Game
+    {
+        FFXVI = 0,
+        FFT = 1
+    }
+
+    private Dictionary<Game, string> GameNameMap = new()
+    {
+        [Game.FFXVI] = "Final Fantasy 16",
+        [Game.FFT] = "Final Fantasy Tactics - The Ivalice Chronicles"
+    };
+
+    private Dictionary<Game, string> GameCodeNameMap = new()
+    {
+        [Game.FFXVI] = PackKeyStore.FFXVI_CODENAME,
+        [Game.FFT] = PackKeyStore.FFT_IVALICE_CODENAME
+    };
+
+    private Game game;
+
+    private string CurrentGameCodeName => GameCodeNameMap[game];
 
     private bool unpackInputPathIsFolder
     {
@@ -156,7 +177,7 @@ public partial class MainWindow : Window
             {
                 foreach (string pacFilePath in pacFilePaths)
                 {
-                    using var pack = FF16Pack.Open(pacFilePath);
+                    using var pack = FF16Pack.Open(pacFilePath, CurrentGameCodeName);
                     string packName = System.IO.Path.GetFileNameWithoutExtension(pacFilePath);
                     string outputDir = System.IO.Path.Combine(unpackOutputPath, packName);
                     Directory.CreateDirectory(outputDir);
@@ -180,14 +201,14 @@ public partial class MainWindow : Window
             //perform extraction on the single pac file that the user wants to use...
             try
             {
-                using var pack = FF16Pack.Open(unpackInputPath);
+                using var pack = FF16Pack.Open(unpackInputPath, CurrentGameCodeName);
 
                 string packName = System.IO.Path.GetFileNameWithoutExtension(unpackInputPath);
                 string outputDir = System.IO.Path.Combine(unpackOutputPath, packName);
                 Directory.CreateDirectory(outputDir);
 
                 //if its configured to where the user wants to extract a specific game file from an archive, then let them
-                if(extractionMode == ExtractionMode.SingleArchiveWithGameFile)
+                if (extractionMode == ExtractionMode.SingleArchiveWithGameFile)
                     await pack.ExtractFileAsync(unpackGameFile, outputDir);
                 else //otherwise extract all of the files from the archive...
                     await pack.ExtractAllAsync(outputDir);
@@ -209,7 +230,7 @@ public partial class MainWindow : Window
 
     public void ListFile(string path)
     {
-        using var pack = FF16Pack.Open(path, _loggerFactory);
+        using var pack = FF16Pack.Open(path, CurrentGameCodeName, _loggerFactory);
         pack.DumpInfo();
 
         string inputFileName = System.IO.Path.GetFileNameWithoutExtension(path);
@@ -228,7 +249,7 @@ public partial class MainWindow : Window
 
         try
         {
-            if(unpackInputPathIsFolder)
+            if (unpackInputPathIsFolder)
             {
                 List<string> pacFilePaths = new List<string>();
 
@@ -270,7 +291,7 @@ public partial class MainWindow : Window
     /// <returns></returns>
     public static string GetPath(bool folderPath)
     {
-        if(folderPath)
+        if (folderPath)
         {
             OpenFolderDialog folderDialog = new();
 
@@ -311,6 +332,13 @@ public partial class MainWindow : Window
     {
         this.Title = WindowTitle;
         ui_extractiomode_combobox.SelectedIndex = 0; //Select the first index of extraction mode by default "SingleArchive"
+
+        foreach (Game gameOption in Enum.GetValues(typeof(Game)))
+        {
+            ui_game_combobox.Items.Add(GameNameMap[gameOption]);
+        }
+
+        ui_game_combobox.SelectedIndex = 0;
 
         //setup our log provider so we can output everything to our BigTextWindow later.
         textRedirect = new TextRedirector();
@@ -552,5 +580,11 @@ public partial class MainWindow : Window
         {
             ErrorBox("Pack Error!", ex.Message);
         }
+    }
+
+    private void ui_game_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        game = (Game)ui_game_combobox.SelectedIndex;
+        UpdateUI();
     }
 }

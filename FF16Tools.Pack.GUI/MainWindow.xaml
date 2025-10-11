@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:FF16Tools.Pack.GUI"
         mc:Ignorable="d"
         Title="FF16 Unpacker by Nenkai (GUI)" 
-        Height="310" 
+        Height="347" 
         Width="800" 
-        MinHeight="310" 
+        MinHeight="347
+        " 
         MaxHeight="310"
         MinWidth="800"
         WindowStartupLocation="CenterScreen"
@@ -33,27 +34,33 @@
                         <ComboBoxItem Content="Multiple Archives (Input Folder)"></ComboBoxItem>
                         <ComboBoxItem Content="Single Archive with Specific File Name (Input File)"></ComboBoxItem>
                     </ComboBox>
+                    
+                    <!-- GAME SELECTION SECTION -->
+                    <Label Name="ui_game_label" Content="Game:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="64" Height="32"/>
+
+                    <ComboBox Name="ui_game_combobox" Margin="78,65,10,0" Height="32" SelectionChanged="ui_game_combobox_SelectionChanged" HorizontalAlignment="Stretch"/>
+
 
                     <!-- INPUT SECTION -->
-                    <Label Name="ui_input_label" Content="Input:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
-                    <TextBox Name="ui_input_textbox" Margin="79,64,77,0" TextWrapping="Wrap" Text="Input Path" VerticalAlignment="Top" Height="26" TextChanged="ui_input_textbox_TextChanged" 
+                    <Label Name="ui_input_label" Content="Input:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
+                    <TextBox Name="ui_input_textbox" Margin="78,102,78,0" TextWrapping="Wrap" Text="Input Path" VerticalAlignment="Top" Height="26" TextChanged="ui_input_textbox_TextChanged" 
                              MouseDoubleClick="ui_input_textbox_MouseDoubleClick" AllowDrop="True" PreviewDragOver="ui_input_textbox_PreviewDragOver" Drop="ui_input_textbox_Drop"/>
 
-                    <Button Name="ui_input_button" Content="Open" HorizontalAlignment="Right" Margin="0,64,10,0" VerticalAlignment="Top" Height="32" Width="62" Click="ui_input_button_Click"/>
+                    <Button Name="ui_input_button" Content="Open" HorizontalAlignment="Right" Margin="0,102,10,0" VerticalAlignment="Top" Height="32" Width="62" Click="ui_input_button_Click"/>
 
                     <!-- GAME FILE SECTION -->
 
                     <!-- OUTPUT SECTION -->
-                    <Label Name="ui_output_label" Content="Output:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="9,102,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
-                    <TextBox Name="ui_output_textbox" Margin="78,101,78,0" TextWrapping="Wrap" Text="Output Folder" VerticalAlignment="Top" Height="26" TextChanged="ui_output_textbox_TextChanged" 
+                    <Label Name="ui_output_label" Content="Output:" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="9,138,0,0" VerticalAlignment="Top" Width="64" Height="31"/>
+                    <TextBox Name="ui_output_textbox" Margin="78,138,78,0" TextWrapping="Wrap" Text="Output Folder" VerticalAlignment="Top" Height="26" TextChanged="ui_output_textbox_TextChanged" 
                              MouseDoubleClick="ui_output_textbox_MouseDoubleClick" AllowDrop="True" PreviewDragOver="ui_output_textbox_PreviewDragOver" Drop="ui_output_textbox_Drop"/>
-                    <Button Name="ui_output_button" Content="Open" Margin="0,101,11,0" Height="32" Width="62" Click="ui_output_button_Click" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                    <Button Name="ui_output_button" Content="Open" Margin="0,138,11,0" Height="32" Width="62" Click="ui_output_button_Click" VerticalAlignment="Top" HorizontalAlignment="Right"/>
 
-                    <Separator Name="ui_seperatorBottom" Margin="10,138,10,0" VerticalAlignment="Top" Height="12"/>
+                    <Separator Name="ui_seperatorBottom" Margin="10,175,10,0" VerticalAlignment="Top" Height="12"/>
 
                     <!-- ACTIONS SECTION -->
-                    <Button Name="ui_extract_button" Content="Extract" Margin="9,194,11,0" VerticalAlignment="Top" Height="32" Click="ui_extract_button_Click" HorizontalAlignment="Stretch"/>
-                    <Button Name="ui_listfiles_button" Content="List Files" Margin="9,154,11,0" VerticalAlignment="Top" Height="32" Click="ui_listfiles_button_Click" HorizontalAlignment="Stretch"/>
+                    <Button Name="ui_extract_button" Content="Extract" Margin="9,231,11,0" VerticalAlignment="Top" Height="32" Click="ui_extract_button_Click" HorizontalAlignment="Stretch"/>
+                    <Button Name="ui_listfiles_button" Content="List Files" Margin="9,194,11,0" VerticalAlignment="Top" Height="32" Click="ui_listfiles_button_Click" HorizontalAlignment="Stretch"/>
                 </Grid>
             </TabItem>
 
