@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FF16Tools.Pack.GUI;
 
@@ -23,33 +22,32 @@ namespace FF16Tools.Pack.GUI;
 /// </summary>
 public partial class MainWindow : Window
 {
-
     //|||||||||||||||||||||||||||||||||| PUBLIC VARIABLES ||||||||||||||||||||||||||||||||||
-    public static string Version = "1.0.2";
-    public static string WindowTitle = "FF16 Unpacker by Nenkai (GUI) " + Version;
+    public static string Version = "1.1.0";
+    public static string WindowTitle = "FF16Tools.GUI by Nenkai " + Version;
 
     //|||||||||||||||||||||||||||||||||| PRIVATE VARIABLES ||||||||||||||||||||||||||||||||||
     private ILoggerFactory _loggerFactory;
 
-    private string unpackInputPath = ""; //This is the source file that we read from (or folder path if its configured)
-    private string unpackOutputPath = ""; //This is the folder path where we output our data to
-    private string unpackGameFile = ""; //This is where the user can specify what file they want to pull from an archive
+    private string _unpackInputPath = ""; //This is the source file that we read from (or folder path if its configured)
+    private string _unpackOutputPath = ""; //This is the folder path where we output our data to
+    private string _unpackGameFile = ""; //This is where the user can specify what file they want to pull from an archive
+    private ExtractionMode _extractionMode;
 
-    private string repackInputPath = "";
-    private string repackOutputPath = "";
-    private string repackPackName = "";
-    private bool repackEncrypt = false;
+    private string _repackInputPath = "";
+    private string _repackOutputPath = "";
+    private string _repackPackName = "";
+    private bool _repackEncrypt = false;
+
 
     //int enums that represent each "value" defined in the ExtractionMode combobox.
     //NOTE: these indexes are in the same order as the items in the XAML document.
     private enum ExtractionMode
     {
-        SingleArchive = 0,
-        MultipleArchives = 1,
+        MultiplePacks = 0,
+        SingleArchive = 1,
         SingleArchiveWithGameFile = 2,
     }
-
-    private ExtractionMode extractionMode;
 
     private enum Game
     {
@@ -57,13 +55,13 @@ public partial class MainWindow : Window
         FFT = 1
     }
 
-    private Dictionary<Game, string> GameNameMap = new()
+    private readonly Dictionary<Game, string> GameNameMap = new()
     {
         [Game.FFXVI] = "Final Fantasy 16",
         [Game.FFT] = "Final Fantasy Tactics - The Ivalice Chronicles"
     };
 
-    private Dictionary<Game, string> GameCodeNameMap = new()
+    private readonly Dictionary<Game, string> GameCodeNameMap = new()
     {
         [Game.FFXVI] = PackKeyStore.FFXVI_CODENAME,
         [Game.FFT] = PackKeyStore.FFT_IVALICE_CODENAME
@@ -72,14 +70,6 @@ public partial class MainWindow : Window
     private Game game;
 
     private string CurrentGameCodeName => GameCodeNameMap[game];
-
-    private bool unpackInputPathIsFolder
-    {
-        get
-        {
-            return extractionMode == ExtractionMode.MultipleArchives;
-        }
-    }
 
     //NOTE: Janky way of displaying work at the moment, it's better to have a progress bar displaying progress but this will suffice.
     private bool isWorking = false;
@@ -107,27 +97,22 @@ public partial class MainWindow : Window
     public bool CanExtract()
     {
         //If the user set their input path use a folder (i.e. they want to bulk convert .pac files)
-        if (unpackInputPathIsFolder)
+        if (_extractionMode == ExtractionMode.MultiplePacks)
         {
-            //Make sure the input folder that the user set does exist...
-            if (!Directory.Exists(unpackInputPath))
-            {
-                ErrorBox("Extraction Error!", "Error! The input folder path you set does not exist! (or is not a valid folder path)");
-                return false;
-            }
+            return true;
         }
         //If the user set their input path use a single file (i.e. they want to convert a single .pac file)
         else
         {
             //If the file path the user set no longer exists...
-            if (!File.Exists(unpackInputPath))
+            if (!File.Exists(_unpackInputPath))
             {
                 ErrorBox("Extraction Error!", "Error! The input file path you set does not exist! (or is not a valid file path)");
                 return false;
             }
             //If the file path is referencing a file that is not actually a .pac file...
             //NOTE: This only will happen if the user inputs a file manually in the input textbox.
-            else if (System.IO.Path.GetExtension(unpackInputPath) != ".pac")
+            else if (System.IO.Path.GetExtension(_unpackInputPath) != ".pac")
             {
                 ErrorBox("Extraction Error!", "Error! The input file path you set is not a .pac file!");
                 return false;
@@ -135,7 +120,7 @@ public partial class MainWindow : Window
         }
 
         //Make sure the output folder that the user set does exist...
-        if (!Directory.Exists(unpackOutputPath))
+        if (!Directory.Exists(_unpackOutputPath))
         {
             ErrorBox("Extraction Error!", "Error! The output folder path you set does not exist! (or is not a valid folder path)");
             return false;
@@ -153,13 +138,13 @@ public partial class MainWindow : Window
 
         //|||||||||||||||||||||||||||||||||| INPUT FOLDER (MULTIPLE .PAC) ||||||||||||||||||||||||||||||||||
         //Here the user input a folder path that contains multiple .pac files, so they want to bulk unpack whatever is in them.
-        if (unpackInputPathIsFolder)
+        if (_extractionMode == ExtractionMode.MultiplePacks)
         {
             //declare an array that will store the pac files that we find
             List<string> pacFilePaths = [];
 
             //iterate through all of the files in the input folder path to find the .pac files
-            foreach (string filePath in Directory.GetFiles(unpackInputPath))
+            foreach (string filePath in Directory.GetFiles(_unpackInputPath))
             {
                 if (System.IO.Path.GetExtension(filePath) == ".pac")
                     pacFilePaths.Add(filePath);
@@ -173,24 +158,26 @@ public partial class MainWindow : Window
             }
 
             //perform an extraction on all of the pac files we found...
+            string oldLabel = (string)ui_working_label.Content;
             try
             {
+                Directory.CreateDirectory(_unpackOutputPath);
+
                 foreach (string pacFilePath in pacFilePaths)
                 {
                     using var pack = FF16Pack.Open(pacFilePath, CurrentGameCodeName);
-                    string packName = System.IO.Path.GetFileNameWithoutExtension(pacFilePath);
-                    string outputDir = System.IO.Path.Combine(unpackOutputPath, packName);
-                    Directory.CreateDirectory(outputDir);
-
-                    await pack.ExtractAllAsync(outputDir);
+                    
+                    ui_working_label.Content = $"Extracting {Path.GetFileName(pacFilePath)}...";
+                    await pack.ExtractAllAsync(_unpackOutputPath);
                 }
 
                 InfoBox("Extraction Complete!", "Finished Extracting .pac files to output folder.");
-                Process.Start("explorer.exe", System.IO.Path.GetDirectoryName(repackInputPath));
+                Process.Start("explorer.exe", _unpackOutputPath);
             }
             catch (Exception ex)
             {
                 ErrorBox("Extraction Error!", string.Format("Error! {0}", ex));
+                ui_working_label.Content = oldLabel;
             }
         }
 
@@ -201,15 +188,15 @@ public partial class MainWindow : Window
             //perform extraction on the single pac file that the user wants to use...
             try
             {
-                using var pack = FF16Pack.Open(unpackInputPath, CurrentGameCodeName);
+                using var pack = FF16Pack.Open(_unpackInputPath, CurrentGameCodeName);
 
-                string packName = System.IO.Path.GetFileNameWithoutExtension(unpackInputPath);
-                string outputDir = System.IO.Path.Combine(unpackOutputPath, packName);
+                string packName = System.IO.Path.GetFileNameWithoutExtension(_unpackInputPath);
+                string outputDir = System.IO.Path.Combine(_unpackOutputPath, packName);
                 Directory.CreateDirectory(outputDir);
 
                 //if its configured to where the user wants to extract a specific game file from an archive, then let them
-                if (extractionMode == ExtractionMode.SingleArchiveWithGameFile)
-                    await pack.ExtractFileAsync(unpackGameFile, outputDir);
+                if (_extractionMode == ExtractionMode.SingleArchiveWithGameFile)
+                    await pack.ExtractFileAsync(_unpackGameFile, outputDir);
                 else //otherwise extract all of the files from the archive...
                     await pack.ExtractAllAsync(outputDir);
 
@@ -233,8 +220,8 @@ public partial class MainWindow : Window
         using var pack = FF16Pack.Open(path, CurrentGameCodeName, _loggerFactory);
         pack.DumpInfo();
 
-        string inputFileName = System.IO.Path.GetFileNameWithoutExtension(path);
-        string outputPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(path)), $"{inputFileName}_files.txt");
+        string inputFileName = Path.GetFileNameWithoutExtension(path);
+        string outputPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path)), $"{inputFileName}_files.txt");
         pack.ListFiles(outputPath, log: true);
     }
 
@@ -249,13 +236,13 @@ public partial class MainWindow : Window
 
         try
         {
-            if (unpackInputPathIsFolder)
+            if (_extractionMode == ExtractionMode.MultiplePacks)
             {
-                List<string> pacFilePaths = new List<string>();
+                List<string> pacFilePaths = [];
 
-                foreach (string filePath in Directory.GetFiles(unpackInputPath))
+                foreach (string filePath in Directory.GetFiles(_unpackInputPath))
                 {
-                    if (System.IO.Path.GetExtension(filePath) == ".pac")
+                    if (Path.GetExtension(filePath) == ".pac")
                         pacFilePaths.Add(filePath);
                 }
 
@@ -269,7 +256,7 @@ public partial class MainWindow : Window
                     ListFile(pacFilePaths[i]);
             }
             else
-                ListFile(unpackInputPath);
+                ListFile(_unpackInputPath);
         }
         catch (Exception ex)
         {
@@ -359,7 +346,7 @@ public partial class MainWindow : Window
         tb_TabControl.Visibility = mainElementVisibility;
 
         //Disable the list files button because with this mode the user already knows what file they want (supposedly)
-        ui_listfiles_button.IsEnabled = extractionMode != ExtractionMode.SingleArchiveWithGameFile;
+        ui_listfiles_button.IsEnabled = _extractionMode != ExtractionMode.SingleArchiveWithGameFile;
     }
 
     //|||||||||||||||||||||||||||||||||| XAML EVENTS ||||||||||||||||||||||||||||||||||
@@ -371,25 +358,35 @@ public partial class MainWindow : Window
 
     private void ui_extractiomode_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        extractionMode = (ExtractionMode)ui_extractiomode_combobox.SelectedIndex;
+        _extractionMode = (ExtractionMode)ui_extractiomode_combobox.SelectedIndex;
         UpdateUI();
     }
 
     //================= (UNPACK) INPUT SECTION =================
-    private void ui_input_textbox_TextChanged(object sender, TextChangedEventArgs e) => unpackInputPath = ui_input_textbox.Text;
+    private void ui_input_textbox_TextChanged(object sender, TextChangedEventArgs e) => _unpackInputPath = ui_input_textbox.Text;
 
     private void ui_input_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        GetPath(ref unpackInputPath, unpackInputPathIsFolder);
-        ui_input_textbox.Text = unpackInputPath;
-        ui_output_textbox.Text = unpackOutputPath = System.IO.Path.GetDirectoryName(unpackInputPath);
+        GetPath(ref _unpackInputPath, _extractionMode == ExtractionMode.MultiplePacks);
+        ui_input_textbox.Text = _unpackInputPath;
+
+        string dirName = Path.GetDirectoryName(_unpackInputPath)!;
+        if (_extractionMode == ExtractionMode.MultiplePacks)
+            ui_output_textbox.Text = _unpackOutputPath = Path.Combine(dirName, Path.GetFileNameWithoutExtension(_unpackInputPath) + "_extracted");
+        else
+            ui_output_textbox.Text = _unpackOutputPath = dirName;
     }
 
     private void ui_input_button_Click(object sender, RoutedEventArgs e)
     {
-        GetPath(ref unpackInputPath, unpackInputPathIsFolder);
-        ui_input_textbox.Text = unpackInputPath;
-        ui_output_textbox.Text = unpackOutputPath = System.IO.Path.GetDirectoryName(unpackInputPath);
+        GetPath(ref _unpackInputPath, _extractionMode == ExtractionMode.MultiplePacks);
+        ui_input_textbox.Text = _unpackInputPath;
+
+        string dirName = Path.GetDirectoryName(_unpackInputPath)!;
+        if (_extractionMode == ExtractionMode.MultiplePacks)
+            ui_output_textbox.Text = _unpackOutputPath = Path.Combine(dirName, Path.GetFileNameWithoutExtension(_unpackInputPath) + "_extracted");
+        else
+            ui_output_textbox.Text = _unpackOutputPath = dirName;
     }
 
     private void ui_input_textbox_Drop(object sender, DragEventArgs e)
@@ -416,18 +413,18 @@ public partial class MainWindow : Window
 
     //================= (UNPACK) OUTPUT SECTION =================
 
-    private void ui_output_textbox_TextChanged(object sender, TextChangedEventArgs e) => unpackOutputPath = ui_output_textbox.Text;
+    private void ui_output_textbox_TextChanged(object sender, TextChangedEventArgs e) => _unpackOutputPath = ui_output_textbox.Text;
 
     private void ui_output_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        GetPath(ref unpackOutputPath, true);
-        ui_output_textbox.Text = unpackOutputPath;
+        GetPath(ref _unpackOutputPath, true);
+        ui_output_textbox.Text = _unpackOutputPath;
     }
 
     private void ui_output_button_Click(object sender, RoutedEventArgs e)
     {
-        GetPath(ref unpackOutputPath, true);
-        ui_output_textbox.Text = unpackOutputPath;
+        GetPath(ref _unpackOutputPath, true);
+        ui_output_textbox.Text = _unpackOutputPath;
     }
 
     private void ui_output_textbox_PreviewDragOver(object sender, DragEventArgs e)
@@ -483,53 +480,53 @@ public partial class MainWindow : Window
 
     //================= (REPACK) INPUT SECTION =================
 
-    private void ui_repack_input_textbox_TextChanged(object sender, TextChangedEventArgs e) => repackInputPath = ui_repack_input_textbox.Text;
+    private void ui_repack_input_textbox_TextChanged(object sender, TextChangedEventArgs e) => _repackInputPath = ui_repack_input_textbox.Text;
 
     private void ui_repack_input_button_Click(object sender, RoutedEventArgs e)
     {
-        GetPath(ref repackInputPath, true);
-        ui_repack_input_textbox.Text = repackInputPath;
-        ui_repack_output_textbox.Text = repackOutputPath = GenerateOutputPathFromInput();
+        GetPath(ref _repackInputPath, true);
+        ui_repack_input_textbox.Text = _repackInputPath;
+        ui_repack_output_textbox.Text = _repackOutputPath = GenerateOutputPathFromInput();
     }
 
     private void ui_repack_input_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        GetPath(ref repackInputPath, true);
-        ui_repack_input_textbox.Text = repackInputPath;
+        GetPath(ref _repackInputPath, true);
+        ui_repack_input_textbox.Text = _repackInputPath;
 
-        ui_repack_output_textbox.Text = repackOutputPath = GenerateOutputPathFromInput();
+        ui_repack_output_textbox.Text = _repackOutputPath = GenerateOutputPathFromInput();
     }
 
     private string GenerateOutputPathFromInput()
     {
-        string packName = System.IO.Path.GetFileName(repackInputPath);
+        string packName = System.IO.Path.GetFileName(_repackInputPath);
         List<string> spl = packName.Split('.').ToList();
         spl.Insert(1, "diff");
         string diffPackName = string.Join('.', spl);
 
-        string diffFullPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(repackInputPath), diffPackName) + ".pac";
+        string diffFullPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(_repackInputPath), diffPackName) + ".pac";
         return diffFullPath;
     }
 
     //================= (REPACK) OUTPUT SECTION =================
 
-    private void ui_repack_output_textbox_TextChanged(object sender, TextChangedEventArgs e) => repackOutputPath = ui_repack_output_textbox.Text;
+    private void ui_repack_output_textbox_TextChanged(object sender, TextChangedEventArgs e) => _repackOutputPath = ui_repack_output_textbox.Text;
 
     private void ui_repack_output_button_Click(object sender, RoutedEventArgs e)
     {
-        GetPath(ref repackOutputPath, false);
-        ui_repack_output_textbox.Text = repackOutputPath;
+        GetPath(ref _repackOutputPath, false);
+        ui_repack_output_textbox.Text = _repackOutputPath;
     }
 
     private void ui_repack_output_textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        GetPath(ref repackOutputPath, false);
-        ui_repack_output_textbox.Text = repackOutputPath;
+        GetPath(ref _repackOutputPath, false);
+        ui_repack_output_textbox.Text = _repackOutputPath;
     }
 
     //================= (REPACK) ENCRYPT SECTION =================
 
-    private void ui_repack_encrypt_checkbox_Click(object sender, RoutedEventArgs e) => repackEncrypt = (bool)ui_repack_encrypt_checkbox.IsChecked;
+    private void ui_repack_encrypt_checkbox_Click(object sender, RoutedEventArgs e) => _repackEncrypt = (bool)ui_repack_encrypt_checkbox.IsChecked;
 
     //================= (REPACK) ACTIONS SECTION =================
 
@@ -547,7 +544,7 @@ public partial class MainWindow : Window
     public bool CanPack()
     {
         //Make sure the output folder that the user set does exist...
-        if (!Directory.Exists(repackInputPath))
+        if (!Directory.Exists(_repackInputPath))
         {
             ErrorBox("Extraction Error!", "Error! The input folder path you set does not exist! (or is not a valid folder path)");
             return false;
@@ -565,16 +562,16 @@ public partial class MainWindow : Window
         {
             var packBuilder = new FF16PackBuilder(new PackBuildOptions()
             {
-                Encrypt = repackEncrypt,
+                Encrypt = _repackEncrypt,
             });
 
-            packBuilder.InitFromDirectory(repackInputPath);
-            await packBuilder.WriteToAsync(repackOutputPath);
+            packBuilder.InitFromDirectory(_repackInputPath);
+            await packBuilder.WriteToAsync(_repackOutputPath);
 
             InfoBox("Extraction Complete!", "Finished packing.");
 
             if (ui_repack_open_on_finish_checkbox.IsChecked == true)
-                Process.Start("explorer.exe", $"/select, \"{System.IO.Path.GetFullPath(repackOutputPath)}\"");
+                Process.Start("explorer.exe", $"/select, \"{System.IO.Path.GetFullPath(_repackOutputPath)}\"");
         }
         catch (Exception ex)
         {
