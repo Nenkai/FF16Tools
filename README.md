@@ -3,7 +3,7 @@
 Tools & Library for games created using the Final Fantasy XVI / 16 Engine:
 
 * FINAL FANTASY XVI
-* FINAL FANTASY TACTICS - The Ivalice Chronicles (mod loader in progress.)
+* FINAL FANTASY TACTICS - The Ivalice Chronicles
 
 ### Features
 
