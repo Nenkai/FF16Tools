@@ -29,9 +29,9 @@ public class NexUnions
 {
     public static string? GetTypeNameForTypeId(string codeName, int unionTypeId)
     {
-        if (UnionTypes.TryGetValue(codeName, out Dictionary<int, string> unionTypes))
+        if (UnionTypes.TryGetValue(codeName, out Dictionary<int, string>? unionTypes))
         {
-            if (unionTypes.TryGetValue(unionTypeId, out string typeName))
+            if (unionTypes.TryGetValue(unionTypeId, out string? typeName))
             {
                 return typeName;
             }
