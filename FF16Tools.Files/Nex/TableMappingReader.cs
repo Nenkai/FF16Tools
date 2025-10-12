@@ -15,6 +15,14 @@ namespace FF16Tools.Files.Nex;
 /// </summary>
 public class TableMappingReader
 {
+    /// <summary>
+    /// Opens a table layout by name. <br/>
+    /// Note: This will open the file on disk. Make sure to only call this once per table you need.
+    /// </summary>
+    /// <param name="tableName">Table name.</param>
+    /// <param name="version">Version.</param>
+    /// <param name="codeName">Codename. Valid is "faith" or "ffto".</param>
+    /// <returns></returns>
     public static NexTableLayout ReadTableLayout(string tableName, Version version, string codeName)
     {
         var columnLayout = new NexTableLayout(codeName);
@@ -25,12 +33,25 @@ public class TableMappingReader
         return columnLayout;
     }
 
+    /// <summary>
+    /// Returns whether a table layout exists on disk.
+    /// <param name="tableName">Table name.</param>
+    /// <param name="codeName">Codename. Valid is "faith" or "ffto".</param>
+    /// <returns></returns>
     public static bool LayoutExists(string tableName, string codeName)
     {
         string? path = GetHeadersFilePath(tableName, codeName);
         return !string.IsNullOrEmpty(path);
     }
 
+    /// <summary>
+    /// Gets the path to a layout file. <br/>
+    /// Note: This will open the file on disk. Make sure to only call this once per table you need.
+    /// </summary>
+    /// <param name="tableName">Table name.</param>
+    /// <param name="codeName">Codename. Valid is "faith" or "ffto".</param>
+    /// <param name="checkSize">Whether to alos check that the file is not empty.</param>
+    /// <returns></returns>
     public static string? GetHeadersFilePath(string tableName, string codeName, bool checkSize = false)
     {
         string exePath = NexUtils.GetCurrentExecutingPath();
