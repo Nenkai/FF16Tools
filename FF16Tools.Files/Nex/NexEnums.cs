@@ -51,9 +51,13 @@ public class NexUnions
             [81] = "Item",
             [113] = "PlaceName",
             [115] = "CaptionFreeWord",
+            // 120 - something to do with GameFlowManager
+            [192] = "ClassicSubtitles",
+            [209] = "UISubtitles",
             [247] = "VoicePatternSituation",
             [289] = "ContinuousSortieConfirm",
             [314] = "SystemBonusEntitlement",
+            [326] = "SystemBonusSpecialItem",
             [382] = "Jingle",
         },
 
