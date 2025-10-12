@@ -48,10 +48,12 @@ public class NexUnions
         {
             [7] = "SortieConfirm",
             [24] = "Speaker",
+            [81] = "Item",
             [113] = "PlaceName",
             [115] = "CaptionFreeWord",
             [247] = "VoicePatternSituation",
             [289] = "ContinuousSortieConfirm",
+            [314] = "SystemBonusEntitlement",
             [382] = "Jingle",
         },
 
