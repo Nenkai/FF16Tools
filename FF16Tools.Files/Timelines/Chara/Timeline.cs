@@ -25,11 +25,11 @@ public class Timeline
 
         Field_0x00 = bs.ReadInt32();
         int timelineElementsOffset = bs.ReadInt32();
-        int timelineElementCount = bs.ReadInt32();
+        uint timelineElementCount = bs.ReadUInt32();
         int assetGroupsOffset = bs.ReadInt32();
-        int assetGroupCount = bs.ReadInt32();
+        uint assetGroupCount = bs.ReadUInt32();
         int setupDatasOffset = bs.ReadInt32();
-        int setupDataCount = bs.ReadInt32();
+        uint setupDataCount = bs.ReadUInt32();
         LastFrameIndex = bs.ReadUInt32();
         Field_0x28 = bs.ReadInt32();
 

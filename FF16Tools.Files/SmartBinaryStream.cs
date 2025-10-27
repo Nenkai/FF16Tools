@@ -3,6 +3,7 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -55,6 +56,37 @@ public class SmartBinaryStream : BinaryStream
 
         Position = tempPos;
         return str;
+    }
+
+    /// <summary>
+    /// Reads a struct.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T ReadStruct<T>() where T : ISerializableStruct, new()
+    {
+        var @struct = new T();
+        @struct.Read(this);
+        return @struct;
+    }
+
+    /// <summary>
+    /// Reads a struct pointer.
+    /// </summary>
+    /// <param name="relativeBaseOffset">Relative position for the offset.</param>
+    /// <returns></returns>
+    public T ReadStructPointer<T>(long relativeBaseOffset = 0) where T : ISerializableStruct, new()
+    {
+        int structOffset = ReadInt32();
+
+        long tempPos = Position;
+
+        var @struct = new T();
+        Position = relativeBaseOffset + structOffset;
+        @struct.Read(this);
+
+        Position = tempPos;
+        return @struct;
     }
 
     /// <summary>
@@ -261,6 +293,14 @@ public class SmartBinaryStream : BinaryStream
         );
     }
 
+    public Point ReadPoint()
+    {
+        return new Point(
+            ReadInt32(),
+            ReadInt32()
+        );
+    }
+
     /// <summary>
     /// Writes an array of inline structs starting from the current offset.
     /// </summary>
@@ -307,7 +347,7 @@ public class SmartBinaryStream : BinaryStream
     /// <param name="startOffset"></param>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public List<T> ReadArrayOfStructs<T>(long startOffset, int elementCount) where T : ISerializableStruct, new()
+    public List<T> ReadArrayOfStructs<T>(long startOffset, uint elementCount) where T : ISerializableStruct, new()
     {
         List<T> elements = [];
 
@@ -323,15 +363,39 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
+    /// Reads strings starting from the specified offset, using the offset table for each entry at the specified offset.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <param name="elementCount"></param>
+    /// <returns></returns>
+    public List<string> ReadStringsFromOffsetTable32(long startOffset, uint elementCount, StringCoding stringCoding = StringCoding.ZeroTerminated)
+    {
+        List<string> elements = new List<string>((int)elementCount);
+
+        for (int i = 0; i < elementCount; i++)
+        {
+            Position = startOffset + (i * 4);
+            uint dataOffset = ReadUInt32();
+
+            Position = startOffset + dataOffset;
+            string str = this.ReadString(stringCoding);
+            elements.Add(str);
+        }
+
+        return elements;
+    }
+
+    /// <summary>
     /// Reads structs starting from the specified offset, using the offset table for each entry at the specified offset.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="startOffset"></param>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public List<T> ReadStructsFromOffsetTable32<T>(long startOffset, int elementCount) where T : ISerializableStruct, new()
+    public List<T> ReadStructsFromOffsetTable32<T>(long startOffset, uint elementCount) where T : ISerializableStruct, new()
     {
-        List<T> elements = [];
+        List<T> elements = new List<T>((int)elementCount);
 
         for (int i = 0; i < elementCount; i++)
         {
