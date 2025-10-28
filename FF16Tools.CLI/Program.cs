@@ -17,6 +17,7 @@ using FF16Tools.Pack.Packing;
 using FF16Tools.Files.VFX;
 using FF16Tools.Files.Panzer;
 using FF16Tools.Pack.Crypto;
+using FF16Tools.Files.UI;
 
 namespace FF16Tools.CLI;
 
@@ -35,6 +36,13 @@ public class Program
 
     static async Task Main(string[] args)
     {
+        foreach (var file in Directory.GetFiles(@"D:\Games\SteamLibrary\steamapps\common\FINAL FANTASY TACTICS - The Ivalice Chronicles\data\extracted\ui", "*.uib", SearchOption.AllDirectories))
+        {
+            Console.WriteLine(file);
+            var uiFile = UIBinaryFile.Open(file);
+        }
+        return;
+
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine($"- FF16Tools.CLI {Version} by Nenkai");
         Console.WriteLine("-----------------------------------------");

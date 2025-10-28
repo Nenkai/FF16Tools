@@ -11,18 +11,14 @@ namespace FF16Tools.Files.UI.Nodes.Data;
 
 public class GUIMaskNodeData : GUINodeDataBase
 {
-    public List<AssetReference> Textures { get; set; } = [];
+    public List<UITextureAssetReference> TextureAssetReferences { get; set; } = [];
 
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
 
         base.Read(bs);
-        int textureAssetsOffset = bs.ReadInt32();
-        uint textureAssetCount = bs.ReadUInt32();
+        TextureAssetReferences = bs.ReadStructArrayFromOffsetCount<UITextureAssetReference>(basePos);
         bs.ReadCheckPadding(0x40);
-
-        bs.Position = basePos + textureAssetsOffset;
-        Textures = bs.ReadArrayOfStructs<AssetReference>(textureAssetCount);
     }
 }

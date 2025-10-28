@@ -1,16 +1,15 @@
-﻿using FF16Tools.Files.UI.Assets;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FF16Tools.Files.UI.Components;
+namespace FF16Tools.Files.UI.Assets;
 
-public class UIComponentUnk_0xA8 : ISerializableStruct
+public class UITextureAssetReference : ISerializableStruct
 {
-    public UIAssetReference UIAssetRef { get; set; }
+    public AssetReference AssetReference { get; set; } = new();
+    public uint Unk_0x04 { get; set; }
     public uint Unk_0x08 { get; set; }
 
     public uint GetSize()
@@ -22,8 +21,8 @@ public class UIComponentUnk_0xA8 : ISerializableStruct
     {
         long basePos = bs.Position;
 
-        UIAssetRef = bs.ReadStructPointer<UIAssetReference>(basePos);
-        uint field_0x04 = bs.ReadUInt32();
+        AssetReference = bs.ReadStructPointer<AssetReference>(basePos);
+        Unk_0x04 = bs.ReadUInt32();
         Unk_0x08 = bs.ReadUInt32();
         bs.ReadCheckPadding(0x20);
     }

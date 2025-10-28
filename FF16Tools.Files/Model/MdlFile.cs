@@ -313,17 +313,17 @@ public class MdlFile
     private void ReadModelData(SmartBinaryStream bs)
     {
         SpecsHeader.Read(bs);
-        LODModels = bs.ReadArrayOfStructs<MdlLODModelInfo>(SpecsHeader.LODModelCount);
-        MeshInfos = bs.ReadArrayOfStructs<MdlMeshInfo>(SpecsHeader.SubmeshCount);
-        SubDrawCalls = bs.ReadArrayOfStructs<SubDrawPart>(SpecsHeader.DrawPartCount);
-        Joints = bs.ReadArrayOfStructs<JointEntry>(SpecsHeader.JointCount);
-        List<NamePointer> materialNamePointers = bs.ReadArrayOfStructs<NamePointer>(SpecsHeader.MaterialCount);
-        List<MdlFaceJointEntry> jointFaceNamePointers = bs.ReadArrayOfStructs<MdlFaceJointEntry>(SpecsHeader.FaceJointCount);
-        JointMuscles = bs.ReadArrayOfStructs<MdlJointMuscleEntry>(SpecsHeader.MuscleJointCount);
-        JointFacesEntries = bs.ReadArrayOfStructs<MdlUnkJointParam>(SpecsHeader.UnkJointParamCount);
-        var AdditionalPartNamePointers = bs.ReadArrayOfStructs<NamePointer>(SpecsHeader.AdditionalPartCount);
-        var OptionNamePointers = bs.ReadArrayOfStructs<NamePointer>(SpecsHeader.OptionCount);
-        var VFXEntryNamePointers = bs.ReadArrayOfStructs<NamePointer>(SpecsHeader.VFXEntryCount);
+        LODModels = bs.ReadStructArray<MdlLODModelInfo>(SpecsHeader.LODModelCount);
+        MeshInfos = bs.ReadStructArray<MdlMeshInfo>(SpecsHeader.SubmeshCount);
+        SubDrawCalls = bs.ReadStructArray<SubDrawPart>(SpecsHeader.DrawPartCount);
+        Joints = bs.ReadStructArray<JointEntry>(SpecsHeader.JointCount);
+        List<NamePointer> materialNamePointers = bs.ReadStructArray<NamePointer>(SpecsHeader.MaterialCount);
+        List<MdlFaceJointEntry> jointFaceNamePointers = bs.ReadStructArray<MdlFaceJointEntry>(SpecsHeader.FaceJointCount);
+        JointMuscles = bs.ReadStructArray<MdlJointMuscleEntry>(SpecsHeader.MuscleJointCount);
+        JointFacesEntries = bs.ReadStructArray<MdlUnkJointParam>(SpecsHeader.UnkJointParamCount);
+        var AdditionalPartNamePointers = bs.ReadStructArray<NamePointer>(SpecsHeader.AdditionalPartCount);
+        var OptionNamePointers = bs.ReadStructArray<NamePointer>(SpecsHeader.OptionCount);
+        var VFXEntryNamePointers = bs.ReadStructArray<NamePointer>(SpecsHeader.VFXEntryCount);
 
 
         ExtraSection = bs.ReadBytes((int)SpecsHeader.ExtraSectionSize); //40 bytes when used
@@ -340,7 +340,7 @@ public class MdlFile
         bs.Position = tempPos;
 
         if (SpecsHeader.JointCount > 0)
-            JointBoundings = bs.ReadArrayOfStructs<MdlJointBounding>(SpecsHeader.JointCount);
+            JointBoundings = bs.ReadStructArray<MdlJointBounding>(SpecsHeader.JointCount);
 
         if (SpecsHeader.JointCount > 0)
         {
@@ -487,8 +487,8 @@ public class MdlFile
 
         long start_section1 = bs.Position;
 
-        bs.WriteArrayOfStructs(AttributeSets);
-        bs.WriteArrayOfStructs(Attributes);
+        bs.WriteStructArray(AttributeSets);
+        bs.WriteStructArray(Attributes);
         bs.Write(BoundingBox);
 
         uint nameOfs = 0;
@@ -603,15 +603,15 @@ public class MdlFile
         SpecsHeader.Write(bs);
 
         _ofsMeshInfoSavedPos = bs.Position;
-        bs.WriteArrayOfStructs(LODModels);
-        bs.WriteArrayOfStructs(MeshInfos);
-        bs.WriteArrayOfStructs(SubDrawCalls);
-        bs.WriteArrayOfStructs(Joints);
+        bs.WriteStructArray(LODModels);
+        bs.WriteStructArray(MeshInfos);
+        bs.WriteStructArray(SubDrawCalls);
+        bs.WriteStructArray(Joints);
         WriteNameStructs(bs, MaterialNames, ref nameOfs);
 
         bs.Write(jointFaceNameOffsets);
-        bs.WriteArrayOfStructs(JointMuscles);
-        bs.WriteArrayOfStructs(JointFacesEntries);
+        bs.WriteStructArray(JointMuscles);
+        bs.WriteStructArray(JointFacesEntries);
 
         nameOfs += (uint)JointNames.Sum(x => Encoding.ASCII.GetByteCount(x) + 1);
         nameOfs += (uint)JointFaceNames.Sum(x => Encoding.ASCII.GetByteCount(x) + 1);
@@ -629,7 +629,7 @@ public class MdlFile
         bs.Position = mcexPosition + (int)Utils.AlignValue((uint)McexSection.Length, 0x10);
 
         if (SpecsHeader.JointCount > 0)
-            bs.WriteArrayOfStructs(JointBoundings);
+            bs.WriteStructArray(JointBoundings);
 
         if (SpecsHeader.JointCount > 0)
         {

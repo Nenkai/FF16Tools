@@ -51,17 +51,10 @@ public class UIBinaryFile
 
     private void ReadToC(SmartBinaryStream bs)
     {
-        long tocOffset = bs.Position;
+        long basePos = bs.Position;
 
-        uint assetListOffset = bs.ReadUInt32();
-        uint componentsOffset = bs.ReadUInt32();
-        uint componentCount = bs.ReadUInt32();
+        Assets = bs.ReadStructPointer<AssetRegistry>(basePos);
+        Components = bs.ReadStructArrayFromOffsetCount<UIComponentInfo>(basePos);
         bs.ReadCheckPadding(0x20);
-
-        bs.Position = tocOffset + assetListOffset;
-        Assets.Read(bs);
-
-        bs.Position = tocOffset + componentsOffset;
-        Components = bs.ReadArrayOfStructs<UIComponentInfo>(componentCount);
     }
 }

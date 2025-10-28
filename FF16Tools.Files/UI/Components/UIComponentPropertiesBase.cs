@@ -84,15 +84,6 @@ public class UIComponentPropertiesBase : ISerializableStruct
     public uint Field_0x100 { get; set; }
     public uint Field_0x104 { get; set; }
 
-    /*
-    public string Name { get; set; }
-    public Vector2 Origin { get; set; }
-    public float Rotation { get; set; }
-    public Vector2 Scale { get; set; }
-    public Vector2 AnchorPoint { get; set; }
-    public bool UnkBool
-    */
-
     public virtual uint GetSize()
     {
         return 0x108;
@@ -189,25 +180,46 @@ public class UIComponentPropertiesBase : ISerializableStruct
     {
         throw new NotImplementedException();
     }
+
+    public static UIComponentPropertiesBase Create(UIComponentType type)
+    {
+        return type switch
+        {
+            UIComponentType.Root => new UIComponentRoot(),
+            UIComponentType.Custom => new UIComponentCustom(),
+            UIComponentType.Button => new UIComponentButton(),
+            UIComponentType.CheckBox => new UIComponentCheckBox(),
+            UIComponentType.RadioButton => new UIComponentRadioButton(),
+            UIComponentType.Tab => new UIComponentTab(),
+            UIComponentType.Slider => new UIComponentSlider(),
+            UIComponentType.ScrollBar => new UIComponentScrollBar(),
+            UIComponentType.List => new UIComponentList(),
+            UIComponentType.ListItem => new UIComponentListItem(),
+            UIComponentType.Gauge => new UIComponentGauge(),
+            UIComponentType.TextBoard => new UIComponentTextBoard(),
+            UIComponentType.BahamutEffect => new UIComponentBahamutEffect(),
+            _ => throw new NotImplementedException($"{type} not implemented")
+        };
+    }
 }
 
 public enum UIComponentType
 {
     Root = 1,
     Custom = 2,
-    kComponentButton = 3,
-    kComponentCheckBox = 4,
-    kComponentRadioButton = 5,
-    kComponentTab = 6,
-    kComponentSlider = 7,
-    kComponentScrollBar = 8,
-    kComponentList = 9,
-    kComponentListItem = 10,
-    kComponentDropdownList = 11,
+    Button = 3,
+    CheckBox = 4,
+    RadioButton = 5,
+    Tab = 6,
+    Slider = 7,
+    ScrollBar = 8,
+    List = 9,
+    ListItem = 10,
+    DropdownList = 11,
     Gauge = 12,
-    kComponentTextBoard = 13,
-    kComponentWindow = 14,
-    kComponentBahamutEffect = 15,
+    TextBoard = 13,
+    Window = 14,
+    BahamutEffect = 15,
 }
 
 public enum BlendMode
@@ -230,22 +242,3 @@ public enum BlendMode
     kHdrLowBlend = 15,
     kHdrHighBlend = 16,
 };
-
-/*
-public enum UIComponentType
-{
-kLayerNode = 1,
-kImageNode = 2,
-kTextNode = 3,
-kNinegridNode = 4,
-kCounterNode = 5,
-kRectNode = 6,
-kEllipseNode = 7,
-kBezier = 8,
-kCollisionNode = 9,
-kReferenceNode = 10,
-kEffectNode = 11,
-kModelNode = 12,
-kMaskNode = 13
-};
-*/

@@ -33,8 +33,8 @@ public class Timeline
         LastFrameIndex = bs.ReadUInt32();
         Field_0x28 = bs.ReadInt32();
 
-        Elements = bs.ReadArrayOfStructs<TimelineElement>(thisPos + timelineElementsOffset, timelineElementCount);
-        AssetGroups = bs.ReadArrayOfStructs<AssetGroup>(thisPos + assetGroupsOffset, assetGroupCount);
+        Elements = bs.ReadStructArray<TimelineElement>(thisPos + timelineElementsOffset, timelineElementCount);
+        AssetGroups = bs.ReadStructArray<AssetGroup>(thisPos + assetGroupsOffset, assetGroupCount);
         SetupData = bs.ReadStructsFromOffsetTable32<SetupData>(thisPos + setupDatasOffset, setupDataCount);
     }
 

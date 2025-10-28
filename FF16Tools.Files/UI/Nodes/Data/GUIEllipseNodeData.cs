@@ -14,7 +14,7 @@ public class GUIEllipseNodeData : GUINodeDataBase
     public float Field_0x44 { get; set; }
     public int Field_0x48 { get; set; }
     public int Field_0x4C { get; set; }
-    public List<UIAssetReference> TextureAssetReferences { get; set; } = [];
+    public List<UITextureAssetReference> TextureAssetReferences { get; set; } = [];
 
     public override void Read(SmartBinaryStream bs)
     {
@@ -25,8 +25,6 @@ public class GUIEllipseNodeData : GUINodeDataBase
         Field_0x44 = bs.ReadSingle();
         Field_0x48 = bs.ReadInt32();
         Field_0x4C = bs.ReadInt32();
-        uint textureAssetsOffset = bs.ReadUInt32();
-        uint textureAssetCount = bs.ReadUInt32();
-        TextureAssetReferences = bs.ReadStructsFromOffsetTable32<UIAssetReference>(basePos + textureAssetsOffset, textureAssetCount);
+        TextureAssetReferences = bs.ReadStructArrayFromOffsetCount<UITextureAssetReference>(basePos);
     }
 }

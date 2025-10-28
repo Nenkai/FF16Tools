@@ -293,6 +293,14 @@ public class SmartBinaryStream : BinaryStream
         );
     }
 
+    public Size ReadSize()
+    {
+        return new Size(
+            ReadInt32(),
+            ReadInt32()
+        );
+    }
+
     public Point ReadPoint()
     {
         return new Point(
@@ -307,7 +315,7 @@ public class SmartBinaryStream : BinaryStream
     /// <typeparam name="T"></typeparam>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public void WriteArrayOfStructs<T>(IEnumerable<T> list) where T : ISerializableStruct, new()
+    public void WriteStructArray<T>(IEnumerable<T> list) where T : ISerializableStruct, new()
     {
         foreach (T elem in list)
         {
@@ -324,7 +332,7 @@ public class SmartBinaryStream : BinaryStream
     /// <typeparam name="T"></typeparam>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public List<T> ReadArrayOfStructs<T>(uint elementCount) where T : ISerializableStruct, new()
+    public List<T> ReadStructArray<T>(uint elementCount) where T : ISerializableStruct, new()
     {
         List<T> elements = [];
 
@@ -347,7 +355,7 @@ public class SmartBinaryStream : BinaryStream
     /// <param name="startOffset"></param>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public List<T> ReadArrayOfStructs<T>(long startOffset, uint elementCount) where T : ISerializableStruct, new()
+    public List<T> ReadStructArray<T>(long startOffset, uint elementCount) where T : ISerializableStruct, new()
     {
         List<T> elements = [];
 
@@ -359,6 +367,89 @@ public class SmartBinaryStream : BinaryStream
             elements.Add(elem);
         }
 
+        return elements;
+    }
+
+    /// <summary>
+    /// Reads an array of structs, at the incoming offset/pointer (int) + count (int) pair.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <returns></returns>
+    public List<T> ReadStructArrayFromOffsetCount<T>(long startOffset) where T : ISerializableStruct, new()
+    {
+        List<T> elements = [];
+
+        int offset = ReadInt32();
+        uint count = ReadUInt32();
+        long tmpPos = Position;
+
+        for (int i = 0; i < count; i++)
+        {
+            T elem = new();
+            Position = startOffset + offset + (i * elem.GetSize());
+            elem.Read(this);
+            elements.Add(elem);
+        }
+
+        Position = tmpPos;
+        return elements;
+    }
+
+    /// <summary>
+    /// Reads an array of structs, at the incoming offset/pointer (int) + count (int) pair, and passes the element to the specified callback. <br/>
+    /// Useful to store it in a different collection than the list returned by <see cref="ReadStructArrayFromOffsetCount{T}(long)"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <returns></returns>
+    public void ReadStructArrayFromOffsetCountWithCallback<T>(long startOffset, Action<T> callback) where T : ISerializableStruct, new()
+    {
+        List<T> elements = [];
+
+        int offset = ReadInt32();
+        uint count = ReadUInt32();
+        long tmpPos = Position;
+
+        for (int i = 0; i < count; i++)
+        {
+            T elem = new();
+            Position = startOffset + offset + (i * elem.GetSize());
+            elem.Read(this);
+            elements.Add(elem);
+
+            callback(elem);
+        }
+
+        Position = tmpPos;
+    }
+
+    /// <summary>
+    /// Reads an array of structs, at the incoming offset/pointer (int) + count (int) pair which points to an offset for each entry.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <returns></returns>
+    public List<T> ReadStructArrayFromOffsetCountToOffsetTable32<T>(long startOffset) where T : ISerializableStruct, new()
+    {
+        List<T> elements = [];
+
+        int offset = ReadInt32();
+        uint count = ReadUInt32();
+        long tmpPos = Position;
+
+        for (int i = 0; i < count; i++)
+        {
+            Position = startOffset + offset + (i * 4);
+            uint dataOffset = ReadUInt32();
+
+            Position = startOffset + offset + dataOffset;
+            T elem = new T();
+            elem.Read(this);
+            elements.Add(elem);
+        }
+
+        Position = tmpPos;
         return elements;
     }
 

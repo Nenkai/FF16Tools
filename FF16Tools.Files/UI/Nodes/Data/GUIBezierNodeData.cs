@@ -54,11 +54,7 @@ public class GUIBezierNodeData : GUINodeDataBase
         Field_0x74 = bs.ReadSingle();
         Field_0x78 = bs.ReadSingle();
         Field_0x7C = bs.ReadSingle();
-        int nodesOffset = bs.ReadInt32();
-        uint nodesCount = bs.ReadUInt32();
-
-        bs.Position = basePos + nodesOffset;
-        Points = bs.ReadArrayOfStructs<BezierPoint>(nodesCount);
+        Points = bs.ReadStructArrayFromOffsetCount<BezierPoint>(basePos);
     }
 }
 
@@ -68,6 +64,7 @@ public class BezierPoint : ISerializableStruct
     public Point HandleA { get; set; }
     public Point HandleB { get; set; }
     public float Field_0x18 { get; set; }
+    public int Field_0x1C { get; set; }
 
     public uint GetSize()
     {
@@ -80,6 +77,7 @@ public class BezierPoint : ISerializableStruct
         HandleA = bs.ReadPoint();
         HandleB = bs.ReadPoint();
         Field_0x18 = bs.ReadSingle();
+        Field_0x1C = bs.ReadInt32();
         bs.ReadCheckPadding(0x18);
     }
 

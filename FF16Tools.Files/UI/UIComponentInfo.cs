@@ -1,5 +1,6 @@
 ﻿using FF16Tools.Files.UI.Components;
 using FF16Tools.Files.UI.Nodes;
+using FF16Tools.Files.UI.Timelines;
 
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,9 @@ namespace FF16Tools.Files.UI;
 public class UIComponentInfo : ISerializableStruct
 {
     public string Name { get; set; }
-    public Point Size { get; set; }
+    public Size Size { get; set; }
     public UIComponentPropertiesBase Properties { get; set; }
+    public List<UITimeline> Timelines { get; set; } = [];
 
     public uint GetSize()
     {
@@ -27,23 +29,16 @@ public class UIComponentInfo : ISerializableStruct
         long basePos = bs.Position;
 
         Name = bs.ReadStringPointer(basePos);
-        Size = bs.ReadPoint();
+        Size = bs.ReadSize();
         uint componentPropertiesOffset = bs.ReadUInt32();
         uint nodesOffset = bs.ReadUInt32();
         uint nodeCount = bs.ReadUInt32();
-        uint timelineElementsOffset = bs.ReadUInt32();
-        uint timelineElementCount = bs.ReadUInt32();
+        Timelines = bs.ReadStructArrayFromOffsetCount<UITimeline>(basePos);
         bs.ReadCheckPadding(0x20);
 
         bs.Position = basePos + componentPropertiesOffset;
         UIComponentType type = (UIComponentType)bs.ReadUInt32();
-        Properties = type switch
-        {
-            UIComponentType.Root => new UIComponentRoot(),
-            UIComponentType.Custom => new UIComponentCustom(),
-            UIComponentType.Gauge => new UIComponentGauge(),
-            _ => throw new NotImplementedException($"{type} not implemented")
-        };
+        Properties = UIComponentPropertiesBase.Create(type);
         bs.Position -= 4;
         Properties.Read(bs);
 
@@ -68,6 +63,6 @@ public class UIComponentInfo : ISerializableStruct
 
     public override string ToString()
     {
-        return Name;
+        return $"{Name} [{Size}] ({Properties.Type}, {Timelines.Count} timelines)";
     }
 }

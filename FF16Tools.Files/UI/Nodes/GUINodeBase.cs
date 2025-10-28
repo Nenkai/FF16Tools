@@ -60,11 +60,14 @@ public abstract class GUINodeBase
             GUINodeType.ImageNode => new GUIImageNode(),
             GUINodeType.TextNode => new GUITextNode(),
             GUINodeType.NinegridNode => new GUINinegridNode(),
+            GUINodeType.CounterNode => new GUICounterNode(),
             GUINodeType.RectNode => new GUIRectNode(),
+            GUINodeType.EffectNode => new GUIEffectNode(),
             GUINodeType.EllipseNode => new GUIEllipseNode(),
             GUINodeType.BezierNode => new GUIBezierNode(),
             GUINodeType.CollisionNode => new GUICollisionNode(),
             GUINodeType.ReferenceNode => new GUIReferenceNode(),
+            // ModelNode
             GUINodeType.MaskNode => new GUIMaskNode(),
             _ => throw new NotImplementedException($"Not implemented: {type}")
         };

@@ -13,22 +13,21 @@ public class GUIImageNodeData : GUINodeDataBase
     public int Field_0x68 { get; set; }
     public int Field_0x6C { get; set; }
     public int Field_0x70 { get; set; }
-    public List<UIAssetReference> TextureAssetReferences { get; set; } = [];
+    public int Field_0x74 { get; set; }
+    public List<UITextureAssetReference> TextureAssetReferences { get; set; } = [];
 
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
 
         base.Read(bs);
-        uint textureAssetsOffset = bs.ReadUInt32();
-        uint textureAssetCount = bs.ReadUInt32();
+        TextureAssetReferences = bs.ReadStructArrayFromOffsetCount<UITextureAssetReference>(basePos);
         bs.ReadCheckPadding(0x20);
 
         Field_0x68 = bs.ReadInt32();
         Field_0x6C = bs.ReadInt32();
         Field_0x70 = bs.ReadInt32();
-        bs.ReadCheckPadding(0x20);
-
-        TextureAssetReferences = bs.ReadStructsFromOffsetTable32<UIAssetReference>(basePos + textureAssetsOffset, textureAssetCount);
+        Field_0x74 = bs.ReadInt32();
+        bs.ReadCheckPadding(0x1C);
     }
 }
