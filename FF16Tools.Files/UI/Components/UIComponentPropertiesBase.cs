@@ -61,6 +61,7 @@ public abstract class UIComponentPropertiesBase : ISerializableStruct
     public float Field_0xA0 { get; set; }
     public float Field_0xA4 { get; set; }
     public UITextureAssetReference Unk0xA8 { get; set; }
+    public uint Field_0xAC { get; set; }
     public uint Field_0xB0 { get; set; }
     public uint Field_0xB4 { get; set; }
     public uint Field_0xB8 { get; set; }
@@ -141,7 +142,7 @@ public abstract class UIComponentPropertiesBase : ISerializableStruct
         Field_0xA0 = bs.ReadSingle();
         Field_0xA4 = bs.ReadSingle();
         uint offset_0xA8 = bs.ReadUInt32();
-        uint unkUse_0xA8Field_0xAC = bs.ReadUInt32();
+        Field_0xAC = bs.ReadUInt32();
         Field_0xB0 = bs.ReadUInt32();
         Field_0xB4 = bs.ReadUInt32();
         Field_0xB8 = bs.ReadUInt32();
@@ -167,7 +168,7 @@ public abstract class UIComponentPropertiesBase : ISerializableStruct
 
         Names = bs.ReadStringsFromOffsetTable32(basePos + namesOffset, namesCount);
 
-        if (unkUse_0xA8Field_0xAC >= 1)
+        if (Field_0xAC >= 1)
         {
             bs.Position = basePos + offset_0xA8;
             Unk0xA8 = bs.ReadStruct<UITextureAssetReference>();
@@ -231,7 +232,7 @@ public abstract class UIComponentPropertiesBase : ISerializableStruct
         bs.WriteSingle(Field_0xA0);
         bs.WriteSingle(Field_0xA4);
         bs.WriteStructPointer(basePos, Unk0xA8, ref lastDataOffset);
-        bs.WriteUInt32(1); // TODO
+        bs.WriteUInt32(Field_0xAC);
         bs.WriteUInt32(Field_0xB0);
         bs.WriteUInt32(Field_0xB4);
         bs.WriteUInt32(Field_0xB8);
