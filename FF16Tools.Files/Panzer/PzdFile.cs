@@ -48,16 +48,7 @@ public class PzdFile
             throw new NotSupportedException("Only Panzer files version 2 (FF16) is currently supported.");
 
         bs.Position = 0x20;
-        uint linesOffset = bs.ReadUInt32();
-        uint lineCount = bs.ReadUInt32();
-
-        for (int i = 0; i < lineCount; i++)
-        {
-            bs.Position = basePos + linesOffset + (i * 0x20);
-            var line = new PzdTextContent();
-            line.Read(bs);
-            Lines.Add(line.Id, line);
-        }
+        bs.ReadStructArrayFromOffsetCountWithCallback<PzdTextContent>(basePos, (elem) => Lines.Add(elem.Id, elem));
     }
 
     public void Write(Stream stream)
@@ -71,7 +62,7 @@ public class PzdFile
         // Skip header, go straight to data for now.
         bs.Position = basePos + 0x30;
         bs.AddObjectPointer(Lines);
-        bs.WriteArrayOfStructs(Lines.Values.ToList());
+        bs.WriteStructArray(Lines.Values.ToList());
         bs.WriteStringTable();
 
         long endPos = bs.Position;

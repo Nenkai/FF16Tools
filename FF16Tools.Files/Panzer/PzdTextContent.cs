@@ -32,11 +32,11 @@ public class PzdTextContent : ISerializableStruct
     {
         long basePos = bs.Position;
         Id = bs.ReadUInt32();
-        Line = bs.ReadStringPointer(basePos, StringCoding.ZeroTerminated);
+        Line = bs.ReadStringPointer(basePos);
         Speaker = NexUnionKey.FromStream(bs);
-        VoiceSoundPath = bs.ReadStringPointer(basePos, StringCoding.ZeroTerminated);
+        VoiceSoundPath = bs.ReadStringPointer(basePos);
         ShowType = (LineShowType)bs.ReadInt32();
-        ShortVoiceSoundPath = bs.ReadStringPointer(basePos, StringCoding.ZeroTerminated);
+        ShortVoiceSoundPath = bs.ReadStringPointer(basePos);
         IsShortened = bs.ReadBoolean();
         bs.ReadCheckPadding(3);
     }

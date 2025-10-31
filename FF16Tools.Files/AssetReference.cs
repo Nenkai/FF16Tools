@@ -58,4 +58,14 @@ public enum AssetReferenceType : uint
     /// .vfxb file
     /// </summary>
     VFX = 1019,
+
+    /// <summary>
+    /// .tex file
+    /// </summary>
+    Texture = 1023,
+
+    /// <summary>
+    /// .uib file
+    /// </summary>
+    UI = 1027,
 }

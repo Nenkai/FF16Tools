@@ -16,13 +16,13 @@ public class JointEntry : ISerializableStruct
     public void Read(SmartBinaryStream bs)
     {
         NameOffset = bs.ReadUInt32();
-        WorldPosition = bs.ReadVector3();
+        WorldPosition = bs.ReadStructMarshal<Vector3>();
     }
 
     public void Write(SmartBinaryStream bs)
     {
         bs.WriteUInt32(NameOffset);
-        bs.WriteVector3(WorldPosition);
+        bs.WriteStructMarshal(WorldPosition);
     }
 
     public uint GetSize() => 0x10;

@@ -17,6 +17,7 @@ using FF16Tools.Pack.Packing;
 using FF16Tools.Files.VFX;
 using FF16Tools.Files.Panzer;
 using FF16Tools.Pack.Crypto;
+using FF16Tools.Files.UI;
 
 namespace FF16Tools.CLI;
 

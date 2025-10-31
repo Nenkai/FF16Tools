@@ -3,8 +3,12 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,6 +62,37 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
+    /// Reads a struct.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T ReadStruct<T>() where T : ISerializableStruct, new()
+    {
+        var @struct = new T();
+        @struct.Read(this);
+        return @struct;
+    }
+
+    /// <summary>
+    /// Reads a struct pointer.
+    /// </summary>
+    /// <param name="relativeBaseOffset">Relative position for the offset.</param>
+    /// <returns></returns>
+    public T ReadStructPointer<T>(long relativeBaseOffset = 0) where T : ISerializableStruct, new()
+    {
+        int structOffset = ReadInt32();
+
+        long tempPos = Position;
+
+        var @struct = new T();
+        Position = relativeBaseOffset + structOffset;
+        @struct.Read(this);
+
+        Position = tempPos;
+        return @struct;
+    }
+
+    /// <summary>
     /// Adds an object to the offset storage. This is used to remember where an object was written.
     /// </summary>
     /// <param name="obj"></param>
@@ -106,8 +141,8 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
-    /// Adds a string to the list of string pointers. <br/>
-    /// This is used to write a compact string table later on with deduped strings.
+    /// Adds a string to the list of string pointers and advances by 1 int.<br/>
+    /// This is used to write a compact string table later on with deduped strings, using <see cref="WriteStringTable"/>.
     /// </summary>
     /// <param name="str"></param>
     /// <param name="relativeBaseOffset"></param>
@@ -118,15 +153,39 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
+    /// Registers a string list to be written using an offset table for each string at the specified data offset, and its offset+count at the current position. Advances by two ints.<br/>
+    /// This is used to write a compact string table later on with deduped strings, using <see cref="WriteStringTable"/>.
+    /// </summary>
+    /// <typeparam name="TStruct"></typeparam>
+    /// <param name="basePos"></param>
+    /// <param name="structArray"></param>
+    public void AddStringPointers(long basePos, IList<string> strs, ref long dataOffset)
+    {
+        long arrayOffsetOffset = Position;
+
+        long offsetTableOffset = dataOffset;
+        Position = offsetTableOffset;
+
+        for (int i = 0; i < strs.Count; i++)
+            StringPointers.Add(new StringPointer(strs[i], Position + (i * 0x04), offsetTableOffset));
+
+        Position = arrayOffsetOffset;
+        WriteInt32((int)(dataOffset - basePos));
+        WriteUInt32((uint)strs.Count);
+
+        dataOffset += strs.Count * sizeof(int);
+    }
+
+    /// <summary>
     /// Writes the string table. Make sure to have set the <see cref="StringCoding"/> property in the constructor to avoid any surprises.
     /// </summary>
-    public void WriteStringTable()
+    public void WriteStringTable(bool writeEmptyFirst = true)
     {
         long lastDataPos = Position;
 
         Dictionary<string, long> _writtenStrings = [];
         // An empty string always goes first (if present.)
-        if (StringPointers.Any(e => e.String == string.Empty))
+        if (writeEmptyFirst && StringPointers.Any(e => e.String == string.Empty))
         {
             _writtenStrings.Add(string.Empty, Position);
             this.WriteString(string.Empty, StringCoding);
@@ -213,52 +272,16 @@ public class SmartBinaryStream : BinaryStream
             throw new InvalidDataException("SkipCheckPadding failed. Padding had non-zero data.");
     }
 
-    public void WriteVector2(Vector2 vec)
+    public TStruct ReadStructMarshal<TStruct>() where TStruct : unmanaged
     {
-        WriteSingle(vec.X);
-        WriteSingle(vec.Y);
-    }
+        int size = Unsafe.SizeOf<TStruct>();
+        Span<byte> buffer = size > 1024 ? new byte[size] : stackalloc byte[size];
 
-    public void WriteVector3(Vector3 vec)
-    {
-        WriteSingle(vec.X);
-        WriteSingle(vec.Y);
-        WriteSingle(vec.Z);
-    }
+        int bytesRead = Read(buffer);
+        if (bytesRead != size)
+            throw new EndOfStreamException();
 
-    public void WriteVector4(Vector4 vec)
-    {
-        WriteSingle(vec.X);
-        WriteSingle(vec.Y);
-        WriteSingle(vec.Z);
-        WriteSingle(vec.Z);
-    }
-
-    public Vector2 ReadVector2()
-    {
-        return new Vector2(
-            ReadSingle(),
-            ReadSingle()
-        );
-    }
-    
-    public Vector3 ReadVector3()
-    {
-        return new Vector3(
-            ReadSingle(),
-            ReadSingle(),
-            ReadSingle()
-        );
-    }
-
-    public Vector4 ReadVector4()
-    {
-        return new Vector4(
-            ReadSingle(),
-            ReadSingle(),
-            ReadSingle(),
-            ReadSingle()
-        );
+        return MemoryMarshal.Read<TStruct>(buffer);
     }
 
     /// <summary>
@@ -267,7 +290,7 @@ public class SmartBinaryStream : BinaryStream
     /// <typeparam name="T"></typeparam>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public void WriteArrayOfStructs<T>(IEnumerable<T> list) where T : ISerializableStruct, new()
+    public void WriteStructArray<T>(IEnumerable<T> list) where T : ISerializableStruct, new()
     {
         foreach (T elem in list)
         {
@@ -279,14 +302,109 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
+    /// Writes any struct, using marshaling.
+    /// </summary>
+    /// <typeparam name="TStruct"></typeparam>
+    /// <param name="struct"></param>
+    public void WriteStructMarshal<TStruct>(TStruct @struct) where TStruct : struct
+    {
+        Span<byte> buffer = MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref @struct, 1));
+        Write(buffer);
+    }
+
+
+    /// <summary>
+    /// Writes a struct at the specified data position, and its offset at the current position. Advances by one int. <br/><br/>
+    /// NOTE: Ending position is expected to be at, or after the struct data offset (incase of nested structs that appears after this one being serialized). <br/>
+    /// Make sure to adjust your function to point to the end of the function on return.
+    /// </summary>
+    /// <typeparam name="TStruct"></typeparam>
+    /// <param name="basePos"></param>
+    /// <param name="struct"></param>
+    public void WriteStructPointer<TStruct>(long basePos, TStruct @struct, ref long lastDataPos) where TStruct : ISerializableStruct
+    {
+        long structOffsetOffset = Position;
+        long structEndOffset = lastDataPos + @struct.GetSize();
+
+        Position = lastDataPos;
+        @struct.Write(this);
+        if (Position > structEndOffset)
+            structEndOffset = Position;
+
+        Position = structOffsetOffset;
+        WriteInt32((int)(lastDataPos - basePos));
+
+        lastDataPos = structEndOffset;
+    }
+
+    /// <summary>
+    /// Writes a struct array using an offset table for each element at the specified data offset, and its offset+count at the current position. Advances by two ints.
+    /// </summary>
+    /// <typeparam name="TStruct"></typeparam>
+    /// <param name="basePos"></param>
+    /// <param name="structArray"></param>
+    public void WriteStructArrayPointerWithOffsetTable32<TStruct>(long basePos, IList<TStruct> structArray, ref long dataOffset) where TStruct : ISerializableStruct
+    {
+        long arrayOffsetOffset = Position;
+        long tablePos = dataOffset;
+        long lastDataPos = tablePos + (structArray.Count * sizeof(int));
+
+        for (int i = 0; i < structArray.Count; i++)
+        {
+            Position = tablePos + (i * sizeof(int));
+            WriteStructPointer(tablePos, structArray[i], ref lastDataPos);
+            if (Position > lastDataPos)
+                lastDataPos = Position; // Incase the nested structure wrote further data.
+        }
+
+        Position = arrayOffsetOffset;
+        WriteInt32((int)(dataOffset - basePos));
+        WriteUInt32((uint)structArray.Count);
+
+        dataOffset = lastDataPos;
+    }
+
+    /// <summary>
+    /// Writes a struct array at the specified data offset, and its offset+count at the current position. Advances by two ints. <br/>
+    /// Creates a <see cref="StructMarker"/> with the last data position. Use <see cref="GetMarker"/> to retrieve it.
+    /// </summary>
+    /// <typeparam name="TStruct"></typeparam>
+    /// <param name="basePos"></param>
+    /// <param name="structArray"></param>
+    public void WriteStructArrayPointer<TStruct>(long basePos, IList<TStruct> structArray, ref long dataOffset) where TStruct : ISerializableStruct, new()
+    {
+        long arrayOffsetOffset = Position;
+        uint structSize = structArray.Count != 0 ? structArray[0].GetSize() : 0;
+        uint inlineArraySize = (uint)(structSize * structArray.Count);
+        long lastDataPos = dataOffset + inlineArraySize;
+
+        for (int i = 0; i < structArray.Count; i++)
+        {
+            Position = dataOffset + (i * structSize);
+            using (PushMarker(lastDataPos))
+            {
+                structArray[i].Write(this);
+                if (Position > lastDataPos)
+                    lastDataPos = Position; // Incase the nested structure wrote further data.
+            }
+        }
+
+        Position = arrayOffsetOffset;
+        WriteInt32((int)(dataOffset - basePos));
+        WriteUInt32((uint)structArray.Count);
+
+        dataOffset = lastDataPos;
+    }
+
+    /// <summary>
     /// Reads an array of inline structs starting from the current offset.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public List<T> ReadArrayOfStructs<T>(uint elementCount) where T : ISerializableStruct, new()
+    public List<T> ReadStructArray<T>(uint elementCount) where T : ISerializableStruct, new()
     {
-        List<T> elements = [];
+        List<T> elements = new List<T>((int)elementCount);
 
         long basePos = Position;
         for (int i = 0; i < elementCount; i++)
@@ -307,9 +425,9 @@ public class SmartBinaryStream : BinaryStream
     /// <param name="startOffset"></param>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public List<T> ReadArrayOfStructs<T>(long startOffset, int elementCount) where T : ISerializableStruct, new()
+    public List<T> ReadStructArray<T>(long startOffset, uint elementCount) where T : ISerializableStruct, new()
     {
-        List<T> elements = [];
+        List<T> elements = new List<T>((int)elementCount);
 
         for (int i = 0; i < elementCount; i++)
         {
@@ -323,15 +441,122 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
+    /// Reads an array of structs, at the incoming offset/pointer (int) + count (int) pair.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <returns></returns>
+    public List<T> ReadStructArrayFromOffsetCount<T>(long startOffset) where T : ISerializableStruct, new()
+    {
+        int offset = ReadInt32();
+        uint count = ReadUInt32();
+        long tmpPos = Position;
+
+        List<T> elements = new List<T>((int)count);
+
+        for (int i = 0; i < count; i++)
+        {
+            T elem = new();
+            Position = startOffset + offset + (i * elem.GetSize());
+            elem.Read(this);
+            elements.Add(elem);
+        }
+
+        Position = tmpPos;
+        return elements;
+    }
+
+    /// <summary>
+    /// Reads an array of structs, at the incoming offset/pointer (int) + count (int) pair, and passes the element to the specified callback. <br/>
+    /// Useful to store it in a different collection than the list returned by <see cref="ReadStructArrayFromOffsetCount{T}(long)"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <returns></returns>
+    public void ReadStructArrayFromOffsetCountWithCallback<T>(long startOffset, Action<T> callback) where T : ISerializableStruct, new()
+    {
+        int offset = ReadInt32();
+        uint count = ReadUInt32();
+        long tmpPos = Position;
+
+        List<T> elements = new List<T>((int)count);
+
+        for (int i = 0; i < count; i++)
+        {
+            T elem = new();
+            Position = startOffset + offset + (i * elem.GetSize());
+            elem.Read(this);
+            elements.Add(elem);
+
+            callback(elem);
+        }
+
+        Position = tmpPos;
+    }
+
+    /// <summary>
+    /// Reads an array of structs, at the incoming offset/pointer (int) + count (int) pair which points to an offset for each entry.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <returns></returns>
+    public List<T> ReadStructArrayFromOffsetCountToOffsetTable32<T>(long startOffset) where T : ISerializableStruct, new()
+    {
+        int offset = ReadInt32();
+        uint count = ReadUInt32();
+        long tmpPos = Position;
+
+        List<T> elements = new List<T>((int)count);
+
+        for (int i = 0; i < count; i++)
+        {
+            Position = startOffset + offset + (i * 4);
+            uint dataOffset = ReadUInt32();
+
+            Position = startOffset + offset + dataOffset;
+            T elem = new T();
+            elem.Read(this);
+            elements.Add(elem);
+        }
+
+        Position = tmpPos;
+        return elements;
+    }
+
+    /// <summary>
+    /// Reads strings starting from the specified offset, using the offset table for each entry at the specified offset.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <param name="elementCount"></param>
+    /// <returns></returns>
+    public List<string> ReadStringsFromOffsetTable32(long startOffset, uint elementCount, StringCoding stringCoding = StringCoding.ZeroTerminated)
+    {
+        List<string> elements = new List<string>((int)elementCount);
+
+        for (int i = 0; i < elementCount; i++)
+        {
+            Position = startOffset + (i * 4);
+            uint dataOffset = ReadUInt32();
+
+            Position = startOffset + dataOffset;
+            string str = this.ReadString(stringCoding);
+            elements.Add(str);
+        }
+
+        return elements;
+    }
+
+    /// <summary>
     /// Reads structs starting from the specified offset, using the offset table for each entry at the specified offset.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="startOffset"></param>
     /// <param name="elementCount"></param>
     /// <returns></returns>
-    public List<T> ReadStructsFromOffsetTable32<T>(long startOffset, int elementCount) where T : ISerializableStruct, new()
+    public List<T> ReadStructsFromOffsetTable32<T>(long startOffset, uint elementCount) where T : ISerializableStruct, new()
     {
-        List<T> elements = [];
+        List<T> elements = new List<T>((int)elementCount);
 
         for (int i = 0; i < elementCount; i++)
         {
@@ -356,5 +581,49 @@ public class SmartBinaryStream : BinaryStream
         }
     }
 
+    private Stack<StructMarker> _markers = [];
+
+    /// <summary>
+    /// Creates a marker. Mainly used to get the current ending data position for the current struct. Use this with the <see href="using"/> keyword.
+    /// </summary>
+    /// <param name="endPos"></param>
+    /// <returns></returns>
+    public StructMarker PushMarker(long endPos)
+    {
+        var t = new StructMarker(this, Position, endPos);
+
+        _markers.Push(t);
+        return t;
+    }
+
+    public StructMarker GetMarker()
+    {
+        return _markers.Peek();
+    }
+
+    public void PopMarker()
+    {
+        _markers.Pop();
+    }
+
     public record StringPointer(string? String, long PointerOffset, long RelativeBaseOffset);
+}
+
+public class StructMarker : IDisposable
+{
+    public long BasePos { get; }
+    public long LastDataPosition { get; set; }
+    public SmartBinaryStream Stream { get; }
+
+    public StructMarker(SmartBinaryStream stream, long basePos, long endPos)
+    {
+        Stream = stream;
+        BasePos = basePos;
+        LastDataPosition = endPos;
+    }
+
+    public void Dispose()
+    {
+        Stream.PopMarker();
+    }
 }

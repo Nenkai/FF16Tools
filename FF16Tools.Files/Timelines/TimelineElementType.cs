@@ -81,7 +81,7 @@ public enum TimelineElementType
     ActionEventTrigger = 1117,
     kTimelineElem_1123 = 1123,
     kTimelineElem_1125 = 1125, // Actual data layout is unknown
-    JustBuddyCommand = 1130
+    JustBuddyCommand = 1130,
 
     //--------------------------------------------------------------
     // ? - 2000+
@@ -98,8 +98,16 @@ public enum TimelineElementType
     //--------------------------------------------------------------
     // UI - 5000+
     //--------------------------------------------------------------
-
-    // ...
+    kTimelineElem_5002 = 5002,
+    kTimelineElem_5004 = 5004,
+    kTimelineElem_5007 = 5007,
+    kTimelineElem_5009 = 5009,
+    kTimelineElem_5028 = 5028,
+    kTimelineElem_5031 = 5031,
+    kTimelineElem_5034 = 5034,
+    kTimelineElem_5035 = 5035,
+    kTimelineElem_5050 = 5050,
+    kTimelineElem_5051 = 5051,
 }
 
 /* Rest of the unknown types that appear in charatimelines :

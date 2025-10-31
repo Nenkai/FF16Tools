@@ -1,5 +1,6 @@
 ﻿using FF16Tools.Files.Timelines.Elements.Battle;
 using FF16Tools.Files.Timelines.Elements.General;
+using FF16Tools.Files.Timelines.Elements.UI;
 
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,17 @@ public class TimelineElementFactory
             TimelineElementType.kTimelineElem_1123 => new TimelineElement_1123(),
             TimelineElementType.kTimelineElem_1125 => new TimelineElement_1125(),
             TimelineElementType.JustBuddyCommand => new JustBuddyCommand(),
+
+            TimelineElementType.kTimelineElem_5002 => new UITimelineElement5002(),
+            TimelineElementType.kTimelineElem_5004 => new UITimelineElement5004(),
+            TimelineElementType.kTimelineElem_5007 => new UITimelineElement5007(),
+            TimelineElementType.kTimelineElem_5009 => new UITimelineElement5009(),
+            TimelineElementType.kTimelineElem_5028 => new UITimelineElement5028(),
+            TimelineElementType.kTimelineElem_5031 => new UITimelineElement5031(),
+            TimelineElementType.kTimelineElem_5034 => new UITimelineElement5034(),
+            TimelineElementType.kTimelineElem_5035 => new UITimelineElement5035(),
+            TimelineElementType.kTimelineElem_5050 => new UITimelineElement5050(),
+            TimelineElementType.kTimelineElem_5051 => new UITimelineElement5051(),
             _ => throw new NotSupportedException($"Timeline element {type} not yet supported"),
         };
     }

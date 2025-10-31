@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FF16Tools.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\Games\\SteamLibrary\\steamapps\\common\\FINAL FANTASY TACTICS - The Ivalice Chronicles\\data\\extracted\\ui\\ffto\\battle\\ffto_battle_menu_windows.uib\""
+    }
+  }
+}
