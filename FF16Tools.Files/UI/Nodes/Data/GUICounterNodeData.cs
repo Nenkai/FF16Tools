@@ -23,6 +23,11 @@ public class GUICounterNodeData : GUINodeDataBase
     public int Field_0x88 { get; set; }
     public int Field_0x8C { get; set; }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x4C;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
@@ -38,5 +43,20 @@ public class GUICounterNodeData : GUINodeDataBase
         Field_0x7C = bs.ReadInt32();
         Field_0x80 = bs.ReadInt32();
         bs.ReadCheckPadding(0x08);
+    }
+
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
+    {
+        bs.WriteStructArrayPointer(basePos, TextureAssets, ref lastDataOffset);
+        bs.WritePadding(0x20);
+
+        bs.AddStringPointer(Field_0x68, basePos);
+        bs.AddStringPointer(Field_0x6C, basePos);
+        bs.WriteInt32(Field_0x70);
+        bs.WriteInt32(Field_0x74);
+        bs.WriteInt32(Field_0x78);
+        bs.WriteInt32(Field_0x7C);
+        bs.WriteInt32(Field_0x80);
+        bs.WritePadding(0x08);
     }
 }

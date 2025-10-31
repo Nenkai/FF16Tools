@@ -14,6 +14,11 @@ public class GUIReferenceNode : GUINodeBase<GUIReferenceNodeData>
     public string ReferenceName { get; set; }
     public UIAssetReference ReferenceAsset { get; set; }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x04 + 0x04 + 0x08 + 0x20;
+    }
+
     public GUIReferenceNode()
     {
         NodeType = GUINodeType.ReferenceNode;
@@ -26,10 +31,15 @@ public class GUIReferenceNode : GUINodeBase<GUIReferenceNodeData>
 
         ReferenceName = bs.ReadStringPointer(basePos);
         ReferenceAsset = bs.ReadStructPointer<UIAssetReference>(basePos);
+        bs.ReadCheckPadding(0x08);
+        bs.ReadCheckPadding(0x20);
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.AddStringPointer(ReferenceName, basePos);
+        bs.WriteStructPointer(basePos, ReferenceAsset, ref lastDataOffset);
+        bs.WritePadding(0x08);
+        bs.WritePadding(0x20);
     }
 }

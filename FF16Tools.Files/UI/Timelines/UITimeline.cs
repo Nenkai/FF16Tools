@@ -1,4 +1,6 @@
-﻿using FF16Tools.Files.UI.Assets;
+﻿using FF16Tools.Files.Timelines;
+using FF16Tools.Files.Timelines.Chara;
+using FF16Tools.Files.UI.Assets;
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ public class UITimeline : ISerializableStruct
 {
     public string Name { get; set; }
     public uint Flags { get; set; }
-    public UITimelineInfo TimelineInfo { get; set; } = new();
+    public Timeline Timeline { get; set; } = new();
     public uint Field_0x2C { get; set; }
     public string Str_0x30 { get; set; }
     public UIAssetReference UnkAssetReference_0x34 { get; set; }
@@ -30,7 +32,7 @@ public class UITimeline : ISerializableStruct
         long basePos = bs.Position;
         Name = bs.ReadStringPointer(basePos);
         Flags = bs.ReadUInt32();
-        TimelineInfo.Read(bs);
+        Timeline.Read(bs);
         Field_0x2C = bs.ReadUInt32();
         Str_0x30 = bs.ReadStringPointer(basePos);
         UnkAssetReference_0x34 = bs.ReadStructPointer<UIAssetReference>(basePos);
@@ -42,6 +44,25 @@ public class UITimeline : ISerializableStruct
 
     public void Write(SmartBinaryStream bs)
     {
-        throw new NotImplementedException();
+        long basePos = bs.Position;
+        long lastDataPos = bs.GetMarker().LastDataPosition;
+
+        bs.AddStringPointer(Name, basePos);
+        bs.WriteUInt32(Flags);
+        using (var marker = bs.PushMarker(lastDataPos))
+        {
+            Timeline.Write(bs);
+            lastDataPos = marker.LastDataPosition;
+        }
+
+        bs.WriteUInt32(Field_0x2C);
+        bs.AddStringPointer(Str_0x30, basePos);
+        bs.WriteStructPointer(basePos, UnkAssetReference_0x34, ref lastDataPos);
+        bs.WriteUInt32(Field_0x38);
+        bs.AddStringPointer(Str_0x3C, basePos);
+        bs.WriteUInt32(Field_0x40);
+        bs.WritePadding(0x1C);
+
+        bs.Position = lastDataPos;
     }
 }

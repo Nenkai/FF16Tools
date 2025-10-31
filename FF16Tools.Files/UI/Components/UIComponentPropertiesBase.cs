@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.UI.Components;
 
-public class UIComponentPropertiesBase : ISerializableStruct
+public abstract class UIComponentPropertiesBase : ISerializableStruct
 {
     public UIComponentType Type { get; set; }
     public List<string> Names { get; set; } = [];
@@ -44,10 +44,10 @@ public class UIComponentPropertiesBase : ISerializableStruct
     public uint Type_0x68 { get; set; }
     public float Field_0x6C { get; set; }
     public float Field_0x70 { get; set; }
-    public byte Unk_0x71 { get; set; }
-    public byte Unk_0x72 { get; set; }
-    public byte Unk_0x73 { get; set; }
     public byte Unk_0x74 { get; set; }
+    public byte Unk_0x75 { get; set; }
+    public byte Unk_0x76 { get; set; }
+    public byte Unk_0x77 { get; set; }
     public float Field_0x78 { get; set; }
     public float Field_0x7C { get; set; }
     public float Field_0x80 { get; set; }
@@ -60,7 +60,7 @@ public class UIComponentPropertiesBase : ISerializableStruct
     public float Field_0x9C { get; set; }
     public float Field_0xA0 { get; set; }
     public float Field_0xA4 { get; set; }
-    public UIComponentUnk_0xA8 Unk0xA8 { get; set; }
+    public UITextureAssetReference Unk0xA8 { get; set; }
     public uint Field_0xB0 { get; set; }
     public uint Field_0xB4 { get; set; }
     public uint Field_0xB8 { get; set; }
@@ -124,10 +124,10 @@ public class UIComponentPropertiesBase : ISerializableStruct
         Type_0x68 = bs.ReadUInt32();
         Field_0x6C = bs.ReadSingle();
         Field_0x70 = bs.ReadSingle();
-        Unk_0x71 = bs.Read1Byte();
-        Unk_0x72 = bs.Read1Byte();
-        Unk_0x73 = bs.Read1Byte();
         Unk_0x74 = bs.Read1Byte();
+        Unk_0x75 = bs.Read1Byte();
+        Unk_0x76 = bs.Read1Byte();
+        Unk_0x77 = bs.Read1Byte();
         Field_0x78 = bs.ReadSingle();
         Field_0x7C = bs.ReadSingle();
         Field_0x80 = bs.ReadSingle();
@@ -170,16 +170,96 @@ public class UIComponentPropertiesBase : ISerializableStruct
         if (unkUse_0xA8Field_0xAC >= 1)
         {
             bs.Position = basePos + offset_0xA8;
-            Unk0xA8 = bs.ReadStruct<UIComponentUnk_0xA8>();
+            Unk0xA8 = bs.ReadStruct<UITextureAssetReference>();
         }
 
         bs.Position = basePos + 0x108;
+        ReadExtraData(bs);
     }
 
-    public void Write(SmartBinaryStream bs)
+    public abstract void ReadExtraData(SmartBinaryStream bs);
+
+    public virtual void Write(SmartBinaryStream bs)
     {
-        throw new NotImplementedException();
+        long basePos = bs.Position;
+        long lastDataOffset = basePos + GetSize();
+
+        bs.WriteUInt32((uint)Type);
+        bs.AddStringPointers(basePos, Names, ref lastDataOffset);
+        bs.WriteUInt32(SubType); 
+        bs.WriteUInt32((uint)BlendMode);
+        bs.WriteInt32(UnkColor_0x14.ToArgb());
+        bs.WriteUInt32(Unk_0x18); 
+        bs.WriteUInt32(UnkPercentage0_0x1C); 
+        bs.WriteUInt32(UnkPercentage1); 
+        bs.WriteUInt32(UnkPercentage2); 
+        bs.WriteInt32(Field_0x28);
+        bs.WriteSingle(Field_0x2C);
+        bs.WriteSingle(Field_0x30);
+        bs.WriteSingle(Field_0x34);
+        bs.WriteSingle(Field_0x38);
+        bs.WriteSingle(Field_0x3C);
+        bs.WriteSingle(Field_0x40);
+        bs.WriteSingle(Field_0x44);
+        bs.WriteSingle(Field_0x48);
+        bs.WriteInt32(Field_0x4C);
+        bs.WriteSingle(Field_0x50);
+        bs.WriteSingle(Field_0x54);
+        bs.WriteSingle(Field_0x58);
+        bs.WriteSingle(Field_0x5C);
+        bs.WriteInt16(Field_0x60);
+        bs.WriteByte(Field_0x62);
+        bs.WriteByte(Field_0x63);
+        bs.WriteSingle(Field_0x64);
+        bs.WriteUInt32(Type_0x68); 
+        bs.WriteSingle(Field_0x6C);
+        bs.WriteSingle(Field_0x70);
+        bs.WriteByte(Unk_0x74);
+        bs.WriteByte(Unk_0x75);
+        bs.WriteByte(Unk_0x76);
+        bs.WriteByte(Unk_0x77);
+        bs.WriteSingle(Field_0x78);
+        bs.WriteSingle(Field_0x7C);
+        bs.WriteSingle(Field_0x80);
+        bs.WriteSingle(Field_0x84);
+        bs.WriteSingle(Field_0x88);
+        bs.WriteUInt32(Type_0x8C); 
+        bs.WriteSingle(Field_0x90);
+        bs.WriteSingle(Field_0x94);
+        bs.WriteStructPointer(basePos, UIAssetReference_0x98, ref lastDataOffset);
+        bs.WriteSingle(Field_0x9C);
+        bs.WriteSingle(Field_0xA0);
+        bs.WriteSingle(Field_0xA4);
+        bs.WriteStructPointer(basePos, Unk0xA8, ref lastDataOffset);
+        bs.WriteUInt32(1); // TODO
+        bs.WriteUInt32(Field_0xB0);
+        bs.WriteUInt32(Field_0xB4);
+        bs.WriteUInt32(Field_0xB8);
+        bs.WriteSingle(Field_0xBC);
+        bs.WriteSingle(Field_0xC0);
+        bs.WriteSingle(Field_0xC4);
+        bs.WriteSingle(Field_0xC8);
+        bs.WriteUInt32(Field_0xCC);
+        bs.WriteSingle(Field_0xD0);
+        bs.WriteSingle(Field_0xD4);
+        bs.WriteSingle(Field_0xD8);
+        bs.WriteSingle(Field_0xDC);
+        bs.WriteSingle(Field_0xE0);
+        bs.WriteSingle(Field_0xE4);
+        bs.WriteSingle(Field_0xE8);
+        bs.WriteSingle(Field_0xEC);
+        bs.WriteUInt32(Field_0xF0);
+        bs.WriteUInt32(Field_0xF4);
+        bs.WriteUInt32(Field_0xF8);
+        bs.WriteUInt32(Field_0xFC);
+        bs.WriteUInt32(Field_0x100); 
+        bs.WriteUInt32(Field_0x104);
+        WriteExtraData(bs, basePos, ref lastDataOffset);
+
+        bs.Position = lastDataOffset;
     }
+
+    public abstract void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset);
 
     public static UIComponentPropertiesBase Create(UIComponentType type)
     {

@@ -18,6 +18,11 @@ public class GUIEffectNode : GUINodeBase<GUIEffectNodeData>
         NodeType = GUINodeType.EffectNode;
     }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x04 + 0x04 + 0x1C;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
@@ -28,8 +33,10 @@ public class GUIEffectNode : GUINodeBase<GUIEffectNodeData>
         bs.ReadCheckPadding(0x1C);
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.WritePadding(0x04);
+        bs.WriteStructPointer(basePos, EffectAsset, ref lastDataOffset);
+        bs.WritePadding(0x1C);
     }
 }

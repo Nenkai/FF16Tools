@@ -10,9 +10,15 @@ namespace FF16Tools.Files.UI.Nodes;
 
 public class GUILayerNode : GUINodeBase<GUILayerNodeData>
 {
+    public List<GUINodeBase> Nodes { get; set; } = [];
     public GUILayerNode()
     {
         NodeType = GUINodeType.LayerNode;
+    }
+
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x20 + 0x04 + 0x04;
     }
 
     public override void Read(SmartBinaryStream bs)
@@ -36,11 +42,13 @@ public class GUILayerNode : GUINodeBase<GUILayerNodeData>
             bs.Position -= 4;
 
             nodeBase.Read(bs);
+            Nodes.Add(nodeBase);
         }
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.WritePadding(0x20);
+        bs.WriteStructArrayPointerWithOffsetTable32(basePos, Nodes, ref lastDataOffset);
     }
 }

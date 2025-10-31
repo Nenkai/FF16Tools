@@ -8,9 +8,18 @@ namespace FF16Tools.Files.UI.Components;
 
 public class UIComponentRadioButton : UIComponentPropertiesBase
 {
-    public override void Read(SmartBinaryStream bs)
+    public override uint GetSize()
     {
-        base.Read(bs);
+        return base.GetSize() + 0x20;
+    }
+
+    public override void ReadExtraData(SmartBinaryStream bs)
+    {
         bs.ReadCheckPadding(0x20);
+    }
+
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
+    {
+        bs.WritePadding(0x20);
     }
 }

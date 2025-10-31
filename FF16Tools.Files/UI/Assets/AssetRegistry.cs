@@ -29,6 +29,14 @@ public class AssetRegistry : ISerializableStruct
 
     public void Write(SmartBinaryStream bs)
     {
-        throw new NotImplementedException();
+        long basePos = bs.Position;
+
+        long lastDataOffset = basePos + GetSize();
+        bs.WriteStructArrayPointerWithOffsetTable32(basePos, TextureAssets, ref lastDataOffset);
+        bs.WriteStructArrayPointerWithOffsetTable32(basePos, UIAssets, ref lastDataOffset);
+        bs.WriteStructArrayPointerWithOffsetTable32(basePos, VFXAssets, ref lastDataOffset);
+        bs.WritePadding(0x1C);
+
+        bs.Position = lastDataOffset;
     }
 }

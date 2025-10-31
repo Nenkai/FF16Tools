@@ -35,6 +35,14 @@ public class UIAssetReference : ISerializableStruct
 
     public void Write(SmartBinaryStream bs)
     {
-        throw new NotImplementedException();
+        long basePos = bs.Position;
+        long lastDataOffset = bs.Position + GetSize();
+
+        bs.WriteUInt32(Type);
+        bs.AddStringPointer(Path, basePos);
+        bs.WriteStructPointer(basePos, AssetReference, ref lastDataOffset);
+        bs.WritePadding(0x20);
+
+        bs.Position = lastDataOffset;
     }
 }

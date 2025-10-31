@@ -16,6 +16,11 @@ public class GUIImageNodeData : GUINodeDataBase
     public int Field_0x74 { get; set; }
     public List<UITextureAssetReference> TextureAssetReferences { get; set; } = [];
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x54;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
@@ -29,5 +34,17 @@ public class GUIImageNodeData : GUINodeDataBase
         Field_0x70 = bs.ReadInt32();
         Field_0x74 = bs.ReadInt32();
         bs.ReadCheckPadding(0x1C);
+    }
+
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
+    {
+        bs.WriteStructArrayPointer(basePos, TextureAssetReferences, ref lastDataOffset);
+        bs.WritePadding(0x20);
+
+        bs.WriteInt32(Field_0x68);
+        bs.WriteInt32(Field_0x6C);
+        bs.WriteInt32(Field_0x70);
+        bs.WriteInt32(Field_0x74);
+        bs.WritePadding(0x1C);
     }
 }

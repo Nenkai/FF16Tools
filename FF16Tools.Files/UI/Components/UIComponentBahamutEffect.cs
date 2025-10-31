@@ -30,9 +30,13 @@ public class UIComponentBahamutEffect : UIComponentPropertiesBase
     public int Field_0x154 { get; set; }
     public int Field_0x158 { get; set; }
 
-    public override void Read(SmartBinaryStream bs)
+    public override uint GetSize()
     {
-        base.Read(bs);
+        return base.GetSize() + 0x74;
+    }
+
+    public override void ReadExtraData(SmartBinaryStream bs)
+    {
         Field_0x108 = bs.ReadSingle();
         Field_0x10C = bs.ReadSingle();
         Field_0x110 = bs.ReadSingle();
@@ -55,5 +59,31 @@ public class UIComponentBahamutEffect : UIComponentPropertiesBase
         Field_0x154 = bs.ReadInt32();
         Field_0x158 = bs.ReadInt32();
         bs.ReadCheckPadding(0x20);
+    }
+
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
+    {
+        bs.WriteSingle(Field_0x108);
+        bs.WriteSingle(Field_0x10C);
+        bs.WriteSingle(Field_0x110);
+        bs.WriteSingle(Field_0x114);
+        bs.WriteSingle(Field_0x118);
+        bs.WriteSingle(Field_0x11C);
+        bs.WriteInt32(Field_0x120);
+        bs.WriteInt32(Field_0x124);
+        bs.WriteInt32(Field_0x128);
+        bs.WriteSingle(Field_0x12C);
+        bs.WriteSingle(Field_0x130);
+        bs.WriteSingle(Field_0x134);
+        bs.WriteSingle(Field_0x138);
+        bs.WriteSingle(Field_0x13C);
+        bs.WriteSingle(Field_0x140);
+        bs.WriteSingle(Field_0x144);
+        bs.WriteSingle(Field_0x148);
+        bs.WriteSingle(Field_0x14C);
+        bs.WriteSingle(Field_0x150);
+        bs.WriteInt32(Field_0x154);
+        bs.WriteInt32(Field_0x158);
+        bs.WritePadding(0x20);
     }
 }

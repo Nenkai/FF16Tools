@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.UI.Nodes.Data;
 
-public abstract class GUINodeDataBase
+public abstract class GUINodeDataBase : ISerializableStruct
 {
     public int Field_0x00 { get; set; }
     public int Field_0x04 { get; set; }
@@ -27,6 +27,11 @@ public abstract class GUINodeDataBase
     public int Field_0x24 { get; set; }
     public int Field_0x28 { get; set; }
     public int Field_0x2C { get; set; }
+
+    public virtual uint GetSize()
+    {
+        return 0x40;
+    }
 
     public virtual void Read(SmartBinaryStream bs)
     {
@@ -47,4 +52,32 @@ public abstract class GUINodeDataBase
         Field_0x2C = bs.ReadInt32();
         bs.ReadCheckPadding(0x10);
     }
+
+    public void Write(SmartBinaryStream bs)
+    {
+        long basePos = bs.Position;
+        long lastDataOffset = bs.Position + GetSize();
+
+        bs.WriteInt32(Field_0x00);
+        bs.WriteInt32(Field_0x04);
+        bs.WriteInt32(Field_0x08);
+        bs.WriteInt32(Field_0x0C);
+        bs.WriteInt32(Field_0x10);
+        bs.WriteInt32(Field_0x14);
+        bs.WriteByte(Field_0x18);
+        bs.WriteByte(Field_0x19);
+        bs.WriteByte(Field_0x1A);
+        bs.WriteByte(Field_0x1B);
+        bs.WriteInt32(Field_0x1C);
+        bs.WriteInt32(Field_0x20);
+        bs.WriteInt32(Field_0x24);
+        bs.WriteInt32(Field_0x28);
+        bs.WriteInt32(Field_0x2C);
+        bs.WritePadding(0x10);
+        WriteExtraData(bs, basePos, ref lastDataOffset);
+
+        bs.Position = lastDataOffset;
+    }
+
+    public abstract void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset);
 }

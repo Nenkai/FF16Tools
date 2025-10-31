@@ -19,6 +19,11 @@ public class GUINinegridNodeData : GUINodeDataBase
     public int Field_0x78 { get; set; }
     public int Field_0x7C { get; set; }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x48;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
@@ -33,5 +38,21 @@ public class GUINinegridNodeData : GUINodeDataBase
         Field_0x78 = bs.ReadInt32();
         Field_0x7C = bs.ReadInt32();
         bs.ReadCheckPadding(0x08);
+    }
+
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
+    {
+        bs.WriteStructArrayPointer(basePos, Textures, ref lastDataOffset);
+        bs.WritePadding(0x20);
+
+        bs.WriteInt32(Field_0x68);
+        bs.WriteInt32(Field_0x6C);
+        bs.WriteInt32(Field_0x70);
+        bs.WriteInt32(Field_0x74);
+        bs.WriteInt32(Field_0x78);
+        bs.WriteInt32(Field_0x7C);
+        bs.WritePadding(0x08);
+
+        bs.Position = lastDataOffset;
     }
 }

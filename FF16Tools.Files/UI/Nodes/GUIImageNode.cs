@@ -15,6 +15,11 @@ public class GUIImageNode : GUINodeBase<GUIImageNodeData>
         NodeType = GUINodeType.ImageNode;
     }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x2C + 0x20;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         base.Read(bs);
@@ -22,8 +27,9 @@ public class GUIImageNode : GUINodeBase<GUIImageNodeData>
         bs.ReadCheckPadding(0x20);
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.WritePadding(0x2C);
+        bs.WritePadding(0x20);
     }
 }

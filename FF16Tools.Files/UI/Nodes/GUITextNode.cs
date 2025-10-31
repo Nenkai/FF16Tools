@@ -12,6 +12,11 @@ public class GUITextNode : GUINodeBase<GUITextNodeData>
 {
     public int Field_0x70 { get; set; }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x04 + 0x1C + 0x20;
+    }
+
     public GUITextNode()
     {
         NodeType = GUINodeType.TextNode;
@@ -25,8 +30,10 @@ public class GUITextNode : GUINodeBase<GUITextNodeData>
         bs.ReadCheckPadding(0x20);
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.WriteInt32(Field_0x70);
+        bs.WritePadding(0x1C);
+        bs.WritePadding(0x20);
     }
 }

@@ -15,6 +15,11 @@ public class GUICounterNode : GUINodeBase<GUICounterNodeData>
         NodeType = GUINodeType.CounterNode;
     }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x20 + 0x2C;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         base.Read(bs);
@@ -22,8 +27,9 @@ public class GUICounterNode : GUINodeBase<GUICounterNodeData>
         bs.ReadCheckPadding(0x20);
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.WritePadding(0x2C);
+        bs.WritePadding(0x20);
     }
 }

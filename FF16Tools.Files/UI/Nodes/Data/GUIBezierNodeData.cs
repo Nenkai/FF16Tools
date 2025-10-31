@@ -1,5 +1,7 @@
 ﻿using FF16Tools.Files.UI.Assets;
 
+using Syroot.BinaryData;
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -30,6 +32,11 @@ public class GUIBezierNodeData : GUINodeDataBase
     public float Field_0x7C { get; set; }
     public List<BezierPoint> Points { get; set; } = [];
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x48;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
@@ -56,6 +63,30 @@ public class GUIBezierNodeData : GUINodeDataBase
         Field_0x7C = bs.ReadSingle();
         Points = bs.ReadStructArrayFromOffsetCount<BezierPoint>(basePos);
     }
+
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
+    {
+        bs.WriteInt32(Field_0x40);
+        bs.WriteInt32(Field_0x44);
+        bs.WriteInt32(Field_0x48);
+        bs.WriteInt32(Field_0x4C);
+        bs.WriteInt32(Field_0x50);
+        bs.WriteInt32(Field_0x54);
+        bs.WriteSingle(Field_0x58);
+        bs.WriteSingle(Field_0x5C);
+        bs.WriteSingle(Field_0x60);
+        bs.WriteSingle(Field_0x64);
+        bs.WriteInt32(Field_0x65);
+        bs.WritePadding(1);
+        bs.WritePadding(1);
+        bs.WriteInt32(Field_0x68);
+        bs.WriteSingle(Field_0x6C);
+        bs.WriteSingle(Field_0x70);
+        bs.WriteSingle(Field_0x74);
+        bs.WriteSingle(Field_0x78);
+        bs.WriteSingle(Field_0x7C);
+        bs.WriteStructArrayPointer(basePos, Points, ref lastDataOffset);
+    }
 }
 
 public class BezierPoint : ISerializableStruct
@@ -73,9 +104,9 @@ public class BezierPoint : ISerializableStruct
 
     public void Read(SmartBinaryStream bs)
     {
-        Origin = bs.ReadPoint();
-        HandleA = bs.ReadPoint();
-        HandleB = bs.ReadPoint();
+        Origin = bs.ReadStructMarshal<Point>();
+        HandleA = bs.ReadStructMarshal<Point>();
+        HandleB = bs.ReadStructMarshal<Point>();
         Field_0x18 = bs.ReadSingle();
         Field_0x1C = bs.ReadInt32();
         bs.ReadCheckPadding(0x18);

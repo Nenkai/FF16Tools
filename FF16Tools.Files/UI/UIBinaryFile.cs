@@ -57,4 +57,33 @@ public class UIBinaryFile
         Components = bs.ReadStructArrayFromOffsetCount<UIComponentInfo>(basePos);
         bs.ReadCheckPadding(0x20);
     }
+
+    public void Write(Stream stream)
+    {
+        long basePos = stream.Position;
+
+        var bs = new SmartBinaryStream(stream, stringCoding: Syroot.BinaryData.StringCoding.ZeroTerminated);
+        bs.WriteUInt32(MAGIC);
+        bs.WriteUInt32(VERSION_LATEST);
+        bs.WritePadding(0x10);
+
+        bs.WriteUInt32(0x2C); // ToC offset
+        bs.WritePadding(0x10);
+
+        WriteToC(bs);
+
+        bs.WriteStringTable(writeEmptyFirst: false);
+    }
+
+    private void WriteToC(SmartBinaryStream bs)
+    {
+        long thisStructPos = bs.Position;
+        long lastDataOffset = thisStructPos + 0x2C;
+
+        bs.WriteStructPointer(thisStructPos, Assets, ref lastDataOffset);
+        bs.WriteStructArrayPointer(thisStructPos, Components, ref lastDataOffset);
+        bs.WritePadding(0x20);
+
+        bs.Position = lastDataOffset;
+    }
 }

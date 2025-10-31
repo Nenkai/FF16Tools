@@ -43,18 +43,22 @@ public class CharaTimelineFile
         }
     }
 
-    public void Write(string file, CharaTimelineSerializationOptions? serializationOptions = null)
+    public void Write(string file, TimelineSerializationOptions? serializationOptions = null)
     {
         using var fs = File.Create(file);
         Write(fs, serializationOptions);
     }
 
-    public void Write(Stream stream, CharaTimelineSerializationOptions? serializationOptions = null)
+    public void Write(Stream stream, TimelineSerializationOptions? serializationOptions = null)
     {
         if (Timeline is null)
             throw new InvalidOperationException("Timeline is null. Cannot write to file.");
 
-        serializationOptions ??= new CharaTimelineSerializationOptions();
+        serializationOptions ??= new TimelineSerializationOptions();
+        if (serializationOptions.CalculateTotalFrameCount)
+            Timeline.LastFrameIndex = Timeline.CalculateTimelineFrameLength();
+        else
+            Timeline.CheckTimelineElementFrameRanges();
 
         SmartBinaryStream bs = new SmartBinaryStream(stream, stringCoding: StringCoding.ZeroTerminated);
 
@@ -64,22 +68,31 @@ public class CharaTimelineFile
         bs.WriteInt32(MAGIC);
         bs.WriteUInt32(Version);
         bs.WritePadding(0x10);
-        bs.WriteInt32(0); // Timeline offset, write later
+        bs.WriteInt32(0);
 
-        // Write the timeline
-        int timelineHeaderOffset = Timeline.Write(bs, serializationOptions);
+        bs.Position = basePos + 0x20;
 
-        long tempPos = bs.Position;
+        // The timeline header can appear after some element data, which is weird, I wonder why they do this.
+        // Write said data first.
+        Timeline.WritePreTimelineElements(bs);
+        long timelineOffset = bs.Position;
 
-        // Write the timeline offset
         bs.Position = basePos + 0x18;
-        bs.WriteInt32(timelineHeaderOffset);
 
-        bs.Position = tempPos;
+        long lastDataPos = timelineOffset;
+        using (var marker = bs.PushMarker(lastDataPos + 0x24))
+        {
+            bs.WriteStructPointer(basePos, Timeline, ref lastDataPos);
+            bs.Position = marker.LastDataPosition;
+        }
+
+        // String table.
+        bs.WriteStringTable();
+
     }
 }
 
-public class CharaTimelineSerializationOptions
+public class TimelineSerializationOptions
 {
     /// <summary>
     /// Whether to calculate the number of frames based on the current elements in a <see cref="Timeline"/>. Defaults to true.

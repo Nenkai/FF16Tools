@@ -14,6 +14,11 @@ public class GUIMaskNode : GUINodeBase<GUIMaskNodeData>
     public UIAssetReference MaskAsset { get; set; }
     public string MaskNameUnk { get; set; }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x2C + 0x04 + 0x04 + 0x18;
+    }
+
     public GUIMaskNode()
     {
         NodeType = GUINodeType.MaskNode;
@@ -30,8 +35,11 @@ public class GUIMaskNode : GUINodeBase<GUIMaskNodeData>
         bs.ReadCheckPadding(0x18);
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.WritePadding(0x2C);
+        bs.WriteStructPointer(basePos, MaskAsset, ref lastDataOffset);
+        bs.AddStringPointer(MaskNameUnk, basePos);
+        bs.WritePadding(0x18);
     }
 }

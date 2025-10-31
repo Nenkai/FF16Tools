@@ -33,8 +33,8 @@ public class MdlJointMuscleEntry : ISerializableStruct
         for (int i = 0; i < 4; i++)
             WeightsSet2[i] = bs.ReadSingle();
 
-        Unknown2 = bs.ReadVector3();
-        Unknown3 = bs.ReadVector3();
+        Unknown2 = bs.ReadStructMarshal<Vector3>();
+        Unknown3 = bs.ReadStructMarshal<Vector3>();
     }
 
     public void Write(SmartBinaryStream bs)
@@ -51,8 +51,8 @@ public class MdlJointMuscleEntry : ISerializableStruct
         for (int i = 0; i < 4; i++)
             bs.WriteSingle(WeightsSet2[i]);
 
-        bs.WriteVector3(Unknown2);
-        bs.WriteVector3(Unknown2);
+        bs.WriteStructMarshal(Unknown2);
+        bs.WriteStructMarshal(Unknown2);
     }
 
     public uint GetSize() => 0x50;

@@ -17,6 +17,7 @@ public class UIComponentInfo : ISerializableStruct
     public string Name { get; set; }
     public Size Size { get; set; }
     public UIComponentPropertiesBase Properties { get; set; }
+    public List<GUINodeBase> Nodes { get; set; } = [];
     public List<UITimeline> Timelines { get; set; } = [];
 
     public uint GetSize()
@@ -29,7 +30,7 @@ public class UIComponentInfo : ISerializableStruct
         long basePos = bs.Position;
 
         Name = bs.ReadStringPointer(basePos);
-        Size = bs.ReadSize();
+        Size = bs.ReadStructMarshal<Size>();
         uint componentPropertiesOffset = bs.ReadUInt32();
         uint nodesOffset = bs.ReadUInt32();
         uint nodeCount = bs.ReadUInt32();
@@ -53,12 +54,23 @@ public class UIComponentInfo : ISerializableStruct
             bs.Position -= 4;
 
             nodeBase.Read(bs);
+            Nodes.Add(nodeBase);
         }
     }
 
     public void Write(SmartBinaryStream bs)
     {
-        throw new NotImplementedException();
+        long basePos = bs.Position;
+        long lastDataOffset = bs.GetMarker().LastDataPosition;
+
+        bs.AddStringPointer(Name, basePos);
+        bs.WriteStructMarshal(Size);
+        bs.WriteStructPointer(basePos, Properties, ref lastDataOffset);
+        bs.WriteStructArrayPointerWithOffsetTable32(basePos, Nodes, ref lastDataOffset);
+        bs.WriteStructArrayPointer(basePos, Timelines, ref lastDataOffset);
+        bs.WritePadding(0x20);
+
+        bs.Position = lastDataOffset;
     }
 
     public override string ToString()

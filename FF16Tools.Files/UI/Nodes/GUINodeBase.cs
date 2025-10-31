@@ -14,7 +14,7 @@ using Vortice.Direct3D12;
 
 namespace FF16Tools.Files.UI.Nodes;
 
-public abstract class GUINodeBase
+public abstract class GUINodeBase : ISerializableStruct
 {
     public GUINodeType NodeType { get; protected set; }
     public string Name { get; set; }
@@ -26,31 +26,13 @@ public abstract class GUINodeBase
     public Point Size { get; set; }
     public int Field_0x50 { get; set; }
 
-    public virtual void Read(SmartBinaryStream bs)
+    public virtual uint GetSize()
     {
-        long basePos = bs.Position;
-        NodeType = (GUINodeType)bs.ReadUInt32();
-        Name = bs.ReadStringPointer(basePos);
-        Origin = bs.ReadPoint();
-        Rotation = bs.ReadSingle();
-        Scale = bs.ReadVector2();
-        AnchorPoint = bs.ReadPoint();
-        IsAnchored = bs.ReadBoolean(BooleanCoding.Dword);
-        bs.ReadCheckPadding(0x1C);
-
-        Size = bs.ReadPoint();
-        int dataOffset = bs.ReadInt32();
-        Field_0x50 = bs.ReadInt32();
-        bs.ReadCheckPadding(0x1C);
-
-        long tempPos = bs.Position;
-        bs.Position = basePos + dataOffset;
-        ReadData(bs);
-
-        bs.Position = tempPos;
+        return 0x70;
     }
 
-    public abstract void ReadData(SmartBinaryStream bs);
+    public abstract void Write(SmartBinaryStream bs);
+    public abstract void Read(SmartBinaryStream bs);
 
     public static GUINodeBase Create(GUINodeType type)
     {
@@ -73,6 +55,8 @@ public abstract class GUINodeBase
         };
         return nodeBase;
     }
+
+    public abstract void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset);
 }
 
 public enum GUINodeType

@@ -1,5 +1,7 @@
 ﻿using FF16Tools.Files.UI.Assets;
 
+using Syroot.BinaryData;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,11 @@ public class GUITextNodeData : GUINodeDataBase
     public int UnkType_0x60 { get; set; }
     public int Field_0x70 { get; set; }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x40;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         long basePos = bs.Position;
@@ -43,5 +50,24 @@ public class GUITextNodeData : GUINodeDataBase
         bs.ReadCheckPadding(0x0C);
         Field_0x70 = bs.ReadInt32();
         bs.ReadCheckPadding(0x0C);
+    }
+
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
+    {
+        bs.WriteInt32(UIKeyId);
+        bs.AddStringPointer(UnkString_0x44, basePos);
+        bs.WriteInt32(FontSize);
+        bs.WriteByte(Field_0x4C);
+        bs.WriteByte(Field_0x4D);
+        bs.WriteByte(Field_0x4E);
+        bs.WritePadding(1);
+        bs.WriteInt32(Spacing);
+        bs.WriteInt32(LineHeight);
+        bs.WriteInt32(VerticalAlignment);
+        bs.WriteInt32(HorizontalAlignment);
+        bs.WriteInt32(UnkType_0x60);
+        bs.WritePadding(0x0C);
+        bs.WriteInt32(Field_0x70);
+        bs.WritePadding(0x0C);
     }
 }

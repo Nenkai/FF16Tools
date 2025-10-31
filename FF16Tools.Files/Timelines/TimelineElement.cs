@@ -1,4 +1,6 @@
-﻿namespace FF16Tools.Files.Timelines.Chara;
+﻿using System.Xml.Linq;
+
+namespace FF16Tools.Files.Timelines;
 
 public class TimelineElement : ISerializableStruct
 {
@@ -20,7 +22,7 @@ public class TimelineElement : ISerializableStruct
     /// Number of frames this element lasts for. There are 30 frames per second.
     /// </summary>
     public uint NumFrames { get; set; }
-    public uint Field_0x14 { get; set; }
+    public uint TargetIndex { get; set; }
     public byte Field_0x18 { get; set; }
     public byte Field_0x19 { get; set; }
     public byte Field_0x1A { get; set; }
@@ -36,7 +38,7 @@ public class TimelineElement : ISerializableStruct
         ElementType = (TimelineElementType)bs.ReadUInt32();
         FrameStart = bs.ReadUInt32();
         NumFrames = bs.ReadUInt32();
-        Field_0x14 = bs.ReadUInt32();
+        TargetIndex = bs.ReadUInt32();
         Field_0x18 = bs.Read1Byte();
         Field_0x19 = bs.Read1Byte();
         Field_0x1A = bs.Read1Byte();
@@ -57,25 +59,39 @@ public class TimelineElement : ISerializableStruct
         DataUnion?.Read(bs);
     }
 
-    /// <summary>
-    /// Note: won't write data, only header.
-    /// </summary>
-    /// <param name="bs"></param>
     public void Write(SmartBinaryStream bs)
     {
         long thisPos = bs.Position;
+        long lastDataPos = bs.GetMarker().LastDataPosition;
 
         bs.WriteUInt32(Field_0x00);
         bs.AddStringPointer(Name, thisPos);
         bs.WriteUInt32((uint)ElementType);
         bs.WriteUInt32(FrameStart);
         bs.WriteUInt32(NumFrames);
-        bs.WriteUInt32(Field_0x14);
+        bs.WriteUInt32(TargetIndex);
         bs.WriteByte(Field_0x18);
         bs.WriteByte(Field_0x19);
         bs.WriteByte(Field_0x1A);
         bs.WriteByte(Field_0x1B);
-        bs.WriteObjectPointer(DataUnion, thisPos);
+        if (Timeline._preTimelineTypes.Contains(ElementType)) // Certain elements are written before the timeline header. 
+        {
+            bs.WriteObjectPointer(DataUnion, thisPos);
+
+            long tmpPos = bs.Position;
+
+            // See comment in WritePreTimelineElements(). We actually pre-allocated space for pre-timeline elements there.
+            // We write them now, to keep the string table in the same serialziation order as original.
+            long elementOffset = bs.GetObjectPointerOffset(DataUnion);
+            bs.Position = elementOffset;
+            DataUnion.Write(bs);
+
+            bs.Position = tmpPos;
+        }
+        else
+            bs.WriteStructPointer(thisPos, DataUnion, ref lastDataPos);
+
+        bs.Position = lastDataPos;
     }
 
     public uint GetSize() => 0x20;

@@ -15,14 +15,19 @@ public class GUICollisionNode : GUINodeBase<GUICollisionNodeData>
         NodeType = GUINodeType.CollisionNode;
     }
 
+    public override uint GetSize()
+    {
+        return base.GetSize() + 0x20;
+    }
+
     public override void Read(SmartBinaryStream bs)
     {
         base.Read(bs);
         bs.ReadCheckPadding(0x20);
     }
 
-    public override void ReadData(SmartBinaryStream bs)
+    public override void WriteExtraData(SmartBinaryStream bs, long basePos, ref long lastDataOffset)
     {
-        Data.Read(bs);
+        bs.WritePadding(0x20);
     }
 }

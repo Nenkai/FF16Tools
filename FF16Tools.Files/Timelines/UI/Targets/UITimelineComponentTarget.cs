@@ -1,14 +1,12 @@
-﻿using FF16Tools.Files.UI.Assets;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FF16Tools.Files.UI.Timelines.Targets;
+namespace FF16Tools.Files.Timelines.UI.Targets;
 
-public class UITimelineComponentTarget : UITimelineTargetBase
+public class UITimelineComponentTarget : TimelineTargetBase
 {
     public string ComponentName { get; set; }
 
@@ -26,6 +24,9 @@ public class UITimelineComponentTarget : UITimelineTargetBase
 
     public override void Write(SmartBinaryStream bs)
     {
-        throw new NotImplementedException();
+        long basePos = bs.Position;
+
+        base.Write(bs);
+        bs.AddStringPointer(ComponentName, basePos);
     }
 }
