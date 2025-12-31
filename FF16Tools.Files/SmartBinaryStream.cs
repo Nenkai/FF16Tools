@@ -316,7 +316,7 @@ public class SmartBinaryStream : BinaryStream
     /// <summary>
     /// Writes a struct at the specified data position, and its offset at the current position. Advances by one int. <br/><br/>
     /// NOTE: Ending position is expected to be at, or after the struct data offset (incase of nested structs that appears after this one being serialized). <br/>
-    /// Make sure to adjust your function to point to the end of the function on return.
+    /// Make sure to adjust your function to point to the end of the struct's data on return.
     /// </summary>
     /// <typeparam name="TStruct"></typeparam>
     /// <param name="basePos"></param>
@@ -397,7 +397,8 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
-    /// Reads an array of inline structs starting from the current offset.
+    /// Reads an array of inline structs starting from the current offset. <br/>
+    /// Note: <see cref="ISerializableStruct.GetSize"/> is used, so the struct size is expected to be constant.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="elementCount"></param>
@@ -441,6 +442,26 @@ public class SmartBinaryStream : BinaryStream
     }
 
     /// <summary>
+    /// Reads an array of inline structs starting from the current offset and passes the element to the specified callback.<br/>
+    /// Useful to store it in a different collection than the list returned by <see cref="ReadStructArray{T}(uint)"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="startOffset"></param>
+    /// <param name="elementCount"></param>
+    /// <returns></returns>
+    public void ReadStructArrayWithCallback<T>(uint elementCount, Action<T> callback) where T : ISerializableStruct, new()
+    {
+        long basePos = Position;
+        for (int i = 0; i < elementCount; i++)
+        {
+            T elem = new();
+            Position = basePos + i * elem.GetSize();
+            elem.Read(this);
+            callback(elem);
+        }
+    }
+
+    /// <summary>
     /// Reads an array of structs, at the incoming offset/pointer (int) + count (int) pair.
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -479,14 +500,11 @@ public class SmartBinaryStream : BinaryStream
         uint count = ReadUInt32();
         long tmpPos = Position;
 
-        List<T> elements = new List<T>((int)count);
-
         for (int i = 0; i < count; i++)
         {
             T elem = new();
             Position = startOffset + offset + (i * elem.GetSize());
             elem.Read(this);
-            elements.Add(elem);
 
             callback(elem);
         }
