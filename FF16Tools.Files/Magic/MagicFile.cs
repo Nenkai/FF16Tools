@@ -1,21 +1,16 @@
-﻿using FF16Tools.Files.Panzer;
-
-using Syroot.BinaryData;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-using YamlDotNet.Serialization.ObjectFactories;
-
 namespace FF16Tools.Files.Magic;
 
+/// <summary>
+/// Represents a magic file (.magic) used in FFXVI
+/// </summary>
 public class MagicFile
 {
     public const ushort VERSION_LATEST = 5;
@@ -37,7 +32,7 @@ public class MagicFile
 
         uint version = bs.ReadUInt32();
         if (version != VERSION_LATEST)
-            throw new NotSupportedException("Only Panzer files version 2 (FF16) is currently supported.");
+            throw new NotSupportedException("Only magic files version 5 is currently supported.");
 
         uint numSections = bs.ReadUInt32();
 

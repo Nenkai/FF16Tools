@@ -630,6 +630,10 @@ public class SmartBinaryStream : BinaryStream
 public class StructMarker : IDisposable
 {
     public long BasePos { get; }
+
+    /// <summary>
+    /// Feel free to update this at the end of a struct if you are writing a struct array using a loop and a marker for each.
+    /// </summary>
     public long LastDataPosition { get; set; }
     public SmartBinaryStream Stream { get; }
 
