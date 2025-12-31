@@ -414,7 +414,7 @@ public class FF16PackBuilder
             task.PackFile.DataOffset = (ulong)packStream.Position;
 
             using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate((int)task.PackFile.DecompressedFileSize);
-            long sizeCompressed = _codec.CompressBufferBound(task.PackFile.DecompressedFileSize * 2); // Incase
+            ulong sizeCompressed = _codec.CompressBufferBound((nuint)(task.PackFile.DecompressedFileSize * 2)); // Incase
             using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate((int)sizeCompressed);
 
             using var fileStream = new FileStream(task.LocalPath, FileMode.Open);
@@ -491,7 +491,7 @@ public class FF16PackBuilder
     private async Task WriteSharedChunk(FileStream packStream, ChunkTask chunkTask, CancellationToken ct = default)
     {
         using MemoryOwner<byte> decompBuffer = MemoryOwner<byte>.Allocate((int)chunkTask.PackChunk.DecompressedSize);
-        long sizeCompressed = _codec.CompressBufferBound(chunkTask.PackChunk.DecompressedSize);
+        ulong sizeCompressed = _codec.CompressBufferBound(chunkTask.PackChunk.DecompressedSize);
         using MemoryOwner<byte> compBuffer = MemoryOwner<byte>.Allocate((int)sizeCompressed);
 
         using var bufferStream = decompBuffer.AsStream();
