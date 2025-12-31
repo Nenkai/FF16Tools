@@ -154,25 +154,15 @@ public class VFXAudioTableEntry
         long basePos = bs.Position;
 
         Id = bs.ReadUInt32();
-        uint nameOffset = bs.ReadUInt32();
-        uint vfxFileOffset = bs.ReadUInt32();
+        Name = bs.ReadStringPointer(basePos);
+        VFX = bs.ReadStructPointer<AssetReference>(basePos);
         uint field_0x0C = bs.ReadUInt32();
-        Debug.Assert(field_0x0C == 0x00);
-
         Flags = bs.ReadUInt64();
-
-        uint audioFileOffset = bs.ReadUInt32();
+        Audio = bs.ReadStructPointer<AssetReference>(basePos);
         uint field_0x1C = bs.ReadUInt32();
+
+        Debug.Assert(field_0x0C == 0x00);
         Debug.Assert(field_0x1C == 0x00);
-
-        bs.Position = basePos + nameOffset;
-        Name = bs.ReadString(StringCoding.ZeroTerminated);
-
-        bs.Position = basePos + vfxFileOffset;
-        VFX.Read(bs);
-
-        bs.Position = basePos + audioFileOffset;
-        Audio.Read(bs);
     }
 
     public static uint GetSize()

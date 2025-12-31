@@ -17,16 +17,16 @@ public class MdlJointBounding : ISerializableStruct
 
     public void Read(SmartBinaryStream bs)
     {
-        BoundingMin = bs.ReadVector3();
-        BoundingMax = bs.ReadVector3();
+        BoundingMin = bs.ReadStructMarshal<Vector3>();
+        BoundingMax = bs.ReadStructMarshal<Vector3>();
         Unknown1 = bs.ReadSingle();
         Unknown2 = bs.ReadSingle();
     }
 
     public void Write(SmartBinaryStream bs)
     {
-        bs.WriteVector3(BoundingMin);
-        bs.WriteVector3(BoundingMax);
+        bs.WriteStructMarshal(BoundingMin);
+        bs.WriteStructMarshal(BoundingMax);
         bs.WriteSingle(Unknown1);
         bs.WriteSingle(Unknown2);
     }
