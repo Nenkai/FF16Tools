@@ -8,19 +8,19 @@ namespace FF16Tools.Files.Magic;
 
 public class MagicOperationProperty : ISerializableStruct
 {
-    public uint Type { get; set; }
+    public MagicPropertyType Type { get; set; }
     public byte[] Data { get; set; }
 
     public void Read(SmartBinaryStream bs)
     {
-        Type = bs.ReadUInt32();
+        Type = (MagicPropertyType)bs.ReadUInt32();
         uint dataSize = bs.ReadUInt32();
         Data = bs.ReadBytes((int)dataSize);
     }
 
     public void Write(SmartBinaryStream bs)
     {
-        bs.WriteUInt32(Type);
+        bs.WriteUInt32((uint)Type);
         bs.WriteUInt32((uint)Data.Length);
         bs.WriteBytes(Data);
     }

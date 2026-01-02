@@ -9,7 +9,7 @@ namespace FF16Tools.Files.Magic;
 public class MagicEntry : ISerializableStruct
 {
     public uint Id { get; set; }
-    public MagicOperationGroupList OperationGroups { get; set; }
+    public MagicOperationGroupList OperationGroupList { get; set; }
     public uint OperationGroupsDataSize { get; set; }
 
     public void Read(SmartBinaryStream bs)
@@ -17,7 +17,7 @@ public class MagicEntry : ISerializableStruct
         long basePos = bs.Position;
 
         Id = bs.ReadUInt32();
-        OperationGroups = bs.ReadStructPointer<MagicOperationGroupList>(basePos);
+        OperationGroupList = bs.ReadStructPointer<MagicOperationGroupList>(basePos);
         OperationGroupsDataSize = bs.ReadUInt32();
     }
 
@@ -28,7 +28,7 @@ public class MagicEntry : ISerializableStruct
         long oldLastDataPos = lastDataPos;
 
         bs.WriteUInt32(Id);
-        bs.WriteStructPointer(basePos, OperationGroups, ref lastDataPos);
+        bs.WriteStructPointer(basePos, OperationGroupList, ref lastDataPos);
         uint operationsDataSize = (uint)(lastDataPos - oldLastDataPos);
         bs.WriteUInt32(operationsDataSize);
 

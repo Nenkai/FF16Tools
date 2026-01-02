@@ -13,7 +13,7 @@ namespace FF16Tools.Files.Magic;
 /// </summary>
 public class MagicFile
 {
-    public const ushort VERSION_LATEST = 5;
+    public const uint VERSION_LATEST = 5;
 
     public Dictionary<uint, MagicEntry> MagicEntries { get; set; } = [];
 
