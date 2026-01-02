@@ -60,6 +60,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
     public string Locale { get; private set; }
 
     private readonly Dictionary<string, FF16PackFile> _files = [];
+    public IReadOnlyDictionary<string, FF16PackFile> Files => _files;
+
     private readonly List<FF16PackDStorageChunk> _chunks = [];
     private readonly Dictionary<long, FF16PackDStorageChunk> _offsetToChunk = [];
 
