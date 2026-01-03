@@ -17,6 +17,15 @@ public class MagicFile
 
     public Dictionary<uint, MagicEntry> MagicEntries { get; set; } = [];
 
+    public static unsafe MagicFile Open(nint pointer, long size)
+    {
+        using var unmanagedStream = new UnmanagedMemoryStream((byte*)pointer, size);
+
+        var magic = new MagicFile();
+        magic.Read(unmanagedStream);
+        return magic;
+    }
+
     public static MagicFile Open(string path)
     {
         using var fs = File.OpenRead(path);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -28,10 +29,14 @@ public abstract class MagicOperationBase<T> : IOperation
         uint numProperties = bs.ReadUInt32();
         for (int i = 0; i < numProperties; i++)
         {
+            MagicPropertyType propType = (MagicPropertyType)bs.ReadUInt32();
+            bs.Position -= 4;
+
             var prop = new MagicOperationProperty();
             prop.Read(bs);
+            prop.Value = MagicPropertyValueFactory.GetValue(propType, prop.Data);
 
-            if (!T.sSupportedProperties.Contains(prop.Type))
+            if (prop.Type != MagicPropertyType.Prop_2 && !T.sSupportedProperties.Contains(prop.Type))
                 throw new NotSupportedException($"Property type {prop.Type} is not supported for this operation ({Type})");
 
             Properties.Add(prop);
@@ -46,6 +51,7 @@ public abstract class MagicOperationBase<T> : IOperation
             prop.Write(bs);
     }
 }
+
 
 public interface IOperationBase<T> : IOperation
     where T : IOperationBase<T>

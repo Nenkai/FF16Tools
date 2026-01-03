@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Magic.Operations;
 
-public class Op4446 : Op1841
+public class Op4446 : Op1562Base<Op4446>, IOperationBase<Op4446>
 {
     public override MagicOperationType Type => MagicOperationType.Operation_4446;
-    public static new HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
-        Op1841.sSupportedProperties.Concat([
+    public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
+        Op1562.sSupportedProperties.Concat([
             MagicPropertyType.Prop_4447,
         ])
         .ToHashSet();

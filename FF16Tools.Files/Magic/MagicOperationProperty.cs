@@ -10,6 +10,7 @@ public class MagicOperationProperty : ISerializableStruct
 {
     public MagicPropertyType Type { get; set; }
     public byte[] Data { get; set; }
+    public MagicPropertyValueBase? Value { get; set; }
 
     public void Read(SmartBinaryStream bs)
     {
@@ -21,6 +22,9 @@ public class MagicOperationProperty : ISerializableStruct
     public void Write(SmartBinaryStream bs)
     {
         bs.WriteUInt32((uint)Type);
+        if (Value is not null)
+            Data = Value.GetBytes();
+
         bs.WriteUInt32((uint)Data.Length);
         bs.WriteBytes(Data);
     }

@@ -64,20 +64,37 @@ public enum MagicPropertyType : uint
     Prop_52 = 52,
     Prop_53 = 53,
     Prop_54 = 54,
+
+    // OpInitialize
+    Prop_55 = 55,
+    Prop_56 = 56,
+    Prop_57 = 57,
+    Prop_58 = 58,
+    Prop_59 = 59,
+    Prop_60 = 60,
+    Prop_61 = 61,
+    Prop_62 = 62,
+    Prop_63 = 63,
+
     Prop_64 = 64,
     Prop_65 = 65,
     Prop_66 = 66,
+    Prop_67 = 67, // OpInitialize
     Prop_68 = 68,
     Prop_69 = 69,
     Prop_70 = 70,
     Prop_71 = 71,
+    Prop_72 = 72, // OpInitialize
     Prop_73 = 73,
     Prop_74 = 74,
     Prop_75 = 75,
     Prop_76 = 76,
+    Prop_77 = 77, // OpInitialize
+    Prop_78 = 78, // OpInitialize
     Prop_79 = 79,
     Prop_80 = 80,
     Prop_81 = 81,
+    Prop_82 = 82, // OpInitialize
     Prop_84 = 84,
     Prop_85 = 85,
     Prop_89 = 89,
@@ -151,18 +168,23 @@ public enum MagicPropertyType : uint
     Prop_1025 = 1025,
     Prop_1026 = 1026,
     Prop_1063 = 1063,
+    Prop_1102 = 1102, // OpInitialize
     Prop_1123 = 1123,
-    Prop_1231 = 1231,
+    Prop_1231 = 1231, // OpSetupProjectileVFX
+    Prop_1232 = 1232, // OpSetupProjectileVFX
+    Prop_1269 = 1269, // OpLinearProjectile
     Prop_1286 = 1286,
     Prop_1341 = 1341,
     Prop_1417 = 1417,
     Prop_1432 = 1432,
     Prop_1433 = 1433,
+    Prop_1434 = 1434, // OpInitialize
     Prop_1458 = 1458,
     Prop_1484 = 1484,
     Prop_1490 = 1490,
     Prop_1503 = 1503,
     Prop_1649 = 1649,
+    Prop_1657 = 1657, // OpInitialize
     Prop_1686 = 1686,
     Prop_1687 = 1687,
     Prop_1688 = 1688,
@@ -198,14 +220,20 @@ public enum MagicPropertyType : uint
     Prop_2068 = 2068,
     Prop_2069 = 2069,
     Prop_2153 = 2153,
+    Prop_2211 = 2211, // OpLinearProjectile
     Prop_2227 = 2227,
     Prop_2259 = 2259,
     Prop_2260 = 2260,
+    Prop_2286 = 2286, // OpLinearProjectile
     Prop_2311 = 2311,
     Prop_2318 = 2318,
     Prop_2319 = 2319,
+    Prop_2351 = 2351, // OpLinearProjectile
     Prop_2359 = 2359,
     Prop_2367 = 2367,
+    Prop_2368 = 2368, // OpLinearProjectile
+    Prop_2396 = 2396, // OpInitialize
+    Prop_2397 = 2397, // OpInitialize
     Prop_2413 = 2413,
     Prop_2414 = 2414,
     Prop_2420 = 2420,
@@ -240,7 +268,10 @@ public enum MagicPropertyType : uint
     Prop_3114 = 3114,
     Prop_3115 = 3115,
     Prop_3116 = 3116,
+    Prop_3145 = 3145, // Op2493
     Prop_3170 = 3170,
+    Prop_3171 = 3171,
+    Prop_3172 = 3172,
     Prop_3176 = 3176,
     Prop_3349 = 3349,
     Prop_3362 = 3362,
@@ -254,7 +285,10 @@ public enum MagicPropertyType : uint
     Prop_3497 = 3497,
     Prop_3498 = 3498,
     Prop_3499 = 3499,
+    Prop_3513 = 3513, // OpLinearProjectile
+    Prop_3514 = 3514, // OpLinearProjectile
     Prop_3544 = 3544,
+    Prop_3605 = 3605, // OpLinearProjectile
     Prop_3606 = 3606,
     Prop_3608 = 3608,
     Prop_3609 = 3609,
@@ -268,6 +302,7 @@ public enum MagicPropertyType : uint
     Prop_3695 = 3695,
     Prop_3696 = 3696,
     Prop_3721 = 3721,
+    Prop_3722 = 3722, // OpLinearProjectile
     Prop_3746 = 3746,
     Prop_3747 = 3747,
     Prop_3764 = 3764,
@@ -292,6 +327,8 @@ public enum MagicPropertyType : uint
     Prop_3907 = 3907,
     Prop_3911 = 3911,
     Prop_3912 = 3912,
+    Prop_3916 = 3916, // OpInitialize
+    Prop_3938 = 3938, // OpInitialize
     Prop_3961 = 3961,
     Prop_3962 = 3962,
     Prop_3963 = 3963,
@@ -304,13 +341,18 @@ public enum MagicPropertyType : uint
     Prop_4014 = 4014,
     Prop_4060 = 4060,
     Prop_4071 = 4071,
+    Prop_4094 = 4094, // OpLinearProjectile
     Prop_4101 = 4101,
     Prop_4102 = 4102,
+    Prop_4103 = 4103, // OpInitialize
     Prop_4107 = 4107,
     Prop_4128 = 4128,
     Prop_4131 = 4131,
     Prop_4132 = 4132,
     Prop_4135 = 4135,
+    Prop_4136 = 4136, // OpInitialize
+    Prop_4142 = 4142, // OpInitialize
+    Prop_4144 = 4144, // OpInitialize
     Prop_4165 = 4165,
     Prop_4243 = 4243,
     Prop_4244 = 4244,
@@ -378,6 +420,7 @@ public enum MagicPropertyType : uint
     Prop_5041 = 5041,
 
     Prop_5101 = 5101,
+    Prop_5119 = 5119, // OpInitialize
     Prop_5120 = 5120,
     Prop_5125 = 5125,
     Prop_5142 = 5142,
@@ -401,6 +444,7 @@ public enum MagicPropertyType : uint
     Prop_5356 = 5356,
     Prop_5525 = 5525,
     Prop_5642 = 5642,
+    Prop_5644 = 5644, // OpLinearProjectile
     Prop_5671 = 5671,
     Prop_5683 = 5683,
     Prop_5684 = 5684,
@@ -412,6 +456,7 @@ public enum MagicPropertyType : uint
     Prop_5841 = 5841,
     Prop_5904 = 5904,
     Prop_5932 = 5932,
+    Prop_5945 = 5945, // OpInitialize
     Prop_5947 = 5947,
     Prop_5958 = 5958,
     Prop_5959 = 5959,
@@ -456,8 +501,9 @@ public enum MagicPropertyType : uint
     Prop_6299 = 6299,
     Prop_6287 = 6287,
     Prop_6339 = 6339,
-    Prop_6376 = 6376,
     Prop_6340 = 6340,
+    Prop_6376 = 6376,
+    Prop_6383 = 6383, // OpInitialize
     Prop_6454 = 6454,
     Prop_6459 = 6459,
     Prop_6471 = 6471,
@@ -465,11 +511,17 @@ public enum MagicPropertyType : uint
     Prop_6475 = 6475,
     Prop_6515 = 6515,
     Prop_6516 = 6516,
+    Prop_6596 = 6596, // OpInitialize
+    Prop_6600 = 6600, // OpInitialize
     Prop_6685 = 6685,
     Prop_6723 = 6723,
     Prop_6745 = 6745,
+    Prop_6775 = 6775, // OpLinearProjectile
+    Prop_6776 = 6776, // OpLinearProjectile
     Prop_6781 = 6781,
     Prop_6782 = 6782,
+    Prop_6825 = 6825, // OpLinearProjectile
+    Prop_6826 = 6826, // OpLinearProjectile
     Prop_6925 = 6925,
     Prop_6926 = 6926,
     Prop_6927 = 6927,
@@ -479,7 +531,11 @@ public enum MagicPropertyType : uint
     Prop_6822 = 6822,
     Prop_6831 = 6831,
     Prop_6851 = 6851,
+    Prop_6913 = 6913, // OpInitialize
+    Prop_6975 = 6975, // OpInitialize
+    Prop_6988 = 6988, // OpLinearProjectile
     Prop_7028 = 7028,
+    Prop_7037 = 7037, // OpInitialize
     Prop_7039 = 7039,
     Prop_7040 = 7040,
     Prop_7041 = 7041,
@@ -489,6 +545,8 @@ public enum MagicPropertyType : uint
     Prop_7099 = 7099,
     Prop_7102 = 7102,
     Prop_7121 = 7121,
+    Prop_7186 = 7186, // OpInitialize
+    Prop_7200 = 7200, // OpInitialize
     Prop_7231 = 7231,
     Prop_7293 = 7293,
     Prop_7300 = 7300,
@@ -503,6 +561,8 @@ public enum MagicPropertyType : uint
     Prop_7428 = 7428,
     Prop_7429 = 7429,
     Prop_7430 = 7430,
+
+    Prop_7463 = 7463,
 
     // Op7481
     Prop_7480 = 7480,
@@ -530,14 +590,19 @@ public enum MagicPropertyType : uint
     Prop_7588 = 7588,
 
     Prop_7610 = 7610,
+    Prop_7691 = 7691, // Op2493
     Prop_7711 = 7711,
     Prop_7712 = 7712,
     Prop_7733 = 7733,
+    Prop_7734 = 7734, // Op2493
+    Prop_7735 = 7735, // Op2493
+
     Prop_7757 = 7757,
     Prop_7791 = 7791, // Op25
     Prop_7799 = 7799, // Op1825
     Prop_7807 = 7807, // Op788
     Prop_7809 = 7809, // Op7809
+    Prop_7811 = 7811, // OpInitialize
     Prop_7812 = 7812, // Op7584
     Prop_7813 = 7813, // Op25
 }
