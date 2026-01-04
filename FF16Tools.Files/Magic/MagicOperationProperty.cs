@@ -12,6 +12,11 @@ public class MagicOperationProperty : ISerializableStruct
     public byte[] Data { get; set; }
     public MagicPropertyValueBase? Value { get; set; }
 
+    public MagicOperationProperty(MagicPropertyType type)
+    {
+        Type = type;
+    }
+
     public void Read(SmartBinaryStream bs)
     {
         Type = (MagicPropertyType)bs.ReadUInt32();

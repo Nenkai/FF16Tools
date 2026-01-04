@@ -32,7 +32,7 @@ public abstract class MagicOperationBase<T> : IOperation
             MagicPropertyType propType = (MagicPropertyType)bs.ReadUInt32();
             bs.Position -= 4;
 
-            var prop = new MagicOperationProperty();
+            var prop = new MagicOperationProperty(propType);
             prop.Read(bs);
             prop.Value = MagicPropertyValueFactory.GetValue(propType, prop.Data);
 

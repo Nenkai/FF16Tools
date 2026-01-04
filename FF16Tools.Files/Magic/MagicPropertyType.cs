@@ -48,7 +48,7 @@ public enum MagicPropertyType : uint
     Prop_33 = 33,
     Prop_34 = 34,
     Prop_ProjectileDuration = 35,
-    Prop_ProjectilaDurationRandomRange = 36,
+    Prop_ProjectileDurationRandomRange = 36,
     Prop_OnNoImpactOperationGroupIdCallback = 37,
     Prop_38 = 38,
     Prop_39 = 39,

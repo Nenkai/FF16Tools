@@ -18,7 +18,7 @@ public abstract class OpSetupProjectileLifetimeBase<T> : MagicOperationBase<T>
     protected static HashSet<MagicPropertyType> BaseProperties { get; set; } =
     [
         MagicPropertyType.Prop_ProjectileDuration,
-        MagicPropertyType.Prop_ProjectilaDurationRandomRange,
+        MagicPropertyType.Prop_ProjectileDurationRandomRange,
         MagicPropertyType.Prop_OnNoImpactOperationGroupIdCallback,
         MagicPropertyType.Prop_38,
         MagicPropertyType.Prop_1417
