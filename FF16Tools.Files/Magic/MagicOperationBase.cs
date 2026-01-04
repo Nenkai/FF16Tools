@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using FF16Tools.Files.Magic.Factories;
+
 namespace FF16Tools.Files.Magic;
 
 public abstract class MagicOperationBase<T> : IOperation

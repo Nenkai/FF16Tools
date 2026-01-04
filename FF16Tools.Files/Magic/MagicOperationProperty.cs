@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using FF16Tools.Files.Magic.Factories;
+
 namespace FF16Tools.Files.Magic;
 
 public class MagicOperationProperty : ISerializableStruct
