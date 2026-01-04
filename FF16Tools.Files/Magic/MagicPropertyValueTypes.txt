@@ -1,0 +1,186 @@
+type|2|Int
+type|3|Float
+type|4|Int
+type|6|Float
+type|7|Float
+type|8|Float
+type|9|Float
+type|10|Vec3
+type|11|Float
+type|12|Float
+type|13|Bool
+type|14|Float
+type|15|Bool
+type|16|Bool
+type|17|Float
+type|18|Bool
+type|19|Bool
+type|20|Bool // depends on Prop24?
+type|21|Int
+type|22|Float
+type|23|Vec3
+type|24|Byte
+type|26|OperationGroupId
+type|27|Int
+type|28|Int  // Not sure.
+type|29|Bool
+type|30|Int
+type|31|Float
+type|32|Vec3
+type|33|Int
+type|34|Bool
+type|35|Float
+type|36|Vec3
+type|37|OperationGroupId
+type|38|Bool
+type|41|Int
+type|42|Float
+type|43|Float
+type|44|Float
+type|45|Int
+type|46|Float
+type|47|Float
+type|48|Float
+type|49|Float
+type|52|Vec3
+type|53|Vec3
+type|54|Vec3
+type|55|Vec3
+type|56|Vec3
+type|57|Vec3
+type|58|Vec3
+type|59|Vec3
+type|60|Vec3
+type|61|Vec3
+type|62|Vec3
+type|63|Vec3
+type|64|Vec3
+type|65|Float
+type|66|Float
+type|67|Int
+type|68|Int
+type|69|Int
+type|70|Float
+type|71|Vec3
+type|72|Vec3
+type|73|Int
+type|74|Float
+type|75|Int
+type|76|Bool
+type|77|Float
+type|78|Bool
+type|79|Float
+type|80|Float
+type|81|Int
+type|82|Bool
+type|84|Int // Verify
+//85 verify
+type|89|Int
+type|90|Bool
+type|91|Int
+type|95|OperationGroupId
+type|96|OperationGroupId
+type|97|OperationGroupId
+type|98|OperationGroupId
+type|99|OperationGroupId
+type|110|OperationGroupId
+type|114|Bool
+type|185|Float
+type|1102|Bool
+type|1123|Bool
+type|1231|Int
+type|1232|Int
+type|1269|Int
+type|1286|Float
+type|1417|Float
+type|1432|OperationGroupId
+//1433 verify
+type|1434|Bool
+//1458 verify
+type|1484|Float
+type|1657|Float
+type|1833|OperationGroupId
+type|1835|OperationGroupId
+type|1957|Bool
+type|2211|Float
+type|2227|Int
+type|2286|Float	// CHECK: 2296
+type|2351|Vec3	// float or vec3
+type|2359|Bool
+type|2368|Bool
+type|2396|Int
+type|2397|Float
+type|2413|Float
+type|2414|Float
+type|2430|Vec3
+type|2575|Int
+type|2798|Int // Verify
+type|2799|Int // Verify
+type|2856|Bool
+type|3513|Bool
+type|3514|Float  // Maybe requires Prop20 (linear proj op?)
+type|3544|Int
+type|3605|Bool
+type|3606|Bool
+type|3722|Int
+type|3772|Int // Verify
+type|3916|Vec3
+type|3938|Int
+type|3939|Bool
+type|4010|Float
+type|4011|Float
+type|4012|Float
+type|4094|Int
+type|4101|Float
+type|4102|Float
+type|4103|Bool
+type|4128|Byte
+type|4131|Int
+type|4132|Int
+type|4136|Vec3
+type|4142|Bool
+type|4143|Int
+type|4144|Bool
+type|4243|Int // Verify
+type|4244|Int // Verify
+type|4327|OperationGroupId
+type|4343|OperationGroupId
+type|4387|Bool
+type|4402|OperationGroupId
+type|4774|OperationGroupId
+type|4785|Bool
+type|4786|Bool
+type|5119|Bool
+type|5274|Int
+type|5275|Int
+type|5276|Int
+type|5644|Vec3
+type|5671|OperationGroupId
+type|5945|Bool
+type|5947|Bool
+type|5959|Vec3
+type|6056|Bool
+type|6107|OperationGroupId
+type|6137|OperationGroupId
+type|6596|Bool
+type|6600|Float
+type|6775|Vec3
+type|6776|Bool
+type|6800|Float
+type|6801|Float
+type|6822|Int
+type|6825|Bool	//No actual value used?
+type|6826|Bool	//No actual value used?
+type|6383|Bool
+type|6913|Int
+//6975 - int?
+type|6988|Bool
+//7037 - int?
+type|7099|Bool
+type|7186|Bool
+type|7200|Bool
+type|7231|Bool
+type|7811|Bool
+type|7813|Bool
+type|7791|Int
+type|7792|Int

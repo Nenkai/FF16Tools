@@ -12,7 +12,7 @@ public class Op5207 : MagicOperationBase<Op5207>, IOperationBase<Op5207>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_26, 
-        MagicPropertyType.Prop_42,
+        MagicPropertyType.ProjectileHitboxRadiusStart,
         MagicPropertyType.Prop_75
     ];
 }

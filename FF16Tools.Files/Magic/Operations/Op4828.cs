@@ -11,16 +11,16 @@ public class Op4828 : MagicOperationBase<Op4828>, IOperationBase<Op4828>
     public override MagicOperationType Type => MagicOperationType.Operation_4828;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop8_SpeedStart, 
-        MagicPropertyType.Prop_20, 
-        MagicPropertyType.Prop_23, 
+        MagicPropertyType.ProjectileSpeedStart, 
+        MagicPropertyType.ProjectileXSinWaveToTarget, 
+        MagicPropertyType.ProjectileDirectionAngles, 
         MagicPropertyType.Prop_24, 
         MagicPropertyType.Prop_30, 
-        MagicPropertyType.Prop_AttackParamId, 
-        MagicPropertyType.Prop_42, 
+        MagicPropertyType.ProjectileOnHitAttackParamId, 
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.Prop_52, 
         MagicPropertyType.Prop_71, 
-        MagicPropertyType.Prop_89, 
+        MagicPropertyType.ActorVFXAudioId, 
         MagicPropertyType.Prop_105,
         MagicPropertyType.Prop_106,
         MagicPropertyType.Prop_119, 

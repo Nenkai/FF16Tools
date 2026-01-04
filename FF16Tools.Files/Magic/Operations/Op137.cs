@@ -11,8 +11,8 @@ public class Op137 : MagicOperationBase<Op137>, IOperationBase<Op137>
     public override MagicOperationType Type => MagicOperationType.Operation_137;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_AttackParamId, 
-        MagicPropertyType.Prop_42,
+        MagicPropertyType.ProjectileOnHitAttackParamId, 
+        MagicPropertyType.ProjectileHitboxRadiusStart,
         MagicPropertyType.Prop_117
     ];
 }

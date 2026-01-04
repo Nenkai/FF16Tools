@@ -11,7 +11,7 @@ public class Op798 : MagicOperationBase<Op798>, IOperationBase<Op798>
     public override MagicOperationType Type => MagicOperationType.Operation_798;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_110,
+        MagicPropertyType.Prop_110_OpGroupId,
         MagicPropertyType.Prop_188
     ];
 }

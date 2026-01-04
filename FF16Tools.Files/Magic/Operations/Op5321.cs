@@ -11,11 +11,11 @@ public class Op5321 : MagicOperationBase<Op5321>, IOperationBase<Op5321>
     public override MagicOperationType Type => MagicOperationType.Operation_5321;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_23, 
+        MagicPropertyType.ProjectileDirectionAngles, 
         MagicPropertyType.Prop_26, 
-        MagicPropertyType.Prop_32, 
-        MagicPropertyType.Prop_73, 
-        MagicPropertyType.Prop_74, 
+        MagicPropertyType.VFX_XYZOffset, 
+        MagicPropertyType.Prop_73_Type, 
+        MagicPropertyType.Prop_74_Duration, 
         MagicPropertyType.Prop_75, 
         MagicPropertyType.Prop_5322, 
         MagicPropertyType.Prop_5324, 

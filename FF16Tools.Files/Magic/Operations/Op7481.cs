@@ -12,9 +12,9 @@ public class Op7481 : MagicOperationBase<Op7481>, IOperationBase<Op7481>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_25, 
-        MagicPropertyType.Prop_AttackParamId,
-        MagicPropertyType.Prop_42, 
-        MagicPropertyType.Prop_81, 
+        MagicPropertyType.ProjectileOnHitAttackParamId,
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
+        MagicPropertyType.Prop_81_EidId, 
         MagicPropertyType.Prop_997, 
         MagicPropertyType.Prop_3659, 
         MagicPropertyType.Prop_6087, 

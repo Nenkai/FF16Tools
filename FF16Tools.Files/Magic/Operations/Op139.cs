@@ -17,13 +17,13 @@ public abstract class Op139Base<T> : MagicOperationBase<T>
 {
     protected static HashSet<MagicPropertyType> BaseProperties { get; set; } =
     [
-        MagicPropertyType.Prop_23,
-        MagicPropertyType.Prop_42,
-        MagicPropertyType.Prop_43,
-        MagicPropertyType.Prop_44,
+        MagicPropertyType.ProjectileDirectionAngles,
+        MagicPropertyType.ProjectileHitboxRadiusStart,
+        MagicPropertyType.ProjectileHitboxRadiusIncreaseRate,
+        MagicPropertyType.ProjectileHitboxMaxRadius,
         MagicPropertyType.Prop_114,
         MagicPropertyType.Prop_140,
         MagicPropertyType.Prop_3349,
-        MagicPropertyType.Prop_4128
+        MagicPropertyType.Prop_4128_UnkTargetType
     ];
 }

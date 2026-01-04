@@ -12,8 +12,8 @@ public class Op6118 : MagicOperationBase<Op6118>, IOperationBase<Op6118>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_26, 
-        MagicPropertyType.Prop_42, 
-        MagicPropertyType.Prop_74, 
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
+        MagicPropertyType.Prop_74_Duration, 
         MagicPropertyType.Prop_75, 
         MagicPropertyType.Prop_6119, 
         MagicPropertyType.Prop_6120, 

@@ -12,8 +12,8 @@ public class Op3294 : MagicOperationBase<Op3294>, IOperationBase<Op3294>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_26, 
-        MagicPropertyType.Prop_VFXScale, 
-        MagicPropertyType.Prop_32,
+        MagicPropertyType.VFXScale, 
+        MagicPropertyType.VFX_XYZOffset,
         MagicPropertyType.Prop_132
     ];
 }

@@ -14,7 +14,7 @@ public class Op1587 : MagicOperationBase<Op1587>, IOperationBase<Op1587>
         MagicPropertyType.Prop_15, 
         MagicPropertyType.Prop_24, 
         MagicPropertyType.Prop_26, 
-        MagicPropertyType.Prop_32, 
+        MagicPropertyType.VFX_XYZOffset, 
         MagicPropertyType.Prop_64, 
         MagicPropertyType.Prop_65, 
         MagicPropertyType.Prop_66, 

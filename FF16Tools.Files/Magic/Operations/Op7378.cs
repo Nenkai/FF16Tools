@@ -13,7 +13,7 @@ public class Op7378 : MagicOperationBase<Op7378>, IOperationBase<Op7378>
     [
         MagicPropertyType.Prop_26, 
         MagicPropertyType.Prop_30, 
-        MagicPropertyType.Prop_74, 
+        MagicPropertyType.Prop_74_Duration, 
         MagicPropertyType.Prop_76, 
         MagicPropertyType.Prop_117, 
         MagicPropertyType.Prop_7379, 

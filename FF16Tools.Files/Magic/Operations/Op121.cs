@@ -11,7 +11,7 @@ public class Op121 : MagicOperationBase<Op121>, IOperationBase<Op121>
     public override MagicOperationType Type => MagicOperationType.Operation_121;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop8_SpeedStart, 
+        MagicPropertyType.ProjectileSpeedStart, 
         MagicPropertyType.Prop_102, 
         MagicPropertyType.Prop_122, 
         MagicPropertyType.Prop_123, 

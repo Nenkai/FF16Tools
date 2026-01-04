@@ -12,7 +12,7 @@ public class Op86 : MagicOperationBase<Op86>, IOperationBase<Op86>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_26, 
-        MagicPropertyType.Prop_74, 
+        MagicPropertyType.Prop_74_Duration, 
         MagicPropertyType.Prop_75, 
         MagicPropertyType.Prop_76,
         MagicPropertyType.Prop_84

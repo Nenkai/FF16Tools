@@ -19,12 +19,15 @@ public class MagicPropertyValueFactory
 
         return valueType switch
         {
-            MagicPropertyValueType.OperationGroupIdValue => new MagicPropertyIdValue(BinaryPrimitives.ReadInt32LittleEndian(bytes)),
-            MagicPropertyValueType.IntValue => new MagicPropertyIntValue(BinaryPrimitives.ReadInt32LittleEndian(bytes)),
-            MagicPropertyValueType.FloatValue => new MagicPropertyFloatValue(BinaryPrimitives.ReadSingleLittleEndian(bytes)),
-            MagicPropertyValueType.ByteValue => new MagicPropertyByteValue(bytes[0]),
-            MagicPropertyValueType.BoolValue => new MagicPropertyBoolValue(bytes[0] != 0),
-            MagicPropertyValueType.Vec3Value => new MagicPropertyVec3Value(MemoryMarshal.Cast<byte, Vector3>(bytes)[0]),
+            MagicPropertyValueType.OperationGroupId => new MagicPropertyIdValue(BinaryPrimitives.ReadInt32LittleEndian(bytes)),
+            MagicPropertyValueType.Int => new MagicPropertyIntValue(BinaryPrimitives.ReadInt32LittleEndian(bytes)),
+            MagicPropertyValueType.Float => new MagicPropertyFloatValue(BinaryPrimitives.ReadSingleLittleEndian(bytes)),
+            MagicPropertyValueType.Byte => new MagicPropertyByteValue(bytes[0]),
+            MagicPropertyValueType.Bool => new MagicPropertyBoolValue(bytes[0] != 0),
+
+            // Some vec3 properties may only store one axis
+            MagicPropertyValueType.Vec3 => new MagicPropertyVec3Value(
+                bytes.Length == 0x0C ? MemoryMarshal.Cast<byte, Vector3>(bytes)[0] : new Vector3(BinaryPrimitives.ReadSingleLittleEndian(bytes), 0, 0)),
             _ => null,
         };
     }
@@ -32,12 +35,12 @@ public class MagicPropertyValueFactory
 
 public enum MagicPropertyValueType
 {
-    OperationGroupIdValue,
-    IntValue,
-    FloatValue,
-    ByteValue,
-    BoolValue,
-    Vec3Value,
+    OperationGroupId,
+    Int,
+    Float,
+    Byte,
+    Bool,
+    Vec3,
 }
 
 public abstract class MagicPropertyValueBase

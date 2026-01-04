@@ -11,12 +11,12 @@ public class Op5643 : MagicOperationBase<Op5643>, IOperationBase<Op5643>
     public override MagicOperationType Type => MagicOperationType.Operation_5643;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop8_SpeedStart, 
-        MagicPropertyType.Prop9_SpeedIncreaseRate, 
-        MagicPropertyType.Prop11_SpeedMax, 
-        MagicPropertyType.Prop_AttackParamId, 
-        MagicPropertyType.Prop_42, 
-        MagicPropertyType.Prop_44, 
+        MagicPropertyType.ProjectileSpeedStart, 
+        MagicPropertyType.ProjectileSpeedIncreaseRate, 
+        MagicPropertyType.ProjectileSpeedMax, 
+        MagicPropertyType.ProjectileOnHitAttackParamId, 
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
+        MagicPropertyType.ProjectileHitboxMaxRadius, 
         MagicPropertyType.Prop_105, 
         MagicPropertyType.Prop_3659,
         MagicPropertyType.Prop_5683, 

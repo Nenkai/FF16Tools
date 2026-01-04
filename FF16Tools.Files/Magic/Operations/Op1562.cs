@@ -17,15 +17,15 @@ public abstract class Op1562Base<T> : MagicOperationBase<T>
 {
     protected static HashSet<MagicPropertyType> BaseProperties { get; set; } =
     [
-        MagicPropertyType.Prop_32,
-        MagicPropertyType.Prop_42,
-        MagicPropertyType.Prop_43,
-        MagicPropertyType.Prop_44,
+        MagicPropertyType.VFX_XYZOffset,
+        MagicPropertyType.ProjectileHitboxRadiusStart,
+        MagicPropertyType.ProjectileHitboxRadiusIncreaseRate,
+        MagicPropertyType.ProjectileHitboxMaxRadius,
         MagicPropertyType.Prop_45,
         MagicPropertyType.Prop_46,
         MagicPropertyType.Prop_47,
         MagicPropertyType.Prop_48,
-        MagicPropertyType.Prop_49,
+        MagicPropertyType.MinTimeForHitboxActivation,
         MagicPropertyType.Prop_114,
         MagicPropertyType.Prop_2430
     ];

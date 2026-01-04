@@ -11,15 +11,15 @@ public class Op3643 : MagicOperationBase<Op3643>, IOperationBase<Op3643>
     public override MagicOperationType Type => MagicOperationType.Operation_3643;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop8_SpeedStart, 
-        MagicPropertyType.Prop_32, 
-        MagicPropertyType.Prop_ProjectileDuration, 
-        MagicPropertyType.Prop_42, 
+        MagicPropertyType.ProjectileSpeedStart, 
+        MagicPropertyType.VFX_XYZOffset, 
+        MagicPropertyType.ProjectileDuration, 
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.Prop_47, 
-        MagicPropertyType.Prop_68, 
-        MagicPropertyType.Prop_74, 
+        MagicPropertyType.Prop_68_MagicId, 
+        MagicPropertyType.Prop_74_Duration, 
         MagicPropertyType.Prop_75, 
-        MagicPropertyType.Prop_81, 
+        MagicPropertyType.Prop_81_EidId, 
         MagicPropertyType.Prop_102, 
         MagicPropertyType.Prop_117, 
         MagicPropertyType.Prop_2060, 

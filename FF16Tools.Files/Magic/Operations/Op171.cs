@@ -11,11 +11,11 @@ public class Op171 : MagicOperationBase<Op171>, IOperationBase<Op171>
     public override MagicOperationType Type => MagicOperationType.Operation_171;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop8_SpeedStart, 
-        MagicPropertyType.Prop9_SpeedIncreaseRate, 
-        MagicPropertyType.Prop10_SpeedStatRangeRand, 
-        MagicPropertyType.Prop11_SpeedMax, 
-        MagicPropertyType.Prop_23, 
+        MagicPropertyType.ProjectileSpeedStart, 
+        MagicPropertyType.ProjectileSpeedIncreaseRate, 
+        MagicPropertyType.ProjectileSpeedStartRangeRand, 
+        MagicPropertyType.ProjectileSpeedMax, 
+        MagicPropertyType.ProjectileDirectionAngles, 
         MagicPropertyType.Prop_24, 
         MagicPropertyType.Prop_145,
         MagicPropertyType.Prop_172, 
@@ -34,7 +34,7 @@ public class Op171 : MagicOperationBase<Op171>, IOperationBase<Op171>
         MagicPropertyType.Prop_2028, 
         MagicPropertyType.Prop_4003, 
         MagicPropertyType.Prop_4060, 
-        MagicPropertyType.Prop_4128,
+        MagicPropertyType.Prop_4128_UnkTargetType,
         MagicPropertyType.Prop_4296
     ];
 }

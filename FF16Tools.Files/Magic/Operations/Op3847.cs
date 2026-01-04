@@ -13,7 +13,7 @@ public class Op3847 : MagicOperationBase<Op3847>, IOperationBase<Op3847>
     [
         MagicPropertyType.Prop_28, 
         MagicPropertyType.Prop_30, 
-        MagicPropertyType.Prop_42, 
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.Prop_3848, 
         MagicPropertyType.Prop_3856, 
         MagicPropertyType.Prop_4008, 

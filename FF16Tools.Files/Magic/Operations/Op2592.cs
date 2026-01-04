@@ -11,9 +11,9 @@ public class Op2592 : MagicOperationBase<Op2592>, IOperationBase<Op2592>
     public override MagicOperationType Type => MagicOperationType.Operation_2592;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_ProjectileDuration, 
-        MagicPropertyType.Prop_42, 
-        MagicPropertyType.Prop_43, 
+        MagicPropertyType.ProjectileDuration, 
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
+        MagicPropertyType.ProjectileHitboxRadiusIncreaseRate, 
         MagicPropertyType.Prop_102,
         MagicPropertyType.Prop_148, 
         MagicPropertyType.Prop_149, 

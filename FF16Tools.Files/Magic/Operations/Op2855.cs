@@ -13,7 +13,7 @@ public class Op2855 : MagicOperationBase<Op2855>, IOperationBase<Op2855>
     [
         MagicPropertyType.Prop_15, 
         MagicPropertyType.Prop_16, 
-        MagicPropertyType.Prop_23, 
+        MagicPropertyType.ProjectileDirectionAngles, 
         MagicPropertyType.Prop_79, 
         MagicPropertyType.Prop_80, 
         MagicPropertyType.Prop_185, 

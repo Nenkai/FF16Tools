@@ -11,14 +11,13 @@ public class OpSourceVFX : MagicOperationBase<OpSourceVFX>, IOperationBase<OpSou
     public override MagicOperationType Type => MagicOperationType.Operation_87_SourceVFX;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_VFXScale, 
-        MagicPropertyType.Prop_32,
+        MagicPropertyType.VFXScale, 
+        MagicPropertyType.VFX_XYZOffset,
         MagicPropertyType.Prop_34, 
-        MagicPropertyType.Prop_53, 
-        MagicPropertyType.Prop_89, 
-        MagicPropertyType.Prop_90, 
+        MagicPropertyType.ActorVFX_XYZOffset, 
+        MagicPropertyType.ActorVFXAudioId, 
+        MagicPropertyType.Prop_90_UseProp91, 
         MagicPropertyType.Prop_91, 
-        MagicPropertyType.Prop_1954,
         MagicPropertyType.Prop_2359, 
         MagicPropertyType.Prop_4101,
         MagicPropertyType.Prop_4102,

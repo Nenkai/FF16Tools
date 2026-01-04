@@ -16,12 +16,12 @@ public class MagicPropertyFactory
         var prop = new MagicOperationProperty(propertyType);
         prop.Value = valueType switch
         {
-            MagicPropertyValueType.OperationGroupIdValue => new MagicPropertyIdValue(),
-            MagicPropertyValueType.IntValue => new MagicPropertyIntValue(),
-            MagicPropertyValueType.FloatValue => new MagicPropertyFloatValue(),
-            MagicPropertyValueType.ByteValue => new MagicPropertyByteValue(),
-            MagicPropertyValueType.BoolValue => new MagicPropertyBoolValue(),
-            MagicPropertyValueType.Vec3Value => new MagicPropertyVec3Value(),
+            MagicPropertyValueType.OperationGroupId => new MagicPropertyIdValue(),
+            MagicPropertyValueType.Int => new MagicPropertyIntValue(),
+            MagicPropertyValueType.Float => new MagicPropertyFloatValue(),
+            MagicPropertyValueType.Byte => new MagicPropertyByteValue(),
+            MagicPropertyValueType.Bool => new MagicPropertyBoolValue(),
+            MagicPropertyValueType.Vec3 => new MagicPropertyVec3Value(),
             _ => throw new NotSupportedException($"Property value type '{valueType}' not supported"),
         };
         prop.Data = prop.Value.GetBytes();

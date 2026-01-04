@@ -11,7 +11,7 @@ public class Op6473 : MagicOperationBase<Op6473>, IOperationBase<Op6473>
     public override MagicOperationType Type => MagicOperationType.Operation_6473;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_5276, 
+        MagicPropertyType.MinSkillUpgradeLevelForAttack_5274_5275, 
         MagicPropertyType.Prop_6474,
         MagicPropertyType.Prop_6475
     ];

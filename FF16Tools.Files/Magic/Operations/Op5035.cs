@@ -11,13 +11,13 @@ public class Op5035 : MagicOperationBase<Op5035>, IOperationBase<Op5035>
     public override MagicOperationType Type => MagicOperationType.Operation_5035;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_ProjectileDuration, 
-        MagicPropertyType.Prop_AttackParamId, 
-        MagicPropertyType.Prop_42, 
+        MagicPropertyType.ProjectileDuration, 
+        MagicPropertyType.ProjectileOnHitAttackParamId, 
+        MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.Prop_46, 
-        MagicPropertyType.Prop_49, 
+        MagicPropertyType.MinTimeForHitboxActivation, 
         MagicPropertyType.Prop_52, 
-        MagicPropertyType.Prop_53, 
+        MagicPropertyType.ActorVFX_XYZOffset, 
         MagicPropertyType.Prop_54, 
         MagicPropertyType.Prop_3078, 
         MagicPropertyType.Prop_3362, 

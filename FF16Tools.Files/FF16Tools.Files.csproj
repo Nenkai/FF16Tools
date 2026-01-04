@@ -51,6 +51,9 @@
 	<None Update="Nex\Layouts\*\*.layout">
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>
+	<None Update="Magic\MagicPropertyValueTypes.txt">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
     <None Update="README.md">
       <PackagePath>\</PackagePath>
       <Pack>True</Pack>
