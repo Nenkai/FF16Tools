@@ -8,36 +8,36 @@ using FF16Tools.Files.Magic.Factories;
 
 namespace FF16Tools.Files.Magic;
 
-public class MagicPropertyValueTypeMapping
+public class MagicIdsMapping
 {
-    private static Dictionary<MagicPropertyType, MagicPropertyValueType> _typeToValueType = [];
-    public static IReadOnlyDictionary<MagicPropertyType, MagicPropertyValueType> TypeToValueType
+    private static Dictionary<uint, string> _idToName = [];
+    public static IReadOnlyDictionary<uint, string> IdToName
     {
         get
         {
             if (!Initialized)
                 Read();
 
-            return _typeToValueType;
+            return _idToName;
         }
     }
 
-    const string DefaultPath = "Magic/Data/MagicPropertyValueTypes.txt";
+    const string DefaultPath = "Magic/Data/MagicIds.txt";
 
     static bool Initialized = false;
 
     /// <summary>
-    /// Reads mapping from the specified path. If not provided, the default one will be used (Magic/Data/MagicPropertyValueTypes.txt)
+    /// Reads mapping from the specified path. If not provided, the default one will be used (Magic/Data/MagicIds.txt)
     /// </summary>
     /// <param name="path"></param>
     /// <exception cref="InvalidDataException"></exception>
     public static void Read(string? path = null)
     {
-        _typeToValueType.Clear();
+        _idToName.Clear();
 
         if (path is null)
         {
-            string? dir = Path.GetDirectoryName(typeof(MagicPropertyValueTypeMapping).Assembly.Location);
+            string? dir = Path.GetDirectoryName(typeof(MagicIdsMapping).Assembly.Location);
             path = Path.Combine(dir ?? Directory.GetCurrentDirectory(), DefaultPath);
             if (!File.Exists(path))
             {
@@ -77,17 +77,14 @@ public class MagicPropertyValueTypeMapping
 
             switch (spl[0])
             {
-                case "type":
+                case "magic":
                     if (spl.Length != 3)
-                        throw new InvalidDataException($"Expected type|<prop type>|<prop value type>, but got {spl.Length} arguments at line {lineNumber}");
+                        throw new InvalidDataException($"Expected magic|id|name, but got {spl.Length} arguments at line {lineNumber}");
 
-                    if (!int.TryParse(spl[1], out int propType))
-                        throw new InvalidDataException($"Unable to parse {spl[1]} as property type at line {lineNumber}");
+                    if (!uint.TryParse(spl[1], out uint id))
+                        throw new InvalidDataException($"Unable to parse {spl[1]} as magic id at line {lineNumber}");
 
-                    if (!Enum.TryParse(spl[2], out MagicPropertyValueType valueType))
-                        throw new InvalidDataException($"Unable to parse {spl[2]} as property value type {valueType} at line {lineNumber}");
-
-                    _typeToValueType.Add((MagicPropertyType)propType, valueType);
+                    _idToName.Add(id, spl[2]);
                     break;
             }
         }
@@ -100,11 +97,11 @@ public class MagicPropertyValueTypeMapping
     /// </summary>
     /// <param name="type"></param>
     /// <param name="valueType"></param>
-    public static void Add(MagicPropertyType type, MagicPropertyValueType valueType)
+    public static void Add(uint magicId, string name)
     {
         if (!Initialized)
             Read();
 
-        _typeToValueType.TryAdd(type, valueType);
+        _idToName.Add(magicId, name);
     }
 }

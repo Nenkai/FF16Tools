@@ -1,0 +1,80 @@
+magic|1|Phoenix - Fire
+magic|2|Garuda - Aero
+magic|3|Titan - Stone
+magic|210|Ramuh - Thunder
+magic|211|Odin - Dark
+magic|213|Shiva - Blizzard
+magic|214|Bahamut - Dia
+magic|215|Leviathan - Water
+magic|480|Garuda - Aerial Blast
+magic|524|Ifrit - Will O' The Wykes
+magic|583|Bahamut - Flare Breath (Stream)
+magic|623|Bahamut - Gigaflare (crashes!)
+magic|624|Shiva - Ice Age (undershooted)
+magic|625|Shiva - Diamond Dust (1)
+magic|627|Shiva - Ice Age (overshooted)
+magic|649|Ramuh - Thunderstorm (thunderbolts)
+magic|653|Ramuh - Thunderstorm (End2End)
+magic|673|Ramuh - Blind Justice (R)
+magic|674|Ramuh - Blind Justice (L)
+magic|806|Ramuh - Thunderstorm (thunderbolts alt)
+magic|815|Bahamut - Impulse (1st projectile)
+magic|816|Bahamut - Impulse (2nd projectile)
+magic|817|Bahamut - Impulse (3rd projectile)
+magic|818|Bahamut - Impulse (4th projectile)
+magic|807|Ramuh - Thunderstorm (final thunderbolt)
+magic|820|Ramuh - Lightning Rod (Proc Hits)
+magic|822|Ramuh - Lightning Rod (Object)
+magic|914|Phoenix - Heatwave (1st slash)
+magic|915|Phoenix - Heatwave (2nd slash)
+magic|916|Phoenix - Heatwave (3rd slash counter)
+magic|917|Phoenix - Heatwave (4th slash counter)
+magic|981|Shiva - Rime
+magic|982|Shiva - Diamond Dust (2)
+magic|992|Shiva - Cold Snap (Permafrost)
+magic|983|Leviathan - Tsunami (1)
+magic|1025|Ramuh - Judgement Bolt (1st hit)
+magic|1026|Ramuh - Judgement Bolt (2nd hit)
+magic|1083|Bahamut - Megaflare
+magic|1108|Bahamut - Satellite (L)
+magic|1109|Bahamut - Satellite (R)
+magic|1144|Phoenix - Flames of Rebirth (3)
+magic|1146|Phoenix - Flames of Rebirth (1)
+magic|1147|Phoenix - Flames of Rebirth (2)
+magic|1321|Garuda - Deadly Embrace
+magic|1153|Titan - Earthen Fury (3)
+magic|1154|Titan - Earthen Fury (1)
+magic|1155|Titan - Earthen Fury (2)
+magic|1360|Bahamut - Flare Breath (End)
+magic|1543|Shiva - Ice Age (timed)
+magic|1558|Bahamut - Satellite Magic Burst (L)
+magic|1559|Bahamut - Satellite Magic Burst (R)
+magic|1561|Ultima - Ruin
+magic|1564|Phoenix - Fira
+magic|1565|Garuda - Aerora
+magic|1566|Titan - Stonera
+magic|1567|Ramuh - Thundara
+magic|1568|Odin - Darkra
+magic|1570|Shiva - Blizzara
+magic|1571|Bahamut - Diara
+magic|1572|Leviathan - Watera
+magic|1573|Ultima - Ruinra
+magic|1574|Leviathan - Tidal Torrent
+magic|1575|Leviathan - Charged Torrent
+magic|1576|Leviathan - Tidal Stream
+magic|1578|Leviathan - Deluge (Stream)
+magic|1580|Leviathan - Cross Swell
+magic|1609|Ultima - Voice of God
+magic|1610|Ultima - Ultimate Demise
+magic|1612|Ultima - Proselytize
+magic|1621|Leviathan - Abyssal Tear (vent lvl 1)
+magic|1646|Ultima - Rampant Ruin
+magic|1648|Ultima - Rampant Ruinra
+magic|1650|Leviathan - Abyssal Tear (vent lvl 2)
+magic|1651|Leviathan - Abyssal Tear (vent lvl 3)
+magic|1652|Leviathan - Abyssal Tear (vent lvl 4)
+magic|1697|Ultima - Purge
+magic|1722|Ultima - Dominion
+magic|1792|Leviathan - Deluge (End)
+magic|1811|Leviathan - Tsunami (2)
+magic|1943|Leviathan - Charged Stream
