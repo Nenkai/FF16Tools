@@ -15,7 +15,7 @@ public class Op153 : MagicOperationBase<Op153>, IOperationBase<Op153>
         MagicPropertyType.MultiProjectileRandUniform, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_102, 
+        MagicPropertyType.OnFinishedOpGroupId, 
         MagicPropertyType.Prop_2919, 
         MagicPropertyType.Prop_2920,
         MagicPropertyType.Prop_2921

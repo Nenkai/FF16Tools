@@ -13,7 +13,7 @@ public class Op116 : MagicOperationBase<Op116>, IOperationBase<Op116>
     [
         MagicPropertyType.ProjectileSpeedStart, 
         MagicPropertyType.Prop_93, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_118, 
         MagicPropertyType.Prop_119,
         MagicPropertyType.Prop_120

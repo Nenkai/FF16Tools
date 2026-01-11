@@ -23,7 +23,7 @@ public abstract class Op1562Base<T> : MagicOperationBase<T>
         MagicPropertyType.ProjectileHitboxMaxRadius,
         MagicPropertyType.Prop_45,
         MagicPropertyType.Prop_46,
-        MagicPropertyType.Prop_47,
+        MagicPropertyType.ProjectileCreateGroundYOffset,
         MagicPropertyType.Prop_48,
         MagicPropertyType.MinTimeForHitboxActivation,
         MagicPropertyType.Prop_114,

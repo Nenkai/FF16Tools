@@ -15,7 +15,7 @@ public class Op7378 : MagicOperationBase<Op7378>, IOperationBase<Op7378>
         MagicPropertyType.Prop_30, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.Prop_76, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_7379, 
         MagicPropertyType.Prop_7380, 
         MagicPropertyType.Prop_7411,

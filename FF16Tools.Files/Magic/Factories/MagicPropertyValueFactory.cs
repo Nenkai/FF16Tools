@@ -35,6 +35,7 @@ public class MagicPropertyValueFactory
 
 public enum MagicPropertyValueType
 {
+    Unknown,
     OperationGroupId,
     Int,
     Float,

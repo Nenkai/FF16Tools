@@ -17,10 +17,10 @@ public abstract class OpSetupProjectileLifetimeBase<T> : MagicOperationBase<T>
 {
     protected static HashSet<MagicPropertyType> BaseProperties { get; set; } =
     [
-        MagicPropertyType.ProjectileDuration,
-        MagicPropertyType.ProjectileDurationRandomRange,
-        MagicPropertyType.ProjectileNoImpactOpGroupIdCallback,
-        MagicPropertyType.Prop_38,
-        MagicPropertyType.ProjectileDurationWithDifficultyScale
+        MagicPropertyType.ProjectileDuration,                    // Default 0.0
+        MagicPropertyType.ProjectileDurationRandomRange,         // Default <0.0, 0.0, 0.0>
+        MagicPropertyType.ProjectileNoImpactOpGroupIdCallback,   // Default 0
+        MagicPropertyType.Prop_38,                               // Default false
+        MagicPropertyType.ProjectileDurationWithDifficultyScale  // Default 0.0
     ];
 }

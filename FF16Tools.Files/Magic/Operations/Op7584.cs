@@ -13,9 +13,9 @@ public class Op7584 : MagicOperationBase<Op7584>, IOperationBase<Op7584>
     [
         MagicPropertyType.ProjectileYOffset, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_47, 
+        MagicPropertyType.ProjectileCreateGroundYOffset, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_4101_UnkJitterMaxAngleRadZ,
         MagicPropertyType.Prop_4102, 
         MagicPropertyType.Prop_5274_AttackParamId, 

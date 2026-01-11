@@ -12,7 +12,7 @@ public class Op141 : MagicOperationBase<Op141>, IOperationBase<Op141>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_102, 
+        MagicPropertyType.OnFinishedOpGroupId, 
         MagicPropertyType.Prop_142,
         MagicPropertyType.Prop_143
     ];

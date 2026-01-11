@@ -12,7 +12,7 @@ public class Op121 : MagicOperationBase<Op121>, IOperationBase<Op121>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileSpeedStart, 
-        MagicPropertyType.Prop_102, 
+        MagicPropertyType.OnFinishedOpGroupId, 
         MagicPropertyType.Prop_122, 
         MagicPropertyType.Prop_123, 
         MagicPropertyType.Prop_124, 

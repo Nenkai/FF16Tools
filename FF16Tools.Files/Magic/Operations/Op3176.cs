@@ -13,6 +13,6 @@ public class Op3270 : MagicOperationBase<Op3270>, IOperationBase<Op3270>
     [
         MagicPropertyType.ProjectileSpeedStart, 
         MagicPropertyType.Prop_46,
-        MagicPropertyType.Prop_102
+        MagicPropertyType.OnFinishedOpGroupId
     ];
 }

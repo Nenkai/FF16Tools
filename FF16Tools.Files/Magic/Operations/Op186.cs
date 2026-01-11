@@ -12,7 +12,7 @@ public class Op186 : MagicOperationBase<Op186>, IOperationBase<Op186>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_105, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_187,
         MagicPropertyType.Prop_188
     ];

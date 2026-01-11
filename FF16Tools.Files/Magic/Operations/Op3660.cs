@@ -13,7 +13,7 @@ public class Op3660 : MagicOperationBase<Op3660>, IOperationBase<Op3660>
     [
         MagicPropertyType.VFX_XYZOffset, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
-        MagicPropertyType.Prop_102,
+        MagicPropertyType.OnFinishedOpGroupId,
         MagicPropertyType.Prop_2318
     ];
 }

@@ -11,31 +11,31 @@ public class OpSetupProjectileVFX : MagicOperationBase<OpSetupProjectileVFX>, IO
     public override MagicOperationType Type => MagicOperationType.Operation_25_SetupProjectileVFX;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_24, 
-        MagicPropertyType.MainVFXAudioId, 
-        MagicPropertyType.Prop_28, 
-        MagicPropertyType.Prop_29, 
-        MagicPropertyType.Prop_30, 
-        MagicPropertyType.VFXScale, 
-        MagicPropertyType.VFX_XYZOffset,
-        MagicPropertyType.Prop_33, 
-        MagicPropertyType.Prop_34, 
-        MagicPropertyType.ActorEidForProjectileSource, 
-        MagicPropertyType.Prop_1231_VFXAudioIdElem1,
-        MagicPropertyType.Prop_1232_VFXAudioIdElem2,
-        MagicPropertyType.Prop_2359, 
-        MagicPropertyType.VFXUnk1_Elem1, 
-        MagicPropertyType.VFXUnk1_Elem2, 
-        MagicPropertyType.Prop_3772, 
-        MagicPropertyType.Prop_4101_UnkJitterMaxAngleRadZ, 
-        MagicPropertyType.Prop_4102, 
-        MagicPropertyType.VFXUnk2_Elem1, 
-        MagicPropertyType.VFXUnk2_Elem2, 
-        MagicPropertyType.VFXColorUnk, 
-        MagicPropertyType.Prop_6056, 
-        MagicPropertyType.VFXUnk2Alt_Elem1,
-        MagicPropertyType.VFXUnk2Alt_Elem2,
-        MagicPropertyType.Prop_7813
+        MagicPropertyType.Prop_24,                         // Default 0
+        MagicPropertyType.MainVFXAudioId,                  // Default 0
+        MagicPropertyType.Prop_28,
+        MagicPropertyType.Prop_29,                         // Default false
+        MagicPropertyType.Prop_30,                         // Default true (flag 1)
+        MagicPropertyType.VFXScale,                        // Default 1.0
+        MagicPropertyType.VFX_XYZOffset,                   // Default <0.0, 0.0, 0.0>
+        MagicPropertyType.Prop_33,                         // Default 0
+        MagicPropertyType.Prop_34,                         // Default false
+        MagicPropertyType.ActorEidForProjectileSource,     // Default 0
+        MagicPropertyType.Prop_1231_VFXAudioIdElem1,       // Default 0
+        MagicPropertyType.Prop_1232_VFXAudioIdElem2,       // Default 0
+        MagicPropertyType.Prop_2359,                       // Default false
+        MagicPropertyType.VFXUnk1_Elem1,                   // Default -1?
+        MagicPropertyType.VFXUnk1_Elem2,                   // Default -1?
+        MagicPropertyType.Prop_3772,                       // Default 0
+        MagicPropertyType.Prop_4101_UnkJitterMaxAngleRadZ, // Default 1.0
+        MagicPropertyType.Prop_4102,                       // Default 0.2
+        MagicPropertyType.VFXUnk2_Elem1,                   // Default 0
+        MagicPropertyType.VFXUnk2_Elem2,                   // Default 0
+        MagicPropertyType.VFXColorUnk,                     // Default <0.0, 0.0, 0.0>
+        MagicPropertyType.Prop_6056,                       // Default false
+        MagicPropertyType.VFXUnk2Alt_Elem1,                // Default 0 (maps to VFXUnk2_Elem1)
+        MagicPropertyType.VFXUnk2Alt_Elem2,                // Default 0
+        MagicPropertyType.Prop_7813                        // Default false
     ];
 
 }

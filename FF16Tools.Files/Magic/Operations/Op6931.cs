@@ -14,7 +14,7 @@ public class Op6931 : MagicOperationBase<Op6931>, IOperationBase<Op6931>
         MagicPropertyType.ProjectileYOffset, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_102, 
+        MagicPropertyType.OnFinishedOpGroupId, 
         MagicPropertyType.Prop_4101_UnkJitterMaxAngleRadZ, 
         MagicPropertyType.Prop_4102,
         MagicPropertyType.Prop_5838

@@ -18,7 +18,7 @@ public class Op3771 : MagicOperationBase<Op3771>, IOperationBase<Op3771>
         MagicPropertyType.ProjectileNoImpactOpGroupIdCallback, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_3440, 
         MagicPropertyType.Prop_3441, 
         MagicPropertyType.Prop_3608, 

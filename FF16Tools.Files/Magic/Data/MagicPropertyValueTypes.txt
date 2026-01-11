@@ -15,7 +15,7 @@ type|16|Bool
 type|17|Float
 type|18|Bool
 type|19|Bool
-type|20|Bool // depends on Prop24?
+type|20|Bool
 type|21|Int
 type|22|Float
 type|23|Vec3
@@ -33,6 +33,7 @@ type|35|Float
 type|36|Vec3
 type|37|OperationGroupId
 type|38|Bool
+type|39|OperationGroupId
 type|41|Int
 type|42|Float
 type|43|Float
@@ -83,8 +84,10 @@ type|96|OperationGroupId
 type|97|OperationGroupId
 type|98|OperationGroupId
 type|99|OperationGroupId
+type|102|OperationGroupId
 type|110|OperationGroupId
 type|114|Bool
+type|117|Float
 type|185|Float
 type|1102|Bool
 type|1123|Bool
@@ -98,10 +101,12 @@ type|1432|OperationGroupId
 type|1434|Bool
 //1458 verify
 type|1484|Float
+type|1503|OperationGroupId
 type|1657|Float
 type|1833|OperationGroupId
 type|1835|OperationGroupId
 type|1957|Bool
+type|2060|Float
 type|2211|Float
 type|2227|Int
 type|2286|Float	// CHECK: 2296
@@ -118,7 +123,7 @@ type|2798|Int // Verify
 type|2799|Int // Verify
 type|2856|Bool
 type|3513|Bool
-type|3514|Float  // Maybe requires Prop20 (linear proj op?)
+type|3514|Float
 type|3544|Int
 type|3605|Bool
 type|3606|Bool
@@ -134,6 +139,7 @@ type|4094|Int
 type|4101|Float
 type|4102|Float
 type|4103|Bool
+type|4107|Float
 type|4128|Byte
 type|4131|Int
 type|4132|Int
@@ -147,6 +153,8 @@ type|4327|OperationGroupId
 type|4343|OperationGroupId
 type|4387|Bool
 type|4402|OperationGroupId
+type|4436|Int
+type|4447|Int
 type|4774|OperationGroupId
 type|4785|Bool
 type|4786|Bool
@@ -156,12 +164,15 @@ type|5275|Int
 type|5276|Int
 type|5644|Vec3
 type|5671|OperationGroupId
+type|5685|Int
 type|5945|Bool
 type|5947|Bool
 type|5959|Vec3
 type|6056|Bool
 type|6107|OperationGroupId
 type|6137|OperationGroupId
+type|6287|Float
+type|6459|Bool
 type|6596|Bool
 type|6600|Float
 type|6775|Vec3
@@ -172,6 +183,7 @@ type|6822|Int
 type|6825|Bool	//No actual value used?
 type|6826|Bool	//No actual value used?
 type|6383|Bool
+type|6831|Float
 type|6913|Int
 //6975 - int?
 type|6988|Bool

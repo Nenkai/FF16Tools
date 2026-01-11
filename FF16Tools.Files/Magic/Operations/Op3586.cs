@@ -14,7 +14,7 @@ public class Op3586 : MagicOperationBase<Op3586>, IOperationBase<Op3586>
         MagicPropertyType.VFX_XYZOffset, 
         MagicPropertyType.Prop_46, 
         MagicPropertyType.ActorEidForProjectileSource, 
-        MagicPropertyType.Prop_102, 
+        MagicPropertyType.OnFinishedOpGroupId, 
         MagicPropertyType.Prop_110_OpGroupId, 
         MagicPropertyType.Prop_148,
         MagicPropertyType.Prop_2599

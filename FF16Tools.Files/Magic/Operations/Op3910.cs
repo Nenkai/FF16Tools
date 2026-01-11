@@ -13,7 +13,7 @@ public class Op3910 : MagicOperationBase<Op3910>, IOperationBase<Op3910>
     [
         MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_3911,
         MagicPropertyType.Prop_3912
     ];

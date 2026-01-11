@@ -13,7 +13,7 @@ public class Op92 : MagicOperationBase<Op92>, IOperationBase<Op92>
     [
         MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.VFX_XYZOffset, 
-        MagicPropertyType.Prop_39, 
+        MagicPropertyType.Prop_39_OpGroupId, 
         MagicPropertyType.Prop_70_UnkJitterMaxAngleRadXYZ, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 

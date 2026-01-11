@@ -13,7 +13,7 @@ public class Op169 : MagicOperationBase<Op169>, IOperationBase<Op169>
     [
         MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_102,
+        MagicPropertyType.OnFinishedOpGroupId,
         MagicPropertyType.Prop_2764
     ];
 }

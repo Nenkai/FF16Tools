@@ -14,7 +14,7 @@ public class Op6024 : MagicOperationBase<Op6024>, IOperationBase<Op6024>
         MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_6050,
         MagicPropertyType.Prop_6208
     ];

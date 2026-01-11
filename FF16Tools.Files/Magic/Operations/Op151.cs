@@ -15,7 +15,7 @@ public class Op151 : MagicOperationBase<Op151>, IOperationBase<Op151>
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_93, 
-        MagicPropertyType.Prop_102,
+        MagicPropertyType.OnFinishedOpGroupId,
         MagicPropertyType.Prop_152
     ];
 }

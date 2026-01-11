@@ -14,7 +14,7 @@ public class Op4015 : MagicOperationBase<Op4015>, IOperationBase<Op4015>
         MagicPropertyType.ProjectileBindPositionToSourceActor, 
         MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.VFX_XYZOffset, 
-        MagicPropertyType.Prop_47, 
+        MagicPropertyType.ProjectileCreateGroundYOffset, 
         MagicPropertyType.Prop_48, 
         MagicPropertyType.MultiProjectileRandBoxExtend, 
         MagicPropertyType.Prop_69_TargetType, 

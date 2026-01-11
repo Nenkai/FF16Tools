@@ -35,7 +35,7 @@ public class Op4106 : MagicOperationBase<Op4106>, IOperationBase<Op4106>
         MagicPropertyType.Prop_3659, 
         MagicPropertyType.Prop_3681, 
         MagicPropertyType.Prop_3782, 
-        MagicPropertyType.Prop_4107, 
+        MagicPropertyType.PullDistanceOnTargetted, 
         MagicPropertyType.Prop_4128_UnkTargetType,
         MagicPropertyType.Prop_4262, 
         MagicPropertyType.Prop_4263, 

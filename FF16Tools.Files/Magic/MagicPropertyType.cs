@@ -28,11 +28,11 @@ public enum MagicPropertyType : uint
     ProjectileNoTrackingTarget = 13,
     ProjectileTrackingRotationRate = 14, // From source to target, per tick?
     Prop_15 = 15,
-    Prop_16 = 16,
+    ProjectileNormalizeXZTarget = 16,
     ProjectileYRandOffset = 17,
     ProjectileBindPositionToSourceActor = 18,
     ProjectileBindPositionToSourceActorNoProgress = 19,
-    ProjectileXSinWaveToTarget = 20,
+    ProjectileXSinWaveToTarget = 20,  // Depends on Prop24?
     Prop_21_EidId = 21,
     Prop_22_VerticalAngleDegreesOffset = 22,
     ProjectileDirectionAngles = 23,
@@ -51,14 +51,14 @@ public enum MagicPropertyType : uint
     ProjectileDurationRandomRange = 36,
     ProjectileNoImpactOpGroupIdCallback = 37,
     Prop_38 = 38,
-    Prop_39 = 39,
+    Prop_39_OpGroupId = 39,
     ProjectileOnHitAttackParamId = 41,
     ProjectileHitboxRadiusStart = 42,
     ProjectileHitboxRadiusIncreaseRate = 43,
     ProjectileHitboxMaxRadius = 44,
     Prop_45 = 45,
     Prop_46 = 46,
-    Prop_47 = 47,
+    ProjectileCreateGroundYOffset = 47,
     Prop_48 = 48,
     MinTimeForHitboxActivation = 49,
 
@@ -79,7 +79,7 @@ public enum MagicPropertyType : uint
     MultiProjectileRandUniform = 65,
     MultiProjectileMinRandRadius = 66,
     NumProjectilesToSpawnRandom = 67, // OpInitialize
-    Prop_68_MagicId = 68, // Requires Prop26 maybe
+    OnProjectilePlacedMagicId = 68, // Requires Prop26 maybe
     Prop_69_TargetType = 69,
     Prop_70_UnkJitterMaxAngleRadXYZ = 70, // maximum angular offset for random rotation, applied around all axis
     Prop_71 = 71,
@@ -105,7 +105,7 @@ public enum MagicPropertyType : uint
     Prop_97_OpGroupId = 97,
     Prop_98_OpGroupId = 98,
     Prop_99_OpGroupId = 99,
-    Prop_102 = 102,
+    OnFinishedOpGroupId = 102,
     Prop_104 = 104,
     Prop_105 = 105,
     Prop_106 = 106,
@@ -113,7 +113,7 @@ public enum MagicPropertyType : uint
     Prop_109 = 109,
     Prop_110_OpGroupId = 110,
     Prop_114 = 114,
-    Prop_117 = 117, 
+    ProjectileMaxDistance = 117, 
     Prop_118 = 118, 
     Prop_119 = 119,
     Prop_120 = 120,
@@ -181,7 +181,7 @@ public enum MagicPropertyType : uint
     Prop_1458 = 1458, // Sets Prop73 to 6 (OpInitialize)
     Prop_1484_UnkJitterMaxAngleRadY = 1484, // Same as 70, but Y only
     Prop_1490 = 1490,
-    Prop_1503 = 1503,
+    Prop_1503_OpGroupId = 1503,
     Prop_1649 = 1649,
     MultiProjectileMaxRandRadius = 1657, // OpInitialize
     Prop_1686 = 1686,
@@ -284,7 +284,7 @@ public enum MagicPropertyType : uint
     Prop_3498 = 3498,
     Prop_3499 = 3499,
     Prop_3513 = 3513, // OpLinearProjectile
-    Prop_3514 = 3514, // OpLinearProjectile
+    Prop_3514 = 3514, // OpLinearProjectile - Maybe requires Prop20 (linear proj op?)
     Prop_3544_EidId = 3544,
     Prop_3605 = 3605, // OpLinearProjectile
     Prop_3606 = 3606,
@@ -344,7 +344,7 @@ public enum MagicPropertyType : uint
     Prop_4101_UnkJitterMaxAngleRadZ = 4101, // Same as 70, but Z
     Prop_4102 = 4102,
     Prop_4103 = 4103, // OpInitialize
-    Prop_4107 = 4107,
+    PullDistanceOnTargetted = 4107,
     Prop_4128_UnkTargetType = 4128,
     Prop_4131_AttackParamId = 4131,
     Prop_4132_AttackParamId = 4132,
@@ -505,7 +505,7 @@ public enum MagicPropertyType : uint
     Prop_6376 = 6376,
     Prop_6383 = 6383, // OpInitialize
     Prop_6454 = 6454,
-    Prop_6459 = 6459,
+    Prop_6459 = 6459, // Duration related with ActorData45? See code in MagicOperation6460 - 80 7F ? ? 74 ? C5 FA 10 47 ? C5 FA 5C 88
     Prop_6471 = 6471,
     Prop_6474 = 6474,
     Prop_6475 = 6475,

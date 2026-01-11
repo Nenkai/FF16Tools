@@ -14,7 +14,7 @@ public class Op2325 : MagicOperationBase<Op2325>, IOperationBase<Op2325>
         MagicPropertyType.ProjectileSpeedStart,
         MagicPropertyType.VFX_XYZOffset,
         MagicPropertyType.ProjectileDuration,
-        MagicPropertyType.Prop_47,
+        MagicPropertyType.ProjectileCreateGroundYOffset,
         MagicPropertyType.Prop_48,
         MagicPropertyType.NumProjectilesToSpawn,
         MagicPropertyType.Prop_93,

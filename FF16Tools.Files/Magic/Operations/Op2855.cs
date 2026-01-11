@@ -12,7 +12,7 @@ public class Op2855 : MagicOperationBase<Op2855>, IOperationBase<Op2855>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_15, 
-        MagicPropertyType.Prop_16, 
+        MagicPropertyType.ProjectileNormalizeXZTarget, 
         MagicPropertyType.ProjectileDirectionAngles, 
         MagicPropertyType.Prop_79_UnkAngleRadX, 
         MagicPropertyType.Prop_80_UnkAngleRadY, 

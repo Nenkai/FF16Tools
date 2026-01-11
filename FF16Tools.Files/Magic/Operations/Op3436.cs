@@ -11,6 +11,6 @@ public class Op3436 : MagicOperationBase<Op3436>, IOperationBase<Op3436>
     public override MagicOperationType Type => MagicOperationType.Operation_3436;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_102
+        MagicPropertyType.OnFinishedOpGroupId
     ];
 }

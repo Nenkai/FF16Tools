@@ -12,7 +12,7 @@ public class Op3070 : MagicOperationBase<Op3070>, IOperationBase<Op3070>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.NumProjectilesToSpawn, 
-        MagicPropertyType.Prop_117, 
+        MagicPropertyType.ProjectileMaxDistance, 
         MagicPropertyType.Prop_3077,
         MagicPropertyType.Prop_3113,
         MagicPropertyType.Prop_3114, 

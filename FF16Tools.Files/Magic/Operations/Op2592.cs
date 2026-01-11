@@ -14,7 +14,7 @@ public class Op2592 : MagicOperationBase<Op2592>, IOperationBase<Op2592>
         MagicPropertyType.ProjectileDuration, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.ProjectileHitboxRadiusIncreaseRate, 
-        MagicPropertyType.Prop_102,
+        MagicPropertyType.OnFinishedOpGroupId,
         MagicPropertyType.Prop_148, 
         MagicPropertyType.Prop_149, 
         MagicPropertyType.Prop_150, 
