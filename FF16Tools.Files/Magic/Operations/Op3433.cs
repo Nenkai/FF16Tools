@@ -11,8 +11,8 @@ public class Op3391 : MagicOperationBase<Op3391>, IOperationBase<Op3391>
     public override MagicOperationType Type => MagicOperationType.Operation_3391;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_52, 
-        MagicPropertyType.ActorVFX_XYZOffset, 
+        MagicPropertyType.Projectile1XYZOffset, 
+        MagicPropertyType.Projectile2XYZOffset, 
         MagicPropertyType.Prop_102,
         MagicPropertyType.Prop_1458
     ];

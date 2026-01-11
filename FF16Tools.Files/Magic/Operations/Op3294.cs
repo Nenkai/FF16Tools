@@ -11,7 +11,7 @@ public class Op3294 : MagicOperationBase<Op3294>, IOperationBase<Op3294>
     public override MagicOperationType Type => MagicOperationType.Operation_3294;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_26, 
+        MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.VFXScale, 
         MagicPropertyType.VFX_XYZOffset,
         MagicPropertyType.Prop_132

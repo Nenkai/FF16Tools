@@ -12,7 +12,7 @@ public class Op3660 : MagicOperationBase<Op3660>, IOperationBase<Op3660>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.VFX_XYZOffset, 
-        MagicPropertyType.Prop_74_Duration, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.Prop_102,
         MagicPropertyType.Prop_2318
     ];

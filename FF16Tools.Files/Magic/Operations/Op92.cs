@@ -11,12 +11,12 @@ public class Op92 : MagicOperationBase<Op92>, IOperationBase<Op92>
     public override MagicOperationType Type => MagicOperationType.Operation_92;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_26, 
+        MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.VFX_XYZOffset, 
         MagicPropertyType.Prop_39, 
-        MagicPropertyType.Prop_70, 
-        MagicPropertyType.Prop_74_Duration, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.Prop_70_UnkJitterMaxAngleRadXYZ, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_76, 
         MagicPropertyType.Prop_93, 
         MagicPropertyType.Prop_1791,

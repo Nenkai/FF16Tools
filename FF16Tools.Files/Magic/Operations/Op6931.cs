@@ -11,11 +11,11 @@ public class Op6931 : MagicOperationBase<Op6931>, IOperationBase<Op6931>
     public override MagicOperationType Type => MagicOperationType.Operation_6931;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.ProjectileYOffsetMaybe, 
+        MagicPropertyType.ProjectileYOffset, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_102, 
-        MagicPropertyType.Prop_4101, 
+        MagicPropertyType.Prop_4101_UnkJitterMaxAngleRadZ, 
         MagicPropertyType.Prop_4102,
         MagicPropertyType.Prop_5838
     ];

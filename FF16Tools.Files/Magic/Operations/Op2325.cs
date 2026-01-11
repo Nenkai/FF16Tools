@@ -16,7 +16,7 @@ public class Op2325 : MagicOperationBase<Op2325>, IOperationBase<Op2325>
         MagicPropertyType.ProjectileDuration,
         MagicPropertyType.Prop_47,
         MagicPropertyType.Prop_48,
-        MagicPropertyType.Prop_75,
+        MagicPropertyType.NumProjectilesToSpawn,
         MagicPropertyType.Prop_93,
         MagicPropertyType.Prop_147,
         MagicPropertyType.Prop_148,

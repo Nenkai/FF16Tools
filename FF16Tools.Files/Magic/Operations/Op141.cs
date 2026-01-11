@@ -11,7 +11,7 @@ public class Op141 : MagicOperationBase<Op141>, IOperationBase<Op141>
     public override MagicOperationType Type => MagicOperationType.Operation_141;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_102, 
         MagicPropertyType.Prop_142,
         MagicPropertyType.Prop_143

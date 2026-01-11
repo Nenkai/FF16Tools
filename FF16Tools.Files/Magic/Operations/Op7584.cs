@@ -11,12 +11,12 @@ public class Op7584 : MagicOperationBase<Op7584>, IOperationBase<Op7584>
     public override MagicOperationType Type => MagicOperationType.Operation_7584;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.ProjectileYOffsetMaybe, 
+        MagicPropertyType.ProjectileYOffset, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.Prop_47, 
-        MagicPropertyType.Prop_74_Duration, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.Prop_117, 
-        MagicPropertyType.Prop_4101,
+        MagicPropertyType.Prop_4101_UnkJitterMaxAngleRadZ,
         MagicPropertyType.Prop_4102, 
         MagicPropertyType.Prop_5274_AttackParamId, 
         MagicPropertyType.Prop_5275_AttackParamId, 

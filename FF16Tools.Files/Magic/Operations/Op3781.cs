@@ -14,8 +14,8 @@ public class Op3781 : MagicOperationBase<Op3781>, IOperationBase<Op3781>
         MagicPropertyType.VFX_XYZOffset, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.Prop_68_MagicId, 
-        MagicPropertyType.Prop_74_Duration, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_132,
         MagicPropertyType.Prop_3782
     ];

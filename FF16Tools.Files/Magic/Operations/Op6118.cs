@@ -11,10 +11,10 @@ public class Op6118 : MagicOperationBase<Op6118>, IOperationBase<Op6118>
     public override MagicOperationType Type => MagicOperationType.Operation_6118;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_26, 
+        MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_74_Duration, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_6119, 
         MagicPropertyType.Prop_6120, 
         MagicPropertyType.Prop_6121,

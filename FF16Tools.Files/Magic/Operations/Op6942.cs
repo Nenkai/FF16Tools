@@ -13,7 +13,7 @@ public class Op6942 : MagicOperationBase<Op6942>, IOperationBase<Op6942>
     [
         MagicPropertyType.ProjectileOnHitAttackParamId, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_81_EidId, 
+        MagicPropertyType.ActorEidForProjectileSource, 
         MagicPropertyType.Prop_105, 
         MagicPropertyType.Prop_997, 
         MagicPropertyType.Prop_3078, 

@@ -12,7 +12,7 @@ public class Op169 : MagicOperationBase<Op169>, IOperationBase<Op169>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_102,
         MagicPropertyType.Prop_2764
     ];

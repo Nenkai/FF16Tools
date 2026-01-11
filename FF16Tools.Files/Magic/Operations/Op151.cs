@@ -12,8 +12,8 @@ public class Op151 : MagicOperationBase<Op151>, IOperationBase<Op151>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_48, 
-        MagicPropertyType.Prop_74_Duration, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_93, 
         MagicPropertyType.Prop_102,
         MagicPropertyType.Prop_152

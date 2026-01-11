@@ -12,9 +12,9 @@ public class Op153 : MagicOperationBase<Op153>, IOperationBase<Op153>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.VFX_XYZOffset, 
-        MagicPropertyType.Prop_65, 
-        MagicPropertyType.Prop_74_Duration, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.MultiProjectileRandUniform, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_102, 
         MagicPropertyType.Prop_2919, 
         MagicPropertyType.Prop_2920,

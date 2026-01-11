@@ -18,7 +18,7 @@ public class Op4828 : MagicOperationBase<Op4828>, IOperationBase<Op4828>
         MagicPropertyType.Prop_30, 
         MagicPropertyType.ProjectileOnHitAttackParamId, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_52, 
+        MagicPropertyType.Projectile1XYZOffset, 
         MagicPropertyType.Prop_71, 
         MagicPropertyType.ActorVFXAudioId, 
         MagicPropertyType.Prop_105,

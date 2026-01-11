@@ -12,6 +12,6 @@ public class Op7732 : MagicOperationBase<Op7732>, IOperationBase<Op7732>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.Prop_47,
-        MagicPropertyType.Prop_74_Duration
+        MagicPropertyType.DelaySecBetweenProjectileCreation
     ];
 }

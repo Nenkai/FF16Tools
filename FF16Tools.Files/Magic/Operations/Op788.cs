@@ -16,7 +16,7 @@ public class Op788 : MagicOperationBase<Op788>, IOperationBase<Op788>
         MagicPropertyType.ProjectileHitboxRadiusStart, 
         MagicPropertyType.Prop_69_TargetType, 
         MagicPropertyType.Prop_73_Type, 
-        MagicPropertyType.Prop_81_EidId, 
+        MagicPropertyType.ActorEidForProjectileSource, 
         MagicPropertyType.Prop_105, 
         MagicPropertyType.Prop_997, 
         MagicPropertyType.Prop_1025, 

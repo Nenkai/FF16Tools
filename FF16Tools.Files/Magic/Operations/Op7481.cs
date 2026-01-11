@@ -14,7 +14,7 @@ public class Op7481 : MagicOperationBase<Op7481>, IOperationBase<Op7481>
         MagicPropertyType.Prop_25, 
         MagicPropertyType.ProjectileOnHitAttackParamId,
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_81_EidId, 
+        MagicPropertyType.ActorEidForProjectileSource, 
         MagicPropertyType.Prop_997, 
         MagicPropertyType.Prop_3659, 
         MagicPropertyType.Prop_6087, 

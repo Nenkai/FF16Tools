@@ -11,9 +11,9 @@ public class Op7378 : MagicOperationBase<Op7378>, IOperationBase<Op7378>
     public override MagicOperationType Type => MagicOperationType.Operation_7378;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_26, 
+        MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.Prop_30, 
-        MagicPropertyType.Prop_74_Duration, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.Prop_76, 
         MagicPropertyType.Prop_117, 
         MagicPropertyType.Prop_7379, 

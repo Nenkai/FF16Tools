@@ -11,13 +11,13 @@ public class Op144 : MagicOperationBase<Op144>, IOperationBase<Op144>
     public override MagicOperationType Type => MagicOperationType.Operation_144;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_14_UnkMaxAngleRad, 
+        MagicPropertyType.ProjectileTrackingRotationRate, 
         MagicPropertyType.ProjectileDirectionAngles, 
-        MagicPropertyType.Prop_26, 
+        MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.Prop_74_Duration, 
-        MagicPropertyType.Prop_75, 
-        MagicPropertyType.Prop_81_EidId,
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
+        MagicPropertyType.NumProjectilesToSpawn, 
+        MagicPropertyType.ActorEidForProjectileSource,
         MagicPropertyType.Prop_145
     ];
 }

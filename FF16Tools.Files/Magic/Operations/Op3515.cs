@@ -15,7 +15,7 @@ public class Op3515 : MagicOperationBase<Op3515>, IOperationBase<Op3515>
         MagicPropertyType.ProjectileSpeedStart, 
         MagicPropertyType.ProjectileSpeedIncreaseRate, 
         MagicPropertyType.ProjectileSpeedMax, 
-        MagicPropertyType.ProjectileYOffsetMaybe, 
+        MagicPropertyType.ProjectileYOffset, 
         MagicPropertyType.Prop_28, 
         MagicPropertyType.Prop_122, 
         MagicPropertyType.Prop_123, 

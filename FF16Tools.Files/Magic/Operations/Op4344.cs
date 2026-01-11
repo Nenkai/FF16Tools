@@ -12,11 +12,11 @@ public class Op4344 : MagicOperationBase<Op4344>, IOperationBase<Op4344>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileSpeedStart, 
-        MagicPropertyType.ProjectileYOffsetMaybe, 
+        MagicPropertyType.ProjectileYOffset, 
         MagicPropertyType.Prop_24, 
         MagicPropertyType.VFX_XYZOffset, 
-        MagicPropertyType.Prop_79, 
-        MagicPropertyType.Prop_81_EidId, 
+        MagicPropertyType.Prop_79_UnkAngleRadX, 
+        MagicPropertyType.ActorEidForProjectileSource, 
         MagicPropertyType.Prop_132,
         MagicPropertyType.Prop_1432_OpGroupId,
         MagicPropertyType.Prop_1999, 

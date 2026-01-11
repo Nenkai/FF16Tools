@@ -12,11 +12,11 @@ public class Op5321 : MagicOperationBase<Op5321>, IOperationBase<Op5321>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileDirectionAngles, 
-        MagicPropertyType.Prop_26, 
+        MagicPropertyType.ProjectileCreationOpGroupId, 
         MagicPropertyType.VFX_XYZOffset, 
         MagicPropertyType.Prop_73_Type, 
-        MagicPropertyType.Prop_74_Duration, 
-        MagicPropertyType.Prop_75, 
+        MagicPropertyType.DelaySecBetweenProjectileCreation, 
+        MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_5322, 
         MagicPropertyType.Prop_5324, 
         MagicPropertyType.Prop_5325, 

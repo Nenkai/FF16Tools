@@ -12,7 +12,7 @@ public class Op1623 : MagicOperationBase<Op1623>, IOperationBase<Op1623>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileSpeedStart, 
-        MagicPropertyType.Prop_81_EidId, 
+        MagicPropertyType.ActorEidForProjectileSource, 
         MagicPropertyType.Prop_1818, 
         MagicPropertyType.Prop_6270, 
         MagicPropertyType.Prop_6271, 

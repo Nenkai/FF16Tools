@@ -11,7 +11,7 @@ public class Op135 : MagicOperationBase<Op135>, IOperationBase<Op135>
     public override MagicOperationType Type => MagicOperationType.Operation_135;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_70, 
+        MagicPropertyType.Prop_70_UnkJitterMaxAngleRadXYZ, 
         MagicPropertyType.Prop_114, 
         MagicPropertyType.Prop_134, 
         MagicPropertyType.Prop_136, 
