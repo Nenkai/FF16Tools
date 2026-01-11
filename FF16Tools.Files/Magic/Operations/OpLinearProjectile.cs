@@ -35,7 +35,7 @@ public class OpLinearProjectile : MagicOperationBase<OpLinearProjectile>, IOpera
         MagicPropertyType.Prop_24,                                            // Default 0
         MagicPropertyType.Prop_1269_LayoutInstanceId,                         // Default 0
         MagicPropertyType.ProjectileStopAtDist,                               // Default 0.0
-        MagicPropertyType.Prop_2286,                                          // Default 0.0
+        MagicPropertyType.Prop_2296,                                          // Default 0.0
         MagicPropertyType.Prop_2351,                                          // Default <-1.0, -1.0, -1.0>
         MagicPropertyType.Prop_2368,                                          // Default false
         MagicPropertyType.Prop_2856,                                          // Default false

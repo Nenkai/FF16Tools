@@ -112,7 +112,9 @@ public enum MagicPropertyType : uint
     Prop_107 = 107,
     Prop_109 = 109,
     Prop_110_OpGroupId = 110,
-    Prop_114 = 114,
+    Prop_112 = 112, // Op111
+    Prop_113 = 113, // Op111
+    Prop_114 = 114, // Op111
     ProjectileMaxDistance = 117, 
     Prop_118 = 118, 
     Prop_119 = 119,
@@ -222,7 +224,7 @@ public enum MagicPropertyType : uint
     Prop_2227 = 2227,
     Prop_2259 = 2259,
     Prop_2260 = 2260,
-    Prop_2286 = 2286, // OpLinearProjectile
+    Prop_2296 = 2296, // OpLinearProjectile
     Prop_2311 = 2311,
     Prop_2318 = 2318,
     Prop_2319 = 2319,

@@ -11,9 +11,9 @@ public class Op111 : MagicOperationBase<Op111>, IOperationBase<Op111>
     public override MagicOperationType Type => MagicOperationType.Operation_111;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.Prop_110_OpGroupId, 
-        MagicPropertyType.Prop_4402_OpGroupId, 
-        MagicPropertyType.OnMovedOpGroupIdCallback,
-        MagicPropertyType.Prop_6107_OpGroupId
+        MagicPropertyType.VFXScale,
+        MagicPropertyType.Prop_112, 
+        MagicPropertyType.Prop_113, 
+        MagicPropertyType.Prop_114,
     ];
 }
