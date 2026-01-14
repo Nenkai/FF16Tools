@@ -9,7 +9,7 @@ namespace FF16Tools.Files.Magic;
 public class MagicOperationGroup : ISerializableStruct
 {
     public uint Id { get; set; }
-    public OperationList OperationList { get; set; }
+    public OperationList OperationList { get; set; } = new();
 
     public void Read(SmartBinaryStream bs)
     {
