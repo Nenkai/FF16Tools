@@ -29,14 +29,16 @@ public class Op4784 : MagicOperationBase<Op4784>, IOperationBase<Op4784>
         MagicPropertyType.Prop_104,
         MagicPropertyType.Prop_105,
         MagicPropertyType.Prop_109,
+        MagicPropertyType.Prop_132,
         MagicPropertyType.Prop_148,
         MagicPropertyType.Prop_188,
         MagicPropertyType.Prop_995,
         MagicPropertyType.Prop_2060,
+        MagicPropertyType.Prop_3432,
         MagicPropertyType.Prop_3722_EidId,
         MagicPropertyType.Prop_3848,
         MagicPropertyType.Prop_3856,
         MagicPropertyType.Prop_4277,
-        MagicPropertyType.Prop_4846,
+        MagicPropertyType.Prop_4846
     ];
 }
