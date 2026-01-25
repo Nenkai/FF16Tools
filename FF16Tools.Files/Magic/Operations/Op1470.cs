@@ -14,7 +14,7 @@ public class Op1470 : MagicOperationBase<Op1470>, IOperationBase<Op1470>
         MagicPropertyType.ProjectileSpeedStart, 
         MagicPropertyType.ProjectileSpeedIncreaseRate, 
         MagicPropertyType.ProjectileSpeedMax, 
-        MagicPropertyType.ProjectileCreateGroundYOffset, 
+        MagicPropertyType.HeightUnk, 
         MagicPropertyType.Prop_93, 
         MagicPropertyType.Prop_188,
         MagicPropertyType.Prop_1063

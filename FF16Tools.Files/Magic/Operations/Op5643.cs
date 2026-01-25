@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Magic.Operations;
 
-public class Op5722 : Op1562
+public class Op5722 : OpCameraZoomOut
 {
     public override MagicOperationType Type => MagicOperationType.Operation_5722;
 }

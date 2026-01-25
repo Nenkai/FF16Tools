@@ -14,8 +14,8 @@ public class OpCreateReactiveAoETrap : MagicOperationBase<OpCreateReactiveAoETra
         MagicPropertyType.ProjectileSpeedStart,                 // Default 1.0
         MagicPropertyType.VFX_XYZOffset,                        // Default <0.0, 0.0, 0.0>
         MagicPropertyType.ProjectileDuration,                   // Default 0.0
-        MagicPropertyType.ProjectileHitboxRadiusStart,          // Default 1.0
-        MagicPropertyType.ProjectileCreateGroundYOffset,        // Default 1.25
+        MagicPropertyType.DistanceStart,                        // Default 1.0
+        MagicPropertyType.HeightUnk,                            // Default 1.25
         MagicPropertyType.OnProjectilePlacedMagicId,            // Default 0
         MagicPropertyType.DelaySecBetweenProjectileCreation,    // Default 0.1 
         MagicPropertyType.NumProjectilesToSpawn,                // Default 1

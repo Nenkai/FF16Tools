@@ -14,7 +14,7 @@ public class Op128 : MagicOperationBase<Op128>, IOperationBase<Op128>
         MagicPropertyType.ProjectileSpeedStart, 
         MagicPropertyType.ProjectileSpeedIncreaseRate, 
         MagicPropertyType.Prop_15, 
-        MagicPropertyType.ProjectileCreateGroundYOffset, 
+        MagicPropertyType.HeightUnk, 
         MagicPropertyType.Prop_69_TargetType, 
         MagicPropertyType.Prop_129, 
         MagicPropertyType.Prop_130, 

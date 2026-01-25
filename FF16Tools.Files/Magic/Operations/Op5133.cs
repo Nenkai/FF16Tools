@@ -14,7 +14,7 @@ public class Op5133 : MagicOperationBase<Op5133>, IOperationBase<Op5133>
         MagicPropertyType.Prop_28, 
         MagicPropertyType.Prop_30, 
         MagicPropertyType.Prop_46, 
-        MagicPropertyType.Prop_48, 
+        MagicPropertyType.UnkMax, 
         MagicPropertyType.Prop_3848,
         MagicPropertyType.Prop_3856,
         MagicPropertyType.Prop_6135

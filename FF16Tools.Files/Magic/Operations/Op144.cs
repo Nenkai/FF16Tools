@@ -14,7 +14,7 @@ public class Op144 : MagicOperationBase<Op144>, IOperationBase<Op144>
         MagicPropertyType.ProjectileTrackingRotationRate, 
         MagicPropertyType.ProjectileDirectionAngles, 
         MagicPropertyType.ProjectileCreationOpGroupId, 
-        MagicPropertyType.ProjectileHitboxRadiusStart, 
+        MagicPropertyType.DistanceStart, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.ActorEidForProjectileSource,

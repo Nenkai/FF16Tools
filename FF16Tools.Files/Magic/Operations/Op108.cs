@@ -17,6 +17,6 @@ public class Op108 : MagicOperationBase<Op108>, IOperationBase<Op108>
         MagicPropertyType.ProjectileSpeedStart, 
         MagicPropertyType.ProjectileSpeedIncreaseRate,
         MagicPropertyType.ProjectileSpeedMax,
-        MagicPropertyType.ProjectileCreateGroundYOffset,
+        MagicPropertyType.HeightUnk,
     ];
 }

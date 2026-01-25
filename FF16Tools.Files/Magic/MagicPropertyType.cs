@@ -51,16 +51,31 @@ public enum MagicPropertyType : uint
     ProjectileDurationRandomRange = 36,
     ProjectileNoImpactOpGroupIdCallback = 37,
     Prop_38 = 38,
-    Prop_39_OpGroupId = 39,
+    OnDestroyOpGroupIdCallback = 39,
     ProjectileOnHitAttackParamId = 41,
-    ProjectileHitboxRadiusStart = 42,
-    ProjectileHitboxRadiusIncreaseRate = 43,
-    ProjectileHitboxMaxRadius = 44,
-    Prop_45 = 45,
+    DistanceStart = 42,
+    DistanceIncreaseRate = 43,
+    DistanceMax = 44,
+
+    // todo verify:
+    // 0 = Sphere, Prop 42
+    // 1 = Arc, Prop 42, 46
+    // 2 = Capsule, Prop 42, 47
+    // 3 = CapsuleClamped, Prop 42, 47, 48
+    // 4 = ?
+    // 5 = SphereChain, Prop 42, 47
+    // 6 = CapsuleCentered, Prop 42, 47
+    // 7 = CapsuleClampedCentered, Prop 42, 47, 48
+    // 8 = AnchoredCapsule, Prop 42, 46
+    // 9 =  Box, Prop 42, 46, 47
+    // 10 = Box Centered, Prop 42, 46, 47
+    // 11 = AnchoredCapsuleCentered, Prop 42, 46
+    CollisionShapeType = 45, // 0 through 11
+
     Prop_46 = 46,
-    ProjectileCreateGroundYOffset = 47,
-    Prop_48 = 48,
-    MinTimeForHitboxActivation = 49,
+    HeightUnk = 47,
+    UnkMax = 48,
+    DelaySecond = 49,
 
     Projectile1XYZOffset = 52, // Tied to NumProjectilesToSpawn
     Projectile2XYZOffset = 53, // Also used in SourceVFX
@@ -183,7 +198,7 @@ public enum MagicPropertyType : uint
     Prop_1458 = 1458, // Sets Prop73 to 6 (OpInitialize)
     Prop_1484_UnkJitterMaxAngleRadY = 1484, // Same as 70, but Y only
     Prop_1490 = 1490,
-    Prop_1503_OpGroupId = 1503,
+    OnDestroyOpGroupIdCallback2 = 1503, // OpOnFinishSetup - Op39 must be set
     Prop_1649 = 1649,
     MultiProjectileMaxRandRadius = 1657, // OpInitialize
     Prop_1686 = 1686,
@@ -391,7 +406,7 @@ public enum MagicPropertyType : uint
     Prop_4436 = 4436,
     Prop_4442 = 4442,
     Prop_4443 = 4443,
-    Prop_4447 = 4447,
+    CameraAdjustParamId = 4447, // Op4446
     Prop_4474 = 4474,
     Prop_4509 = 4509,
     Prop_4540 = 4540,

@@ -13,9 +13,9 @@ public class Op5035 : MagicOperationBase<Op5035>, IOperationBase<Op5035>
     [
         MagicPropertyType.ProjectileDuration, 
         MagicPropertyType.ProjectileOnHitAttackParamId, 
-        MagicPropertyType.ProjectileHitboxRadiusStart, 
+        MagicPropertyType.DistanceStart, 
         MagicPropertyType.Prop_46, 
-        MagicPropertyType.MinTimeForHitboxActivation, 
+        MagicPropertyType.DelaySecond, 
         MagicPropertyType.Projectile1XYZOffset, 
         MagicPropertyType.Projectile2XYZOffset, 
         MagicPropertyType.Projectile3XYZOffset, 

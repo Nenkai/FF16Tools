@@ -11,6 +11,6 @@ public class Op4784 : MagicOperationBase<Op4784>, IOperationBase<Op4784>
     public override MagicOperationType Type => MagicOperationType.Operation_4784;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.ProjectileHitboxRadiusStart
+        MagicPropertyType.DistanceStart
     ];
 }

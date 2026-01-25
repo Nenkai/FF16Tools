@@ -12,8 +12,8 @@ public class Op2592 : MagicOperationBase<Op2592>, IOperationBase<Op2592>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileDuration, 
-        MagicPropertyType.ProjectileHitboxRadiusStart, 
-        MagicPropertyType.ProjectileHitboxRadiusIncreaseRate, 
+        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.DistanceIncreaseRate, 
         MagicPropertyType.OnFinishedOpGroupId,
         MagicPropertyType.Prop_148, 
         MagicPropertyType.Prop_149, 

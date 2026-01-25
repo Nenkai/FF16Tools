@@ -12,7 +12,7 @@ public class Op6931 : MagicOperationBase<Op6931>, IOperationBase<Op6931>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileYOffset, 
-        MagicPropertyType.ProjectileHitboxRadiusStart, 
+        MagicPropertyType.DistanceStart, 
         MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.OnFinishedOpGroupId, 
         MagicPropertyType.Prop_4101_UnkJitterMaxAngleRadZ, 

@@ -12,7 +12,7 @@ public class Op5207 : MagicOperationBase<Op5207>, IOperationBase<Op5207>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileCreationOpGroupId, 
-        MagicPropertyType.ProjectileHitboxRadiusStart,
+        MagicPropertyType.DistanceStart,
         MagicPropertyType.NumProjectilesToSpawn
     ];
 }

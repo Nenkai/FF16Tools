@@ -18,9 +18,9 @@ public abstract class Op139Base<T> : MagicOperationBase<T>
     protected static HashSet<MagicPropertyType> BaseProperties { get; set; } =
     [
         MagicPropertyType.ProjectileDirectionAngles,
-        MagicPropertyType.ProjectileHitboxRadiusStart,
-        MagicPropertyType.ProjectileHitboxRadiusIncreaseRate,
-        MagicPropertyType.ProjectileHitboxMaxRadius,
+        MagicPropertyType.DistanceStart,
+        MagicPropertyType.DistanceIncreaseRate,
+        MagicPropertyType.DistanceMax,
         MagicPropertyType.Prop_114,
         MagicPropertyType.Prop_140,
         MagicPropertyType.Prop_3349,

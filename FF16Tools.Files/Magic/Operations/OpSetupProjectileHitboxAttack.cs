@@ -14,14 +14,14 @@ public class OpSetupProjectileHitboxAttack : MagicOperationBase<OpSetupProjectil
         MagicPropertyType.VFX_XYZOffset,                            // Default <0.0, 0.0, 0.0>
         MagicPropertyType.ProjectileDuration,                       // Default 0.0
         MagicPropertyType.ProjectileOnHitAttackParamId,             // Default 0
-        MagicPropertyType.ProjectileHitboxRadiusStart,              // Default 0
-        MagicPropertyType.ProjectileHitboxRadiusIncreaseRate,       // Default 0
-        MagicPropertyType.ProjectileHitboxMaxRadius,                // Default 0.0
-        MagicPropertyType.Prop_45,                                  // Default 0
+        MagicPropertyType.DistanceStart,              // Default 0
+        MagicPropertyType.DistanceIncreaseRate,       // Default 0
+        MagicPropertyType.DistanceMax,                // Default 0.0
+        MagicPropertyType.CollisionShapeType,                                  // Default 0
         MagicPropertyType.Prop_46,                                  // Default 0.0
-        MagicPropertyType.ProjectileCreateGroundYOffset,                                  // Default 0.0
-        MagicPropertyType.Prop_48,                                  // Default 0.0
-        MagicPropertyType.MinTimeForHitboxActivation,               // Default 0.0
+        MagicPropertyType.HeightUnk,                                  // Default 0.0
+        MagicPropertyType.UnkMax,                                  // Default 0.0
+        MagicPropertyType.DelaySecond,               // Default 0.0
         MagicPropertyType.Prop_1123,                                // Default false
         MagicPropertyType.Prop_2227,                                // Default 0
         MagicPropertyType.Prop_2413_UnkRateForProp47,               // Default 0.0
