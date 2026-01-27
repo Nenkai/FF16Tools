@@ -13,9 +13,9 @@ public class OpSetupProjectileVFX : MagicOperationBase<OpSetupProjectileVFX>, IO
     [
         MagicPropertyType.Prop_24,                         // Default 0
         MagicPropertyType.MainVFXAudioId,                  // Default 0
-        MagicPropertyType.Prop_28,
+        MagicPropertyType.IsManualPlacement,
         MagicPropertyType.Prop_29,                         // Default false
-        MagicPropertyType.Prop_30,                         // Default true (flag 1)
+        MagicPropertyType.CancelOnProjectileEvent,         // Default true (flag 1)
         MagicPropertyType.VFXScale,                        // Default 1.0
         MagicPropertyType.VFX_XYZOffset,                   // Default <0.0, 0.0, 0.0>
         MagicPropertyType.Prop_33,                         // Default 0

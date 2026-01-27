@@ -12,7 +12,7 @@ public class Op4998 : MagicOperationBase<Op4998>, IOperationBase<Op4998>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileCreationOpGroupId, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 
         MagicPropertyType.Prop_4999,

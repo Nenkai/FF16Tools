@@ -17,7 +17,7 @@ public class Op4106 : MagicOperationBase<Op4106>, IOperationBase<Op4106>
         MagicPropertyType.ProjectileDirectionAngles, 
         MagicPropertyType.Prop_24, 
         MagicPropertyType.ProjectileOnHitAttackParamId, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.DistanceIncreaseRate, 
         MagicPropertyType.Prop_46, 
         MagicPropertyType.Prop_69_TargetType, 

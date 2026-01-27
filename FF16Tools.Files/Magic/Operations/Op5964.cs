@@ -18,7 +18,7 @@ public class Op5964 : MagicOperationBase<Op5964>, IOperationBase<Op5964>
         MagicPropertyType.Prop_25, 
         MagicPropertyType.VFX_XYZOffset, 
         MagicPropertyType.ProjectileOnHitAttackParamId, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.Prop_93, 
         MagicPropertyType.Prop_109,
         MagicPropertyType.Prop_3659,

@@ -16,7 +16,7 @@ public class Op1685 : MagicOperationBase<Op1685>, IOperationBase<Op1685>
         MagicPropertyType.ProjectileSpeedMax, 
         MagicPropertyType.ProjectileBindPositionToSourceActor, 
         MagicPropertyType.VFX_XYZOffset, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.DistanceIncreaseRate, 
         MagicPropertyType.Prop_114, 
         MagicPropertyType.Prop_1686, 

@@ -16,11 +16,11 @@ public class Op3515 : MagicOperationBase<Op3515>, IOperationBase<Op3515>
         MagicPropertyType.ProjectileSpeedIncreaseRate, 
         MagicPropertyType.ProjectileSpeedMax, 
         MagicPropertyType.ProjectileYOffset, 
-        MagicPropertyType.Prop_28, 
+        MagicPropertyType.IsManualPlacement, 
         MagicPropertyType.Prop_122, 
         MagicPropertyType.Prop_123, 
         MagicPropertyType.Prop_2413_UnkRateForProp47, 
         MagicPropertyType.Prop_3903,
-        MagicPropertyType.Prop_4008
+        MagicPropertyType.CameraShakeDelay
     ];
 }

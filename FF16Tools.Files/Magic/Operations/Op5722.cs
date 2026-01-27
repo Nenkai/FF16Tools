@@ -15,7 +15,7 @@ public class Op5643 : MagicOperationBase<Op5643>, IOperationBase<Op5643>
         MagicPropertyType.ProjectileSpeedIncreaseRate, 
         MagicPropertyType.ProjectileSpeedMax, 
         MagicPropertyType.ProjectileOnHitAttackParamId, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.DistanceMax, 
         MagicPropertyType.Prop_105, 
         MagicPropertyType.Prop_3659,

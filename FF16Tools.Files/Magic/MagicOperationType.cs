@@ -79,7 +79,7 @@ public enum MagicOperationType : uint
     Operation_3771 = 3771,
     Operation_3781 = 3781,
     Operation_3790 = 3790,
-    Operation_3847 = 3847,
+    Operation_CameraShakeCurve = 3847,
     Operation_3877 = 3877,
     Operation_3910 = 3910,
     Operation_3940 = 3940,

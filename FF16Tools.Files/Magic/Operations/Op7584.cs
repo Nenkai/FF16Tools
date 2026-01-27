@@ -12,7 +12,7 @@ public class Op7584 : MagicOperationBase<Op7584>, IOperationBase<Op7584>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileYOffset, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.HeightUnk, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.ProjectileMaxDistance, 

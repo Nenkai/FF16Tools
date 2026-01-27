@@ -82,7 +82,7 @@ public class MagicOperationFactory
             MagicOperationType.Operation_3771 => new Op3771(),
             MagicOperationType.Operation_3781 => new Op3781(),
             MagicOperationType.Operation_3790 => new Op3790(),
-            MagicOperationType.Operation_3847 => new Op3847(),
+            MagicOperationType.Operation_CameraShakeCurve => new OpCameraShakeCurve(),
             MagicOperationType.Operation_3877 => new Op3877(),
             MagicOperationType.Operation_3910 => new Op3910(),
             MagicOperationType.Operation_3940 => new Op3940(),

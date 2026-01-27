@@ -18,10 +18,10 @@ public abstract class OpOpCameraZoomOutBase<T> : MagicOperationBase<T>
     protected static HashSet<MagicPropertyType> BaseProperties { get; set; } =
     [
         MagicPropertyType.VFX_XYZOffset,                         // Default 0
-        MagicPropertyType.DistanceStart,                         // Default 0
+        MagicPropertyType.Distance,                              // Default 0
         MagicPropertyType.DistanceIncreaseRate,                  // Default 0
         MagicPropertyType.DistanceMax,                           // Default 0
-        MagicPropertyType.CollisionShapeType,                             // Default 0
+        MagicPropertyType.CollisionShapeType,                    // Default 0
         MagicPropertyType.Prop_46,                               // Default 0
         MagicPropertyType.HeightUnk,                             // Default 0
         MagicPropertyType.UnkMax,                                // Default 0

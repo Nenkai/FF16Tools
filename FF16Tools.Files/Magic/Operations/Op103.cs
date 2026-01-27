@@ -12,7 +12,7 @@ public class Op103 : MagicOperationBase<Op103>, IOperationBase<Op103>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.ProjectileOnHitAttackParamId, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.Prop_105, 
         MagicPropertyType.Prop_106,
         MagicPropertyType.Prop_107

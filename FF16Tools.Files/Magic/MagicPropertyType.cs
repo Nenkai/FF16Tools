@@ -40,9 +40,9 @@ public enum MagicPropertyType : uint
     Prop_25 = 25,
     ProjectileCreationOpGroupId = 26,
     MainVFXAudioId = 27,
-    Prop_28 = 28,
+    IsManualPlacement = 28,
     Prop_29 = 29,
-    Prop_30 = 30,
+    CancelOnProjectileEvent = 30,
     VFXScale = 31,
     VFX_XYZOffset = 32,
     Prop_33 = 33,
@@ -53,7 +53,7 @@ public enum MagicPropertyType : uint
     Prop_38 = 38,
     OnDestroyOpGroupIdCallback = 39,
     ProjectileOnHitAttackParamId = 41,
-    DistanceStart = 42,
+    Distance = 42,
     DistanceIncreaseRate = 43,
     DistanceMax = 44,
 
@@ -326,8 +326,8 @@ public enum MagicPropertyType : uint
     Prop_3785 = 3785,
     Prop_3791 = 3791,
     Prop_3802 = 3802,
-    Prop_3848 = 3848,
-    Prop_3856 = 3856,
+    CameraFCurveId = 3848,
+    CameraFCurveId2 = 3856,
     Prop_3872 = 3872,
 
     // Op3877
@@ -351,7 +351,7 @@ public enum MagicPropertyType : uint
     Prop_3970 = 3970,
     Prop_4002 = 4002,
     Prop_4003 = 4003,
-    Prop_4008 = 4008,
+    CameraShakeDelay = 4008, // For as long as projectile is active?
     Prop_4010_UnkJitterMaxAngleRadX = 4010, // Same as 70, but X
     Prop_4011 = 4011,
     Prop_4014 = 4014,
@@ -420,10 +420,10 @@ public enum MagicPropertyType : uint
     Prop_4832 = 4832,
     Prop_4833 = 4833,
 
-    Prop_4845 = 4845,
-    Prop_4846 = 4846,
-    Prop_4847 = 4847,
-    Prop_4848 = 4848,
+    CameraShakeTypeUnk = 4845, // 0 or 1
+    CameraShakeStart = 4846,
+    CameraShakeIncreaseRate = 4847,
+    CameraShakeMax = 4848,
     Prop_4999 = 4999,
     Prop_5000 = 5000,
     Prop_5034 = 5034,

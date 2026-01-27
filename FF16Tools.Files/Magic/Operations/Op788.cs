@@ -13,7 +13,7 @@ public class Op788 : MagicOperationBase<Op788>, IOperationBase<Op788>
     [
         MagicPropertyType.Prop_29, 
         MagicPropertyType.ProjectileOnHitAttackParamId, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.Prop_69_TargetType, 
         MagicPropertyType.Prop_73_Type, 
         MagicPropertyType.ActorEidForProjectileSource, 

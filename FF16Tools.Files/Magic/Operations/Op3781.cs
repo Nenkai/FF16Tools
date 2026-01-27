@@ -12,7 +12,7 @@ public class Op3781 : MagicOperationBase<Op3781>, IOperationBase<Op3781>
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
         MagicPropertyType.VFX_XYZOffset, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.OnProjectilePlacedMagicId, 
         MagicPropertyType.DelaySecBetweenProjectileCreation, 
         MagicPropertyType.NumProjectilesToSpawn, 

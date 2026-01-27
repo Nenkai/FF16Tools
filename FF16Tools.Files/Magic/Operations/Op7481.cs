@@ -13,7 +13,7 @@ public class Op7481 : MagicOperationBase<Op7481>, IOperationBase<Op7481>
     [
         MagicPropertyType.Prop_25, 
         MagicPropertyType.ProjectileOnHitAttackParamId,
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.ActorEidForProjectileSource, 
         MagicPropertyType.Prop_997, 
         MagicPropertyType.Prop_3659, 

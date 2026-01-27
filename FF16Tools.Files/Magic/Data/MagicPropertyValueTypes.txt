@@ -22,9 +22,9 @@ type|23|Vec3
 type|24|Byte
 type|26|OperationGroupId
 type|27|Int
-type|28|Int  // Not sure.
+type|28|Bool
 type|29|Bool
-type|30|Int
+type|30|Bool
 type|31|Float
 type|32|Vec3
 type|33|Int
@@ -129,9 +129,12 @@ type|3605|Bool
 type|3606|Bool
 type|3722|Int
 type|3772|Int // Verify
+type|3848|Int
+type|3856|Int
 type|3916|Vec3
 type|3938|Int
 type|3939|Bool
+type|4008|Float
 type|4010|Float
 type|4011|Float
 type|4012|Float
@@ -158,6 +161,9 @@ type|4447|Int
 type|4774|OperationGroupId
 type|4785|Bool
 type|4786|Bool
+type|4846|Float
+type|4847|Float
+type|4848|Float
 type|5119|Bool
 type|5274|Int
 type|5275|Int

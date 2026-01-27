@@ -11,7 +11,7 @@ public class Op7292 : MagicOperationBase<Op7292>, IOperationBase<Op7292>
     public override MagicOperationType Type => MagicOperationType.Operation_7292;
     public static HashSet<MagicPropertyType> sSupportedProperties { get; set; } =
     [
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.DistanceIncreaseRate, 
         MagicPropertyType.DistanceMax, 
         MagicPropertyType.DelaySecond, 

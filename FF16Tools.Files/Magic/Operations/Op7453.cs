@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FF16Tools.Files.Magic.Operations;
 
-public class Op7453 : Op3847
+public class Op7453 : OpCameraShakeCurve
 {
     public override MagicOperationType Type => MagicOperationType.Operation_7453;
 }

@@ -13,7 +13,7 @@ public class Op5035 : MagicOperationBase<Op5035>, IOperationBase<Op5035>
     [
         MagicPropertyType.ProjectileDuration, 
         MagicPropertyType.ProjectileOnHitAttackParamId, 
-        MagicPropertyType.DistanceStart, 
+        MagicPropertyType.Distance, 
         MagicPropertyType.Prop_46, 
         MagicPropertyType.DelaySecond, 
         MagicPropertyType.Projectile1XYZOffset, 
