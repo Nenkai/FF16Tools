@@ -1,9 +1,9 @@
 # FF16Tools
 
-Tools & Library for games created using the Final Fantasy XVI / 16 Engine:
+Tools & Library for games created using the Final Fantasy XVI / 16 Faith Engine:
 
-* FINAL FANTASY XVI
-* FINAL FANTASY TACTICS - The Ivalice Chronicles
+* FINAL FANTASY XVI (`faith`)
+* FINAL FANTASY TACTICS - The Ivalice Chronicles (`ffto`)
 
 ### Features
 
@@ -15,11 +15,15 @@ Tools & Library for games created using the Final Fantasy XVI / 16 Engine:
 * Save file (`.png`) unpack/pack (from: `Documents\My Games\FINAL FANTASY XVI\Steam\<steam_id>`)
 * FlatBuffer schemas for `.kdb` (KineDriver) & `.bnmb` (Bonamik) files
 
-This hasbeen tested on Final Fantasy 16 (Steam/PC) files.
+#### Further API Features ([`FF16Tools.Files`](https://www.nuget.org/packages/FF16Tools.Files/))
+
+* `.magic` (FFXVI Magic/Spell definitions) file reading/writing
+* `.tlb` (FFXVI Chara Timeline Binary) file reading/writing (limited to supported timeline elements)
+* `.uib` (UI Layout Binary) file reading/Writing
 
 ## Usage
 
-Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Pack/releases).
+Get the latest version in [**Releases**](https://github.com/Nenkai/FF16Tools/releases).
 
 ### Pac File
 You can use the **GUI/Graphical version**, or for the command line (CLI) commands:
@@ -55,7 +59,7 @@ You can use the **GUI/Graphical version**, or for the command line (CLI) command
 > * Refer to the [table layouts here](FF16Tools.Files/Nex/Layouts) for the column value types. Note: this has been mapped mostly manually. Please contribute if something is amiss or you have figured out the column names.
 > * Nex can contain nested data, therefore arrays and other structs are converted to json strings.
 > * Nex can contain row sets that don't actually contain any rows. This information is lost between SQLite conversion, but should *hopefully* not matter.
-> * You may need to edit `root.nxl` from `0001` to reflect the number of rows (if you've added/removed any).
+> * ~~You may need to edit `root.nxl` from `0001` to reflect the number of rows (if you've added/removed any).~~
 
 ## Modding
 
@@ -102,17 +106,12 @@ The *packer* picks the path from this file accordingly. It can also be set manua
 
 ## Building
 
-Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
+Requires **.NET 9.0**, Windows, DirectStorage support.
 
 ## Format Documentation
 
 * [010 Editor Templates](https://github.com/Nenkai/010GameTemplates/tree/main/Square%20Enix/Final%20Fantasy%2016)
 * [C# Classes](https://github.com/Nenkai/FF16Pack/tree/master/FF16PackLib)
-
-## Roadmap
-
-* Return building/unpack progress
-* Find a GDeflate library that actually works cross-platform
 
 ## Discord
 
@@ -125,6 +124,7 @@ Requires **.NET 8.0** (VS2022), Windows, DirectStorage support.
 [Vortice.Windows](https://github.com/amerkoleci/Vortice.Windows) for having a usable DirectStorage wrapper/API.
 * [GisDeflate](https://github.com/sk-zk/GisDeflate) would break on a certain file (also doesn't have span interfaces),
 * [Silk.NET](https://github.com/dotnet/Silk.NET) has 0 documentation, and would return obtuse windows errors such as `0x8004001` (not implemented). Very useful!
+* [GDeflateNet](https://github.com/neptuwunium/GDeflateNet) no NuGet package
 
 ---
 * [Nenkai](https://github.com/Nenkai) - Reverse-Engineering, Unpack/Packing
