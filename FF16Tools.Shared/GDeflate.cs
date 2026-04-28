@@ -45,7 +45,7 @@ public class GDeflate
 
     public static long CompressionSize(ulong size)
     {
-        return _codec.CompressBufferBound(size);
+        return (long)_codec.CompressBufferBound((nuint)size);
     }
 
     // This is a hack. CompressBuffer would offer no way to grab back the compressed size
