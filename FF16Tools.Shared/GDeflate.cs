@@ -18,14 +18,19 @@ public class GDeflate
         _codec = DirectStorage.DStorageCreateCompressionCodec(CompressionFormat.GDeflate, (uint)Environment.ProcessorCount);
     }
 
-    public static void Decompress(Span<byte> compressedData, Span<byte> decompressedData)
+    public static ulong Decompress(Span<byte> compressedData, Span<byte> decompressedData, bool checkSize = true)
     {
         unsafe
         {
-            fixed (byte* buffer = compressedData)
-            fixed (byte* buffer2 = decompressedData)
+            fixed (byte* compPtr = compressedData)
+            fixed (byte* decompPtr = decompressedData)
             {
-                _codec.DecompressBuffer((nint)buffer, (uint)compressedData.Length, (nint)buffer2, (uint)decompressedData.Length, (uint)decompressedData.Length);
+                nuint outUncompressedDataSize = 0;
+                _codec.DecompressBuffer((nint)compPtr, (uint)compressedData.Length, (nint)decompPtr, (uint)decompressedData.Length, (nuint)(&outUncompressedDataSize));
+                if (checkSize && outUncompressedDataSize != (ulong)decompressedData.Length)
+                    throw new InvalidDataException($"Failed to decompress. Expected to decompress 0x{decompressedData.Length:X}, decompressed 0x{outUncompressedDataSize:X}");
+
+                return outUncompressedDataSize;
             }
         }
     }
