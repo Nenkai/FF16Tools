@@ -112,14 +112,18 @@ public class FF16PackPathUtil
     /// </summary>
     /// <param name="gamePath">Game path, example: nxd/ui.nxd</param>
     /// <param name="packName">Returned pack name, example: 0001</param>
-    /// <param name="gamePathFolder">Returned game path for said pack, example: nxd</param>
+    /// <param name="rootFolder">Returned root pack folder for said pack, example: nxd</param>
     /// <param name="demo">Whether to use demo paths</param>
     /// <returns>Whether a pack name was found for the provided path. If not, use 0001 instead.</returns>
-    public static bool TryGetPackNameForPath(string gamePath, [NotNullWhen(true)] out string? packName, [NotNullWhen(true)] out string? gamePathFolder, bool demo = false)
+    public static bool TryGetPackNameForPath(string gamePath, [NotNullWhen(true)] out string? packName, [NotNullWhen(true)] out string? rootFolder, bool demo = false)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(gamePath, nameof(gamePath));
 
         gamePath = NormalizePath(gamePath);
+        string gamePathLocaleSuffix = string.Empty;
+        string[] spl = gamePath.Split('.');
+        if (spl.Length >= 3 && _packLocales.Contains(spl[^2]))
+            gamePathLocaleSuffix = $".{spl[^2]}";
 
         if (!demo)
         {
@@ -127,8 +131,8 @@ public class FF16PackPathUtil
             {
                 if (gamePath.StartsWith(knownFolderToPackName.Key))
                 {
-                    packName = knownFolderToPackName.Value;
-                    gamePathFolder = knownFolderToPackName.Key;
+                    packName = $"{knownFolderToPackName.Value}{gamePathLocaleSuffix}";
+                    rootFolder = knownFolderToPackName.Key;
                     return true;
                 }
             }
@@ -137,15 +141,15 @@ public class FF16PackPathUtil
             // There's chara files without /dlc2/ or /dlc3/, so that means it'll go under 0001, but that's fine
             if (gamePath.Contains("/dlc2/"))
             {
-                packName = "2000";
-                gamePathFolder = string.Empty;
+                packName = $"2000{gamePathLocaleSuffix}";
+                rootFolder = string.Empty;
                 return true;
             }
 
             if (gamePath.Contains("/dlc3/"))
             {
-                packName = "3000";
-                gamePathFolder = string.Empty;
+                packName = $"3000{gamePathLocaleSuffix}";
+                rootFolder = string.Empty;
                 return true;
             }
         }
@@ -155,22 +159,32 @@ public class FF16PackPathUtil
             {
                 if (gamePath.StartsWith(knownFolderToPackName.Key))
                 {
-                    packName = knownFolderToPackName.Value;
-                    gamePathFolder = knownFolderToPackName.Key;
+                    packName = $"{knownFolderToPackName.Value}{gamePathLocaleSuffix}";
+                    rootFolder = knownFolderToPackName.Key;
                     return true;
                 }
             }
 
             // Everything else fits in 0001 in demo
-            packName = "0001";
-            gamePathFolder = string.Empty;
+            packName = $"0001{gamePathLocaleSuffix}";
+            rootFolder = string.Empty;
             return true;
         }
 
         packName = null;
-        gamePathFolder = null;
+        rootFolder = null;
 
         return false;
+    }
+
+    private static string AddLocaleToPath(string relPath, string locale)
+    {
+        string dir = Path.GetDirectoryName(relPath)!;
+        string fileName = Path.GetFileName(relPath);
+        List<string> parts = fileName.Split('.').ToList();
+        parts.Insert(parts.Count - 1, locale);
+        fileName = string.Join(".", parts);
+        return Path.Combine(dir, fileName);
     }
 
     /// <summary>
