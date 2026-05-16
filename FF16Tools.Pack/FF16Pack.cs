@@ -482,6 +482,24 @@ public class FF16Pack : IDisposable, IAsyncDisposable
         UnpackFileToStream(packFile, outputStream, outputPath);
     }
 
+    /// <summary>
+    /// Extracts the specified file from the pack to the specified output directory.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="outputDir"></param>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public void ExtractFile(string path, Stream outputStream)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(path);
+
+        path = FF16PackPathUtil.NormalizePath(path);
+
+        FF16PackFile packFile = GetFileInfo(path) ?? throw new FileNotFoundException($"File '{path}' not found in the archive.");
+
+        UnpackFileToStream(packFile, outputStream, path);
+    }
+
     public void ListFiles(string outputPath, bool log = false)
     {
         using var sw = new StreamWriter(outputPath);
