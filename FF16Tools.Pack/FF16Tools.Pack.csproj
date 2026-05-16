@@ -8,15 +8,15 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/Nenkai/FF16Tools</PackageProjectUrl>
     <Description>Library for handling FF16 Pack (.pac) files.</Description>
-    <Copyright>Copyright (c) Nenkai 2024</Copyright>
+    <Copyright>Copyright (c) Nenkai 2026</Copyright>
     <RepositoryUrl>https://github.com/Nenkai/FF16Tools</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Authors>Nenkai</Authors>
-	<AssemblyVersion>1.2.3</AssemblyVersion>
-	<FileVersion>1.2.3</FileVersion>
-	<Version>1.2.3</Version>
+	<AssemblyVersion>1.2.4</AssemblyVersion>
+	<FileVersion>1.2.4</FileVersion>
+	<Version>1.2.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
