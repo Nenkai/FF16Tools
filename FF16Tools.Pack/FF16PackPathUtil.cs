@@ -177,16 +177,6 @@ public class FF16PackPathUtil
         return false;
     }
 
-    private static string AddLocaleToPath(string relPath, string locale)
-    {
-        string dir = Path.GetDirectoryName(relPath)!;
-        string fileName = Path.GetFileName(relPath);
-        List<string> parts = fileName.Split('.').ToList();
-        parts.Insert(parts.Count - 1, locale);
-        fileName = string.Join(".", parts);
-        return Path.Combine(dir, fileName);
-    }
-
     /// <summary>
     /// Normalizes a path.
     /// </summary>
