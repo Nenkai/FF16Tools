@@ -88,11 +88,18 @@ public class NexToSQLiteExporter : IDisposable
 
         CreateUnionTable();
 
+        List<string> missingTableLayouts = [];
+        List<string> erroredTables = [];
+
+        int count = 0;
         foreach (var table in _database.Tables)
         {
-            _logger?.LogInformation("Exporting table '{tableName}'", table.Key);
+            count++;
+
+            _logger?.LogInformation("[{}/{}] Exporting table '{tableName}'", count, _database.Tables.Count, table.Key);
             if (!TableMappingReader.LayoutExists(table.Key, _codeName))
             {
+                missingTableLayouts.Add(table.Key);
                 _logger?.LogWarning("Skipping table '{tableName}', no layout file", table.Key);
                 continue;
             }
@@ -106,14 +113,35 @@ public class NexToSQLiteExporter : IDisposable
                 locale = spl[1];
             }
 
-            List<NexRowInfo> nexRows = table.Value.RowManager!.GetAllRowInfos();
+            try
+            {
+                List<NexRowInfo> nexRows = table.Value.RowManager!.GetAllRowInfos();
 
-            NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(tableNameWithoutLocale, new Version(1, 0, 0), _codeName);
-            string exportTableName = tableColumnLayout.Name + (!string.IsNullOrEmpty(locale) ? $".{locale}" : string.Empty);
-            ExportTableToSQLite(exportTableName, table.Value, tableColumnLayout, nexRows);
+                NexTableLayout tableColumnLayout = TableMappingReader.ReadTableLayout(tableNameWithoutLocale, new Version(1, 0, 0), _codeName);
+                string exportTableName = tableColumnLayout.Name + (!string.IsNullOrEmpty(locale) ? $".{locale}" : string.Empty);
+                ExportTableToSQLite(exportTableName, table.Value, tableColumnLayout, nexRows);
+            }
+            catch (Exception ex)
+            {
+                erroredTables.Add(table.Key);
+                _logger?.LogError(ex, "Failed to export table {}", table.Key);
+            }
+
+            
         }
 
         _con.Close();
+
+        if (missingTableLayouts.Count > 0)
+            _logger?.LogError("{} table(s) are missing layouts: {}", missingTableLayouts.Count, string.Join(", ", missingTableLayouts));
+
+        if (erroredTables.Count > 0)
+            _logger?.LogError("{} table(s) failed to export: {}", erroredTables.Count, string.Join(", ", erroredTables));
+
+        if (missingTableLayouts.Count == 0 && erroredTables.Count == 0)
+            _logger?.LogInformation("All tables exported without errors.");
+        else
+            _logger?.LogInformation("{} table(s) were not exported.", missingTableLayouts.Count + erroredTables.Count);
     }
 
 

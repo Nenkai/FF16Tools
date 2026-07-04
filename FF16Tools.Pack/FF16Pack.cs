@@ -706,7 +706,8 @@ public class FF16Pack : IDisposable, IAsyncDisposable
             int size = (int)packFile.DecompressedFileSize;
             _stream.Position = (long)packFile.DataOffset;
 
-            using MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate(0x20000);
+            const int BufferSize = 1 << 20; // 1MB
+            using MemoryOwner<byte> buffer = MemoryOwner<byte>.Allocate(BufferSize);
 
             var crc = new Crc32();
             while (size > 0)
