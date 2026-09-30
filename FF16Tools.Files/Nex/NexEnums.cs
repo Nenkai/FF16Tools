@@ -104,6 +104,7 @@ public class NexUnions
             [112] = "equipment_index",
             [114] = "sidequestbattledirector",
             [124] = "item",
+            [125] = "itemcategory",
             [127] = "levelcutscene",
             [131] = "partytalk",
             [135] = "droptable",
